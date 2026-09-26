@@ -160,6 +160,10 @@ def pill(kind: str, text: str) -> str:
     return f'<span class="pill {kind}">{esc(text)}</span>'
 
 
+def has_pct(r: dict) -> bool:
+    return r.get("pct") is not None
+
+
 def result_cells(r: dict) -> str:
     pts = f"{r['earned']:g} / {r['max']:g}" if r.get("earned") is not None and r.get("max") else "–"
     gb = f"{r['disk_gb']:.2f}" if r.get("disk_gb") is not None else "–"
@@ -168,9 +172,10 @@ def result_cells(r: dict) -> str:
         size_flag += f"<div class='sub'>{esc(r.get('size_src') or 'shipped file')}</div>"
     src = pill("ok", "ours") if r.get("verified") else pill("warn", "unverified")
     txt = f"{r['pct_text_only']:.1f}" if r.get("pct_text_only") is not None else "–"
+    pct = f"{r['pct']:.1f}%" if has_pct(r) else "–"
     return (f"<td class='l'><b>{esc(r['model'])}</b><div class='sub'>{esc(r.get('method'))}</div></td>"
             f"<td class='l'>{esc(STAGE_LABEL.get(r.get('stage'), r.get('stage')))}</td>"
-            f"<td class='n'><b>{r['pct']:.1f}%</b></td><td class='n'>{txt}</td><td class='n'>{pts}</td>"
+            f"<td class='n'><b>{pct}</b></td><td class='n'>{txt}</td><td class='n'>{pts}</td>"
             f"<td class='n'>{gb}{size_flag}</td>"
             f"<td class='l'>{src}<div class='sub'>{esc(r.get('by'))} · {esc(cest(r.get('date')))}</div></td>"
             f"<td class='l note'>{esc(r.get('note'))}</td>")
@@ -183,7 +188,8 @@ RESULT_HEAD = ("<tr><th class='l'>Model</th><th class='l'>Stage</th><th>Score</t
 def results_by_eval(rows: list[dict], order=("headline", "headline-auto", "official-mock", "contaminated", "dev")) -> str:
     out = []
     for kind in order:
-        group = sorted([r for r in rows if r["eval"] == kind], key=lambda r: -r["pct"])
+        group = sorted([r for r in rows if r["eval"] == kind],
+                       key=lambda r: (not has_pct(r), -(r.get("pct") or 0)))
         if not group:
             continue
         cls = "" if kind in MATURA else " muted"
@@ -194,7 +200,7 @@ def results_by_eval(rows: list[dict], order=("headline", "headline-auto", "offic
 
 
 def bar_chart(rows: list[dict], marker: float | None = None) -> str:
-    rows = sorted(rows, key=lambda r: -r["pct"])[:12]
+    rows = sorted([r for r in rows if has_pct(r)], key=lambda r: -r["pct"])[:12]
     if not rows:
         return "<p class='empty'>No held-out scores yet.</p>"
     lw, w, bh, gap = 230, 640, 22, 8
@@ -309,7 +315,7 @@ def status_block(t: dict) -> str:
 # ---------------------------------------------------------------- tabs
 
 def tab_score(t, rows, jobs):
-    mat = [r for r in rows if r["eval"] in MATURA]
+    mat = [r for r in rows if r["eval"] in MATURA and has_pct(r)]
     ok = [r for r in mat if legal(r)]
     best = max(ok, key=lambda r: (r["eval"] == "headline", r["pct"]), default=None)
     judged = [r for r in ok if r["eval"] == "headline"]
@@ -329,7 +335,9 @@ def tab_score(t, rows, jobs):
 
 def progress_pairs(rows):
     by_id = {r["id"]: r for r in rows}
-    pairs = [(by_id[r["base"]], r) for r in rows if r.get("base") in by_id and r["stage"] == "trained"]
+    pairs = [(by_id[r["base"]], r) for r in rows
+             if r.get("base") in by_id and r["stage"] == "trained"
+             and has_pct(r) and has_pct(by_id[r["base"]])]
     return pairs
 
 
@@ -337,7 +345,7 @@ def tab_progress(t, rows, jobs):
     pairs = progress_pairs(rows)
     mat = [(b, r) for b, r in pairs if r["eval"] in MATURA and legal(r)]
     best = max(mat, key=lambda p: p[1]["pct"] - p[0]["pct"], default=None)
-    untouched = [r for r in rows if r.get("mode") == "raw" and r["eval"] in MATURA]
+    untouched = [r for r in rows if r.get("mode") == "raw" and r["eval"] in MATURA and has_pct(r)]
     stats = (stat("Best gain, held-out", f"{best[1]['pct'] - best[0]['pct']:+.1f} pts" if best else "–",
                   f"{best[1]['model']}: {best[0]['pct']:.1f}% → {best[1]['pct']:.1f}%" if best else "nothing yet")
              + stat("Untouched bases scored", str(len(untouched)),
@@ -365,7 +373,7 @@ def tab_progress(t, rows, jobs):
 
 
 def tab_small(t, rows, jobs):
-    mat = [r for r in rows if r["eval"] in MATURA and r.get("disk_gb") is not None]
+    mat = [r for r in rows if r["eval"] in MATURA and r.get("disk_gb") is not None and has_pct(r)]
     passing = [r for r in mat if r["pct"] >= SMALL_BAR and legal(r)]
     best = min(passing, key=lambda r: r["disk_gb"], default=None)
     norm = lambda s: re.sub(r"[^a-z0-9.]", "", s.lower())  # noqa: E731
