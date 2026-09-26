@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| baselines-all | baselines JUDGE_HF= GPU_BUDGET_GB=40 EVAL=/workspace/runs/baselines-all/data/eval/matura_all.jsonl | Forgehand session 01a0dd4b | running | 2026-09-26 11:46 | 2026-09-26 11:46 | /workspace/work/out/baselines-all | Modal compute setup thread |
 | dapt-prep | dapt PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0dd4b | running | 2026-09-26 11:41 | 2026-09-26 11:41 | /workspace/work/out/dapt-prep | Polish Wikipedia thread |
 | router-ablation | bielik-11b MODES=raw,routed,rag on headline eval (needs data/kb from build_kb.py); measures template+voting+RAG gains | next free GPU | queued: wants a GPU after labqoat-baselines | 2026-09-26 11:13 | 2026-09-26 11:13 | work/out/router-ablation | Question router thread |
 | grok-lora-7b-fh-v2 | Grok bot: harness/forgehand_lora_train.py --model-size 7b, 80 rows | Forgehand session 01a0dd4b, tmux train | running (step 940/2000 at 11:06) | 2026-09-26 11:06 | 2026-09-26 11:06 | /workspace/hackathon/runs/lora/forgehand-lora-7b-fh-v2 | Grok bot |
