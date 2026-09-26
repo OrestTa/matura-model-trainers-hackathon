@@ -46,13 +46,16 @@ models:
     params_b: 12.0
     disk_gb: 7.16     # 6.98 model + 0.18 mmproj
     gpu_gb: 14
-  # Qwen3.5 9B (Feb 2026) at Q6_K GGUF, 7.46 GB, on llama.cpp.
+  # Qwen3.5 9B (Feb 2026), a vision model: Q5_K_M GGUF 6.58 GB + mmproj-F16 0.92 GB = 7.50 GB
+  # (Q6_K + mmproj would be 8.4, over), on llama.cpp.
   qwen3.5-9b:
     hf_id: unsloth/Qwen3.5-9B-GGUF
-    gguf_file: Qwen3.5-9B-Q6_K.gguf
+    gguf_file: Qwen3.5-9B-Q5_K_M.gguf
+    mmproj_file: mmproj-F16.gguf
+    vision: true
     server: llamacpp
     params_b: 9.0
-    disk_gb: 7.46
+    disk_gb: 7.50
     gpu_gb: 13
     extra_body: {chat_template_kwargs: {enable_thinking: false}}
   # Bielik-11B after continued pretraining on Polish history text (infra/jobs/dapt.sh merges
