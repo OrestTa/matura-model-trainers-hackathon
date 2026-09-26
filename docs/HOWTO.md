@@ -78,6 +78,32 @@ The router retrieves the 4 best passages (BM25, `matura_router/rag.py`) and puts
 before the question in the "rag" and "adapters" modes; raw and routed never see them.
 Settings are under `rag:` in `configs/routes.yaml`. Copy `data/kb/` to the exam box.
 
+### Full Polish Wikipedia + Wikisource + Wolne Lektury (bigger index, DAPT data)
+
+```bash
+pip install pyarrow zstandard
+python scripts/corpus/plwiki.py download && python scripts/corpus/plwiki.py build
+python scripts/corpus/speakleash.py download && python scripts/corpus/speakleash.py build
+python scripts/corpus/plwiki.py search "unia lubelska 1569"
+```
+
+This writes `data/rag/plwiki.sqlite` (every Polish Wikipedia article plus Wikisource primary
+sources and Wolne Lektury, ~150-word passages, SQLite FTS5; about 1 h on 4 CPUs) and history
+slices in `data/dapt/*.jsonl`. Point `rag.path` in `configs/routes.yaml` at the `.sqlite` file
+to use it; `matura_router/rag.py` detects its schema. Paragraphs that share an 8-word run with
+the eval set are dropped. On the GPU box, `PREP_ONLY=1 bash infra/jobs/dapt.sh` does the same
+without touching the GPU.
+
+### Continued pretraining on the history slices (DAPT)
+
+```bash
+DAPT_MODEL=bielik-11b DAPT_TOKENS=20000000 bash infra/jobs/dapt.sh
+```
+
+Builds the corpora if missing, waits for a free GPU, then trains one LoRA of next-token loss
+over the best `DAPT_TOKENS` tokens (`scripts/train_dapt.py`) into `work/adapters/<model>/domain`
+and merges it into `work/models/<model>-dapt`, which the per-type SFT can start from.
+
 ## 3. Fine-tune: one adapter per question type
 
 ```bash

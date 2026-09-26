@@ -8,6 +8,9 @@ Two knowledge-base formats, picked by file extension (`load_retriever`):
   stemming (a word's first 6 letters), pure Python; fine up to ~100k passages.
 - `.sqlite` / `.db` with an FTS5 table `passages(title, text)` (other columns
   UNINDEXED are fine), for the full Polish Wikipedia. SQLite ranks with its own BM25.
+  The index from scripts/corpus/plwiki.py (full Polish Wikipedia + Wikisource + Wolne
+  Lektury, table `passage` plus a contentless FTS5 table `fts` over 6-letter prefixes)
+  is detected and queried the same way.
 
 Both return the same Passage objects, so the router doesn't care which one it has.
 """
@@ -80,7 +83,10 @@ class SQLiteRetriever:
     def __init__(self, path: str | Path, table: str = "passages"):
         import sqlite3
         self.db = sqlite3.connect(f"file:{path}?mode=ro", uri=True, check_same_thread=False)
-        self.table = table
+        names = {r[0] for r in self.db.execute("SELECT name FROM sqlite_master")}
+        # scripts/corpus/plwiki.py: prefixes are indexed as whole tokens, text lives in `passage`.
+        self.prefixed = {"fts", "passage"} <= names and table not in names
+        self.table = "passage" if self.prefixed else table
 
     @property
     def passages(self) -> list:  # len() for logging only
@@ -90,6 +96,13 @@ class SQLiteRetriever:
         words = list(dict.fromkeys(terms(query)))[:32]
         if not words:
             return []
+        if self.prefixed:
+            match = " OR ".join(f'"{w}"' for w in words)
+            rows = self.db.execute(
+                "SELECT p.id, p.title, p.text, bm25(fts, 2.0, 1.0) AS s FROM fts "
+                "JOIN passage p ON p.id = fts.rowid WHERE fts MATCH ? ORDER BY s LIMIT ?",
+                (match, k)).fetchall()
+            return [Passage(str(r[0]), r[1], r[2], round(-r[3], 2)) for r in rows]
         match = " OR ".join(f'"{w}"*' for w in words)
         rows = self.db.execute(
             f"SELECT rowid, title, text, bm25({self.table}, 2.0, 1.0) AS s FROM {self.table} "
