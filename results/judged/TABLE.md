@@ -6,9 +6,9 @@
 | matura-judge-claude-A01c | A01c: Gemma 4 12B QAT + LoRA A01c (Nebius, 2k thinking + THINK_FALLBACK) | 28 | 34 | 34 | 35 | **131/240** | 130/239 | 59/101 | 65/79 | 7/60 | - |
 | matura-judge-claude-gemma4-12b-routed-heldout-20260926-2012-g4t1 | Gemma 4 12B QAT q4_0, routed, thinking off (g4t1) | 30 | 31 | 28 | 40 | **129/240** | 128/239 | 50/101 | 52/79 | 27/60 | Sol 87 / Claude 79 of 139 |
 | matura-judge-claude-gemma4-12b-raw-heldout-20260926-2002-g4r0 | Gemma 4 12B QAT q4_0 GGUF + mmproj, raw, thinking OFF (7.16 GB) | 33 | 29 | 33 | 28 | **123/240** | 122/239 | 48/101 | 56/79 | 19/60 | Sol 85 / Claude 75 of 139 |
+| matura-judge-claude-eval-Gm3b | Gm3b: Gemma 4 12B QAT + LoRA Gm3b (Modal, static LoRA, think routed + THINK_FALLBACK) | 20 | 36 | 25 | - | **81/180** | 80/179 | 37/76 | 37/59 | 7/45 | - |
 | matura-judge-claude-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8 | Gemma 4 12B QAT q4_0 + mmproj, raw, thinking ON at deck budgets (8k, essay 16k) (g4k8) | 40 | 41 | - | - | **81/120** | 80/119 | 31/52 | 28/38 | 22/30 | Sol 51 / Claude 50 of 68 |
 | matura-judge-claude-eval-Hm2b | Hm2b: Gemma 4 12B QAT + LoRA Hm2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 28 | 30 | - | - | **58/120** | 57/119 | 34/52 | 24/38 | 0/30 | - |
-| matura-judge-claude-eval-Gm3b | Gm3b: Gemma 4 12B QAT + LoRA Gm3b (Modal, static LoRA, think routed + THINK_FALLBACK) | 20 | 36 | - | - | **56/120** | 55/119 | 25/52 | 24/38 | 7/30 | - |
 | matura-judge-claude-eval-S4m2b | S4m2b: Gemma 4 12B QAT + LoRA S4m2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 25 | 31 | - | - | **56/120** | 55/119 | 31/52 | 23/38 | 2/30 | - |
 | matura-judge-claude-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0125 | A01 (a0125): Gemma 4 12B QAT + LoRA A01 (0.1 epoch), 2k thinking + THINK_FALLBACK (L40S) | - | - | 35 | - | **35/60** | 35/60 | 17/24 | 14/21 | 4/15 | Sol 23 / Claude 18 of 36 |
 | matura-judge-claude-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2148-g4f1 | g4f1: Gemma 4 12B QAT + LoRA A1 (1 epoch), 2k thinking + THINK_FALLBACK (L40S) | 24 | - | - | - | **24/60** | 23/59 | 9/24 | 15/21 | 0/15 | Sol 15 / Claude 15 of 36 |
