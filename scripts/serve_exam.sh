@@ -68,7 +68,7 @@ if [ "$SERVER" = llamacpp ]; then
   [ "$(spec vision)" = True ] && [ -n "$(spec mmproj_file)" ] && MMPROJ=(--mmproj "$(HF_HUB_OFFLINE=1 python -c \
     "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec mmproj_file)'))")")
   CUDA_VISIBLE_DEVICES="${GPU:-0}" "$LLAMA_SERVER" -m "$CHECKPOINT" --alias base --host 127.0.0.1 \
-    --port 8000 -ngl 999 --parallel "$SLOTS" -c "$((SLOTS * CTX))" --jinja -fa on --no-webui "${MMPROJ[@]}" "${LORA[@]}" > work/exam-vllm.log 2>&1 &
+    --port 8000 -ngl 999 --parallel "$SLOTS" -c "$((SLOTS * CTX))" --jinja -fa "${FA:-on}" --no-webui "${MMPROJ[@]}" "${LORA[@]}" > work/exam-vllm.log 2>&1 &
 else
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
   ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
