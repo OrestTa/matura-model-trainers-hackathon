@@ -111,3 +111,9 @@ Q3_K_S is1,030,947,072bytes (SHA256
 for a2,761,841,874-byte aggregate. Existing Q4 would total3,011,730,642bytes.
 These exact blob metadata checks establish size feasibility only; lower-precision
 caption quality remains unmeasured and no further GPU caption job is authorized here.
+
+The existing Qwen2B five-caption review also completed: all five were classified
+`unsafe_to_use` by own Codex Luna. No new GPU inference was spent on that review.
+Caption escalation is stopped; none of the three tested caption paths is included
+in the formal Bielik offline package. Per-question judge-selected filtering is not
+an acceptable replacement for a reproducible key-free inference policy.
