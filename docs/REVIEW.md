@@ -7,6 +7,29 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 20:15 CEST: 6e2d256..cea7074 (22 commits) and board 40ec224
+
+- a34dfbf, f8b6f35 (us) per-model `ocr: true` via apply_model + bielik-4.5b-fp8 (4.90 GB, the smallest-model entry):
+  OCR still never runs in raw mode, and apply_model turns it off for vision models (78c843d): OK.
+- cea7074 (us) router mode "subtype" (configs/subtypes.yaml profiles per closed/open x text/image + essay): only active in
+  mode "subtype", raw is unchanged. Per-request `extra` (thinking) merges over the backend's extra_body, and voting now
+  keeps it (dataclasses.replace): OK. 41 tests pass.
+- eb4d66e (us) train_data/history_ext_synth.jsonl, 3,956 of the Grok bot's synthetic items: run through merge_synth
+  against the held-out set, and the one near-copy essay topic (May 2023 z26) was dropped by hand. Checked: no
+  "…dominowały tendencje …centralizacyjne" row is left. The year/code hits are only synthetic ids (SYNTH-MHIP-R-…): OK.
+- 4264f6a, 08c7621, 977f81f, eb6d5a8, 03687b3, 1a05c49 (us) Gemma LoRA sweep plumbing (text-layer target by exclusion,
+  RANK/LR/MAX_LEN, Nebius job shipping, EXTRA_SFT): OK, no secrets.
+- 946b636 (us) infra/forgehand/local scripts for the NFS outage: no IPs or keys (grepped): OK.
+- aa0d905, b86ba6f, 6e18b46, 41e90d2, a2c522d, c1df3e3, db2dd40, c875c04, 6684a2e, 151bf21 (us) findings/status/channel.
+  PROBLEM, FIXED in docs/FINDINGS.md: it named Orest's e-mail, two Nebius tenant names and two project ids. Those are
+  now "his GitHub login", "<second tenant>", "<project id>". Job ids stay (agents need them). Open for Orest before the
+  repo goes public: INSIGHTS.md:95 (his commit 1af64b8) names two of his e-mail addresses, and git history still has all
+  of these.
+- Board 40ec224 (us, Claude took over the board): Gemma 68.3% is the best verified score. The declared base's Claude grade
+  of 20.0% is shown as a "diagnostic, contaminated answers" row with honest_bare false (its raw answers run on into new
+  turns), deliberately apart from the raw proxy row: OK. The Qwen 0.5B/1.5B rows still say honest_bare with no run
+  summary (C-030, unresolved).
+
 ## 2026-09-26 19:40 CEST: d573adb..e5daf9d (12 commits) and board f1a6402, f18dc8c
 
 - 115bfb4, 004b155 (Grok bot) tracks.json: Gemma row added as asked in C-049. The Claude-graded mock row is 68.3%

@@ -27,8 +27,8 @@ State of category 3 ("Mały, ale wariat") at stand-down:
 
 ## 2026-09-26 20:05 CEST · venues thread: Grok bot's Nebius SFT (me2k8) and its training data
 
-- **Where:** Orest's Nebius tenant amber-centipede (o@tarasiuk.me, balance $135.59 at 19:47), project
-  project-e00r07hbpr00483g1ant9w, eu-north1. `aijob-e00me2k8j1ge1vw19k` =
+- **Where:** Orest's Nebius tenant (his GitHub login, balance $135.59 at 19:47), project
+  <project id>, eu-north1. `aijob-e00me2k8j1ge1vw19k` =
   `matura-sft-bielik11b-nf4-hist-ext-20260926-1728-n7k2`, RUNNING on 1x H100 since 16:11Z, 8 h timeout (00:11Z).
   LoRA r16 on speakleash/Bielik-11B-v2 bf16, 2 epochs, lr 2e-4 (script `scripts/sft_bielik11b_hist_ext.sh` in the bucket).
   At 17:55Z: epoch 1.2, loss ~0.005, token accuracy ~0.999, so it finishes around 19:00Z.
@@ -51,7 +51,7 @@ State of category 3 ("Mały, ale wariat") at stand-down:
 - **Token Factory OK**: 25 models (Gemma-3-27B, Qwen3-235B, Qwen3.5-397B, ...); Gemma-3-27B answered a Grunwald test.
 - **HF OK** (account orestta, fine-grained token).
 - **Nebius Console OK via `NEBIUS_IAM_TOKEN="$nebius"`** (Orest's short-lived login token, tenant
-  coffee-cuckoo-tenant-knd, 9 default projects, eu-north1 = project-e00yqh3gpr00ss4byr5baw). Quota: 32 each of
+  <second tenant>, 9 default projects, eu-north1 = <project id>). Quota: 32 each of
   H100/H200/L40S in eu-north1. Nothing running. Credits unknown (not visible from the CLI); asked Orest.
 - **me2k8 (`aijob-e00me2k8j1ge1vw19k`) is NOT in Orest's tenant** (get by ID = unauthenticated): it lives in the
   Grok bot's own Nebius account. Still don't recreate or touch it.
