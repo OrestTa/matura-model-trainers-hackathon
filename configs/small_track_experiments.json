@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "status": "experiment plan; no improvement inferred from configuration",
+  "candidates": ["bielik15-q4", "bielik45-q4"],
+  "experiments": [
+    {"id": "B0", "change": "none", "purpose": "frozen bare baseline per exact weight artifact"},
+    {"id": "P1", "change": "prompt only", "controls": "same weights, inputs, token budgets, decoding"},
+    {"id": "S1", "change": "supervised adapter only", "controls": "same source weights, prompt, inputs, token budgets, decoding; conversion needs its own baseline"},
+    {"id": "V1", "change": "own visual preprocessing only", "controls": "same original text and PNG inputs; record additional model bytes and generated descriptions"},
+    {"id": "R1", "change": "five-category routing", "controls": "freeze route choices on development results before held-out evaluation"},
+    {"id": "C1", "change": "selected combination", "controls": "only after single-technique evaluation; compare against best bare individual model and constituent techniques"}
+  ],
+  "grading": "Forgehand gpt-6-sol sole judge against official CKE key and rubric; no Astra adjudication; unresolved uncertainty prevents final promotion",
+  "reporting": "all five categories, overall earned/max, artifact bytes, latency, base versus optimized and Ania reference with comparability caveat",
+  "selection": "freeze routing before reserved 2015/2016 evaluation; prior exposure unknown"
+}

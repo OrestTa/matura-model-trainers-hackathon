@@ -17,3 +17,5 @@ secrets/
 *.env
 .modal.toml
 .run-venv/
+# User-supplied local credential inventories (including numbered copies).
+COMPUTE_PLATFORMS_SECRETS*.md
