@@ -3,8 +3,21 @@ from pathlib import Path
 SYSTEM='Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.'
 class NoRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,*a,**k):raise RuntimeError('Redirect disabled')
+def load_saved(out,config,known_ids,resume):
+ path=out/'answers.jsonl'
+ if not resume:return []
+ previous=json.loads((out/'manifest.json').read_text())
+ if any(previous.get(k)!=v for k,v in config.items()) or previous.get('system')!=SYSTEM:raise ValueError('Frozen configuration or system prompt changed')
+ saved=list(map(json.loads,path.read_text().splitlines()))
+ if len({r['id'] for r in saved})!=len(saved) or not {r['id'] for r in saved}<=known_ids:raise ValueError('Unknown or duplicate saved IDs')
+ return saved
+
+def missing_rows(rows,saved):
+ seen={r['id'] for r in saved}
+ return [r for r in rows if r['id'] not in seen]
+
 def main():
- p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();root=a.root;out=a.output;out.mkdir(parents=True,exist_ok=False)
+ p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--resume',action='store_true');p.add_argument('--concurrency',type=int,choices=[1,2],default=2);a=p.parse_args();root=a.root;out=a.output;out.mkdir(parents=True,exist_ok=a.resume)
  config=json.loads((root/'config.json').read_text());source=root/'candidate.jsonl';assert hashlib.sha256(source.read_bytes()).hexdigest()==config['candidate_sha256'];rows=list(map(json.loads,source.read_text().splitlines()));assert len(rows)==37 and len({r['id'] for r in rows})==37
  proof=json.loads((root/'server-network-proof.json').read_text());assert proof['outbound_tcp_denied'] and proof['udp_socket_denied'];http=urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect())
  def call(path,payload=None,timeout=10):
@@ -16,7 +29,12 @@ def main():
   except Exception:time.sleep(1)
  else:raise RuntimeError('Server unavailable')
  manifest=dict(config,system=SYSTEM,network_proof=proof,code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),complete=False)
- (out/'manifest.json').write_text(json.dumps(manifest,indent=2));images={}
+ saved=load_saved(out,config,{r['id'] for r in rows},a.resume)
+ if a.resume:
+  manifest=json.loads((out/'manifest.json').read_text())
+  with (out/'resume-events.jsonl').open('a') as f:f.write(json.dumps({'time':time.time(),'saved_ids':[r['id'] for r in saved],'remaining_ids':[r['id'] for r in missing_rows(rows,saved)],'effective_concurrency':a.concurrency,'original_concurrency':config['concurrency'],'resume_code_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})+'\n')
+ else:(out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+ images={}
  for row in rows:
   assert not {'answer','answers','rubric','gold','solution','official_solution'}.intersection(row)
   for im in row.get('images',[]):
@@ -25,22 +43,25 @@ def main():
   content=[{'type':'text','text':'\n\n'.join(str(row.get(k,'')) for k in ('context','question'))}]
   content += [{'type':'image_url','image_url':{'url':'data:image/png;base64,'+images[i['sha256']]}} for i in row.get('images',[])]
   payload={'messages':[{'role':'system','content':SYSTEM},{'role':'user','content':content}],'temperature':0,'seed':42,'max_tokens':1600 if row.get('points',0)>=10 else 500,'chat_template_kwargs':{'enable_thinking':False}}
-  result={'id':row['id'],'answer':'','error':None,'request_sha256':hashlib.sha256(json.dumps(payload,sort_keys=True,ensure_ascii=False).encode()).hexdigest()};start=time.monotonic()
+  result={'id':row['id'],'answer':'','error':None,'effective_concurrency':a.concurrency,'request_sha256':hashlib.sha256(json.dumps(payload,sort_keys=True,ensure_ascii=False).encode()).hexdigest()};start=time.monotonic()
   try:
    response=call('/v1/chat/completions',payload,240);choice=response['choices'][0];result.update(answer=choice['message'].get('content') or '',finish_reason=choice.get('finish_reason'),usage=response.get('usage'))
   except Exception as e:result['error']=type(e).__name__+':'+str(e)[:160]
   result['latency_s']=time.monotonic()-start;return result
  routes=['closed_without_images','closed_with_images','open_without_images','open_with_images','essay'];smoke=[next(r for r in rows if r['subtype']==route) for route in routes];assert len({r['id'] for r in smoke})==5
- done=[]
- with (out/'answers.jsonl').open('w') as handle:
+ done=list(saved)
+ with (out/'answers.jsonl').open('a' if a.resume else 'w') as handle:
   def save(result):
    done.append(result);handle.write(json.dumps(result,ensure_ascii=False)+'\n');handle.flush();os.fsync(handle.fileno());print(json.dumps({'completed':len(done),'id':result['id'],'error':result['error']}),flush=True)
-  with cf.ThreadPoolExecutor(max_workers=2) as pool:
-   for f in cf.as_completed([pool.submit(one,r) for r in smoke]):save(f.result())
-  (out/'smoke.json').write_text(json.dumps(done,ensure_ascii=False,indent=2))
-  if any(x['error'] or not x['answer'].strip() for x in done):raise RuntimeError('Five-category smoke failed; no full expansion')
-  smokeids={r['id'] for r in smoke}
-  with cf.ThreadPoolExecutor(max_workers=2) as pool:
-   for f in cf.as_completed([pool.submit(one,r) for r in rows if r['id'] not in smokeids]):save(f.result())
+  if a.resume:
+   byid={r['id']:r for r in done}
+   if not all(r['id'] in byid and not byid[r['id']]['error'] and byid[r['id']]['answer'].strip() for r in smoke):raise RuntimeError('Resume requires persisted successful five-category smoke')
+  else:
+   with cf.ThreadPoolExecutor(max_workers=a.concurrency) as pool:
+    for f in cf.as_completed([pool.submit(one,r) for r in smoke]):save(f.result())
+   (out/'smoke.json').write_text(json.dumps(done,ensure_ascii=False,indent=2))
+   if any(x['error'] or not x['answer'].strip() for x in done):raise RuntimeError('Five-category smoke failed; no full expansion')
+  with cf.ThreadPoolExecutor(max_workers=a.concurrency) as pool:
+   for f in cf.as_completed([pool.submit(one,r) for r in missing_rows(rows,done)]):save(f.result())
  manifest.update(complete=len(done)==37,answers=len(done),errors=sum(bool(r['error']) for r in done));(out/'manifest.json').write_text(json.dumps(manifest,indent=2))
 if __name__=='__main__':main()
