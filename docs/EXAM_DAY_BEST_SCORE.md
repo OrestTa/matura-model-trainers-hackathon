@@ -50,6 +50,7 @@ Graded with pictures viewed and the full CKE essay criteria (7e6fe48), the base 
 | B4m2 | r32, 0.5 epoch | May 2023 23/60 | 41 | essay 147 words (under 300 = 0) |
 | Hm2 | r16, lr 1e-4, 0.3 epoch | May 2023 28/60 | 41 | essay 198 words |
 | S4m2 | r32, 0.15 epoch, no past papers | May 2023 25/60 | 41 | essay 2/15 (factual errors), picture misreads |
+| Gm3 | essay-weighted (essay_claude_synth 3x) | May 2023 20/60 | 41 | essay loops on one sentence |
 | A01 | 0.1 epoch | May 2026 35/60 | 41 | essay 297 words (3 short); short items tie 35/45 |
 
 Every adapter broke the essay and none beat the base on short items, so the picture LoRA V1 and

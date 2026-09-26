@@ -28,6 +28,7 @@ vs the deck's 46, so the judges agree; the base gap to the deck is the model (4-
 | A1 LoRA (1 epoch) | 24 | – | – | – | – | | | 0/15 (2023) | |
 | B4m2 LoRA | 23 | – | – | – | – | | | 0/15 (2023) | |
 | Hm2 LoRA | 28 | – | – | – | – | | | 0/15 (2023) | |
+| Gm3 LoRA (essay-weighted) | 20 | – | – | – | – | | | 0/15 (2023) | |
 | S4m2 LoRA | 25 | – | – | – | – | | | 2/15 (2023) | |
 | A01 LoRA (0.1 epoch) | – | – | – | 35 | – | | | 0/15 (2026) | |
 
