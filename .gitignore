@@ -11,3 +11,9 @@ data/
 *.safetensors
 runs/
 work/
+# Secrets and local envs (TEAM_KEY lives in secrets/; never commit it).
+secrets/
+.env
+*.env
+.modal.toml
+.run-venv/

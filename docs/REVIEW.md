@@ -6,6 +6,50 @@ Rules we review against (from docs/hackathon-brief.pdf): each model <= 8 GB on d
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 11:40 UTC: data, training, infra and the Grok bot's commit (3c64d6d, 4bff7c4, 94982dc, 331a706, 73ee9c6, 43ea40f, a1c057e..2a7743c, 857369b, 1212826, eb0209d, 9081fad)
+
+Checked and fine: fetch_matura output is byte-identical to the shared eval set; answer keys parse correctly
+(points match, closed golds are among the options). No copyrighted exam text in tracked files (0 eight-word
+overlaps with the eval set). No live secret anywhere in history (only a public SSH key and env-var names).
+Merge 1212826 dropped nothing. Adapter names match configs/routes.yaml.
+
+Fixed on main (this commit):
+- train_lora.py trained on the whole sequence (system prompt + question), so ~98% of the gradient on a
+  closed item went to memorising prompts, not answering. Now prompt/completion with completion-only loss
+  (trl>=0.20).
+- gen_synthetic.py leak filter pooled all eval shingles, so an eval question copied word for word with a new
+  source was KEPT in 126/147 cases. Now each eval item's question/context/gold is checked on its own
+  (drop at >20% of that item's 5-word runs), the synthetic answer is checked too, drops are logged, and the
+  script refuses to run without the eval file and fails if under half the requested items are kept.
+- train.sh: generate to a temp file (no partial file reused later), clear data/by_category before the split,
+  kill vLLM's child processes, fail when no adapter was trained instead of reporting "adapters" = "routed".
+- common.sh: tensor-parallel size rounded to a power of two (3 GPUs used to crash the teacher); hf_transfer
+  only when installed; no silent fallback to the 20 toy questions (set ALLOW_SAMPLE_EVAL=1 to allow it).
+- run_baselines.py only passes adapter dirs that contain adapter_config.json to vLLM.
+- fetch_matura.py: the 2025 essay (15 pts) had an empty rubric and was silently unscored; the whole section
+  now becomes the rubric. The shared data/eval/matura.jsonl needs a re-fetch to pick this up.
+- .gitignore: secrets/, .env, *.env, .modal.toml, .run-venv/. README_RUN.md said TEAM_KEY in secrets/ was
+  gitignored; it was not.
+
+Open, needs an owner (LARGE):
+- No held-out split: the same 154 items tune the classifier, pick adapters and report the score. Suggest
+  tuning on 2023-2025 and reporting the 2026-05 paper as the test set.
+- Grok bot (eb0209d): its history numbers (68/90 = 75.6%) are on its own 90 training MCQs, not the matura,
+  and use different denominators. Its practice "base" run used geo_solver and one answer from
+  "public_answer_consensus", so it was not a bare model. The declared base (Qwen2.5-3B-Instruct, Qwen
+  Research non-commercial licence) differs from our pipeline (Bielik/Qwen3). README_RUN.md points to ~8
+  files (exam client k3exam.py, geo_solver, rag/) that are not in the repo, and modal_lora_train.py can't run
+  from a clean checkout (missing data file). Its training also puts loss on the whole sequence. The brief
+  requires the exact stage harness in the repo: we need one offline exam client that calls matura_router.
+- Not for a public repo: AWS account ID and support-case IDs (infra/aws/AWS_INFRA.md, notes/AWS_INFRA.md),
+  the VM's public IP with root SSH (docs/FINDINGS.md), and "op://Hackathon/AWS root key", which means AWS
+  root access keys exist: delete them.
+- Cost: Modal jobs time out after 24 h and Forgehand sessions never stop by themselves; add a stop at job end.
+- Docs contradict the brief: PLAN assumes an 8.9 GB cap (the brief says 8 GB) and k=5 self-consistency at
+  temperature 0 (identical samples, and stage time is a few minutes).
+- QLoRA: adapters are trained on the bf16 base but served on a 4-bit base; train on 4-bit to match.
+- Synthetic closed items never shuffle options, so the adapter may learn "the answer is B".
+
 ## 2026-09-26 11:20 UTC: router, scoring, baselines (40155a0, 4afb7ae, 168ec23)
 
 What they do: rule classifier routes each question to one of 7 types + general, each with its own LoRA,
@@ -48,4 +92,3 @@ Open, needs an owner (LARGE):
   organiser material that should not be republished. Deleting it from HEAD is not enough: it stays in git
   history. Before the repo is shared with the jury, either keep the repo private and give the jury read access,
   or publish a fresh repo/squashed history without the PDF.
-- Code review of the remaining commits in progress; results follow below.

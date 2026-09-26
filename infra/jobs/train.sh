@@ -33,14 +33,18 @@ else
   step "serving teacher $TEACHER_HF on all GPUs"
   serve_vllm "$TEACHER_HF" "$(IFS=,; echo "${GPU_LIST[*]}")" 8200 teacher || finish 1
   step "generating $PER_CATEGORY items per question type"
+  # Write to a temp file so a crashed run never leaves a partial file that later runs reuse.
   python scripts/gen_synthetic.py --base-url http://127.0.0.1:8200/v1 --model teacher \
-    --per-category "$PER_CATEGORY" --eval "$EVAL" -o "$TRAIN"
-  kill $SERVED_PID; wait $SERVED_PID 2>/dev/null
+    --per-category "$PER_CATEGORY" --eval "$EVAL" -o "$TRAIN.tmp" || finish 1
+  mv "$TRAIN.tmp" "$TRAIN"
+  # vLLM's engine/worker children survive a plain kill and hold the GPUs.
+  kill $SERVED_PID; wait $SERVED_PID 2>/dev/null; pkill -f "vllm serve.*--port 8200"; sleep 15
   s3 cp "$TRAIN" "s3://$BUCKET/data/train/synthetic.jsonl"
 fi
 cp "$TRAIN" "$OUT/synthetic.jsonl"
 
 # 2. Split per question type.
+rm -rf data/by_category   # stale files from earlier runs would get trained too
 python scripts/split_by_category.py "$TRAIN" -o data/by_category
 
 # 3. Train one adapter per (model, category), one job per GPU at a time.
@@ -51,6 +55,7 @@ n=${#GPU_LIST[@]}; i=0
 declare -a per_gpu
 for m in ${TRAIN_MODELS//,/ }; do
   for f in data/by_category/*.jsonl; do
+    [ -e "$f" ] || { step "no training data after the split"; finish 1; }
     per_gpu[$((i % n))]+="$m:$(basename "$f" .jsonl) "; i=$((i + 1))
   done
 done
@@ -66,6 +71,8 @@ for g in $(seq 0 $((n - 1))); do
 done
 wait
 grep -h "saved\|skip" "$OUT"/train_logs/*.log
+# Without adapters the "adapters" mode silently equals "routed"; don't publish that.
+ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapter trained"; finish 1; }
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 
 # 4. Re-score with adapters (and without, for the comparison charts).

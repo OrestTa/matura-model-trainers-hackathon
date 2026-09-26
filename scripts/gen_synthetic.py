@@ -124,11 +124,24 @@ def main():
     teacher = OpenAICompatBackend(base_url=args.base_url, base_model=args.model, api_key=args.api_key,
                                   timeout=900,
                                   extra_body={"chat_template_kwargs": {"enable_thinking": False}})
-    eval_sh = set()
-    if Path(args.eval).exists():
-        for line in open(args.eval, encoding="utf-8"):
-            r = json.loads(line)
-            eval_sh |= shingles(r["question"] + " " + r.get("context", ""))
+    if not Path(args.eval).exists():
+        sys.exit(f"eval set {args.eval} not found: refusing to generate without the leak filter")
+    # Per eval item: its question, context and answer shingles, checked separately so a long new
+    # context can't dilute a copied question (the old pooled ratio kept verbatim eval questions).
+    eval_parts = []
+    for line in open(args.eval, encoding="utf-8"):
+        r = json.loads(line)
+        for field in ("question", "context", "gold"):
+            sh = shingles(str(r.get(field) or ""))
+            if len(sh) >= 3:
+                eval_parts.append((r.get("id"), field, sh))
+
+    def leak(it: dict):
+        mine = shingles(" ".join([it["question"], it["context"], it["answer"]]))
+        for eid, field, sh in eval_parts:
+            if len(sh & mine) / len(sh) > 0.2:
+                return eid, field
+        return None
 
     jobs = []
     for cat in args.categories.split(","):
@@ -158,14 +171,19 @@ def main():
                 key = re.sub(r"\W+", " ", it["question"].lower()).strip()
                 if key in seen:
                     continue
-                sh = shingles(it["question"] + " " + it["context"])
-                if sh and len(sh & eval_sh) / len(sh) > 0.3:
+                hit = leak(it)
+                if hit:
                     leaked += 1
+                    print(f"dropped as close to eval {hit[0]} ({hit[1]}): {it['question'][:60]!r}",
+                          file=sys.stderr)
                     continue
                 seen.add(key)
                 f.write(json.dumps(it, ensure_ascii=False) + "\n")
                 kept += 1
     print(f"{kept} items -> {args.out} ({leaked} dropped as too close to the eval set)")
+    wanted = args.per_category * len(args.categories.split(","))
+    if kept < wanted // 2:
+        sys.exit(f"only {kept} of {wanted} items kept: teacher mostly failed")
 
 
 if __name__ == "__main__":

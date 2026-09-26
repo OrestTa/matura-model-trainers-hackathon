@@ -32,6 +32,7 @@ elif [ ! -x $WORK/venv/bin/vllm ]; then
 fi
 [ -f $WORK/venv/bin/activate ] && source $WORK/venv/bin/activate
 pip install -q -e "$REPO"
+python3 -c "import hf_transfer" 2>/dev/null || export HF_HUB_ENABLE_HF_TRANSFER=0
 cd "$REPO"
 
 # Eval set: local file, else S3, else build it from the CKE papers.
@@ -40,7 +41,9 @@ mkdir -p "$(dirname "$EVAL")"
 if [ ! -s "$EVAL" ] && ! s3 cp "s3://$BUCKET/data/eval/matura.jsonl" "$EVAL"; then
   step "no eval set yet, building it from the CKE papers"
   if python scripts/fetch_matura.py -o "$EVAL"; then s3 cp "$EVAL" "s3://$BUCKET/data/eval/matura.jsonl"
-  else EVAL=$REPO/examples/sample_questions.jsonl; fi
+  elif [ "${ALLOW_SAMPLE_EVAL:-0}" = 1 ]; then EVAL=$REPO/examples/sample_questions.jsonl
+    step "WARNING: using the 20 toy sample questions; scores are NOT matura scores"
+  else step "could not build the eval set (set ALLOW_SAMPLE_EVAL=1 to use the toy samples)"; exit 1; fi
 fi
 
 GPU_LIST=($(nvidia-smi --query-gpu=index --format=csv,noheader))
@@ -49,7 +52,8 @@ step "${#GPU_LIST[@]} GPUs, eval set $EVAL"
 # Serves a HF model with vLLM on the given GPUs and waits until it answers.
 # Usage: serve_vllm <hf_id> <gpus csv> <port> <served-name>; sets SERVED_PID.
 serve_vllm() {
-  local tp; tp=$(echo "$2" | tr ',' '\n' | wc -l)
+  local n tp=1; n=$(echo "$2" | tr ',' '\n' | wc -l)
+  while [ $((tp * 2)) -le "$n" ]; do tp=$((tp * 2)); done   # heads must divide by TP: 3 GPUs -> 2
   CUDA_VISIBLE_DEVICES=$2 vllm serve "$1" --served-model-name "$4" --port "$3" \
     --tensor-parallel-size "$tp" --max-model-len 16384 --gpu-memory-utilization 0.9 \
     > "$OUT/vllm-$4.log" 2>&1 &

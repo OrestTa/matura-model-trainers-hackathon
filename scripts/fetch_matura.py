@@ -241,6 +241,8 @@ def key_items(lines: list[str]) -> dict[str, dict]:
         solution = body[sol_i:] if sol_i is not None else []
         if solution and re.match(r"^Rozwiązani[ea]\s*$", solution[0]):
             solution = solution[1:]
+        if not rubric and not solution and t["points"] >= 10:
+            rubric = body   # 2025 essay: no "Zasady oceniania" line, the whole section is the criteria
         qid = f"{t['num']}.{t['sub']}" if t["sub"] else f"{t['num']}"
         if qid in keys:   # the essay criteria can span two "Zadanie 26." sections
             keys[qid]["rubric"] = (keys[qid]["rubric"] + "\n" + join(rubric)).strip()

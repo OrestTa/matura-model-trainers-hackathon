@@ -65,7 +65,8 @@ def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: 
     if spec.get("quantization"):
         cmd += ["--quantization", spec["quantization"]]
     if adapters_dir:
-        mods = [f"{d.name}={d}" for d in sorted((adapters_dir / key).glob("*")) if d.is_dir()]
+        mods = [f"{d.name}={d}" for d in sorted((adapters_dir / key).glob("*"))
+                if (d / "adapter_config.json").exists()]  # a crashed run leaves only checkpoints/
         if mods:
             cmd += ["--enable-lora", "--max-loras", str(len(mods)), "--max-lora-rank", "64",
                     "--lora-modules", *mods]

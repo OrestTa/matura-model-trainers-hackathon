@@ -52,6 +52,10 @@ def main():
     from trl import SFTConfig, SFTTrainer
 
     ds = load_dataset("json", data_files=str(data))["train"].shuffle(seed=0)
+    # Prompt/completion split so the loss covers only the answer; with a plain "messages"
+    # column TRL trains on the system prompt and question too (~98% of tokens on closed types).
+    ds = ds.map(lambda r: {"prompt": r["messages"][:-1], "completion": r["messages"][-1:]},
+                remove_columns=ds.column_names)
     cfg_kwargs = dict(
         output_dir=str(out / "checkpoints"), num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.grad_accum,
@@ -62,8 +66,8 @@ def main():
     # TRL renamed max_seq_length -> max_length; support both.
     params = inspect.signature(SFTConfig.__init__).parameters
     cfg_kwargs["max_length" if "max_length" in params else "max_seq_length"] = args.max_len
-    if "assistant_only_loss" in params:
-        cfg_kwargs["assistant_only_loss"] = False  # needs template support; full-sequence loss is fine
+    if "completion_only_loss" in params:
+        cfg_kwargs["completion_only_loss"] = True
 
     trainer = SFTTrainer(
         model=spec["hf_id"], train_dataset=ds, args=SFTConfig(**cfg_kwargs),
