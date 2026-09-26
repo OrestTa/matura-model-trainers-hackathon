@@ -15,7 +15,11 @@ Updated: 2026-09-26 14:56 Europe/Warsaw
   - CKE text-only: 38.9%
   - Measured pack size: about 5.582 GB on disk
   - Status: legal Sunday base
-- The legal 7B AWQ result matches the illegal 7B bf16 base result (37.1%) within noise.
+- The legal 7B AWQ result stays ahead of every legal tuned variant committed so far.
+- Latest legal tuned check: `Qwen/Qwen2.5-7B-Instruct-AWQ` + `forgehand-lora-7b-fh` (offline)
+  - CKE full: 29.8%
+  - CKE text-only: 32.1%
+  - Status: regresses versus the bare AWQ base; do not promote as the Sunday pack
 
 ## Comparison table
 
@@ -26,10 +30,12 @@ Updated: 2026-09-26 14:56 Europe/Warsaw
 | 3B + modal-v3 | 17.1 | 23.0 | legal | Regresses vs base |
 | 7B bf16 base | 37.1 | 40.1 | illegal | Research signal only |
 | 7B AWQ base | 37.6 | 38.9 | legal | Best legal CKE result |
+| 7B AWQ + fh LoRA (offline) | 29.8 | 32.1 | legal but demoted | Regresses vs the bare AWQ base |
 
 ## Sunday quality path
 
-- Preferred quality path: declare the 7B AWQ base if registration can still be updated.
+- Preferred quality path: declare the bare 7B AWQ base if registration can still be updated.
+- Do not promote the AWQ + fh offline LoRA pack until it beats the bare AWQ baseline on the headline CKE eval.
 - If registration stays on the current 3B base, keep the 3B base as the honest Sunday declaration.
 - Never use any of these as the Sunday base:
   - 7B bf16

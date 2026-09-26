@@ -40,3 +40,10 @@ Times are UTC.
 | router-ablation | bielik-11b MODES=raw,routed,rag on headline eval (needs data/kb from build_kb.py); measures template+voting+RAG gains | next free GPU | queued: wants a GPU after labqoat-baselines | 2026-09-26 11:13 | 2026-09-26 11:13 | work/out/router-ablation | Question router thread |
 | train-bielik-l40s | train TRAIN_MODELS=bielik-11b-dapt VLLM_UTIL=0.8 | Forgehand L40S | queued: after dapt-bielik; ships 4-bit base + bf16 adapters (<8.8 GB), so NOT cancelled | 2026-09-26 10:58 | 2026-09-26 13:13 | /workspace/work/out/train-bielik-l40s | Modal compute setup thread |
 | labqoat-baselines | baselines on all 16 papers (matura_all.jsonl, 573 items), no judge | Forgehand L40S | superseded by baselines-all: old sequential code on vLLM 0.30 (no bitsandbytes), will fail | 2026-09-26 10:58 | 2026-09-26 11:46 | /workspace/work/out/labqoat-baselines | Modal compute setup thread |
+
+## Track 01 update
+
+- Best legal committed CKE result remains the bare `Qwen/Qwen2.5-7B-Instruct-AWQ` base at **37.6% full / 38.9% text-only** with an approximately **5.582 GB** pack on disk.
+- Latest legal tuned check, **AWQ + `forgehand-lora-7b-fh` (offline)**, scored **29.8% full / 32.1% text-only** and regresses versus the bare AWQ base.
+- Keep the bare AWQ base as the preferred Sunday quality path; do not promote the fh adapter pack from this result.
+- Canonical note: `notes/TRACK01_BEST_SCORE.md`.
