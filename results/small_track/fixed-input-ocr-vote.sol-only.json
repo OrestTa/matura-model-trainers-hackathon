@@ -1,0 +1,306 @@
+{
+  "created_at_utc": "2026-09-26T19:23:58.175718+00:00",
+  "judge": "Forgehand gpt-6-sol only",
+  "grading_method": "Original canonical question/context and official CKE2023 key identical for all four variants. No assistant grading; one own-Sol consistency clarification corrected a structured essay point/rationale mismatch, with original preserved.",
+  "input_audit": {
+    "original_fields_identical_for_all_37": [
+      "id",
+      "question",
+      "source_text",
+      "images",
+      "answer_format",
+      "max_points",
+      "page_images"
+    ],
+    "ocr_context_only_appended": true,
+    "original_candidate_sha256": "3ecfcc62c05cc28ba668ff751fa6ce33a81e54a5cd8e958cf1ae0d2e5c6b031a",
+    "ocr_candidate_sha256": "abe9791630317612ece247d452a960549ad7dabc9c523f5717e0c726f279be67",
+    "official_judge_pack_sha256": "0d43d7b5ec3d5e7e3e591f9a7ad28336eef108780f120a91d11e24195fe3e900"
+  },
+  "variants": [
+    {
+      "variant": "plain_first",
+      "answer_file": "results/small_track/20260926-191729-bielik45-fixed-input-e2e/first-sample/answers.jsonl",
+      "answers_sha256": "86cddfbb78766b660a1331668c4218458b16f2eb611f66d43d77e200df89a8ee",
+      "sol_summary": "results/small_track/20260926-191729-bielik45-fixed-input-e2e/first-sample/sol_primary_v3/summary.sol.json",
+      "sol_summary_sha256": "2ea1a7c0ee32ffe9546dc2de4e6d47d55e6d880cf7e15b5d8d1c1b9cfa824053",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_earned_points": 15,
+      "settled_lower_bound_points": 15,
+      "possible_upper_bound_points": 18,
+      "official_max_points": 60,
+      "uncertain_ids": [
+        "8",
+        "17"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 25.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 54.54545454545455,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ]
+    },
+    {
+      "variant": "plain_vote",
+      "answer_file": "results/small_track/20260926-191729-bielik45-fixed-input-e2e/answers.jsonl",
+      "answers_sha256": "09120cf5cde3b60b7516abe04746c7092b0e67ef0789815dd741c8e17f0a3c52",
+      "sol_summary": "results/small_track/20260926-191729-bielik45-fixed-input-e2e/sol_primary_v3/summary.sol.json",
+      "sol_summary_sha256": "7f49b4f86e4ea36810505edc4fe32a14c73a51fe63f133d0f268ae7ed9f983d1",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_earned_points": 15,
+      "settled_lower_bound_points": 15,
+      "possible_upper_bound_points": 18,
+      "official_max_points": 60,
+      "uncertain_ids": [
+        "8",
+        "17"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 25.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 54.54545454545455,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ]
+    },
+    {
+      "variant": "ocr_first",
+      "answer_file": "results/small_track/20260926-191816-bielik45-fixed-input-e2e/first-sample/answers.jsonl",
+      "answers_sha256": "dddc8d22905298144ebf6afd82929a97512f43a7792bd8219013761c5861c86f",
+      "sol_summary": "results/small_track/20260926-191816-bielik45-fixed-input-e2e/first-sample/sol_primary_v3_consistency_review/summary.sol.json",
+      "sol_summary_sha256": "97e3413de913ffe796a6e6c3bf9f4228b118e966cd40e0cb5e60adbf1fa41f75",
+      "protocol": "sol-official-primary-text-v3-consistency-review1",
+      "complete": false,
+      "earned_points": null,
+      "provisional_earned_points": 14,
+      "settled_lower_bound_points": 14,
+      "possible_upper_bound_points": 21,
+      "official_max_points": 60,
+      "uncertain_ids": [
+        "7",
+        "8",
+        "18"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 25.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 14.285714285714286,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 7,
+          "provisional_earned_points": 7,
+          "score_percent": 63.63636363636363,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 4,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 6.666666666666667,
+          "complete": true
+        }
+      ]
+    },
+    {
+      "variant": "ocr_vote",
+      "answer_file": "results/small_track/20260926-191816-bielik45-fixed-input-e2e/answers.jsonl",
+      "answers_sha256": "1f3e18afa96e5c6fd247a60921f676543c761ffec68b676d12140858dd6053b7",
+      "sol_summary": "results/small_track/20260926-191816-bielik45-fixed-input-e2e/sol_primary_v3_consistency_review/summary.sol.json",
+      "sol_summary_sha256": "1d6b8036ae519d25453817dd00981bd999331c34e330f1329d117181a0719870",
+      "protocol": "sol-official-primary-text-v3-consistency-review1",
+      "complete": false,
+      "earned_points": null,
+      "provisional_earned_points": 14,
+      "settled_lower_bound_points": 14,
+      "possible_upper_bound_points": 21,
+      "official_max_points": 60,
+      "uncertain_ids": [
+        "7",
+        "8",
+        "18"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 25.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 14.285714285714286,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 7,
+          "provisional_earned_points": 7,
+          "score_percent": 63.63636363636363,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 4,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 6.666666666666667,
+          "complete": true
+        }
+      ]
+    }
+  ],
+  "majority_comparisons": [
+    {
+      "variant": "plain",
+      "tasks": 37,
+      "agreement_tasks": 1,
+      "fallback_tasks": 36,
+      "changed_answer_ids": [],
+      "exact_score_delta_points": 0,
+      "reason": "All37 selected answer strings byte-identical to first sample; uncertain grades therefore also identical."
+    },
+    {
+      "variant": "ocr",
+      "tasks": 37,
+      "agreement_tasks": 1,
+      "fallback_tasks": 36,
+      "changed_answer_ids": [],
+      "exact_score_delta_points": 0,
+      "reason": "All37 selected answer strings byte-identical to first sample; uncertain grades therefore also identical."
+    }
+  ],
+  "ocr_vs_plain": {
+    "final_delta_points": null,
+    "provisional_delta_points": -1,
+    "provisional_delta_percentage_points": -1.6666666666666667,
+    "status": "Final difference unresolved because visual tasks remain uncertain; temperature0.7 means single-run stochastic variation."
+  },
+  "serialized_bytes": {
+    "base_model": 2878886912,
+    "plain_model_plus_router": 2881050916,
+    "ocr_model_plus_router_plus_assets": 2889929522
+  },
+  "ania_reference": {
+    "model": "Bielik4.5B",
+    "earned_points": 23,
+    "max_points": 55,
+    "score_percent": 41.81818181818182,
+    "closed": "6/11",
+    "open": "15/29",
+    "essay": "2/15",
+    "five_category_breakdown": "not available",
+    "comparison": "Unmatched earlier adapted inputs55pointsubset; not comparable and no numerical delta."
+  }
+}

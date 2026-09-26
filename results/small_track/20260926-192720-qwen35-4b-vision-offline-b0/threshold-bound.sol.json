@@ -1,0 +1,89 @@
+{
+  "run_id": "20260926-192720-qwen35-4b-vision-offline-b0",
+  "judge": "Forgehand gpt-6-sol",
+  "protocol": "sol-official-primary-text-v3",
+  "model": {
+    "name": "qwen35-4b-vision",
+    "repo": "unsloth/Qwen3.5-4B-GGUF",
+    "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+    "files": [
+      {
+        "file": "Qwen3.5-4B-Q4_K_M.gguf",
+        "bytes": 2740937888,
+        "sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4"
+      },
+      {
+        "file": "mmproj-F16.gguf",
+        "bytes": 672423616,
+        "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864"
+      }
+    ]
+  },
+  "serialized_weight_bytes": 3413361504,
+  "input_modality": "original PNG vision",
+  "offline_network_block": true,
+  "outbound_probe_denied": true,
+  "graded_tasks": 37,
+  "task_count": 37,
+  "official_max_points": 60,
+  "final_exact_score": null,
+  "settled_lower_bound_points": 23,
+  "possible_upper_bound_points": 25,
+  "settled_lower_bound_percent": 38.333333333333336,
+  "target_at_least_35_proven_by_lower_bound": true,
+  "strictly_above_35_proven_by_lower_bound": true,
+  "uncertain_ids": [
+    "8"
+  ],
+  "uncertainty_note": "Full exact grade unresolved because task8 requires direct image review unavailable through tested Sol gateway. Its full2points remain in denominator; all uncertain points excluded from bound. This arithmetic report does not adjudicate any mark.",
+  "five_category_breakdown": [
+    {
+      "category": "closed_without_images",
+      "max_points": 4,
+      "earned_points": 0,
+      "provisional_earned_points": 0,
+      "score_percent": 0.0,
+      "complete": true
+    },
+    {
+      "category": "closed_with_images",
+      "max_points": 7,
+      "earned_points": 6,
+      "provisional_earned_points": 6,
+      "score_percent": 85.71428571428571,
+      "complete": true
+    },
+    {
+      "category": "open_without_images",
+      "max_points": 11,
+      "earned_points": 9,
+      "provisional_earned_points": 9,
+      "score_percent": 81.81818181818181,
+      "complete": true
+    },
+    {
+      "category": "open_with_images",
+      "max_points": 23,
+      "earned_points": null,
+      "provisional_earned_points": 8,
+      "score_percent": null,
+      "complete": false
+    },
+    {
+      "category": "essay",
+      "max_points": 15,
+      "earned_points": 0,
+      "provisional_earned_points": 0,
+      "score_percent": 0.0,
+      "complete": true
+    }
+  ],
+  "base_vs_optimized": "Not measured; this is a baseline. No cross-model or cross-protocol improvement claim.",
+  "ania_reference": "Matching Qwen3.5-4B reference pending source confirmation; canonicalinputs differ from earlier adapted55point benchmark, so no numerical delta.",
+  "artifacts": {
+    "answers.jsonl": "f0798e9c216dbd7dc8a2853257c4fdb14d2bc0491a1c0409bca09f2e1c42f2a5",
+    "manifest.json": "cce6e7eeed64cd1630e1ab6d60c1225405df3bbc58a921df114b71bf9f17c756",
+    "sol_primary_v3/grades.sol.jsonl": "834e26ee9ffe1dd08fd31b50bc5dc0e073b6ebbc55617a8cc180ef1ff8d3514d",
+    "sol_primary_v3/summary.sol.json": "793c7ba9d0ff5b7cb307187b187228c1bb69ee340fb05f13647d09de5040c435"
+  }
+}

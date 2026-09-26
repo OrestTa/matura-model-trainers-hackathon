@@ -20,7 +20,32 @@ def normalize_answer(answer: str) -> str:
     return text
 
 
-def choose_vote(samples: list[str]) -> dict:
+def normalize_closed_answer(answer: str) -> str:
+    """Compare explicit closed choices while retaining the original explanation.
+
+    Conflicting repeated assignments are not collapsed. This parses syntax, not
+    correctness, and must only be enabled for a candidate-classified closed task.
+    """
+    plain = unicodedata.normalize('NFKC', answer).casefold().strip()
+    plain = re.sub(r'[*`_]', '', plain)
+    pairs = re.findall(r'(?:^|[\n;,]|\s)([a-e]|\d+)\s*[:.)-]\s*(prawda|fałsz|p|f|[a-e]|\d+)\b', plain)
+    if pairs:
+        mapping = {}
+        for key, value in pairs:
+            value = {'prawda': 'p', 'fałsz': 'f'}.get(value, value)
+            if key in mapping and mapping[key] != value:
+                return normalize_answer(answer)
+            mapping[key] = value
+        return 'assignments:' + ';'.join(f'{key}={mapping[key]}' for key in sorted(mapping))
+    choice = re.match(r'^(?:odpowiedź\s*:\s*)?([a-e])(?:[.)]|\s*[:–-])(?:\s|$)', plain)
+    if choice:
+        alternatives = re.findall(r'(?:^|\n)(?:odpowiedź\s*:\s*)?([a-e])[.)](?:\s|$)', plain)
+        if all(option == choice[1] for option in alternatives):
+            return choice[1]
+    return normalize_answer(answer)
+
+
+def choose_vote(samples: list[str], *, closed: bool = False) -> dict:
     """Require a strict majority of all scheduled samples; blanks cannot win.
 
     Without agreement, select the first nonblank sample. This is explicitly a
@@ -30,7 +55,8 @@ def choose_vote(samples: list[str]) -> dict:
         raise ValueError('An odd, nonzero number of samples is required')
     if any(not isinstance(sample, str) for sample in samples):
         raise ValueError('Every sample must be a string; failures use empty strings')
-    normalized = [normalize_answer(sample) for sample in samples]
+    normalizer = normalize_closed_answer if closed else normalize_answer
+    normalized = [normalizer(sample) for sample in samples]
     counts = Counter(value for value in normalized if value)
     threshold = len(samples) // 2 + 1
     winner = next((value for value in normalized if value and counts[value] >= threshold), None)
@@ -48,5 +74,5 @@ def choose_vote(samples: list[str]) -> dict:
         'selection_reason': 'lexical_majority' if has_majority else (
             'first_nonblank_fallback' if index is not None else 'all_samples_empty'),
         'normalized_votes': normalized,
-        'selector': 'offline-lexical-majority-v1',
+        'selector': 'offline-closed-structured-majority-v2' if closed else 'offline-lexical-majority-v1',
     }

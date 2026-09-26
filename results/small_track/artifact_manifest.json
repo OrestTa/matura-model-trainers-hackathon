@@ -1,0 +1,51 @@
+[
+  {
+    "repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+    "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+    "filename": "Bielik-1.5B-v3.0-Instruct-Q4_K_M.gguf",
+    "bytes": 972797408,
+    "sha256": "ea9cc250a6c65718c290fd963d8e3237b924ccfc7632f20a6127bba5904a50d9"
+  },
+  {
+    "repo": "second-state/Bielik-4.5B-v3.0-Instruct-GGUF",
+    "revision": "5ed9534f824c7c184c21320f4d339e75569d0987",
+    "filename": "Bielik-4.5B-v3.0-Instruct-Q4_K_M.gguf",
+    "bytes": 2878886912,
+    "sha256": "39fb78db7c5e1582d3ef5bded109cd98606aabd5acbb5c98601155174b6763e1"
+  },
+  {
+    "repo": "unsloth/Qwen3.5-2B-GGUF",
+    "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+    "filename": "Qwen3.5-2B-Q4_K_M.gguf",
+    "bytes": 1280835840,
+    "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223"
+  },
+  {
+    "repo": "unsloth/Qwen3.5-2B-GGUF",
+    "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+    "filename": "mmproj-F16.gguf",
+    "bytes": 668227264,
+    "sha256": "7035e9cb8d7c6a9681d07eef9a364783e86ea4cd73faab2eabb4f43a101830c7"
+  },
+  {
+    "repo": "unsloth/Qwen3.5-4B-GGUF",
+    "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+    "filename": "Qwen3.5-4B-Q4_K_M.gguf",
+    "bytes": 2740937888,
+    "sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4"
+  },
+  {
+    "repo": "unsloth/Qwen3.5-4B-GGUF",
+    "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+    "filename": "mmproj-F16.gguf",
+    "bytes": 672423616,
+    "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864"
+  },
+  {
+    "repo": "unsloth/Qwen3.5-4B-GGUF",
+    "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+    "filename": "Qwen3.5-4B-Q3_K_M.gguf",
+    "bytes": 2293388448,
+    "sha256": "d6981ab4d77ba712b48ef69d69042d75b5e39b9dce5fb5a5b054fd08e06afb95"
+  }
+]

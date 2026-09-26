@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "description": "Unmeasured local owned-model template. Replace model/server and add measured artifacts before eligibility claims. Adapter routes require adapter_model served alias.",
+  "artifacts": {},
+  "routes": {
+    "closed_without_images": {
+      "model": "small-track-base",
+      "base_model": "small-track-base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "own_model_endpoint": true,
+      "mode": "bare",
+      "vision": false,
+      "artifacts": []
+    },
+    "closed_with_images": {
+      "model": "small-track-base",
+      "base_model": "small-track-base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "own_model_endpoint": true,
+      "mode": "bare",
+      "vision": false,
+      "artifacts": []
+    },
+    "open_without_images": {
+      "model": "small-track-base",
+      "base_model": "small-track-base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "own_model_endpoint": true,
+      "mode": "bare",
+      "vision": false,
+      "artifacts": []
+    },
+    "open_with_images": {
+      "model": "small-track-base",
+      "base_model": "small-track-base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "own_model_endpoint": true,
+      "mode": "bare",
+      "vision": false,
+      "artifacts": []
+    },
+    "essay": {
+      "model": "small-track-base",
+      "base_model": "small-track-base",
+      "base_url": "http://127.0.0.1:8000/v1",
+      "own_model_endpoint": true,
+      "mode": "bare",
+      "vision": false,
+      "artifacts": []
+    }
+  }
+}

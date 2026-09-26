@@ -43,3 +43,22 @@ def test_invalid_batch_rejected():
     for batch in ([], ['A', 'A'], ['A', None, 'A']):
         with pytest.raises(ValueError):
             voting.choose_vote(batch)
+
+
+def test_closed_mapping_ignores_explanation_but_preserves_original():
+    samples = ['A: 1\nB: 3\nA: 1\nB: 2', 'A: 1 (wyjaśnienie)\nB: 2', 'A: 1\nB: 2']
+    result = voting.choose_vote(samples, closed=True)
+    assert result['chosen_index'] == 1
+    assert result['answer'] == samples[1]
+    assert result['agreement_count'] == 2
+    assert not voting.choose_vote(samples)['has_majority']
+
+
+def test_closed_true_false_vectors_and_single_choice():
+    assert voting.choose_vote(['1. P\n2. F', '1: prawda; 2: fałsz', '1. F\n2. P'], closed=True)['has_majority']
+    assert voting.choose_vote(['B', 'A. Wyjaśnienie', '**A.** Inne wyjaśnienie'], closed=True)['chosen_index'] == 1
+
+
+def test_conflicting_or_partial_mappings_do_not_merge():
+    result = voting.choose_vote(['A: 1\nA: 2', 'A: 2\nB: 1', 'A: 2'], closed=True)
+    assert not result['has_majority']

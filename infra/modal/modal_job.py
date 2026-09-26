@@ -41,6 +41,8 @@ image = (
     .pip_install("vllm", "bitsandbytes", "hf_transfer", "pyyaml", "matplotlib", "pymupdf",
                  "trl", "peft", "datasets", "accelerate", "requests")
     .add_local_dir(REPO, "/src", ignore=[".git", "work", "runs", "adapters", "models",
+                                          "secrets", "secrets/**", ".env", ".env.*", "*.env",
+                                          ".modal.toml", "COMPUTE_PLATFORMS_SECRETS*.md",
                                           "**/__pycache__", "**/*.safetensors", "**/*.gguf"])
 )
 # data/ is gitignored and may be missing from the checkout; ship what exists.

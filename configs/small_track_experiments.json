@@ -10,7 +10,7 @@
     {"id": "R1", "change": "five-category routing", "controls": "freeze route choices on development results before held-out evaluation"},
     {"id": "C1", "change": "selected combination", "controls": "only after single-technique evaluation; compare against best bare individual model and constituent techniques"}
   ],
-  "grading": "Forgehand gpt-6-sol sole judge against official CKE key and rubric; no Astra adjudication; unresolved uncertainty prevents final promotion",
+  "grading": "Forgehand gpt-6-luna primary judge against official CKE key and rubric; no Astra; retain historical Sol provenance, regrade paired baselines with Luna and flag unresolved uncertainty",
   "reporting": "all five categories, overall earned/max, artifact bytes, latency, base versus optimized and Ania reference with comparability caveat",
   "selection": "freeze routing before reserved 2015/2016 evaluation; prior exposure unknown"
 }

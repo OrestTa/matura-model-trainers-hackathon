@@ -1,0 +1,964 @@
+{
+  "created_at_utc": "2026-09-26T19:15:41.762261+00:00",
+  "role": "Arithmetic selection report only; no assistant or Astra judgments",
+  "uncertainty_policy": "Settled lower bound excludes all points in uncertain tasks; full official denominator retained. Raw superseded composition score excluded in favor of Sol procedural clarification.",
+  "runs": [
+    {
+      "run": "20260926-181527-bielik15-q8",
+      "source_summary": "results/small_track/20260926-181527-bielik15-q8/sol_primary_v3/summary.sol.json",
+      "source_sha256": "cb5bb12c98a040c3aca56ccd9cac1063048e92a3f6bb108cb45837f84d0eba25",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 18,
+      "settled_lower_bound_points": 17,
+      "possible_upper_bound_points": 21,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 28.333333333333332,
+      "uncertain_ids": [
+        "2023-05-z1",
+        "2023-05-z5.3",
+        "2023-05-z7"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 3,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 66.66666666666667,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 57.142857142857146,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 15,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 40.0,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 20,
+          "earned_points": null,
+          "provisional_earned_points": 6,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-181527-bielik45-q5",
+      "source_summary": "results/small_track/20260926-181527-bielik45-q5/sol_primary_v3/summary.sol.json",
+      "source_sha256": "84e7f396e9406d1f75d91955368510c25a352e8619f52e471fb2bd443d91559e",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 17,
+      "settled_lower_bound_points": 17,
+      "possible_upper_bound_points": 20,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 28.333333333333332,
+      "uncertain_ids": [
+        "2023-05-z8",
+        "2023-05-z17"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 3,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 33.333333333333336,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 15,
+          "earned_points": 9,
+          "provisional_earned_points": 9,
+          "score_percent": 60.0,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 20,
+          "earned_points": null,
+          "provisional_earned_points": 4,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-191017-bielik45-single-topic2-e2e",
+      "source_summary": "results/small_track/20260926-191017-bielik45-single-topic2-e2e/sol_primary_v3/summary.sol.json",
+      "source_sha256": "18800d26f4198aaba019170a1bec664e677176458a2bce2dd6bd9e5e9a2bf1ee",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 17,
+      "settled_lower_bound_points": 17,
+      "possible_upper_bound_points": 19,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 28.333333333333332,
+      "uncertain_ids": [
+        "8"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 25.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 57.142857142857146,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 5,
+          "provisional_earned_points": 5,
+          "score_percent": 45.45454545454545,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 13.333333333333334,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": {
+        "base_run": "20260926-183916-bielik45-q4-canonical-b0",
+        "base_points": 14,
+        "optimized_points": null,
+        "provisional_delta_points": 3,
+        "final_delta_points": null,
+        "status": "same Sol primary v3; uncertainty retained; numerical summation only, no assistant marks"
+      },
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-sol-selected-bielik45-q4-composed",
+      "source_summary": "results/small_track/20260926-sol-selected-bielik45-q4-composed/sol_primary_v3_procedural_review/summary.sol.json",
+      "source_sha256": "8db02c4f36da51b48e6e4f5f0328949264596e3294bcc9c70b1a52f1f2272dd3",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3-procedural-review1",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 21,
+      "settled_lower_bound_points": 17,
+      "possible_upper_bound_points": 32,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 28.333333333333332,
+      "uncertain_ids": [
+        "26"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 50.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 54.54545454545455,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 26.08695652173913,
+          "complete": true
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": null,
+          "provisional_earned_points": 4,
+          "score_percent": null,
+          "complete": false
+        }
+      ],
+      "base_vs_optimized": {
+        "base_run": "20260926-183916-bielik45-q4-canonical-b0",
+        "base_points": 14,
+        "optimized_points": null,
+        "provisional_delta_points": 7,
+        "final_delta_points": null,
+        "status": "same Sol primary v3; uncertainty retained; numerical summation only, no assistant marks"
+      },
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "bielik4.5-2024-baseline",
+      "source_summary": "data/small_track_cloud/nebius-20260926/bielik4.5-2024-baseline/sol_primary_v3/summary.sol.json",
+      "source_sha256": "34fbe602eb0d6a6364ec9456240ce493b2dd3f7be5bbc3af9dab2cff7ca5c266",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 15,
+      "settled_lower_bound_points": 15,
+      "possible_upper_bound_points": 17,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 25.0,
+      "uncertain_ids": [
+        "2024-05-z18",
+        "2024-05-z21"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 2,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 50.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 6,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 16.666666666666668,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 9,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 44.44444444444444,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 28,
+          "earned_points": null,
+          "provisional_earned_points": 7,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 13.333333333333334,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-183916-bielik45-q4-canonical-b0",
+      "source_summary": "results/small_track/20260926-183916-bielik45-q4-canonical-b0/sol_primary_v3/summary.sol.json",
+      "source_sha256": "a35186bab258c6458d4929fd84c836cca0a62e8c364754a27ec8daf8355185eb",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": true,
+      "earned_points": 14,
+      "provisional_points": 14,
+      "settled_lower_bound_points": 14,
+      "possible_upper_bound_points": 14,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 23.333333333333332,
+      "uncertain_ids": [],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 50.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 54.54545454545455,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": 6,
+          "provisional_earned_points": 6,
+          "score_percent": 26.08695652173913,
+          "complete": true
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "bielik4.5-2024-concise-routes",
+      "source_summary": "data/small_track_cloud/nebius-20260926/bielik4.5-2024-concise-routes/sol_primary_v3/summary.sol.json",
+      "source_sha256": "a85f87c7d46be9e85834f9e18685b46de0a5eae93c6480831b377c5608db687a",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 13,
+      "settled_lower_bound_points": 13,
+      "possible_upper_bound_points": 16,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 21.666666666666668,
+      "uncertain_ids": [
+        "2024-05-z6",
+        "2024-05-z18"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 2,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 50.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 6,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 16.666666666666668,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 9,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 44.44444444444444,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 28,
+          "earned_points": null,
+          "provisional_earned_points": 7,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": {
+        "base_run": "bielik4.5-2024-baseline",
+        "base_points": null,
+        "optimized_points": null,
+        "provisional_delta_points": -2,
+        "final_delta_points": null,
+        "status": "same Sol primary v3; uncertainty retained; numerical summation only, no assistant marks"
+      },
+      "ania_reference": {
+        "model": "Bielik 4.5B",
+        "earned_points": 23,
+        "max_points": 55,
+        "closed": "6/11",
+        "open": "15/29",
+        "essay": "2/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-183916-bielik15-q4-canonical-b0",
+      "source_summary": "results/small_track/20260926-183916-bielik15-q4-canonical-b0/sol_primary_v3/summary.sol.json",
+      "source_sha256": "df99e2bf7e917a736920129f032b76dbd11544a72c82918b58cb93a83703f946",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 12,
+      "settled_lower_bound_points": 10,
+      "possible_upper_bound_points": 15,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 16.666666666666668,
+      "uncertain_ids": [
+        "4.2",
+        "7",
+        "8"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 36.36363636363637,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-190623-bielik15-Q4_K_M-essay-rescue",
+      "source_summary": "results/small_track/20260926-190623-bielik15-Q4_K_M-essay-rescue/sol_primary_v3/summary.sol.json",
+      "source_sha256": "a8a8e2411db84c5bdf06ca22c386b2a30515407a79e8d6cc5fd72d8a5750426a",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 12,
+      "settled_lower_bound_points": 10,
+      "possible_upper_bound_points": 15,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 16.666666666666668,
+      "uncertain_ids": [
+        "4.2",
+        "7",
+        "8"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 36.36363636363637,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": {
+        "base_run": "20260926-183916-bielik15-q4-canonical-b0",
+        "base_points": null,
+        "optimized_points": null,
+        "provisional_delta_points": 0,
+        "final_delta_points": null,
+        "status": "same Sol primary v3; uncertainty retained; numerical summation only, no assistant marks"
+      },
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-190623-bielik15-Q8_0-essay-rescue",
+      "source_summary": "results/small_track/20260926-190623-bielik15-Q8_0-essay-rescue/sol_primary_v3/summary.sol.json",
+      "source_sha256": "6a087795faf842d66ec1567e8e691d53eb44d1d9e15d8d608c45a44b79ef2aba",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 12,
+      "settled_lower_bound_points": 10,
+      "possible_upper_bound_points": 15,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 16.666666666666668,
+      "uncertain_ids": [
+        "4.2",
+        "7",
+        "8"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 42.857142857142854,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 4,
+          "provisional_earned_points": 4,
+          "score_percent": 36.36363636363637,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 5,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "20260926-184214-bielik15-q4-canonical-p2-essay",
+      "source_summary": "results/small_track/20260926-184214-bielik15-q4-canonical-p2-essay/sol_primary_v3/summary.sol.json",
+      "source_sha256": "2144ba704bddc69272a2aa0b6d6cdd1cd0e0ff914d804516910658dc9c6a6e06",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 10,
+      "settled_lower_bound_points": 9,
+      "possible_upper_bound_points": 14,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 15.0,
+      "uncertain_ids": [
+        "7",
+        "8",
+        "17"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "earned_points": 2,
+          "provisional_earned_points": 2,
+          "score_percent": 28.571428571428573,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "earned_points": 5,
+          "provisional_earned_points": 5,
+          "score_percent": 45.45454545454545,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "earned_points": null,
+          "provisional_earned_points": 2,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 6.666666666666667,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "bielik1.5-2024-baseline",
+      "source_summary": "data/small_track_cloud/nebius-20260926/bielik1.5-2024-baseline/sol_primary_v3/summary.sol.json",
+      "source_sha256": "0149b4f5d2878ead1ce412dad7202904b889b34bbfce999e5e92a201bacb5f97",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 7,
+      "settled_lower_bound_points": 7,
+      "possible_upper_bound_points": 8,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 11.666666666666666,
+      "uncertain_ids": [
+        "2024-05-z21"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 2,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 50.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 6,
+          "earned_points": 1,
+          "provisional_earned_points": 1,
+          "score_percent": 16.666666666666668,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 9,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 33.333333333333336,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 28,
+          "earned_points": null,
+          "provisional_earned_points": 2,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": "not measured unless paired run listed below",
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    },
+    {
+      "run": "bielik1.5-2024-concise-routes",
+      "source_summary": "data/small_track_cloud/nebius-20260926/bielik1.5-2024-concise-routes/sol_primary_v3/summary.sol.json",
+      "source_sha256": "180eb3713bce7e13637c0f4475ac30db6d4f0302103f5be383056b3be4c0b066",
+      "judge": "gpt-6-sol",
+      "protocol": "sol-official-primary-text-v3",
+      "complete": false,
+      "earned_points": null,
+      "provisional_points": 4,
+      "settled_lower_bound_points": 4,
+      "possible_upper_bound_points": 6,
+      "official_max_points": 60,
+      "settled_lower_bound_percent": 6.666666666666667,
+      "uncertain_ids": [
+        "2024-05-z4",
+        "2024-05-z21"
+      ],
+      "five_category_breakdown": [
+        {
+          "category": "closed_without_images",
+          "max_points": 2,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 6,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 9,
+          "earned_points": 3,
+          "provisional_earned_points": 3,
+          "score_percent": 33.333333333333336,
+          "complete": true
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 28,
+          "earned_points": null,
+          "provisional_earned_points": 1,
+          "score_percent": null,
+          "complete": false
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "earned_points": 0,
+          "provisional_earned_points": 0,
+          "score_percent": 0.0,
+          "complete": true
+        }
+      ],
+      "base_vs_optimized": {
+        "base_run": "bielik1.5-2024-baseline",
+        "base_points": null,
+        "optimized_points": null,
+        "provisional_delta_points": -3,
+        "final_delta_points": null,
+        "status": "same Sol primary v3; uncertainty retained; numerical summation only, no assistant marks"
+      },
+      "ania_reference": {
+        "model": "Bielik 1.5B",
+        "earned_points": 15,
+        "max_points": 55,
+        "closed": "5/11",
+        "open": "9/29",
+        "essay": "1/15",
+        "five_way": "unavailable",
+        "comparability": "Unmatched earlier adapted inputs/year/denominator; not an apples-to-apples comparison; no numerical Ania delta."
+      }
+    }
+  ]
+}

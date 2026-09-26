@@ -1,0 +1,102 @@
+{
+  "name": "qwen35-4b-Q4_K_M-vision",
+  "offline": true,
+  "temperature": 0,
+  "seed": 42,
+  "vote_samples": 1,
+  "artifacts": {
+    "model": {
+      "repo": "unsloth/Qwen3.5-4B-GGUF",
+      "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "filename": "Qwen3.5-4B-Q4_K_M.gguf",
+      "bytes": 2740937888,
+      "sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4",
+      "role": "weights"
+    },
+    "projector": {
+      "repo": "unsloth/Qwen3.5-4B-GGUF",
+      "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "filename": "mmproj-F16.gguf",
+      "bytes": 672423616,
+      "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864",
+      "role": "vision"
+    }
+  },
+  "routes": {
+    "closed_without_images": {
+      "model": "qwen35-4b",
+      "base_model": "Qwen3.5-4B",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": true,
+      "mode": "bare",
+      "system_prompt": "Rozwi\u0105\u017c zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Je\u015bli polecenie wymaga rozstrzygni\u0119cia i uzasadnienia, podaj oba. Dla wypracowania napisz pe\u0142n\u0105 argumentacj\u0119. Nie opisuj procesu my\u015blenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "projector"
+      ]
+    },
+    "closed_with_images": {
+      "model": "qwen35-4b",
+      "base_model": "Qwen3.5-4B",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": true,
+      "mode": "bare",
+      "system_prompt": "Rozwi\u0105\u017c zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Je\u015bli polecenie wymaga rozstrzygni\u0119cia i uzasadnienia, podaj oba. Dla wypracowania napisz pe\u0142n\u0105 argumentacj\u0119. Nie opisuj procesu my\u015blenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "projector"
+      ]
+    },
+    "open_without_images": {
+      "model": "qwen35-4b",
+      "base_model": "Qwen3.5-4B",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": true,
+      "mode": "bare",
+      "system_prompt": "Rozwi\u0105\u017c zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Je\u015bli polecenie wymaga rozstrzygni\u0119cia i uzasadnienia, podaj oba. Dla wypracowania napisz pe\u0142n\u0105 argumentacj\u0119. Nie opisuj procesu my\u015blenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "projector"
+      ]
+    },
+    "open_with_images": {
+      "model": "qwen35-4b",
+      "base_model": "Qwen3.5-4B",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": true,
+      "mode": "bare",
+      "system_prompt": "Rozwi\u0105\u017c zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Je\u015bli polecenie wymaga rozstrzygni\u0119cia i uzasadnienia, podaj oba. Dla wypracowania napisz pe\u0142n\u0105 argumentacj\u0119. Nie opisuj procesu my\u015blenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "projector"
+      ]
+    },
+    "essay": {
+      "model": "qwen35-4b",
+      "base_model": "Qwen3.5-4B",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": true,
+      "mode": "bare",
+      "system_prompt": "Rozwi\u0105\u017c zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Je\u015bli polecenie wymaga rozstrzygni\u0119cia i uzasadnienia, podaj oba. Dla wypracowania napisz pe\u0142n\u0105 argumentacj\u0119. Nie opisuj procesu my\u015blenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "projector"
+      ]
+    }
+  }
+}

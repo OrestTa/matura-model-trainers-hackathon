@@ -1,0 +1,27 @@
+{
+  "name": "bielik45-q3-single-topic2",
+  "repo": "second-state/Bielik-4.5B-v3.0-Instruct-GGUF",
+  "file": "Bielik-4.5B-v3.0-Instruct-Q3_K_M.gguf",
+  "revision": "5ed9534f824c7c184c21320f4d339e75569d0987",
+  "serialized_weight_bytes": 2303443968,
+  "route_configs": {
+    "closed_without_images": {},
+    "closed_with_images": {
+      "route_trial": "concise"
+    },
+    "open_without_images": {},
+    "open_with_images": {},
+    "essay": {
+      "essay_rescue": true,
+      "max_tokens_essay": 3200,
+      "essay_topic_index": 2
+    }
+  },
+  "seed": 42,
+  "classifier": "rules-v1",
+  "max_tokens_short": 500,
+  "max_tokens_essay": 1600,
+  "modality": "text-only ablation: image tasks use available source text, no image encoder",
+  "development_selected": true,
+  "artifact_hash_status": "unmeasured: do not package"
+}

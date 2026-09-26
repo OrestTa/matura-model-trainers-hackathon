@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "papers": [
+    {
+      "paper_id": "2017-05",
+      "year": 2017,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2017/formula_od_2015/historia/MHI-R1_1P-172.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2017/formula_od_2015/zasady_oceniania/MHI-R1-N.pdf"
+      ]
+    },
+    {
+      "paper_id": "2018-05",
+      "year": 2018,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2018/formula_od_2015/historia/MHI-R1_1P-182.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2018/formula_od_2015/Zasady_oceniania/MHI-R1_1P-182_zasady_oceniania.pdf"
+      ]
+    },
+    {
+      "paper_id": "2019-05",
+      "year": 2019,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2019/formula_od_2015/historia/MHI-R1_1P-192.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2019/formula_od_2015/Zasady_oceniania/MHI-R1_1P-192_model.pdf"
+      ]
+    },
+    {
+      "paper_id": "2020-06",
+      "year": 2020,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2020/formula_od_2015/historia/MHI-R1_1P-202.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2020/formula_od_2015/Zasady_oceniania/MHI-PR-202_zasady.pdf"
+      ],
+      "date_note": "COVID-delayed main session June 2020; original printed cover retains May date."
+    },
+    {
+      "paper_id": "2021-05",
+      "year": 2021,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2021/Historia/poziom_rozszerzony/EHIP-R0-100-2105.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2021/Zasady_Oceniania/EHIP-R0-100-2105-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2022-05",
+      "year": 2022,
+      "formula": "2015",
+      "session": "main",
+      "split": "development",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2022/Historia/poziom_rozszerzony/EHIP-R0-100-2205.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2022/Zasady_oceniania/EHIP-R0-100-2205-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2023-05",
+      "year": 2023,
+      "formula": "2023",
+      "session": "main",
+      "split": "development",
+      "max_points": 60,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2024-05",
+      "year": 2024,
+      "formula": "2023",
+      "session": "main",
+      "split": "development",
+      "max_points": 60,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Historia/MHIP-R0-100-A-2405-arkusz.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Historia/MHIP-R0-100-2405-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2025-05",
+      "year": 2025,
+      "formula": "2023",
+      "session": "main",
+      "split": "development",
+      "max_points": 60,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/Historia/MHIP-R0-100-A-2505-arkusz.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2026-05",
+      "year": 2026,
+      "formula": "2023",
+      "session": "main",
+      "split": "development",
+      "max_points": 60,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-A-2605-arkusz.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-2605-zasady.pdf"
+      ]
+    },
+    {
+      "paper_id": "2015-05",
+      "year": 2015,
+      "formula": "2015",
+      "session": "main",
+      "split": "reserved_evaluation",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2015/formula_od_2015/MHI-R1_1P-152.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2015/formula_od_2015/odpowiedzi/MHI-R1-N.pdf"
+      ]
+    },
+    {
+      "paper_id": "2016-05",
+      "year": 2016,
+      "formula": "2015",
+      "session": "main",
+      "split": "reserved_evaluation",
+      "max_points": 50,
+      "paper_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2016/formula_od_2015/MHI-R1_1P-162.pdf"
+      ],
+      "rubric_urls": [
+        "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne/2016/formula_od_2015/zasady_oceniania/MHI-R1-N.pdf"
+      ]
+    }
+  ],
+  "parser_revision": "aa0d905ef286a975f4d2bb81f1ddec5f686fc2d6",
+  "holdout_note": "2017\u20132026 are baseline and synthesis source. 2015\u20132016 reserved evaluation: excluded from this synthesis, but prior project/model pretraining exposure unknown."
+}

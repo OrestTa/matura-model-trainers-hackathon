@@ -2,6 +2,15 @@
 
 ## Current policy — user clarification, 2026-09-26
 
+LATEST: user switched primary grading to Forgehand `gpt-6-luna` for speed after
+the blinded calibration. The runner now uses `luna-official-primary-text-v4`,
+`summary.luna.json` and `grades.luna.jsonl`, in new `luna_primary_v4` directories.
+Do not reuse Sol grades as Luna grades. Paired baseline/optimized results must
+use the same judge. Uniform predeclared essay repeat checks preserve the first
+mark and flag disagreement; never average or select the highest. No Astra.
+The Sol-only policy paragraphs immediately below are superseded historical
+provenance for v3 artifacts, not the current dispatch instruction.
+
 Forgehand `gpt-6-sol` is the sole judge for all future evaluations against the
 official CKE key and task-specific rubric. No Astra judging or assistant
 adjudication. Work continues toward the smallest model at or above 35%; the

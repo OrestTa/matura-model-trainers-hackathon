@@ -6,8 +6,14 @@
   bounded useful inference, training and Forgehand judging toward the smallest
   model scoring at least 35% on a complete official paper. Conserve remaining
   credits by reusing valid completed artifacts and prioritizing promising runs.
-  Forgehand `gpt-6-sol` is the sole judge going forward. No Astra judging or
+  Latest user instruction: Forgehand `gpt-6-luna` is the primary judge going forward.
+  This supersedes earlier Sol-only instructions. No Astra judging or
   assistant adjudication. Historical judgments retain their original provenance.
+  The completed blinded Luna/Sol pilot showed essay variability. Predeclare
+  consistent essay repeat checks; retain the first mark and flag disagreement,
+  never average or choose the highest. Regrade comparison baselines with Luna;
+  do not present a Sol-versus-Luna difference as a candidate-model improvement.
+  The phrase "6 credits" meant GPT-6-Sol, not a six-credit spending limit.
 
 - The exam input is fixed. Preserve the original questions, source text and
   images; append locally derived OCR separately with provenance. No current
@@ -23,7 +29,17 @@
   using the same untouched exam pack and matched baseline configuration.
 - User now authorizes local commits as work progresses. Commit reviewed code,
   configs and compact evidence only; exclude credentials, weights and exam data.
-  The prohibition on fetching or pushing remains in force.
+  User subsequently explicitly authorized pushing our own branch from this
+  isolated worktree. Push only `codex/small-model-offline-harness`; no fetch,
+  main-branch push, force push or modifications to Claude's original worktree.
+- The largest deployed model determines the user's size objective. Keep answering
+  and vision specialists in a similar size tier; tiny routing/OCR models are fine.
+  The proposed 8B fallback is cancelled. Report maximum individual model size
+  primarily and total packaged weight bytes separately, including visual projectors.
+- User authorizes model recovery copies to their Hugging Face account with their
+  supplied key. Default to private repositories; preserve license, upstream pinned
+  revision and checksums. Verify identity/access and successful upload before
+  claiming a backup exists. Never commit the key or assume credentials exist.
 
 - User delivery deadline: 2026-09-26 20:33 UTC (22:33 Europe/Warsaw).
   Stop launching exploratory jobs by 20:00 UTC; reserve the final half hour for
@@ -43,11 +59,12 @@
   Never modify another agent's workloads. Record actual concurrency. Reusing
   frozen baseline outputs for unaffected routes must be labeled a composed result.
 
-- Work only in the attached `small-model-track` worktree. Do not fetch or push;
+- Work only in the attached `small-model-track` worktree. Do not fetch; push only
+  the explicitly authorized own branch described above.
   Claude is independently using the original checkout. Do not edit its files.
 - The user authorizes autonomous cloud inference, generating 100 new synthetic
   exams, and supervised fine-tuning near-threshold small models. Use agents
-  heavily; Forgehand gpt-6-sol is the evaluator. Providers' verified credits fund bounded
+  heavily; Forgehand gpt-6-luna is the evaluator. Providers' verified credits fund bounded
   useful runs; do not top up or allow unbounded cash spillover.
 - Collect official history main-session papers and keys for 2017–2026. They are
   development/synthesis sources. Additional 2015–2016 papers are excluded from
@@ -58,7 +75,7 @@
   shipped weight bytes and maximum individual-model bytes for specialist setups.
 - Never send rubric/answer-key rows to candidate inference. Synthetic training
   inputs and supervised answers must remain distinct; use assistant-only loss.
-- Grade real exam submissions only with Forgehand `gpt-6-sol` against the official CKE answer
+- Grade real exam submissions with primary Forgehand `gpt-6-luna` against the official CKE answer
   key and scoring rubric. Preserve uncertain marks as unresolved. Synthetic
   teacher/reviewer quality checks are not official exam grades.
 - Use the existing authorized Forgehand team API credential, with frozen answers

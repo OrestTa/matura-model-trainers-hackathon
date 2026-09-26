@@ -1,0 +1,33 @@
+{
+  "repo": "orestta/matura-small-track-recovery",
+  "private": true,
+  "commit": "6229ff8a31fb685d741efd8669b1ae08d014a562",
+  "upload_commit": "6229ff8a31fb685d741efd8669b1ae08d014a562",
+  "verified_files": [
+    {
+      "path": "router/router-real-source-disjoint-compact.json",
+      "bytes": 458956,
+      "sha256": "97f6cdf9588ed0f8ada059b14ce277b1bc70240b13f35cad43f4af6362127dbd"
+    },
+    {
+      "path": "ocr/manifest.json",
+      "bytes": 7760,
+      "sha256": "85f2d57b1e030bb41328125eacb078ce09eec22f550d18dc13a81660a7d16122"
+    },
+    {
+      "path": "ocr/README.md",
+      "bytes": 3338,
+      "sha256": "2481154f195532bfb5aedf7febb795c2b68aec298f5c56ca6cd6cc366ed34e7a"
+    },
+    {
+      "path": "ocr/weights/eng.traineddata",
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    },
+    {
+      "path": "ocr/weights/pol.traineddata",
+      "bytes": 4765518,
+      "sha256": "c4476cdbc0e33d898d32345122b7be1cbf85ace15f920f06c7714756e1ef79b2"
+    }
+  ]
+}

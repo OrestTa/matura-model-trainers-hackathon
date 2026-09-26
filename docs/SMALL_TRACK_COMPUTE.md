@@ -1,0 +1,83 @@
+# Small-track compute — 2026-09-26
+
+Live verified Modal orestta Starter credits: USD25.58, no live apps before this wave. Forgehand rst USD13.67 of USD200 compute allowance, but GPU concurrency1/1 occupied; no existing process changed. Forgehand teacher credit USD49.539 available, reserved0; separate from compute.
+
+Own checkout: /Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon. No fetch/push.
+
+First isolated Modal app: ap-jAxNYojVylFKJGkpAcFXzj. Three L4 workers,2CPU,8GiB,1800second timeout,no retries,maxcontainers3. Unit price L4 USD0.80/h CPU USD0.0473/core/h RAM USD0.008/GiB/h; maximum three half-hour workers USD1.4379 before build/storage. First-wave budget USD6; aggregate new compute budget USD20, preserving credit margin.
+
+Inputs:2023May candidate37items60points only; no keys or credentials uploaded. Text-only baseline deliberately marks visual omissions; it does not establish final full-modality passing performance. Configurations:Bielik1.5Q4_K_M,Bielik4.5Q3_K_M,Bielik4.5Q4_K_M. HuggingFace revisions resolved at execution; serialized bytes measured, modelserver logs and JSONL answers persisted to private volume matura-small-independent every10items.
+
+Inference server bound127.0.0.1,no public endpoint. Local runner returns results/small_track/<run_id>/answers.jsonl and manifest.json. Each call auto-stops on completion; function timeout bounds runaway inference.
+
+First wave completed111/111 nonempty answers,37each. Measured weights: Bielik1.5Q4 972797408bytes; Bielik4.5Q3 2303443968bytes; Bielik4.5Q4 2878886912bytes. Runtime incldownload37.8/63.5/79.8seconds. Files results/small_track/20260926-180529-*/. Modelserver image im-tyhSU7YoRCMJXQkdx4RoGx; no independent grades yet.
+
+Secondwave launched app ap-C1wv6ZcFdDunFUse1fjIkc, same3models on11packs2017–2025,393items580points. Parent later clarified2026 may be included as development (alreadyused); it was not in this submittedwave and can follow separately. Dataset file data/small_track/development_2017_2025_candidate.jsonl. Same1800second timeout,3worker maximum. Main can monitor execsession81589; subsequent outputs returnlocal automatically.
+
+CORRECTION: the first second-wave glob accidentally included2015/2016 because it excluded2026 without lower-bound filtering. Root caught the393/580denominator. App ap-C1wv6ZcFdDunFUse1fjIkc was immediately stopped and its partial answers NEVERread,graded,orselected. It is quarantined inferenceonly,nottraining. Sourceaggregate development_2017_2025_candidate.jsonl is INVALID and must notbeused.
+
+REPLACEMENT app ap-i4i5QsGX4Qv18S7NrTN4bU uses row.year bounds2017<=year<=2026,VERIFIED369items540points,exactly10years. Candidate development_2017_2026_candidate.jsonl. Main monitor execsession13629.
+
+## 18:20 UTC update
+Correct ten-year wave completed and auto-stopped. Run prefix20260926-180857: Bielik1.5Q4 produced368/369 non-whitespace answers (2017-05-z26 whitespace-only,length stop),4.5Q4 369/369. Q3 server deliberately stopped after Astra graded initial paper4/60; ten-year Q3 270answers+99errors is diagnosticonly,notcomparable. No sharedproviderprocess altered.
+
+Precision control completed: prefix20260926-181527,1.5Q8 37/37,1699568096bytes,9482completiontokens,44.8seconds;4.5Q5 37/37,3378598912bytes,11461completiontokens,90.6seconds. These elapsedtimes include startup/download; they are not pure decode rates. Eight slots/8192context each; privateHFcache; per5second GPUutilCSV and serverprops persisted. Both apps auto-stopped. All scoring requires paired Astra+Sol per updated user instruction.
+
+Last direct utilization snapshot18:17:13UTC Q4 96%,4974MiB,71.29W,329/369finished. Earlier snapshots1.5Q4 83%,Q4 95%,Q3 95%; these precede Q3 stop. Latest billing18:17 metered4.55953656USD,billed0,creditsapplied4.49; billing may lag and does not establish instantaneous finalcost.
+
+Training image built; infra/small_track/modal_train.py supports 1H100/1200seconds/privatepersistentvolume,periodiccommit10seconds. No trainingallocatedyet. OfficialBielik repositories gated; no existingHFtoken inenv,cachedlocation,suppliedsecrets,orModal. PublicfullprecisionGGUF import option prepared with synthetic-only validation; treat this as distinct sourceartifact from existingQ4baseline. No ForgehandGPUuse permitted. ForgehandLLM teacher remains separate.
+
+## First paired prompt trial and SFT launch
+Optimized1.5Q4 run20260926-182056 returned37/37 in27.2seconds. Astra graded16/60 versus baseline20/60 (Sol stillrequired). Reject promptchanges pending pairedjudges. Inputaudit exacthashproof: removingnewneeds_image metadata reproduces baselineSHA7dc639ff...; promptmaterialsunchanged. See input_pair_audit.json besideoptimizedanswers.
+
+SFTsnapshot25acceptedpapers359textrows,80steps,f16GGUF1.5publicsource. Initialappfailedimport-pathbeforetraining; fixedlocalmountguard. Nextapp importedGGUFsuccessfully butfailedstep0gradients withfrozenembeddings; enable_input_require_grads fix thenrelaunched appap-6bwgcc7Ri9QraU0Ly5cUab,run20260926-182506-Bielik-1.5B-v3.0-Instruct-GGUF. Earlierfailedappsauto-stopped,notrunning. CurrentHFcacheprivatevolume; trainingcheckpointsandmergedexportpersistent. PairedHFbefore/afterevaluationfunctionprepared; no improvementclaimbeforeactualscoring.
+
+## CURRENT 18:42 UTC — supersedes earlier snapshots
+- SFT80steps completed, but pairedHFimport base isgarbled andadapterwhitespace: bothDIAGNOSTICFAILURE,neverdeploy.
+- NativeF16GGUFsmoke3/3coherent;sourceweightsvalid,TransformersGGUFimport/tokenizerdefective.
+- HF4.56.2 EOS/BOSmappingbugandtokenizationdifferenceconfirmed; trainexpansionpauseduntilfixed.
+- Canonical37/60fourrunsDONE:20260926-183916-{bielik15,bielik45}-q4-canonical-b0;20260926-183920-{bielik15,bielik45}-q4-canonical-v1.
+- V1ownQwen3.5-2Bcaptioning19/19DONE;visionweights1280835840+projector668227264=1949063104bytes.
+- V1captionsresults:20260926-183536-qwen35-2b-vision-captions.
+- DirectQwenvisionbaselineD0 appap-8G0hAlMWzrAUINqwnbrfEt currentlyrunning;same19images+canonical37questions.
+- LatestverifiedcreditsUI24.51USD at~18:34UTC;billinglags. Oursremainingauthorizedallocation20USD minusourconsumption.
+- NEWunownedModalapp claude-matura-gemma ap-YUMxGi4H8zInA3iY8jF4gN exists;do nottouchandreserve sharedcreditmargin.
+- User50percentincrease uses stable4workerbaseline,target6usefulworkers;futureModal4routeisolations+Nebius2ownedworkers.
+- Nebiuslivequota/balance/isolatedlaunchdelegatedsynthetic_sftagent,NO confirmedNebiuslaunchyet.
+- Harddeadline20:33UTC;portableartifactfreeze20:25UTC.
+
+18:44UTC: P2essay-only bothfavoritesDONEprefix20260926-184214;P3closed-format-only bothDONEprefix20260926-184218;all37/37. D0directvisionDONEprefix20260926-184028. NoownedGPUjobsleftactiveafterthesecompletions; Nebiuspendingexternalagent. Alloutputsreadygrading,donotmanufactureworkjusttofillquota. Canonicalpromptinputaudit proves addedsubtypemetadata only versusB0.
+
+
+## 18:48 UTC — route matrix completed
+All 20 distinct trials completed in Modal app ap-ohtNo8N4XDlTHXqLqh2g5Q, prefix 20260926-184624. Matrix: Bielik 1.5B/4.5B Q4 × five routes × concise or review technique. Only target-route answers were generated (148 target answers total); unchanged answers were reused from immutable canonical B0 and explicitly labeled composed. Seed 42, eight server slots, 8192 context per slot, 500 short/1600 essay output tokens per pass; review uses two passes. Every worker had a 300-second cap. Last observed concurrency was four L4 containers; 20 submitted trials does not mean 20 simultaneous GPUs. App auto-stopped after persistence. First allocation cap about $1.60; latest observed credit balance remains $24.51 at ~18:34 UTC and may lag. Astra and independent Sol evaluation pending. No trained adapter is usable: HF import baseline and adapter remain diagnostic failures. Direct Qwen vision and canonical B0/V1 outputs are complete. Nebius deployment remains delegated to synthetic_sft; no Nebius mutations from this worker.
+
+
+## 18:52 UTC — crash-loop diagnosis (read-only)
+All our apps are stopped, latest matrix exited normally at 18:48:07 UTC and stopped at 18:48:09. No live containers at inspection. The other agent's claude-matura-gemma app ap-YUMxGi4H8zInA3iY8jF4gN is ephemeral with zero tasks, but its logs explicitly report crash-looping at 18:47:03 UTC after 13 observed startup failures. Cause: /root/claude_gemma.py line24 computes Path(__file__).resolve().parents[2] on a shallow remote mount, raising IndexError(2) during module import. No change or stop was made to that app. Owner should guard local mount/repository discovery with modal.is_local().
+User confirmed a shared ten-GPU Modal limit. Future owned concurrency must subtract other active GPUs, preserving a one-GPU buffer when ownership/count is uncertain; twenty experiments may queue but do not authorize twenty simultaneous GPUs.
+
+
+## Wrap-up: user stopped experiments
+Live verified zero owned Modal active apps and zero owned GPU containers. All 20 historical owned apps stopped. The other-agent matura-jobs app ap-EKp4FgCN6FoPyW9PcSLbFz is untouched. No more experiments will launch. Local outputs indexed in results/small_track/compute_artifact_index.json; weight checksums and exact bytes in artifact_manifest.json. Private Modal volumes preserve cache, logs and diagnostic checkpoints; these can incur storage charges despite zero GPU compute. No provider account-wide changes were made.
+
+
+## Resumed at user clarification, 19:10 UTC
+User explicitly resumed experiments toward a complete >=35% score; sole grading authority is now Forgehand gpt-6-sol. Modal verified remaining credits $23.44 at ~19:05 UTC. Four other-agent containers observed; our fleet capped at two, then one. Essay rescue1.5Q4/Q8 completed (prefix190623), sole Sol awarded both essays0; no further blind1.5prompt trials. Full frozen five-route E2E prefix190831 bothfavorites completed37/37. Current4.5 single-topic2 full37 run appap-NR8NIWs38iMqnAZngz5aUQ uses1L4/300seconds, projects only candidate-provided topic2 to prevent multi-topic essays. Closed-image concise route retained. Executable configs under infra/small_track/configs pin weights/revision/actualSHA; text-only image ablation clearly labeled. Composed4.5development candidate is not pass evidence until sole-Sol uncertainties resolve.
+
+19:12UTC: Full fresh4.5 single-topic2 run20260926-191017-bielik45-single-topic2-e2e completed37/37 in48.97seconds,8543completiontokens. No composition. App auto-stopped. Sole-Sol grading requested; no pass claim until complete. Config+README runnable, artifact2,878,886,912bytes pinned.
+
+
+## 19:22 UTC — offline OCR, trained routing, paired voting complete
+Source-disjoint trained multinomialNB router uses only candidate features and weak task-type labels from2017–22/2025, with2026validation. Official2023/2024 excluded. Validation87.18% is agreement with weak labels, not human/official accuracy. Artifact2,164,004bytes. Earlier synthetic-router artifact is diagnostic and source-overlaps2017–26; not used in these runs.
+Offline Tesseract pol+eng processed19/19images,6584characters. OS-level socket denial smoke passed. OCR learneddata8,878,606bytes; original37question/source/imagefields independently verified unchanged except appendedcontext+ocr_refs.
+Two L4 runs completed: plain20260926-191729-bielik45-fixed-input-e2e (131.47s,25326all-sampletokens), OCR20260926-191816-bielik45-fixed-input-e2e (171.45s,30187tokens). Both37/37zeroerrors, samples seeds42/43/44,temp0.7; each has paired first-sample/answers.jsonl. Fulloriginalessay alternatives preserved, projection disabled. Only1/37lexicalmajority each;36fallbacks. Plainselectedanswers identical tosample1, no votinggain. SoleSol plainprovisional15/60 with unresolveditems8/17; notpass. OCRgradingpending.
+Total unique model+router+OCR artifact bytes2,889,929,522. Allownedworkersauto-stopped. Forty tests passed. Harness options --router-model,--ocr,--vote-samples,--offline independent. Offline HTTPclient disables proxies and redirects; onlyloopbackendpoint accepted. OCRchildnetwork isolation is OS-enforced; do not conflate with platformwideairgap.
+
+19:28UTC: Scopeexpandedto4Bvision; Qwen3.5-4B Q4+F16projector3,413,361,504bytes CPUpreloaded/actualSHAverified. Appap-zxuGDUIK3A2OkgJmegaZMK,run20260926-192720-qwen35-4b-vision-offline-b0,oneL4/900s,networkblocked+probe,original19PNGbytes unchanged.11/37answersdurable,zeroerrors atcheck.8BbranchcanceledbeforeGPU;cacheonlydownloadedbeforecancel,noresult. Actualotherfivecontainerscheckedvianvidia-smieachoneH100;old4xL40Sdashboardreferreddifferentoldapps. LatestmyfreshcreditsUI18.04USD19:25;accountsharedconsumptioncontinues.
+
+19:33UTC: Visionbaseline recovered37/37zeroerrors112.78seconds. SoleSolsettledlowerbound23/60(38.33%),task8uncertain0–2;exactscore23–25unresolved butthresholdlowerboundclears35. Five0/4,6/7,9/11,8/23lowerbound,0/15. OriginalPNGmodel+projector3,413,361,504bytes. AllownGPUstopped. NetworkblockedSDKlargereturnfailedAFTERdurableoutputcommit; explicitfiledownloadsrecoveredalloutputs, futureworkerreturnsmetadataonly. Exactofficialformatvalidated. NativeQwenSFTpreflightdocumented,nopilotlaunchedyet.
+
+19:35UTC: Passingvision compressionQ3 and cross-paperQ4validation launched inparallel. Q3run20260926-193419-qwen35-4b-vision-q3-offline-b0 appap-SAOIkQ7zGt9lDnB6lhMoRE,exact2023canonical37sameprompt/PNG/seed. Q4run20260926-193505-qwen35-4b-vision-2024-05-offline-b0 appap-eEXdydpsGUSJ529faJInUX,2024full40tasks60points,originalfull-pagePNGrepresentation(max2pages/task,3159textchars),notidentical2023cropformat. Bothmax1L4percall900s,networkblocked,CPUpreloaded,per-itemdurablecommit. NativeQwenTEXTSFTpilotdeferrednotcompleted.
+
+19:38UTC: Bothvalidationjobscompleteandstopped:Q3same2023paper37/37zeroerrors;Q4full2024paper40/40zeroerrors149.14seconds. Solgradingqueued. Q3/Q4all37requesthashesidentical, quantizationonlychanged; pair_input_audit.json recordsproof. SmallerweightSHAmeasuredandartifactmanifestupdated. No additionalGPUallocationwhilegrading.
