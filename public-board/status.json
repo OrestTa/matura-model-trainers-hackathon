@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-26T18:46:46+02:00",
+  "updated": "2026-09-26T19:08:00+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
@@ -15,17 +15,19 @@
         "Measured packs: AWQ ~5.58 GB; speakleash Bielik-4.5 FP8 ~4.898 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
         "Bielik-11B bf16 remains banned on every track under the 8.0/8.8 pack caps; Bielik-11B-v2 NF4 stays live for Best Progress only.",
         "No secrets, keys, or private IPs in this public refresh.",
-        "Track 02: Bielik-11B-v2 NF4 routed harness 26.9% vs raw 25.5% (+1.4 pp)."
+        "Best Progress official-mock Claude: Bielik-11B-v2 NF4 raw 12/60 = 20.0% on May 2023 (~6.66 GB under 8.0/8.8); Grok+Sol pending on the same answers. Prior matura_all pair 25.5→26.9 stays proxy-only."
       ]
     },
     "claude": {
       "role": "Claude Opus on trunk",
       "highlights": [
+        "C-045: Claude master Progress base NF4 raw May 2023 mock = 12/60 = 20.0% (job matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1).",
         "Commit audit: relabel 37.6% as headline-auto; prefer Claude-graded official-mock rows in tracks.json.",
         "C-013: mark official_mock_awq7b as harness (ocr_fallback + essay_regen), not untouched base.",
         "Progress base must stay pretrained Bielik-11B-v2 NF4 (~6.7 GB), the declared organisers base for Best Progress only; do not swap to Instruct-AWQ v3.",
         "New Claude official-mock sub-2B probes: Qwen2.5-0.5B scored 3/60 = 5.0% and Qwen2.5-1.5B scored 4/60 = 6.7%; supports C-027 no-sub-2B sweep.",
-        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs."
+        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs.",
+        "C-049 audit: add Gemma 68.3% row to results/tracks.json; treat gemma4-vision routed 1.3% as void (thinking-on empty answers, fixed 6359957)."
       ]
     },
     "history_ext_multi_year": {
@@ -287,7 +289,7 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Raw plain-prompt base; harness cats, not five CKE; 6.66 GB disk. UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
+      "note": "matura_all holdout raw plain-prompt proxy 25.5% (harness cats, not five CKE); 6.66 GB disk. Official-mock Claude grade on the same pack is 12/60 = 20.0% (stage mock-progress-nf4-raw-claude). UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
     },
     {
       "id": "progress-nf4-routed",
@@ -303,7 +305,24 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Same pack routed harness; Δ +1.4 pp vs raw. UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
+      "note": "Same pack routed harness matura_all proxy 26.9% (Δ +1.4 pp vs raw). Not the official-mock gauge. UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
+    },
+    {
+      "id": "mock-progress-nf4-raw-claude",
+      "sort": 18,
+      "name": "Official mock Bielik-11B-v2 NF4 raw (Claude)",
+      "model": "Bielik-11B-v2 NF4",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 20.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 0.0,
+      "note": "Claude master 12/60 = 20.0% on history-2023-mock-v1 / paper 2023-05 for the declared Best Progress base (speakleash/Bielik-11B-v2 pretrained NF4, raw, ~6.66 GB). Coarse only: closed 2/11, open 10/34, essay 0/15 (234 words <300); text-only 5/28, text+table 7/30; Ania-deck text mode 12/55 = 21.8%. Five CKE text/vision category % not computed, so TO/IO/TC/IC stay null (essay 0). Base contaminated ~12/37 answers with run-on chat/LaTeX (graded on leading answer). Grok+Sol dual-judge still pending on the same cleaned answers (job matura-infer-…-1728-p2a1). Source: results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json.",
+      "source": "results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json"
     }
   ],
   "prize_tracks": [
@@ -350,17 +369,19 @@
       "title": "Best progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
       "status": "RUNNING",
-      "summary": "Same-HF-base pair locked: Bielik-11B-v2 NF4 raw 25.5% → routed harness 26.9% (Δ +1.4 pp). Declared organisers base stays this NF4 pack for Best Progress only; progress-dapt next. Gauge is matura_all holdout (not yet history-2023-mock-v1). Proxy 3B CKE +1.6 still secondary.",
+      "summary": "Official-mock Claude bare base now locked: Bielik-11B-v2 NF4 raw 12/60 = 20.0% on May 2023 (same pack ~6.66 GB). Grok+Sol dual-judge pending. Older matura_all raw→routed 25.5→26.9 (+1.4) stays secondary proxy. Declared organisers base stays this NF4 pack for Best Progress only; KEEP DAPT matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4 then progress_pipeline stages 3–7.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
+            "mock-progress-nf4-raw-claude",
             "progress-nf4-raw"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-progress-nf4-raw-claude",
             "progress-nf4-routed",
             "cke-3b-base",
             "cke-3b-history-v2"
@@ -413,6 +434,12 @@
   ],
   "jobs": [
     {
+      "id": "mock-progress-nf4-raw-claude",
+      "name": "Official mock Progress NF4 raw (Claude)",
+      "state": "COMPLETED",
+      "detail": "Claude 12/60 = 20.0% on May 2023 mock; Grok+Sol pending; ~6.66 GB legal"
+    },
+    {
       "id": "mock-bielik45-fp8",
       "name": "Official mock Bielik-4.5B FP8",
       "state": "COMPLETED",
@@ -458,7 +485,7 @@
       "id": "progress-base-raw",
       "name": "Progress base Bielik-11B-v2 NF4",
       "state": "DONE",
-      "detail": "DONE: raw 25.5% / routed 26.9% (+1.4 pp)"
+      "detail": "matura_all raw 25.5% / routed 26.9%; official-mock Claude raw 20.0% (Grok+Sol pending)"
     },
     {
       "id": "gemma4-vision",
@@ -543,7 +570,9 @@
     "score_conflicts": [
       "Judge totals disagree on identical official-mock answers (AWQ: Grok 33.3 vs Claude 18.3; Bielik: Claude 40.0 vs Grok 46.7 vs Sol 48.3).",
       "Board shows all published judges; Claude rows stay the verified reference where category splits are unknown or unreconciled. Grok remains primary for E2E 3B until Claude secondary lands.",
-      "Gemma 4 12B QAT 68.3% is a May 2023 paper result, not yet dual-judged and not comparable to the standing history-2023-mock-v1 gauge until Gemma is graded on that mock."
+      "Gemma 4 12B QAT 68.3% is a May 2023 paper result, not yet dual-judged and not comparable to the standing history-2023-mock-v1 gauge until Gemma is graded on that mock.",
+      "Progress official-mock Claude 20.0% (12/60) is the verified bare base for Best Progress on the Sunday gauge; do not headline-compare it to matura_all 25.5%/26.9% or to Ania /55 text-only without saying so. Grok+Sol still pending on answers job …1728-p2a1.",
+      "gemma4-vision routed ~1.3% is void (thinking-on empties); do not publish as a harness score (C-049)."
     ]
   }
 }
