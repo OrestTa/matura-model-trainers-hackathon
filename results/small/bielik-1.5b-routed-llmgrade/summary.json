@@ -1,0 +1,68 @@
+{
+ "all": {
+  "earned": 47.0,
+  "max": 240.0,
+  "pct": 19.6
+ },
+ "needs_image": {
+  "earned": 24.0,
+  "max": 161.0,
+  "pct": 14.9
+ },
+ "paper 2023-05": {
+  "earned": 15.0,
+  "max": 60.0,
+  "pct": 25.0
+ },
+ "paper 2024-05": {
+  "earned": 11.0,
+  "max": 60.0,
+  "pct": 18.3
+ },
+ "paper 2025-05": {
+  "earned": 14.0,
+  "max": 60.0,
+  "pct": 23.3
+ },
+ "paper 2026-05": {
+  "earned": 7.0,
+  "max": 60.0,
+  "pct": 11.7
+ },
+ "text_only": {
+  "earned": 23.0,
+  "max": 79.0,
+  "pct": 29.1
+ },
+ "type closed_choice": {
+  "earned": 7.0,
+  "max": 13.0,
+  "pct": 53.8
+ },
+ "type essay": {
+  "earned": 7.0,
+  "max": 60.0,
+  "pct": 11.7
+ },
+ "type matching": {
+  "earned": 2.0,
+  "max": 6.0,
+  "pct": 33.3
+ },
+ "type short_open": {
+  "earned": 2.0,
+  "max": 13.0,
+  "pct": 15.4
+ },
+ "type source_analysis": {
+  "earned": 26.0,
+  "max": 130.0,
+  "pct": 20.0
+ },
+ "type true_false": {
+  "earned": 3.0,
+  "max": 18.0,
+  "pct": 16.7
+ },
+ "missing": []
+}
