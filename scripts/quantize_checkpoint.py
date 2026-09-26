@@ -29,7 +29,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from model_size import deck_size  # noqa: E402
+from model_size import deck_size, reference_size  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt")
@@ -88,11 +88,14 @@ def main() -> int:
              "size_gb": round(weights_gb(target), 2)}, indent=2))
 
     size = weights_gb(target)
-    # The organisers' deck size, for reference only: the check below still uses the measured size.
+    # Quantized size (Orest, 15:55 CEST): the deck's 8/4-bit figure when it has one for the model at
+    # the precision we ship, else the measured file. A bf16 deck figure is information only.
     if args.model in cfg["models"]:
         deck_gb, label = deck_size(cfg["models"][args.model])
-        print(f"{args.model}: deck size "
+        print(f"{args.model}: measured {size:.2f} GB; deck "
               f"{f'{deck_gb:.2f} GB ({label})' if deck_gb is not None else label}")
+        ref, _ = reference_size(cfg["models"][args.model], size)
+        size = ref
     adapters = Path(args.adapters) if args.adapters else None
     # Alone, a checkpoint is the base model, or with --finetuned a merged fine-tune.
     limit = tuned_limit if args.finetuned and not adapters else base_limit

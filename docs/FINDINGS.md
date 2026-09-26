@@ -9,10 +9,12 @@ Pull before you add, commit straight to main.
   Every entry in configs/models.yaml and configs/small_models.yaml now has `deck_size_gb` (copied as printed:
   bf16 for every deck model, 8-bit/4-bit only for the five 8B+ multimodal ones) and `ship_precision`, or
   `deck_size_gb: not in deck`. `scripts/model_size.py` picks the deck figure at the precision we ship.
-- **Recorded and shown only, pass/fail unchanged** (pending Orest's call on whether a pre-quantized file
-  counts at its published size): `run_baselines.py` writes `deck_size_gb`/`deck_size_source` into each
-  summary, `quantize_checkpoint.py --check <file> <key>` prints it, `build_tracks_page.py` shows it under
-  the GB column. The limit checks still use `disk_gb` / the measured shipped file.
+- **Orest, 15:55 CEST: "Always use the quantized size."** Size checks use `model_size.reference_size()`: the
+  deck's 8-bit/4-bit figure when the deck has one at the precision we ship, otherwise the published size of
+  the quantized file we ship (`disk_gb`, or the measured checkpoint). A bf16 deck figure is information only
+  and never fails a model. Wired into `run_baselines.py` (summary `disk_gb` + `size_source`, the MODELS=all
+  filter), `quantize_checkpoint.py --check <file> <key>` and `build_tracks_page.py` (GB column shows the source).
+  Today only gemma4-12b has a quantized deck figure (5.98 GB at 4-bit, vs 7.16 for our GGUF + mmproj).
 - What the deck says for ours: **gemma4-12b 5.98 GB (4-bit) ✅**. qwen3.5-9b: deck has 9.65 (8-bit) and 4.83
   (4-bit), not our Q5_K_M → "not in deck at 5bit"; a 4-bit build would be 4.83 by the deck. Bielik-11B v2/v3
   and every Bielik-11B variant: not in deck. Small models in bf16: gemma3-1b 2.00, bielik-1.5b 3.19,

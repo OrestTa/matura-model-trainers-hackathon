@@ -44,7 +44,7 @@ from matura_router.evaluate import evaluate, load_rows  # noqa: E402
 from matura_router.router import Router  # noqa: E402
 
 sys.path.insert(0, str(ROOT / "scripts"))
-from model_size import deck_size  # noqa: E402
+from model_size import deck_size, reference_size  # noqa: E402
 
 print_lock = threading.Lock()
 
@@ -148,10 +148,10 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
                        served=served_weights(key, spec),
                        **{k: spec.get(k) for k in ("hf_id", "params_b", "disk_gb", "quantization")})
         ship = Path(summary["served"]) / "ship.json"
-        if ship.exists():  # measured size of the checkpoint we actually ship
-            summary["disk_gb"] = json.loads(ship.read_text())["size_gb"]
-        # The organisers' deck size, recorded alongside; the size checks still use disk_gb until
-        # Orest decides whether the deck's figure replaces the shipped file's size.
+        measured = json.loads(ship.read_text())["size_gb"] if ship.exists() else None
+        # Quantized size (scripts/model_size.py): the deck's 8/4-bit figure if it has one, else the
+        # shipped file. The deck's own figure is kept as information.
+        summary["disk_gb"], summary["size_source"] = reference_size(spec, measured)
         summary["deck_size_gb"], summary["deck_size_source"] = deck_size(spec)
         with open(out_dir / "answers.jsonl", "w", encoding="utf-8") as f:
             for r in results:
@@ -192,7 +192,7 @@ def main():
     # "all" = every model we could ship; the -bf16 reference entries are over the size limit.
     # Local checkpoints (hf_id is a path, e.g. the DAPT-merged model) join "all" only once they exist.
     limit = float(cfg.get("ship_limit_gb", 8.0))
-    keys = ([k for k in models if not k.endswith("-bf16") and float(models[k].get("disk_gb", 0)) <= limit
+    keys = ([k for k in models if not k.endswith("-bf16") and (reference_size(models[k])[0] or 0) <= limit
              and not (models[k]["hf_id"].startswith("/") and not Path(models[k]["hf_id"]).exists())]
             if args.models == "all" else args.models.split(","))
     unknown = [k for k in keys if k not in models]

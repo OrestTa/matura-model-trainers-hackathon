@@ -66,14 +66,14 @@ def deck_sizes() -> dict:
     import sys
     import yaml
     sys.path.insert(0, str(ROOT / "scripts"))
-    from model_size import deck_size
+    from model_size import reference_size
     out = {}
     for cfg in ("configs/small_models.yaml", "configs/models.yaml"):  # models.yaml wins on shared keys
         try:
             models = yaml.safe_load((ROOT / cfg).read_text())["models"]
         except (OSError, KeyError, TypeError):
             continue
-        out.update({k: deck_size(v) for k, v in models.items()})
+        out.update({k: reference_size(v) for k, v in models.items()})
     return out
 
 
@@ -95,17 +95,18 @@ def load_summaries() -> list[dict]:
         # With a judge the score is over all 240 points: rows the judge left unscored count as 0
         # (`pct` alone divides by the scored rows only and would overstate the result).
         pct = s.get("pct_all_rows") if judged and s.get("pct_all_rows") is not None else s["pct"]
-        # The organisers' deck size is shown next to ours; pass/fail still uses disk_gb (pending Orest).
-        deck_gb, size_src = deck.get(s["model"], (None, "not in deck"))
+        # Quantized size: the deck's 8/4-bit figure where it has one, else the shipped file (Orest, 15:55 CEST).
+        ref_gb, size_src = deck.get(s["model"], (None, "shipped file"))
+        deck_q = ref_gb if size_src.startswith("deck") else None  # a quantized deck figure
         rows.append({
-            "size_src": f"deck {deck_gb:.2f} GB ({size_src[5:]})" if deck_gb is not None else "not in deck",
+            "size_src": size_src if deck_q is not None else "shipped file",
             "id": f"{run}/{s['model']}/{mode}", "run": run, "model": s["model"],
             "stage": MODE_STAGE.get(mode, "harness"), "mode": mode,
             "method": MODE_METHOD.get(mode, mode),
             "eval": eval_kind(str(s.get("eval", "")), judged),
             "pct": pct, "pct_text_only": s.get("pct_text_only"),
             "earned": s.get("earned"), "max": s.get("max"),
-            "disk_gb": s.get("disk_gb"),
+            "disk_gb": deck_q if deck_q is not None else s.get("disk_gb"),
             "by": "Claude threads", "verified": True,
             "date": datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),
             "note": f"run {run}",
@@ -162,7 +163,7 @@ def result_cells(r: dict) -> str:
     gb = f"{r['disk_gb']:.2f}" if r.get("disk_gb") is not None else "–"
     size_flag = "" if r.get("disk_gb") is None or legal(r) else ' <span class="over">over</span>'
     if r.get("disk_gb") is not None:
-        size_flag += f"<div class='sub'>{esc(r.get('size_src') or 'not in deck')}</div>"
+        size_flag += f"<div class='sub'>{esc(r.get('size_src') or 'shipped file')}</div>"
     src = pill("ok", "ours") if r.get("verified") else pill("warn", "unverified")
     txt = f"{r['pct_text_only']:.1f}" if r.get("pct_text_only") is not None else "–"
     return (f"<td class='l'><b>{esc(r['model'])}</b><div class='sub'>{esc(r.get('method'))}</div></td>"

@@ -12,9 +12,10 @@ slide "Model memory without quantisation" (every model in the deck); 8-bit and 4
 on the slide "Model memory after quantisation" (only the five 8B+ multimodal models). When the
 deck has no figure for the precision we ship, the size is "not in deck" too.
 
-For now (coordinator, 15:54 CEST) the deck size is recorded and shown only: the size checks still use
-disk_gb / the measured shipped file, until Orest decides whether a pre-quantized file counts at its
-published size or at the deck's figure.
+Size checks (Orest, 15:55 CEST: "Always use the quantized size"): `reference_size()` uses the deck's
+figure only when it is a QUANTIZED one (8bit/4bit) at the precision we ship; otherwise the published
+size of the quantized file we ship (disk_gb, or the measured checkpoint). A bf16 deck figure is
+information only and never fails a model.
 """
 
 from __future__ import annotations
@@ -34,9 +35,11 @@ def deck_size(spec: dict) -> tuple[float | None, str]:
 
 
 def reference_size(spec: dict, fallback: float | None = None) -> tuple[float | None, str]:
-    """Deck size when the deck has one; otherwise `fallback` (or disk_gb), labelled 'not in deck'."""
+    """Size for the limit checks: a quantized deck figure, else `fallback` (or disk_gb), the shipped file."""
     gb, label = deck_size(spec)
-    if gb is not None:
+    if gb is not None and not label.endswith("bf16"):  # only a quantized deck figure counts
         return gb, label
+    if gb is not None:
+        label = "shipped file (deck has bf16 only)"
     fb = fallback if fallback is not None else spec.get("disk_gb")
     return (float(fb) if fb is not None else None), label
