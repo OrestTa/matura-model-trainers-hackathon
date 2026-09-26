@@ -30,6 +30,7 @@ models:
   # (compressed-tensors, no --quantization flag). Leaves 2.6 GB for adapters under 8.8 GB.
   bielik-11b-v3:
     hf_id: speakleash/Bielik-11B-v3.0-Instruct-awq
+    train_hf_id: speakleash/Bielik-11B-v3.0-Instruct   # bf16, gated (auto-approve): needs HF_TOKEN
     params_b: 11.2
     disk_gb: 6.19
   # Gemma 4 12B, Google's quantization-aware-trained Q4_0 GGUF: 6.98 GB (+0.18 GB mmproj if we
