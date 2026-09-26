@@ -124,6 +124,28 @@ python scripts/run_baselines.py --models qwen3-8b --base-url http://localhost:80
 python scripts/plot_baselines.py
 ```
 
+### Building the eval set from past papers
+
+`scripts/fetch_matura.py` downloads the real CKE history papers (poziom rozszerzony,
+formuła 2023, May 2023–2026) and their official answer keys from cke.gov.pl into
+`data/raw/cke/`, and parses them into `data/eval/matura.jsonl`. Nothing it downloads
+is committed.
+
+```bash
+pip install -e .[data]
+python scripts/fetch_matura.py                     # 154 items, 4 × 60 points
+python scripts/fetch_matura.py --text-only         # drop items that need a picture
+python scripts/fetch_matura.py --papers 2025-05 -o data/eval/2025.jsonl
+```
+
+Each item keeps its shared sources in `context` and the instruction in `question`;
+pictures (maps, photos, posters, plans) become a `[ilustracja – …]` placeholder.
+`needs_image: true` marks items that can't be answered without the picture (85 of 154),
+so text-only models can be scored on both the full paper and the text-only subset.
+Closed items get a key in the scorer's format; short open answers get
+`gold_keywords`; the rest carry the official model answer as `gold` for the judge,
+plus CKE's `rubric` and, for "Rozstrzygnij … uzasadnij" items, the bare `decision`.
+
 ### Eval set format
 
 One JSONL row per exam item: `id`, `question`, optional `context` (source text),
