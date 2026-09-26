@@ -99,7 +99,7 @@ class Jupyter:
             sslopt={"ca_certs": CA} if CA else {}, timeout=timeout)
         mark = uuid.uuid4().hex[:12]
         # stty -echo keeps the command itself out of the captured output.
-        script = f"stty -echo; {{ {cmd}\n}} 2>&1; echo; echo __END_{mark}_$?\n"
+        script = f"stty -echo; {{ {cmd}\n}} 2>&1; __rc=$?; echo; echo __END_{mark}_$__rc\n"
         ws.send(json.dumps(["stdin", script]))
         out, deadline = "", time.time() + timeout
         while time.time() < deadline:
@@ -114,7 +114,7 @@ class Jupyter:
         m = re.search(rf"__END_{mark}_(\d+)", out)
         text = re.sub(r"\x1b\[[0-9;?]*[A-Za-z]", "", out[: m.start()] if m else out)
         # Drop the echoed command (it can arrive before stty -echo takes effect).
-        text = text.replace("\r", "").split(f"echo __END_{mark}_$?", 1)[-1].strip()
+        text = text.replace("\r", "").split(f"echo __END_{mark}_$__rc", 1)[-1].strip()
         return text, (int(m.group(1)) if m else None)
 
 
@@ -218,12 +218,12 @@ def main():
         name = os.environ.get("NAME")
         j = Jupyter(session)
         src = f"/workspace/work/out/{name}" if name else "$(ls -td /workspace/work/out/*/ | head -1)"
-        out, code = j.sh(f"cd {src} && tar czf /workspace/work/upload/fetch.tgz --exclude='*.safetensors' "
+        out, code = j.sh(f"cd {src} && tar czf /workspace/work/upload/fetch-{name}.tgz --exclude='*.safetensors' "
                          f"--exclude='vllm-*.log' . && pwd")
         if code:
             sys.exit(out)
         root, _ = j.sh("pwd")
-        data = j.get_file(os.path.relpath("/workspace/work/upload/fetch.tgz", root))
+        data = j.get_file(os.path.relpath(f"/workspace/work/upload/fetch-{name}.tgz", root))
         os.makedirs(dest, exist_ok=True)
         with tarfile.open(fileobj=io.BytesIO(data)) as t:
             t.extractall(dest)
