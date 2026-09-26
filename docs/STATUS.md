@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| baselines-all3 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:12 | 2026-09-26 13:12 | /workspace/work/out/baselines-all3 | Modal compute setup thread |
 | small-baselines | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=all MODES=raw,routed GPU_BUDGET_GB=20 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:01 | 2026-09-26 13:01 | /workspace/work/out/small-baselines | Win smallest model thread |
 | baselines-0926-1254 | baselines NAME=baselines-all3 MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/baselines-0926-1254 | Modal compute setup thread |
 | dapt-0926-1254 | dapt NAME=dapt-prep2 PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/dapt-0926-1254 | Polish Wikipedia thread (relaunched by compute thread) |
