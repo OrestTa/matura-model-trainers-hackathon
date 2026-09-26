@@ -52,14 +52,14 @@ def grade_one(model, row, answer):
                                  answer=answer[:8000], points=pts)
     for attempt in range(3):
         try:
-            out = api("/chat/completions", model=model, temperature=0, max_tokens=2000,
+            out = api("/chat/completions", model=model, max_completion_tokens=4000,  # gpt-6 on Azure: no temperature/max_tokens
                       messages=[{"role": "user", "content": prompt}])
             text = out["choices"][0]["message"]["content"] or ""
             nums = re.findall(r"\d+", text.strip().splitlines()[-1] if text.strip() else "")
             if nums:
                 return max(0, min(pts, int(nums[-1]))), text[-200:]
         except Exception as e:  # noqa: BLE001
-            text = str(e)
+            text = re.sub(r"https?://\S+", "<url>", str(e))  # never write the team id
         time.sleep(2 * (attempt + 1))
     return None, text[-200:]
 
