@@ -1,101 +1,65 @@
 {
   "meta": {
     "title": "Matura model trainers",
-    "updatedAt": "2026-09-26 10:54 UTC",
+    "updatedAt": "2026-09-26 12:56 UTC",
     "repo": "OrestTa/matura-model-trainers-hackathon",
     "publicUrl": ""
   },
   "highlights": [
     {
+      "label": "Track 01 best legal CKE",
+      "value": "37.6%",
+      "detail": "Qwen/Qwen2.5-7B-Instruct-AWQ on data/eval/matura.jsonl."
+    },
+    {
+      "label": "Measured AWQ pack",
+      "value": "5.582 GB",
+      "detail": "Legal under the 8.0 GB base cap and still far under the 8.8 GB after-FT cap."
+    },
+    {
       "label": "Practice best",
       "value": "15/15",
-      "detail": "Current best visible practice score from the seeded status snapshot."
+      "detail": "Current best visible practice score; keep distinct from the honest bare baseline."
     },
     {
       "label": "Honest bare geo",
       "value": "4/15",
       "detail": "Bare Qwen 3B local estimate, separate from the harness-inflated filed base."
-    },
-    {
-      "label": "Forgehand 7B LoRA",
-      "value": "300/300 complete",
-      "detail": "Completed in about 56 seconds on an L40S with mean_loss around 0.47."
-    },
-    {
-      "label": "Forgehand credits",
-      "value": "$0.21+ / $200",
-      "detail": "Current uploaded burn note for the Forgehand track."
     }
   ],
   "jobs": [
     {
-      "name": "Forgehand L40S 7B LoRA",
+      "name": "CKE 7B AWQ base",
       "status": "completed",
       "statusLabel": "Completed",
-      "platform": "Labqoat / Forgehand",
-      "model": "Qwen/Qwen2.5-7B-Instruct + LoRA",
-      "summary": "The uploaded dashboard seed shows the Forgehand 7B LoRA run fully completed on the L40S box and exiting cleanly after all planned steps.",
+      "platform": "Modal (A10G)",
+      "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+      "summary": "The best legal Track 01 result so far: 37.6% on the committed CKE headline set with a measured 5.582 GB pack on disk.",
       "metrics": [
         {
-          "label": "Progress",
-          "value": "300 / 300 steps"
+          "label": "CKE full",
+          "value": "37.6%"
         },
         {
-          "label": "Mean loss",
-          "value": "~0.4732"
+          "label": "Text-only",
+          "value": "38.9%"
         },
         {
-          "label": "Runtime",
-          "value": "~56.4 s"
+          "label": "Measured pack",
+          "value": "~5.582 GB"
         },
         {
-          "label": "GPU",
-          "value": "NVIDIA L40S 48 GB"
+          "label": "Wall time",
+          "value": "~813 s"
         }
       ],
       "notes": [
-        "Host: the L40S VM, 4 CPU and 30 GB RAM in the uploaded seed.",
-        "Adapter output path: /workspace/hackathon/runs/lora/forgehand-lora-7b-fh/.",
-        "The captured log tail ends with TRAIN_EXIT:0, so the run completed successfully."
+        "This is the current Track 01 headline result because it is both legal and stronger than the 3B line.",
+        "The legal AWQ result matches the illegal 7B bf16 base result within noise."
       ],
       "sources": [
         {
-          "label": "uploads/dashboard-status_d4e5.json"
-        }
-      ]
-    },
-    {
-      "name": "Modal Qwen 3B LoRA v3",
-      "status": "completed",
-      "statusLabel": "Completed",
-      "platform": "Modal (L4)",
-      "model": "Qwen2.5-3B-Instruct + LoRA",
-      "summary": "The 3B Modal LoRA job remains completed and available as a recent comparison point beside the new Forgehand 7B run.",
-      "metrics": [
-        {
-          "label": "Progress",
-          "value": "270 steps"
-        },
-        {
-          "label": "Mean loss",
-          "value": "0.595"
-        },
-        {
-          "label": "Runtime",
-          "value": "~102 s"
-        },
-        {
-          "label": "GPU",
-          "value": "L4"
-        }
-      ],
-      "notes": [
-        "This is still the most recent completed 3B adapter in the repo-tracked notes.",
-        "Prior status notes place artifacts in runs/lora/modal-3b-v3/."
-      ],
-      "sources": [
-        {
-          "label": "uploads/dashboard-status_d4e5.json"
+          "label": "notes/TRACK01_BEST_SCORE.md"
         },
         {
           "label": "STATUS.md"
@@ -103,96 +67,109 @@
       ]
     },
     {
-      "name": "Modal Qwen 1.5B LoRA v1",
+      "name": "CKE 3B history-v2",
       "status": "completed",
       "statusLabel": "Completed",
-      "platform": "Modal (L4)",
-      "model": "Qwen2.5-1.5B-Instruct + LoRA",
-      "summary": "The smaller 1.5B size-track adapter remains completed and provides the compact counterpoint to the 3B and 7B lanes.",
+      "platform": "current Forgehand L40S",
+      "model": "Qwen2.5-3B-Instruct + history-v2 LoRA",
+      "summary": "The strongest committed 3B CKE variant lifts the base slightly but still trails the 7B AWQ base.",
       "metrics": [
         {
-          "label": "Progress",
-          "value": "270 steps"
+          "label": "CKE full",
+          "value": "28.3%"
         },
         {
-          "label": "Mean loss",
-          "value": "0.675"
-        },
-        {
-          "label": "Runtime",
-          "value": "~79 s"
-        },
-        {
-          "label": "GPU",
-          "value": "L4"
+          "label": "Text-only",
+          "value": "31.3%"
         }
       ],
       "notes": [
-        "Useful for the small-model storyline and the bare-vs-harness comparison.",
-        "The seeded upload marks it completed; previous repo notes keep the 1.5B bare baseline at 3/15 geo."
+        "Use this as a small 3B improvement reference, not as the headline Track 01 result."
       ],
       "sources": [
         {
-          "label": "uploads/dashboard-status_d4e5.json"
+          "label": "notes/TRACK01_BEST_SCORE.md"
+        }
+      ]
+    },
+    {
+      "name": "CKE 3B modal-v3",
+      "status": "completed",
+      "statusLabel": "Completed",
+      "platform": "current Forgehand L40S",
+      "model": "Qwen2.5-3B-Instruct + modal-v3 LoRA",
+      "summary": "The MCQ-oriented modal-v3 adapter regresses on the committed CKE headline set.",
+      "metrics": [
+        {
+          "label": "CKE full",
+          "value": "17.1%"
         },
         {
-          "label": "STATUS.md"
+          "label": "Text-only",
+          "value": "23.0%"
+        }
+      ],
+      "notes": [
+        "This is the clearest warning against using the 90-question MCQ train-overlap numbers as the Sunday headline."
+      ],
+      "sources": [
+        {
+          "label": "notes/TRACK01_BEST_SCORE.md"
         }
       ]
     }
   ],
   "results": [
     {
-      "name": "Practice best",
-      "score": "15/15",
-      "detail": "Current best practice score from the uploaded seed."
+      "name": "Track 01 best legal CKE",
+      "score": "37.6%",
+      "detail": "7B AWQ base on data/eval/matura.jsonl."
     },
     {
-      "name": "Practice base filed",
-      "score": "14/15",
-      "detail": "Keep this distinct from the honest bare baseline when telling the progress story."
+      "name": "Illegal 7B bf16 comparator",
+      "score": "37.1%",
+      "detail": "Research-only signal; do not declare it as the Sunday base."
     },
     {
-      "name": "Honest bare geo (3B)",
-      "score": "4/15",
-      "detail": "Bare Qwen 3B local result with no formulas and no RAG."
+      "name": "3B base CKE",
+      "score": "26.7%",
+      "detail": "Current registered-base reference point."
     },
     {
-      "name": "Honest bare geo (1.5B)",
-      "score": "3/15",
-      "detail": "Smaller-model bare result from the repo-tracked notes."
+      "name": "3B history-v2 CKE",
+      "score": "28.3%",
+      "detail": "Small lift vs 3B base."
     },
     {
-      "name": "History LoRA v2",
-      "score": "68/90 (75.6%)",
-      "detail": "Current history eval signal retained from STATUS.md and the uploaded seed."
-    },
-    {
-      "name": "AWS status",
-      "score": "suspended",
-      "detail": "The uploaded seed keeps AWS out of the active compute story."
+      "name": "3B modal-v3 CKE",
+      "score": "17.1%",
+      "detail": "Regression vs 3B base."
     }
   ],
   "operationalNotes": [
     {
-      "label": "Current compute story",
-      "value": "The freshest seeded state is simple: Forgehand 7B LoRA completed on L40S, and the two recent Modal LoRA jobs remain completed on L4."
+      "label": "Headline metric",
+      "value": "Use CKE on data/eval/matura.jsonl as the score to quote. The 90-question history MCQ set is dev-only and contaminated for some adapters."
     },
     {
-      "label": "Credit burn",
-      "value": "Forgehand is marked at $0.21+ out of $200 in the uploaded seed. Existing repo notes still show Modal billed at $0.00 because credits covered the recent LoRA runs."
+      "label": "Sunday declaration",
+      "value": "Preferred quality path is 7B AWQ if registration can be updated; otherwise keep the current 3B declaration honest."
     },
     {
-      "label": "Practice score interpretation",
-      "value": "The tuned harness is at 15/15 on practice, but the honest bare base remains much lower. Keep that distinction visible on any public dashboard."
+      "label": "Illegal Sunday bases",
+      "value": "Never use 7B bf16, 7B GPTQ-Int8 at 8.875 GB, or Bielik-11B as the Sunday base."
     },
     {
       "label": "Image ceiling",
-      "value": "The eval-set notes still matter: many history items require images, so text-only models have a hard ceiling without tool or image support."
+      "value": "Many history items require images, so text-only models still have a hard ceiling without tool or image support."
     },
     {
       "label": "Sunday size rule",
-      "value": "Base must stay <=8.0 GB on disk and <=8.8 GB after fine-tuning; prefer Qwen 3B or a quantized 7B, and treat Bielik-11B bf16 / 7B bf16-as-base lanes as cancelled."
+      "value": "Base must stay <=8.0 GB on disk and <=8.8 GB after fine-tuning."
+    },
+    {
+      "label": "Ops hygiene",
+      "value": "Refer only to the current Forgehand L40S host in shared notes and never commit IPs, SSH keys, TEAM_KEY values, tokens, or passwords."
     }
   ],
   "refresh": {
@@ -200,26 +177,22 @@
     "summary": "The page shell is static; the data file is the control plane. Other bots can add or edit cards without touching the HTML, CSS, or JavaScript.",
     "steps": [
       "Open dashboard/status.json and update the fields that changed: updatedAt, highlights, jobs, results, or operationalNotes.",
-      "Seed new values from committed notes or uploaded JSON snapshots like uploads/dashboard-status_d4e5.json.",
+      "Seed new values from committed notes like STATUS.md and notes/TRACK01_BEST_SCORE.md.",
       "Commit and push to main, then redeploy the dashboard/ folder to your preferred public static host."
     ]
   },
   "sources": [
     {
-      "label": "uploads/dashboard-status_d4e5.json",
-      "detail": "Primary seed for this refresh, including the completed Forgehand 7B LoRA run and current results snapshot."
+      "label": "notes/TRACK01_BEST_SCORE.md",
+      "detail": "Canonical Track 01 best-score note with the legal AWQ 7B result and Sunday decision guidance."
     },
     {
       "label": "STATUS.md",
-      "detail": "Repo-tracked source for the Modal run metrics and the broader score context."
+      "detail": "Repo-tracked status summary with the current practice, legal-cap, and CKE score context."
     },
     {
       "label": "INSIGHTS.md",
-      "detail": "Quick decision notes on current model tracks and live practice interpretation."
-    },
-    {
-      "label": "HACKATHON_LOG.md",
-      "detail": "Narrative score log backing the history and practice result cards."
+      "detail": "Quick trunk-sync summary of the latest Track 01 guidance."
     }
   ]
 }

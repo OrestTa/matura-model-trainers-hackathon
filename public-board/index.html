@@ -42,7 +42,7 @@
   </div>
 
   <div class="card" style="margin-top:14px">
-    <h2>History MCQ (90 easy items - contaminated LoRAs flagged)</h2>
+    <h2>History MCQ (90 dev items - not the headline metric)</h2>
     <table><thead><tr><th>Pass</th><th>Score</th><th>Note</th></tr></thead><tbody id="mcq"></tbody></table>
   </div>
 
@@ -79,7 +79,7 @@ async function main() {
   const links = data.links;
   const constraints = data.constraints;
   document.getElementById('links').innerHTML = `
-    <li>Base disk cap: <strong>${constraints.max_base_disk_gb} GB</strong> (LoRA excluded) - registered base: ${constraints.registration_base}</li>
+    <li>Base disk cap: <strong>${constraints.max_base_disk_gb} GB</strong>; after fine-tuning cap: <strong>${constraints.max_after_ft_gb} GB</strong> - registered base: ${constraints.registration_base}</li>
     <li>Exam: ${constraints.exam}</li>
     <li><a href="${links.leaderboard}">Practice leaderboard</a></li>
     <li><a href="${links.repo}">Private working repo</a></li>

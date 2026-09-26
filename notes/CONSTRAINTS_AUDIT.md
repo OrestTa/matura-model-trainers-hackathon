@@ -3,7 +3,7 @@
 ## Offline (exam / Sunday)
 - Building: download anything, closed APIs OK for synthetic data.
 - Exam: no external APIs or web search; answers without human help.
-- Local RAG and tools allowed. Models each <=8 GB on disk. RAG KB excluded. LoRA does not count toward size.
+- Local RAG and tools allowed. Base model must stay <=8.0 GB on disk before fine-tuning, and the shipped post-FT package should stay <=8.8 GB. RAG KB is excluded.
 - Cloud GPU OK if model answers locally (no calling ChatGPT etc.).
 - Exam script may send answers to organizers; the model/harness must not fetch knowledge online during the test.
 

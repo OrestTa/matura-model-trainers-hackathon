@@ -6,7 +6,7 @@ lives on its box). Status of each item after the Claude review (docs/REVIEW.md),
 | ID | Severity | Item | Status |
 |----|----------|------|--------|
 | CA-01 | RED | Practice "base" filing (14/15) used the geo harness; bare local ~4/15 | Open. Sunday: file the base as `--modes raw` of the shipped model, no solver, no baked answers. |
-| CA-02 | RED | Size cap: PDF 8 GB vs ~8.9 GB | Resolved: Orest says organisers accept 8.9 GB on the base model before fine-tuning. |
+| CA-02 | RED | Size cap confusion | Resolved for current status notes: use base <= 8.0 GB and after fine-tuning <= 8.8 GB, with measured sizes only. |
 | CA-03 | RED | `bielik-11b-bf16` (22.4 GB) in `MODELS=all` | Fixed: `all` skips `-bf16` keys (run_baselines.py). |
 | CA-04 | YELLOW | History LoRA scored on its own 90 training MCQs | Open. Never quote these as matura results; the headline is data/eval/matura.jsonl. |
 | CA-05 | YELLOW | AWS scripts still callable | Fixed: infra/aws/launch.sh refuses unless AWS_REENABLED=1. |
@@ -16,5 +16,5 @@ lives on its box). Status of each item after the Claude review (docs/REVIEW.md),
 | CA-09 | INFO | 85/154 items need images; chronology adapter useless | Noted; summaries report pct_text_only and pct_all_rows. |
 | CA-10 | INFO | Modal/Forgehand runners fragile | Noted. |
 
-Checklist from the audit: agree the Sunday base once; Grok keeps bare numbers in results/ or docs/STATUS.md;
+Checklist from the audit: agree the Sunday base once; Grok keeps bare numbers in results/ or `STATUS.md`;
 one Modal story in docs/HOWTO.md (modal_lora_train.py vs infra/modal/modal_job.py) is still open.

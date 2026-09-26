@@ -1,0 +1,47 @@
+# Track 01 - best legal CKE score
+
+Updated: 2026-09-26 14:56 Europe/Warsaw
+
+## Hard caps
+
+- Base model on disk before fine-tuning: <= 8.0 GB
+- After fine-tuning (base + adapters): <= 8.8 GB
+
+## Headline result
+
+- Headline eval set: `data/eval/matura.jsonl`
+- Best legal CKE pass so far: `Qwen/Qwen2.5-7B-Instruct-AWQ`
+  - CKE full: 37.6%
+  - CKE text-only: 38.9%
+  - Measured pack size: about 5.582 GB on disk
+  - Status: legal Sunday base
+- The legal 7B AWQ result matches the illegal 7B bf16 base result (37.1%) within noise.
+
+## Comparison table
+
+| Pass | Full % | Text-only % | Sunday base status | Notes |
+|---|---:|---:|---|---|
+| 3B base | 26.7 | 27.4 | legal | Registered base today |
+| 3B + history-v2 | 28.3 | 31.3 | legal | Small CKE lift |
+| 3B + modal-v3 | 17.1 | 23.0 | legal | Regresses vs base |
+| 7B bf16 base | 37.1 | 40.1 | illegal | Research signal only |
+| 7B AWQ base | 37.6 | 38.9 | legal | Best legal CKE result |
+
+## Sunday quality path
+
+- Preferred quality path: declare the 7B AWQ base if registration can still be updated.
+- If registration stays on the current 3B base, keep the 3B base as the honest Sunday declaration.
+- Never use any of these as the Sunday base:
+  - 7B bf16
+  - 7B GPTQ-Int8 at 8.875 GB
+  - Bielik-11B
+
+## Reporting rule
+
+- The headline score is always CKE on `data/eval/matura.jsonl`.
+- Do not headline the 90-question history MCQ numbers because they overlap training for some adapters and are dev-only evidence.
+
+## Ops hygiene
+
+- In committed notes, refer only to the current Forgehand L40S host.
+- Do not commit IPs, SSH keys, TEAM_KEY values, tokens, or passwords.
