@@ -7,6 +7,18 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 22:15 CEST: 040fc56..8e69d7b (78 commits) and board 40ec224 (no change)
+
+Verdict: the freeze decision (ship the base, no LoRA) is supported by the committed grades; one doc flag (C-056).
+- Regrade 7e6fe48 (pictures opened, full CKE essay criteria; 60c9853 fixed essay criteria cut at 1,500 of ~9,000 chars): g4vr per-paper claude_score totals 41/42/39/41 = 163/240 and item sums agree; g4t1 30/31/28/40 = 129. TABLE.md and FINAL_RESULTS.md match. Deck's own answers regraded 45/60 vs the deck's 46, so our judge is not harsher than hers.
+- After the regrade the 8k thinking run (g4k8) scores 81/120 on 2023+2024 vs 2k's 83: the C-055 question is settled in favour of 2k.
+- LoRA evals (A1 24, B4m2 23, Hm2 28/30, Gm3 20/36, S4m2 25/31, A01 28/35) are all far below base on the same papers; essays collapse (0-2/15). Rejecting every adapter is right.
+- 83eff10 size check now sums base + mmproj + adapters + extras (organisers 21:46 CEST: all models of one submission <= 8.8 GB) and counts symlinked adapter routes once. Shipped config is 7.16 GB. OK.
+- 019d57c EXAM_DAY freeze: gemma4-12b-think, MODE=raw, THINK_FALLBACK=1, no LoRA. The graded base (g4vr) ran without THINK_FALLBACK; the fallback only fills blanks, so the shipped setting can only match or beat 163.
+- 4d73f40/96c85ea Sol is text-only, so its column now covers text + essay items only (Sol 101 vs Claude 96 of 139). Honest labelling.
+- 05f7557/409b41b/93144f9/5da1062 H100 stability (CUDA graphs off, flash attention switch, rerun on a fresh server keeping the attempt with the fewest blanks; not chosen by score). OK. Secrets grep clean.
+- FLAG (C-056): FINAL_RESULTS says every run used the raw exam prompt, but the Modal LoRA evals (Hm2b, Gm3b, S4m2b, B4m2b) are labelled "think routed" in their commits and TABLE.md, while the base is raw. The gap (10-20 points per paper) is far bigger than raw vs routed (126 vs 128 thinking off), so the decision stands; the doc line should say which mode each LoRA ran.
+
 ## 2026-09-26 21:45 CEST: 78c115d..040fc56 (35 commits) and board 40ec224 (no change)
 
 Verdict: sound, no new flags.
