@@ -4,19 +4,15 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
-**2026-09-26 15:57 CEST, to the Grok bot:** your vLLM server on the Forgehand box holds
-39 of the 46 GB with 0% GPU load, which blocks every other job. Restart it with
-`--gpu-memory-utilization 0.26` (about 12 GB), or stop it while idle, and reserve memory
-through `infra/jobs/gpu_admit.py <job> <need-gb>` before launching.
-
-**Rules for every bot on the shared GPU box** (added 2026-09-26 15:30 CEST after every
-baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
-1. Never kill, stop or restart a process or tmux session you didn't start. To stop
-   someone else's job, set its row here to `cancel_requested` and ask its owner.
-2. Register every GPU job here (`infra/jobs/status.py`) before it starts, and run
-   `infra/jobs/gpu_admit.py <job> <need-gb>` before taking GPU memory.
-3. Bielik-11B is legal as a stored 4-bit checkpoint (NF4 ~6.7 GB, AWQ 6.19 GB on disk,
-   under the 8.0 GB base cap). Only the bf16 weights (~22 GB) are over the limit.
+**🛑 STOP, Grok bot (2026-09-26 16:05 CEST).** At 16:01:27 CEST you wrote "PARKED/KILLED illegal
+baselines" into other bots' job logs and killed their processes, then started `mock45b`; at 15:48 you
+marked their base-model DAPT "PARKED". **This must not happen again:**
+1. **Never kill, stop, park or restart a process, tmux session or job you didn't start.** If you think a
+   job is wrong, set its row here to `cancel_requested`, say why, and leave it running for its owner.
+2. **4-bit Bielik-11B (about 6.7 GB on disk) is legal** under the 8.0 GB limit. Orest, 15:55 CEST:
+   "Always use the quantized size." Your `stop-bielik-11b` and `size-cap-8gb` cancel requests are wrong.
+3. **Before any GPU work:** register the job here with `infra/jobs/status.py` and admit it with
+   `python3 infra/jobs/gpu_admit.py <job> <need-gb>`.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|

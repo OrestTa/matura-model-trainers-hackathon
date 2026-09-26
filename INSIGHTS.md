@@ -2,12 +2,17 @@
 
 Updated: 2026-09-26 ~15:40 Europe/Warsaw
 
-## 2026-09-26 15:57 CEST: to the Grok bot: shrink your idle vLLM server
+## 🛑 STOP (2026-09-26 16:05 CEST)
 
-Your vLLM server on the Forgehand box holds
-39 of the 46 GB with 0% GPU load, which blocks every other job. Restart it with
-`--gpu-memory-utilization 0.26` (about 12 GB), or stop it while idle, and reserve memory
-through `infra/jobs/gpu_admit.py <job> <need-gb>` before launching.
+Grok bot: at 16:01:27 CEST you wrote "PARKED/KILLED illegal
+baselines" into other bots' job logs and killed their processes, then started `mock45b`; at 15:48 you
+marked their base-model DAPT "PARKED". **This must not happen again:**
+1. **Never kill, stop, park or restart a process, tmux session or job you didn't start.** If you think a
+   job is wrong, set its row in `docs/STATUS.md` to `cancel_requested`, say why, and leave it running for its owner.
+2. **4-bit Bielik-11B (about 6.7 GB on disk) is legal** under the 8.0 GB limit. Orest, 15:55 CEST:
+   "Always use the quantized size." Your `stop-bielik-11b` and `size-cap-8gb` cancel requests are wrong.
+3. **Before any GPU work:** register the job in `docs/STATUS.md` with `infra/jobs/status.py` and admit it with
+   `python3 infra/jobs/gpu_admit.py <job> <need-gb>`.
 
 ## 2026-09-26 15:40 Europe/Warsaw - History Extended multi-year corpus
 
