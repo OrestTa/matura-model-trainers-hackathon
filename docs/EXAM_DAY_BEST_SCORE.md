@@ -9,7 +9,8 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
   (6.98 GB) + `mmproj-gemma-4-12b-it-qat-q4_0.gguf` (0.18 GB) = **7.16 GB**, under the 8.0 GB base
   limit. Key `gemma4-12b` in `configs/models.yaml`. The exam's pictures are sent to the model.
 - **Server:** llama.cpp `llama-server` (CUDA build), 16 slots, router on :8080.
-- **Thinking: ON**, key `gemma4-12b-think` (+2000 tokens per answer for the thought). Graded over the four
+- **Thinking: ON**, key `gemma4-12b-think` (+2000 tokens per answer for the thought). Not the deck's 8k: graded, think8k lost to 2k
+  (77 vs 84 on May 2023+2024) because thought that never closes returns a blank answer. Graded over the four
   held-out papers: thinking on 169/240 (70.4%) vs thinking off 126/240 (grader, 997f811). The token
   budget must cover the thought, or the answer comes back empty (docs/FINDINGS.md, 18:30 CEST).
 - **Mode:** `MODE=<raw|routed|rag>`, the best graded one of the runs below. No LoRA unless it
@@ -48,6 +49,7 @@ MODEL=gemma4-12b-think MODE=<mode> PAPERS=2023-05 bash infra/jobs/rehearsal.sh  
 
 ```bash
 export LD_LIBRARY_PATH=$PWD/work/llama.cpp/build/bin:${CUDA_LIB:-/workspace/work/cuda/lib}
+export THINK_FALLBACK=1   # re-ask a blank (runaway-thinking) answer once with thinking off
 ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &        # waits until ready
 python scripts/run_exam.py <exam package dir> --model gemma4-12b-think --mode <mode> --concurrency 16 -o answers.json
 ```

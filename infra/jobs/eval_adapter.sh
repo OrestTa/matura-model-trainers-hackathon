@@ -4,13 +4,13 @@
 # Pulls the single adapter (<train job OUT>/adapters/<model>/all) from S3, then runs
 # rehearsal.sh with it. Env:
 #   ADAPTER_S3=s3://<bucket>/out/<train job>/adapters/gemma4-12b   (required; "none" = base model)
-#   PAPERS=2023-05                MODEL=gemma4-12b-think8k           MODE=raw    THINK_FALLBACK=1
+#   PAPERS=2023-05                MODEL=gemma4-12b-think             MODE=raw    THINK_FALLBACK=1
 # Only all/ is fetched: train.sh copies adapters with cp -L, so the per-type entries in S3 are
 # full copies of all/, and serve_exam.sh would stack every copy as a separate --lora.
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 WORK="${WORK:-$REPO/work}"
 : "${ADAPTER_S3:?set ADAPTER_S3 to s3://.../adapters/<model> or none}"
-export MODEL="${MODEL:-gemma4-12b-think8k}" MODE="${MODE:-raw}" PAPERS="${PAPERS:-2023-05}"
+export MODEL="${MODEL:-gemma4-12b-think}" MODE="${MODE:-raw}" PAPERS="${PAPERS:-2023-05}"
 # As on stage: an answer lost to runaway thinking is re-asked once with thinking off (daabce0).
 export THINK_FALLBACK="${THINK_FALLBACK:-1}"
 if [ "$ADAPTER_S3" = none ]; then
