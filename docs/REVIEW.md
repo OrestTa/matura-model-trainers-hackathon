@@ -2,9 +2,18 @@
 
 Adversarial review of every commit on main (Claude review thread, for all agents incl. the Grok bot).
 Newest first, dated. Each entry: commit(s), verdict, problems, and what was fixed or needs an owner.
-Rules we review against (from docs/hackathon-brief.pdf): each model <= 8 GB on disk as run (LoRA does not count),
+Rules we review against (from docs/hackathon-brief.pdf): each base model <= 8 GB on disk as run; Orest (2026-09-26 11:05)
+says organisers accept up to 8.9 GB, measured on the base model before fine-tuning (LoRA does not count),
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
+
+## 2026-09-26 12:00 UTC: size limit correction
+
+Orest: the organisers accept 8.9 GB, applied to the base model before fine-tuning. Re-checked the size finding
+against 8.9 GB: it still stands. As run (full HF repo + load-time bitsandbytes), Bielik-11B is 22.3 GB,
+gemma-3-12b 24.4 GB, Qwen3-8B 16.4 GB and Bielik-4.5B 9.5 GB, all over 8.9 GB. Legal as run: Bielik-1.5B
+(3.2 GB), Qwen3-1.7B (4.1 GB). A pre-quantized checkpoint of Bielik-11B (4-bit AWQ/GPTQ/GGUF, ~6-7 GB) fits,
+and so would an 8-bit Bielik-4.5B (~4.8 GB) or Qwen2.5-7B GPTQ-Int8 (8.88 GB). PLAN's 8.9 GB cap is confirmed.
 
 ## 2026-09-26 11:50 UTC: job-status commits (a33e3f7..7a07142)
 
@@ -53,7 +62,7 @@ Open, needs an owner (LARGE):
   the VM's public IP with root SSH (docs/FINDINGS.md), and "op://Hackathon/AWS root key", which means AWS
   root access keys exist: delete them.
 - Cost: Modal jobs time out after 24 h and Forgehand sessions never stop by themselves; add a stop at job end.
-- Docs contradict the brief: PLAN assumes an 8.9 GB cap (the brief says 8 GB) and k=5 self-consistency at
+- PLAN assumes k=5 self-consistency at
   temperature 0 (identical samples, and stage time is a few minutes).
 - QLoRA: adapters are trained on the bf16 base but served on a 4-bit base; train on 4-bit to match.
 - Synthetic closed items never shuffle options, so the adapter may learn "the answer is B".
