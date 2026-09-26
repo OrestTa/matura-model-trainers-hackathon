@@ -41,6 +41,9 @@ Board ownership: Matura Hack / Grok Bot refreshes https://orestta.github.io/tara
 ## Track 01 update
 
 - Best legal committed CKE result remains the bare `Qwen/Qwen2.5-7B-Instruct-AWQ` base at **37.6% full / 38.9% text-only** with an approximately **5.582 GB** pack on disk.
+- Official mock submission gauge is now committed under `results/official_mock_awq7b/`: bare `Qwen/Qwen2.5-7B-Instruct-AWQ` on Forgehand L40S answered `history-2023-mock-v1` **format-completely** (**37/37 nonempty**), with essay `26` regenerated from **291** to **811** words.
+- This mock record is **not an official grade**. Run metadata: HF AutoAWQ serial, `wall_s` about **157.4**, `vision_pixels_fed: false`, OCR cache hits **19**; all categories were filled (`text_open` 10, `text_closed` 3, `image_open` 19, `image_closed` 4, `essay` 1).
 - Latest legal tuned check, **AWQ + `forgehand-lora-7b-fh` (offline)**, scored **29.8% full / 32.1% text-only** and regresses versus the bare AWQ base.
 - Keep the bare AWQ base as the preferred Sunday quality path; do not promote the fh adapter pack from this result.
+- Under the **base <= 8.0 GB** cap, AWQ-7B stays legal; the next size-track check in flight is **Bielik-4.5B FP8 (~4.9 GB)**.
 - Canonical note: `notes/TRACK01_BEST_SCORE.md`.

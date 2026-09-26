@@ -1,6 +1,6 @@
 # Track 01 - best legal CKE score
 
-Updated: 2026-09-26 14:56 Europe/Warsaw
+Updated: 2026-09-26 16:07 Europe/Warsaw
 
 ## Hard caps
 
@@ -41,6 +41,19 @@ Updated: 2026-09-26 14:56 Europe/Warsaw
   - 7B bf16
   - 7B GPTQ-Int8 at 8.875 GB
   - Bielik-11B
+
+## Official mock submission gauge
+
+- Committed artifacts: `results/official_mock_awq7b/answers.json` and `results/official_mock_awq7b/answers.summary.json`
+- Model / box: bare `Qwen/Qwen2.5-7B-Instruct-AWQ` on Forgehand L40S
+- Exam: `history-2023-mock-v1` (official mock; sole submission gauge)
+- Status: **format-complete only; not officially graded**
+- Coverage: **37/37 nonempty**
+- Category fill: `text_open` 10, `text_closed` 3, `image_open` 19, `image_closed` 4, `essay` 1
+- Essay check: item `26` was regenerated from **291** to **811** words and stayed nonempty
+- Runtime / IO notes: HF AutoAWQ serial, `wall_s` about **157.4**, `vision_pixels_fed: false`, OCR cache hits **19**
+- Size rule still holds: base must be **<= 8.0 GB** on disk, so AWQ-7B remains legal
+- Next size-track candidate in flight: **Bielik-4.5B FP8 (~4.9 GB)**
 
 ## Reporting rule
 

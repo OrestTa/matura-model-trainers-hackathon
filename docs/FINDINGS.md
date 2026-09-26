@@ -3,6 +3,18 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:07 CEST · best-score thread: official mock AWQ 7B submission is committed
+
+- Committed `results/official_mock_awq7b/answers.json` and `results/official_mock_awq7b/answers.summary.json`:
+  bare `Qwen/Qwen2.5-7B-Instruct-AWQ` on Forgehand L40S for `history-2023-mock-v1`, treated as the
+  **official mock / sole submission gauge**. This is **format-complete only, not an official grade**.
+- All **37/37** answers are nonempty; every category is filled (`text_open` 10, `text_closed` 3,
+  `image_open` 19, `image_closed` 4, `essay` 1). Essay item `26` was regenerated from **291** to
+  **811** words.
+- Run metadata: HF AutoAWQ serial, `wall_s` **157.4**, `vision_pixels_fed: false`, OCR cache hits **19**.
+  `Qwen2.5-7B-Instruct-AWQ` stays legal under the **8.0 GB** base cap; next size-track check in flight
+  is **Bielik-4.5B FP8 (~4.9 GB)**.
+
 ## 2026-09-26 15:35 CEST · best-score thread: the eval set now carries the pictures
 
 - `python scripts/fetch_matura.py --images` (and `--papers all --images`) saves every picture in the
