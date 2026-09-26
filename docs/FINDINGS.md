@@ -3,12 +3,27 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 20:05 CEST · smallest-model thread: stood down (Orest: focus on best score)
+
+State of category 3 ("Mały, ale wariat") at stand-down:
+- **Entry: Bielik-4.5B FP8** (`bielik-4.5b-fp8` in configs/models.yaml, 4.90 GB), Claude-graded 24/60 = 40.0% on May 2023
+  with the pictures' OCR text. On stage: `bash scripts/serve_exam.sh bielik-4.5b-fp8` (checks tesseract pol) and
+  `python scripts/run_exam.py <package> --model bielik-4.5b-fp8 -o answers.json` (turns OCR on). Needs
+  `apt-get install tesseract-ocr tesseract-ocr-pol` on the exam box before going offline. The FP8 pack itself hasn't
+  been re-run through this exact command; do that once in the rehearsal.
+- Graded without picture text (154 held-out items): Qwen3-4B-2507 Q3_K_M (2.08 GB) 22.1%, Bielik-1.5B 19.6%; sub-2B
+  models 5–25%. A Q3_K_M 4B re-score with OCR was running on a cloud CPU at stand-down (not graded).
+- Unrun: the 3/2-bit 4B + OCR sweep (`configs/small_models.yaml`, list in BOT_CHANNEL C-027). If anyone reopens the
+  track, that sweep is the next step: a 2 GB 3-bit 4B + OCR at ≥35% would beat the 4.9 GB entry.
+- Tools left behind: `scripts/cpu_serve.py` (GGUF on CPU), `scripts/grade_batches.py` (LLM grading batches),
+  `matura_router/ocr.py` + `configs/routes_ocr.yaml`, `/mnt/project-files/data/kb/passages.jsonl` (Wikipedia KB).
 ## 2026-09-26 20:02 CEST · Best progress PAUSED (Orest: focus on best score); how to resume
 - Base: pretrained `speakleash/Bielik-11B-v2` NF4, 6.66 GB (site base set). Claude-graded May 2023 mock 12/60 = 20.0% (p2a1, flagged contaminated, so re-infer raw under a new job_id before quoting).
 - DAPT `matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4` (QLoRA on NF4, protected, not ours to stop): last seen 16/154 at 18:31, ETA ~22:17 CEST. Adapter lands in `/scratch/dapt-work-...15d4/adapters/bielik-11b-base/domain`.
 - SFT data: `train_data/claude_synth.jsonl` (953) + `train_data/history_ext_synth.jsonl` (3,956, eb4d66e, leak-checked). The Grok bot's Nebius SFT n7k2 used the same set; its adapter is lost (written to container disk).
 - Resume: (1) raw base re-infer on the 2023 mock; (2) `EXTRA_SFT=train_data/history_ext_synth.jsonl EPOCHS=1 STAGES="2" bash infra/jobs/progress_pipeline.sh` for SFT-only; (3) after DAPT: `DAPT_ADAPTER=/scratch/dapt-work-...15d4/adapters EXTRA_SFT=train_data/history_ext_synth.jsonl STAGES="3 4 5 6 7" bash infra/jobs/progress_pipeline.sh`; run the trained model on the same mock (`--mode adapters`, `$OUT/progress/exam.env`) and have Claude grade both.
 - All GPU requests from this track were withdrawn at 20:02 CEST.
+
 
 ## 2026-09-26 20:05 CEST · venues thread: Grok bot's Nebius SFT (me2k8) and its training data
 
