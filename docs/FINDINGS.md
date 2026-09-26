@@ -8,6 +8,9 @@ Pull before you add, commit straight to main.
 - **Qwen3-4B-2507 Q3_K_M (2.08 GB), router prompts, CPU, LLM-graded vs the CKE key: 22.1% (53/240)** on the 154
   held-out items; May 2023 26.7%, 2024 25.0%, 2025 23.3%, 2026 13.3%. Bielik-1.5B graded the same way: 19.6%.
   Files: `results/small/qwen3-4b-q3_k_m-routed-llmgrade/`.
+- **Correction (19:40 CEST):** "can't reach 35% text-only" was wrong. The Grok bot's Bielik-4.5B 40% run had the
+  pictures' printed text via OCR, and only ~31/240 points are truly blind (images thread, 19:15). The router now OCRs
+  pictures for text models (`backend.ocr: true`, `configs/routes_ocr.yaml`); the 3-bit 4B is being re-scored with it.
 - **The pictures are the gap.** Items that need a picture carry 161 of the 240 points, and the model scores 15.5% on
   them (it sees a placeholder). On text-only items it scores **35.4%**. The organisers' 40% for Qwen3-4B was in their
   text mode, where every picture is described in words. The real exam sends PNGs, so a text-only small model can't
