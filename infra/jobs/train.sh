@@ -128,6 +128,25 @@ ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapte
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 # Keep the adapters with the run output too (Nebius/Forgehand runners sync only $OUT).
 mkdir -p "$OUT/adapters" && cp -rL "$WORK"/adapters/. "$OUT/adapters/"
+# Recovery copy on Hugging Face (Orest 21:28 CEST): every trained adapter, safetensors + GGUF, to a
+# private repo <HF_BACKUP_OWNER>/matura-<model>-lora-<ADAPTER_NAME or job name>. Needs HF_TOKEN in the
+# env (never in the repo); a failed upload never fails the job. HF_BACKUP=0 turns it off.
+if [ "${HF_BACKUP:-1}" = 1 ] && [ -n "${HF_TOKEN:-}" ]; then
+  for m in ${TRAIN_MODELS//,/ }; do
+    [ -d "$WORK/adapters/$m" ] || continue
+    repo="${HF_BACKUP_OWNER:-orestta}/matura-$m-lora-${ADAPTER_NAME:-$NAME}"
+    python - "$WORK/adapters/$m" "$repo" <<'PY' && step "HF backup: $repo" || step "HF backup failed: $repo"
+import sys
+from pathlib import Path
+from huggingface_hub import HfApi
+api = HfApi()
+links = [f"{d.name}/*" for d in Path(sys.argv[1]).iterdir() if d.is_symlink()]
+api.create_repo(sys.argv[2], private=True, exist_ok=True)
+# symlinked per-type routes are copies of all/: upload real directories only
+api.upload_folder(repo_id=sys.argv[2], folder_path=sys.argv[1], ignore_patterns=["*/checkpoints/*", *links])
+PY
+  done
+fi
 
 # SKIP_SCORE=1: stop here; the adapters are in $OUT and infra/jobs/eval_adapter.sh scores them per paper.
 [ "${SKIP_SCORE:-0}" = 1 ] && { step "adapters in $OUT/adapters, scoring skipped (SKIP_SCORE=1)"; finish 0; }
