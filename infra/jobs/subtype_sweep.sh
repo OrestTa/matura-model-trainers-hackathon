@@ -5,6 +5,7 @@
 # (ghcr.io/ggml-org/llama.cpp:server-cuda, llama-server at /app/llama-server) or on any box
 # with LLAMA_SERVER set / buildable (infra/jobs/common.sh ensure_llama_server). Env:
 #   PAPERS=dev|heldout|all   SHARD=i/n   SLOTS=16   OUT=work/out/subtype-sweep
+#   RAW=" " (skip the raw baseline in this shard)
 #   SWEEP_ARGS="--subtypes open_image --candidates base,think"   (passed through)
 set -uo pipefail
 cd "$(dirname "$0")/../.."
@@ -58,7 +59,7 @@ nvidia-smi --query-gpu=name,memory.used,memory.total --format=csv
 
 step "sweep papers=$PAPERS shard=$SHARD"
 python3 scripts/subtype_sweep.py --base-url http://127.0.0.1:8000/v1 --papers "$PAPERS" --shard "$SHARD" \
-  --concurrency "$SLOTS" --raw --out "$OUT" ${SWEEP_ARGS:-}
+  --concurrency "$SLOTS" ${RAW:---raw} --emit --out "$OUT" ${SWEEP_ARGS:-}
 rc=$?
 step "done (exit $rc): $OUT"
 exit $rc

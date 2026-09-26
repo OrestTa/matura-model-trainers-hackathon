@@ -75,6 +75,9 @@ def main() -> int:
                     help="also mode subtype with configs/subtypes.yaml (the chosen setup) as out/selected/selected")
     ap.add_argument("--shard", default="0/1", help="i/n: this job runs every n-th task from i (give each shard its own --out)")
     ap.add_argument("--concurrency", type=int, default=24)
+    ap.add_argument("--emit", action="store_true",
+                    help="also print every answer to stdout as 'ANS\t<json>' (read back from the job log by "
+                         "scripts/subtype_collect.py, no bucket access needed)")
     ap.add_argument("--out", default=str(ROOT / "runs/subtype-sweep"))
     args = ap.parse_args()
 
@@ -141,6 +144,8 @@ def main() -> int:
             results[(g, name)].append(out)
             partial.write(json.dumps({"group": g, "candidate": name, **out}, ensure_ascii=False) + "\n")
             partial.flush()
+            if args.emit:
+                print("ANS\t" + json.dumps({"group": g, "candidate": name, **out}, ensure_ascii=False), flush=True)
             done += 1
             if done % 50 == 0 or done == len(tasks):
                 print(f"{done}/{len(tasks)} answers, {time.time() - t0:.0f}s", file=sys.stderr, flush=True)
