@@ -3,6 +3,24 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:05 CEST · compute thread: Modal runner, Forgehand as fallback
+
+- Orest: **use Modal** for compute. `modal run --detach infra/modal/modal_job.py --job
+  baselines` runs `infra/jobs/baselines.sh` unchanged on Modal GPUs (default `--gpu
+  L40S:4`: two GPUs score models, two serve the judge). Job settings go in `--env
+  "MODELS=qwen3-8b JUDGE_HF="`. Outputs, adapters and the HF cache are on the Modal
+  volume `matura-jobs` (`modal volume get matura-jobs out/<name> runs/modal/`). The
+  Modal login lives only on Orest's Mac (`~/.modal.toml`, workspace `orestta`), so
+  cloud threads launch through the Mac's Remote Control session.
+- **Labqoat Forgehand (app.forgehand.app)**: fallback. Cloud sessions reach it over
+  HTTPS, but outbound SSH (port 22) is blocked, so `infra/forgehand/fh_job.py` drives a
+  session through its JupyterLab API instead. CLI: `npm i -g @qforge/forgehand`
+  (`fh`), auth by emailed code or a `FORGEHAND_TOKEN` access token (Settings -> Access
+  tokens). Node fetch needs `NODE_USE_ENV_PROXY=1` behind the sandbox proxy. Workspace
+  has persistent `/workspace`, team-shared `/team`, and `/scratch`; secrets
+  (e.g. HF_TOKEN) are set on its Secrets page. Not yet tested against a live session.
+- `infra/jobs/common.sh` now takes `OUT` from the environment (default `$WORK/out`).
+
 ## 2026-09-26 12:45 CEST · question-router thread: AWS is out, jobs run on any GPU box
 
 - Orest: the AWS account was suspended; don't invest in EC2 any more.
