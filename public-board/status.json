@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-26T16:38:45+02:00",
+  "updated": "2026-09-26T16:51:00+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
@@ -11,7 +11,8 @@
         "Parallel Grok cloud grades on the same packs: Bielik-4.5B FP8 28/60 = 46.7%; AWQ 20/60 = 33.3% (harness OCR+essay_regen); E2E Qwen2.5-3B 15/60 = 25.0%.",
         "CKE headline-auto 37.6% for bare 7B AWQ is unverified auto-scored (70 pts) — not a graded official mock.",
         "Measured packs: AWQ ~5.58 GB; Bielik-4.5B FP8 ~4.90 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
-        "No secrets, keys, or private IPs in this public refresh."
+        "No secrets, keys, or private IPs in this public refresh.",
+        "Track 02: Bielik-11B-v2 NF4 routed harness 26.9% vs raw 25.5% (+1.4 pp)."
       ]
     },
     "claude": {
@@ -112,7 +113,7 @@
       "image_open": 21.7,
       "image_closed": 42.9,
       "essay": 13.3,
-      "note": "Primary Grok cloud judge 15/60; five-category split published. Claude secondary judge waiting on committed answers under results/grok/.",
+      "note": "Judges separate: Grok 25.0% (15/60) · Claude 18.3% (11/60) · Sol 21.7%. Five cats on Grok row.",
       "source": "results/judged/e2e_oneyear_2023_qwen25-3b/"
     },
     {
@@ -199,6 +200,38 @@
       "essay": null,
       "note": "Proxy-only; regresses vs AWQ auto base; demoted.",
       "source": "notes/TRACK01_BEST_SCORE.md"
+    },
+    {
+      "id": "progress-nf4-raw",
+      "sort": 20,
+      "name": "Bielik-11B-v2 NF4 bare raw",
+      "model": "Bielik-11B-v2 NF4",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 25.5,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Harness cats, not five CKE; 6.66 GB disk."
+    },
+    {
+      "id": "progress-nf4-routed",
+      "sort": 21,
+      "name": "Bielik-11B-v2 NF4 routed harness",
+      "model": "Bielik-11B-v2 NF4",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "base_stage_id": "progress-nf4-raw",
+      "overall_pct": 26.9,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Same pack routed harness; Δ +1.4 pp vs raw."
     }
   ],
   "prize_tracks": [
@@ -241,27 +274,27 @@
       "title": "Best progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
       "status": "RUNNING",
-      "summary": "Progress base locked to pretrained Bielik-11B-v2 NF4 (~6.66 GB ship.json), now admitting on Forgehand. Proxy-only 3B history-v2 remains +1.6 on CKE auto.",
+      "summary": "Same-HF-base pair locked: Bielik-11B-v2 NF4 raw 25.5% → routed harness 26.9% (Δ +1.4 pp). progress-dapt next. Gauge is matura_all holdout (not yet history-2023-mock-v1). Proxy 3B CKE +1.6 still secondary.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "mock-e2e-3b-grok",
-            "cke-3b-base",
-            "cke-7b-awq-base"
+            "progress-nf4-raw",
+            "cke-3b-base"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
+            "progress-nf4-routed",
             "cke-3b-history-v2"
           ]
         },
         {
           "title": "Best post-training / improvement stages",
           "stage_ids": [
-            "cke-3b-modal",
-            "cke-7b-awq-fh-offline"
+            "progress-nf4-routed",
+            "cke-3b-modal"
           ]
         }
       ]
@@ -315,7 +348,7 @@
       "id": "e2e-oneyear-2023-3b",
       "name": "E2E 2023 mock Qwen2.5-3B",
       "state": "COMPLETED",
-      "detail": "Grok primary 15/60=25.0% with five categories; Claude secondary needs committed answers"
+      "detail": "Grok 25.0% / Claude 18.3% / Sol 21.7%"
     },
     {
       "id": "cke-7b-awq-base",
@@ -332,8 +365,8 @@
     {
       "id": "progress-base-raw",
       "name": "Progress base Bielik-11B-v2 NF4",
-      "state": "RUNNING",
-      "detail": "Legal ~6.66 GB ship.json admitting on L40S :8100"
+      "state": "DONE",
+      "detail": "DONE: raw 25.5% / routed 26.9% (+1.4 pp)"
     },
     {
       "id": "gemma4-vision",
