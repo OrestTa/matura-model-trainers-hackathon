@@ -1,0 +1,280 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q8_0",
+  "aggregate_bytes": 1708932059,
+  "adapters": false,
+  "protocol": "local-luna-official-v4-imagegroups",
+  "judge": "Own ChatGPT Codex gpt-6-luna only",
+  "final_full_inference_gate": true,
+  "runs": [
+    {
+      "label": "bielik15-cap-control",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2141-bielik15-q8-cap-only-forgehand/evaluation/control",
+      "candidate_inference_complete": true,
+      "answer_count": 37,
+      "aggregate_bytes": 1708932059,
+      "caps": [
+        500,
+        1600
+      ],
+      "answers_sha256": "a280b8d3e3f2c6b08f67ee9c0fdc7017908f79397f66893b6221786f7045e792",
+      "validated_tasks": 35,
+      "missing_ids": [
+        "1",
+        "4.1"
+      ],
+      "uncertain_ids": [],
+      "official_max_points": 60,
+      "primary_provisional_points": 11,
+      "settled_lower_points": 11,
+      "unresolved_upper_points": 13,
+      "exact_points": null,
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 25.0,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 1,
+          "exact_points": 1,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 3,
+          "primary_provisional_percent": 42.857142857142854,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 3,
+          "exact_points": 3,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 3,
+          "primary_provisional_percent": 27.272727272727273,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 3,
+          "exact_points": 3,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 17.391304347826086,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 6,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "1",
+            "4.1"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true,
+        "sources": [
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/essay_repeats/26-r1.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/essay_repeats/26-r2.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/essay_repeats/26-r3.json"
+        ]
+      },
+      "failed_calls": [
+        {
+          "path": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/calls/visual-4.1-4.2.state.json",
+          "error_type": "AssertionError"
+        },
+        {
+          "path": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/calls/visual-1.state.json",
+          "error_type": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "4.1": {
+          "grade": {
+            "id": "4.1",
+            "earned_points": 0,
+            "uncertain": false,
+            "rationale": "Prawidłowa nazwa to Hanza (związek hanzeatycki). Kandydat błędnie podaje „prawo hanzeatyckie”, co nie jest nazwą związku handlowego miast wymaganą w poleceniu.",
+            "rubric_reference": "1 pkt za podanie prawidłowej nazwy; 0 pkt za odpowiedź błędną.",
+            "viewed_images": []
+          },
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/calls/visual-4.1-4.2.response.json"
+        },
+        "4.2": {
+          "grade": {
+            "id": "4.2",
+            "earned_points": 1,
+            "uncertain": false,
+            "rationale": "Kandydat wskazuje, że chodzi o prawo lubeckie i przytacza z obu źródeł, że jego cechami były brak placu rynkowego oraz szeroka ulica pełniąca funkcję rynku. Rozstrzygnięcie „tak” jest wyraźnie obecne w odpowiedzi: kandydat stwierdza, że Elbląg lokowano na prawie lubeckim, a źródło 2 wskazuje na zgodny z tym układ. Na planie widoczne są ulice (m.in. Stary Rynek) i brak centralnego prostokątnego placu rynkowego.",
+            "rubric_reference": "1 pkt za prawidłowe rozstrzygnięcie z uzasadnieniem odwołującym się do informacji z obu źródeł.",
+            "viewed_images": [
+              "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/data/small_track/official_mock_v1/images/Z04-S2.png"
+            ]
+          },
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/calls/visual-4.1-4.2.response.json"
+        },
+        "1": {
+          "grade": {
+            "id": "1",
+            "earned_points": 0,
+            "uncertain": false,
+            "rationale": "The candidate repeats the question and supplies no resolution or justification. The rubric requires a correct resolution plus a justification referring to the illustration. The attached reconstruction visibly shows built residential structures, but the candidate does not refer to that evidence.",
+            "rubric_reference": "0 pkt – odpowiedź niepełna lub błędna albo brak odpowiedzi; 1 pkt requires correct resolution and illustration-based justification.",
+            "viewed_images": []
+          },
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-control/calls/visual-1.response.json"
+        }
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false
+    },
+    {
+      "label": "bielik15-cap-raised",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2141-bielik15-q8-cap-only-forgehand/evaluation/raised",
+      "candidate_inference_complete": true,
+      "answer_count": 37,
+      "aggregate_bytes": 1708932059,
+      "caps": [
+        1000,
+        2400
+      ],
+      "answers_sha256": "89dc865d2685762c517db82a543a06d526c8945078285b5c87a58294ba3c5098",
+      "validated_tasks": 37,
+      "missing_ids": [],
+      "uncertain_ids": [
+        "25.1",
+        "26"
+      ],
+      "official_max_points": 60,
+      "primary_provisional_points": 11,
+      "settled_lower_points": 10,
+      "unresolved_upper_points": 26,
+      "exact_points": null,
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 25.0,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 1,
+          "exact_points": 1,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 28.571428571428573,
+          "settled_lower_points": 2,
+          "unresolved_upper_points": 2,
+          "exact_points": 2,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 18.181818181818183,
+          "settled_lower_points": 2,
+          "unresolved_upper_points": 3,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "25.1"
+          ]
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 5,
+          "primary_provisional_percent": 21.73913043478261,
+          "settled_lower_points": 5,
+          "unresolved_upper_points": 5,
+          "exact_points": 5,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 6.666666666666667,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 15,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "26"
+          ]
+        }
+      ],
+      "essay_repeats": {
+        "points": [
+          1,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": true,
+        "first_mark_retained": true,
+        "sources": [
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-raised/essay_repeats/26-r1.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-raised/essay_repeats/26-r2.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-cap-grades-v4/bielik15-cap-raised/essay_repeats/26-r3.json"
+        ]
+      },
+      "failed_calls": [],
+      "raw_invalid_metadata_marks": {},
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false
+    }
+  ],
+  "raised_minus_control": {
+    "primary_provisional_points": 0,
+    "conservative_interval_points": [
+      -3,
+      15
+    ]
+  },
+  "input_gate": {
+    "status": "VERIFIED_IDENTICAL_FROZEN_CANDIDATE_AND_REQUESTS_EXCEPT_CAP",
+    "candidate_sha256": "636b9897885c0ec2d2e4d6cd6c955da63b0a4157b803cb3a2583f32f4ed09fa6",
+    "network_proof_sha256": "f48e01d4ed84b49936de69473ebb7677e28545a736898369a40338971afc560c",
+    "runtime_sha256": "bd66908907a6e0be1fb9ffd3f4a7ef5640aaaf218407340b23238dbd7efa8cac",
+    "runtime_commit": "81bc6b8",
+    "model_weight_sha256": "90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e",
+    "aggregate_bytes": 1708932059,
+    "serving_difference_vs_nebius": "Different binary81bc6b8 and serial np1/b128/ub64; only within-this-run cap comparison is matched."
+  },
+  "comparison": "Same base-only answering model, candidate input, classifier/OCR, serving binary81bc6b8, seed42, temperature0. Only output caps500/1600 versus1000/2400 differ. Earlier Nebius serving binary and concurrency differ; no causal comparison across harnesses.",
+  "ania_reference": "Bielik1.5 Ania15/55=27.27%,closed5/11,open9/29,essay1/15. Adapted inputs/55point subset differ; five-way unavailable; no comparable numerical delta.",
+  "interpretation": "Saved Luna judgments only. Keep first essay mark and flag repeat disagreement. Missing or image-metadata-invalid marks unresolved; worst-case bounds are not expected scores. No assistant adjudication.",
+  "cost": "Own Codex plan; monetary cost unknown. Zero Forgehand grading requests."
+}
