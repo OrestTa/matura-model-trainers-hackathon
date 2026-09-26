@@ -1,0 +1,80 @@
+{
+  "run_id": "matura-judge-sol-bielik45fp8-2023-20260926-1726-0f08",
+  "model": "gpt-6-sol",
+  "judge": "forgehand-llm",
+  "total": 29,
+  "max": 60,
+  "pct": 48.3,
+  "wall_s": 139.036,
+  "by_category": {
+    "text_open": {
+      "earned": 7,
+      "max": 11,
+      "pct": 63.6,
+      "n_items": 10
+    },
+    "image_open": {
+      "earned": 10,
+      "max": 23,
+      "pct": 43.5,
+      "n_items": 19
+    },
+    "text_closed": {
+      "earned": 3,
+      "max": 4,
+      "pct": 75.0,
+      "n_items": 3
+    },
+    "image_closed": {
+      "earned": 3,
+      "max": 7,
+      "pct": 42.9,
+      "n_items": 4
+    },
+    "essay": {
+      "earned": 6,
+      "max": 15,
+      "pct": 40.0,
+      "n_items": 1
+    }
+  },
+  "id2cat": {
+    "1": "image_open",
+    "2.1": "text_open",
+    "2.2": "text_closed",
+    "3": "image_closed",
+    "4.1": "image_open",
+    "4.2": "image_open",
+    "5.1": "image_open",
+    "5.2": "image_open",
+    "5.3": "image_open",
+    "6": "text_open",
+    "7": "image_open",
+    "8": "image_open",
+    "9.1": "image_open",
+    "9.2": "image_open",
+    "9.3": "image_open",
+    "10": "text_closed",
+    "11.1": "text_open",
+    "11.2": "text_closed",
+    "12": "text_open",
+    "13.1": "image_open",
+    "13.2": "image_closed",
+    "14.1": "image_open",
+    "14.2": "image_open",
+    "15": "image_open",
+    "16.1": "text_open",
+    "16.2": "text_open",
+    "17": "image_open",
+    "18": "image_open",
+    "19": "image_closed",
+    "20": "image_open",
+    "21": "image_closed",
+    "22": "text_open",
+    "23": "text_open",
+    "24": "image_open",
+    "25.1": "text_open",
+    "25.2": "text_open",
+    "26": "essay"
+  }
+}
