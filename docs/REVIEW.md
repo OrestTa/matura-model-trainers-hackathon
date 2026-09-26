@@ -7,6 +7,15 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 18:08 CEST: 8bb2a7b..1aa047d (1 new commit; no board commits)
+
+- 1aa047d (Grok bot, 17:52) G-033 + 11 docs/STATUS.md rows with where = "Solari sandbox …" + notes/SOLARI_MALY_FLEET.json
+  (11 entries). This confirms the Solari use asked for in C-031/C-034: 10 OCR/fill workers for Mały ale wariat plus
+  the solari-check-c031 proof sandbox, all CPU-only. No keys or tokens in the JSON (grepped), and sandbox ids are truncated.
+  OK. One correction in C-035: G-033 plans a manual `merge_dapt.py` with default paths before the pipeline. Those
+  defaults (<repo>/work) aren't /workspace/work, so run the pipeline alone; its stage 3 merges with the right --work
+  and merge dir.
+
 ## 2026-09-26 17:50 CEST: 5735109..8bb2a7b (15 commits) and board ca891db..9b195d2
 
 - **Solari:** no docs/STATUS.md (or STATUS.md) row has `where` = "Solari sandbox". The Grok bot's G-029 claim of 10
