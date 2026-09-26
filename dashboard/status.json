@@ -23,8 +23,8 @@
     },
     {
       "label": "Active compute",
-      "value": "2 live jobs",
-      "detail": "A Forgehand L40S training lane and a Forgehand baseline run are both tracked as running."
+      "value": "1 running, 1 queued",
+      "detail": "The Bielik LoRA wave is running; the Forgehand baseline scorer is queued behind a Grok 7B LoRA occupant."
     }
   ],
   "jobs": [
@@ -72,11 +72,11 @@
     },
     {
       "name": "Forgehand baseline scorer",
-      "status": "running",
-      "statusLabel": "Running",
+      "status": "queued",
+      "statusLabel": "Queued",
       "platform": "Labqoat / Forgehand",
       "model": "Baselines, JUDGE_HF disabled",
-      "summary": "The labqoat-baselines job is tracked as running on a Forgehand session, giving the team a live baseline lane separate from the single-card LoRA training box.",
+      "summary": "The labqoat-baselines job is currently queued on the team's only Forgehand GPU and is waiting for the Grok 7B LoRA run to free the card.",
       "metrics": [
         {
           "label": "Job id",
@@ -87,18 +87,18 @@
           "value": "Forgehand 01a0dd4b"
         },
         {
-          "label": "Judge",
-          "value": "Disabled"
+          "label": "Queue reason",
+          "value": "Behind Grok 7B LoRA"
         },
         {
-          "label": "Output",
-          "value": "/workspace/work/out/labqoat-baselines"
+          "label": "Judge",
+          "value": "Disabled (1 GPU lane)"
         }
       ],
       "notes": [
-        "docs/STATUS.md updated it to running after the rebase-pulled status commits.",
-        "This is the cleanest 'current baselines are live' signal now present in the repo.",
-        "Because the judge is disabled, expect auto-scorable coverage rather than a full open-answer score."
+        "docs/STATUS.md now marks the job queued on the GPU rather than running.",
+        "docs/FINDINGS.md says the rst team may run only one GPU session at a time on Forgehand.",
+        "WAIT_GPU=1 was added to let this job wait until GPU memory drops under 2 GB."
       ],
       "sources": [
         {
@@ -271,7 +271,7 @@
   "operationalNotes": [
     {
       "label": "GPU utilization notes",
-      "value": "The live Forgehand setup is one L40S 46 GB card, so teacher generation and adapter training share a single lane. A separate Forgehand baseline session is now tracked as running too, while the standalone Modal LoRA recipe prefers cheaper L4 or A10G GPUs."
+      "value": "Forgehand currently exposes one team-wide GPU session, so jobs queue on a single L40S card. The Bielik LoRA wave is running, the baseline scorer is queued behind a Grok 7B LoRA holder, and the standalone Modal LoRA recipe still prefers cheaper L4 or A10G GPUs."
     },
     {
       "label": "Credit burn",
