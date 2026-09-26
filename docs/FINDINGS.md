@@ -3,6 +3,13 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:45 CEST · question-router thread: majority voting on closed types
+
+- Closed choice, true/false and matching now answer 5 times (greedy + 4 samples at T=0.7) and keep
+  the majority, ties to the greedy answer (`votes:` in `configs/routes.yaml`, `Router._vote`). Raw
+  mode never votes. Unmeasured so far: compare routed runs with and without `votes` once a GPU is free,
+  and set `votes: 1` for a type where it doesn't help.
+
 ## 2026-09-26 13:35 CEST · question-router thread: offline RAG mode
 
 - New router mode **`rag`** (router prompts + retrieval, base model); **`adapters`** now also retrieves.

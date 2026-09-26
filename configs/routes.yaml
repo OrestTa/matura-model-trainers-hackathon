@@ -18,10 +18,12 @@ classifier:
   min_margin: 0.5     # top score must beat runner-up by this -> else base model
   llm_fallback: false # ask the base model for a label when the rules are unsure
 
+# votes: N answers the closed types N times (greedy + N-1 samples at vote_temperature)
+# and keeps the majority; ties go to the greedy answer. Not used in raw mode.
 routes:
-  closed_choice:   {adapter: closed_choice,   max_tokens: 16,   temperature: 0.0}
-  true_false:      {adapter: true_false,      max_tokens: 48,   temperature: 0.0}
-  matching:        {adapter: matching,        max_tokens: 64,   temperature: 0.0}
+  closed_choice:   {adapter: closed_choice,   max_tokens: 16,   temperature: 0.0, votes: 5}
+  true_false:      {adapter: true_false,      max_tokens: 48,   temperature: 0.0, votes: 5}
+  matching:        {adapter: matching,        max_tokens: 64,   temperature: 0.0, votes: 5}
   chronology:      {adapter: chronology,      max_tokens: 32,   temperature: 0.0}
   source_analysis: {adapter: source_analysis, max_tokens: 256,  temperature: 0.0}
   short_open:      {adapter: short_open,      max_tokens: 192,  temperature: 0.0}

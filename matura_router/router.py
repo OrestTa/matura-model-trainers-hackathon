@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import collections
 import logging
 import time
 from dataclasses import asdict, dataclass
@@ -18,6 +19,9 @@ from .rag import BM25Retriever, format_knowledge
 
 log = logging.getLogger(__name__)
 
+# Closed types: post-processed answers are comparable strings, so they can be voted on.
+VOTABLE = {Category.CLOSED_CHOICE, Category.TRUE_FALSE, Category.MATCHING, Category.CHRONOLOGY}
+
 DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "configs" / "routes.yaml"
 
 
@@ -25,6 +29,8 @@ DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "configs" / "routes.ya
 class Route:
     adapter: Optional[str]
     params: GenerationParams
+    votes: int = 1                # >1: majority vote over this many answers (closed types)
+    vote_temperature: float = 0.7
 
 
 @dataclass
@@ -62,7 +68,8 @@ class Router:
         for name, r in cfg.get("routes", {}).items():
             r = dict(r)
             adapter = r.pop("adapter", None)
-            routes[Category(name)] = Route(adapter, GenerationParams(**r))
+            votes, vote_t = int(r.pop("votes", 1)), float(r.pop("vote_temperature", 0.7))
+            routes[Category(name)] = Route(adapter, GenerationParams(**r), votes, vote_t)
         routes.setdefault(Category.GENERAL, Route(None, GenerationParams(max_tokens=512)))
 
         ccfg = cfg.get("classifier", {})
@@ -103,6 +110,22 @@ class Router:
             return None
         return adapter
 
+    def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
+              route: Route, category: Category) -> str:
+        """Majority over the greedy answer plus sampled ones; ties go to the greedy answer."""
+        params = GenerationParams(route.params.max_tokens, route.vote_temperature, 0.95)
+        answers = [greedy]
+        for _ in range(route.votes - 1):
+            try:
+                answers.append(postprocess(category, self.backend.chat(messages, adapter, params)))
+            except Exception:  # noqa: BLE001 - a failed sample just doesn't vote
+                log.exception("vote sample failed")
+        counts = collections.Counter(a for a in answers if a)
+        if not counts:
+            return greedy
+        top = max(counts.values())
+        return greedy if counts.get(greedy) == top else next(a for a in answers if counts[a] == top)
+
     def answer(self, question: str, context: str = "",
                category: Optional[Category] = None, mode: str = "adapters") -> RoutedAnswer:
         """mode: "adapters" (full harness: adapters + RAG), "rag" (per-type prompts + RAG,
@@ -136,6 +159,8 @@ class Router:
             raw = self.backend.chat(messages, None, route.params)
 
         answer = strip_think(raw) if mode == "raw" else postprocess(category, raw)
+        if mode != "raw" and route.votes > 1 and category in VOTABLE:
+            answer = self._vote(answer, messages, adapter, route, category)
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,

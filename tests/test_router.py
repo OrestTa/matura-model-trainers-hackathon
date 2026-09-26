@@ -97,3 +97,29 @@ def test_server_routes_chat_completion():
         assert out["choices"][0]["message"]["content"]
     finally:
         httpd.shutdown()
+
+
+class _Scripted(EchoBackend):
+    def __init__(self, outputs):
+        super().__init__()
+        self.outputs = list(outputs)
+
+    def chat(self, messages, adapter, params):
+        self.calls.append((adapter, params))
+        return self.outputs.pop(0)
+
+
+def test_closed_answers_are_majority_voted():
+    backend = _Scripted(["A", "C", "C", "B", "C"])
+    router = Router.from_config(backend=backend)
+    res = router.answer("Wybierz poprawną odpowiedź. A. x B. y C. z", category=Category.CLOSED_CHOICE,
+                        mode="routed")
+    assert res.answer == "C" and len(backend.calls) == 5
+    assert backend.calls[0][1].temperature == 0.0 and backend.calls[1][1].temperature == 0.7
+
+    tie = _Scripted(["A", "B", "B", "A", "D"])
+    assert Router.from_config(backend=tie).answer("x", category=Category.CLOSED_CHOICE,
+                                                  mode="routed").answer == "A"
+    raw = _Scripted(["A"])
+    Router.from_config(backend=raw).answer("x", category=Category.CLOSED_CHOICE, mode="raw")
+    assert len(raw.calls) == 1
