@@ -18,6 +18,9 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| gemma-lora-A1 | LoRA A 1 epoch: OUT (May 2023 Sol 24/60 vs base 40; essay loops) |  | done | 2026-09-26 20:26 | 2026-09-26 20:26 |  |  |
+| practice-l40s | harness: raw vs selected subtype config on probny-2026-01 + pokaz-2022-03, --all-essays, gemma4-12b-think | Forgehand L40S :8000 | running | 2026-09-26 20:26 | 2026-09-26 20:26 | results/subtype/practice-l40s | GPU box thread |
+| SD1 | LoRA SD1: self-distilled thinking targets from real past papers (no held-out, no probny), --think --vision, LR 5e-5, 2 ep; then eval vs base+essay-guard | Forgehand L40S :8090 | running | 2026-09-26 20:26 | 2026-09-26 20:26 | /scratch/out/SD1 | GPU box thread |
 | prac-raw-probny-2026-01 | papers MODEL=gemma4-12b-think MODE=raw THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 EVAL=/repo/data/eval/matura_all.jsonl PAPERS=probny-2026-01 | Modal H100 | running | 2026-09-26 20:22 | 2026-09-26 20:22 | modal volume matura-jobs:out/prac-raw-probny-2026-01 | Modal wrapper |
 | eval-base-subtype-2025-05 | papers MODEL=gemma4-12b-think8k MODE=subtype THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 PAPERS=2025-05 | Modal H100 | done | 2026-09-26 20:04 | 2026-09-26 20:13 | modal volume matura-jobs:out/eval-base-subtype-2025-05 | Modal wrapper |
 | eval-base-subtype-2024-05 | papers MODEL=gemma4-12b-think8k MODE=subtype THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 PAPERS=2024-05 | Modal H100 | done | 2026-09-26 20:03 | 2026-09-26 20:13 | modal volume matura-jobs:out/eval-base-subtype-2024-05 | Modal wrapper |
