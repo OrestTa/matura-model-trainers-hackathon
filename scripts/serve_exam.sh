@@ -7,7 +7,16 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODEL="${1:?usage: serve_exam.sh <model key from configs/models.yaml>}"
-CHECKPOINT="${CHECKPOINT:-work/checkpoints/$MODEL}"
+# A pre-quantized checkpoint: ours (scripts/quantize_checkpoint.py) if it exists, else the
+# entry's own pre-quantized HF weights (e.g. bielik-11b-v3 = speakleash's AWQ), from the HF cache.
+spec() { python -c "import yaml,sys; print(yaml.safe_load(open('configs/models.yaml'))['models']['$MODEL'].get('$1') or '')"; }
+QUANT="$(spec quantization)"
+if [ -z "${CHECKPOINT:-}" ]; then
+  CHECKPOINT="work/checkpoints/$MODEL"
+  if [ ! -f "$CHECKPOINT/config.json" ] && [ -z "$QUANT" ]; then
+    CHECKPOINT="$(HF_HUB_OFFLINE=1 python -c "from huggingface_hub import snapshot_download; print(snapshot_download('$(spec hf_id)'))")"
+  fi
+fi
 ADAPTERS="${ADAPTERS:-work/adapters/$MODEL}"
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 VLLM_NO_USAGE_STATS=1 DO_NOT_TRACK=1  # no stats.vllm.ai call
 
@@ -30,7 +39,7 @@ done
 echo "adapters: ${LORA[*]:-none (base model only)}"
 
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
-  --quantization bitsandbytes --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
+  ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
 VLLM=$!
 trap 'kill $VLLM 2>/dev/null' EXIT
 until curl -sf http://127.0.0.1:8000/v1/models >/dev/null; do
