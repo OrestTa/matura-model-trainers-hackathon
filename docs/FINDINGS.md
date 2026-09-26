@@ -3,6 +3,17 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:55 CEST · 133 real past-paper items as training data (eval-set thread)
+
+- `scripts/build_train_from_papers.py` turns the non-headline papers (formuła 2015 May 2015–2024, 2022 demo,
+  Jan 2026 mock) into `data/train/past_papers.jsonl`: **133 items with official CKE answers** (source_analysis 82,
+  closed_choice 22, short_open 19, true_false 10), answers in the router's output shapes (template filled in,
+  first model answer only). `train.sh` now appends it to synthetic.jsonl automatically.
+- **The old-format 2023/2024 papers (EHIP) share most tasks with the headline 2023/2024 papers (MHIP)**, sat the
+  same day: 64 items were dropped as overlapping the eval. Don't train on `matura_all.jsonl` rows blindly, and
+  don't average EHIP and MHIP 2023/2024 as if they were independent papers.
+- Skipped: 209 items that need a picture, 12 essays (the key is a rubric, not an essay), 1 with an image key.
+
 ## 2026-09-26 13:45 CEST · question-router thread: majority voting on closed types
 
 - Closed choice, true/false and matching now answer 5 times (greedy + 4 samples at T=0.7) and keep

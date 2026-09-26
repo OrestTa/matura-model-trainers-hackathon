@@ -37,3 +37,16 @@ def test_image_needed_follows_source_numbers():
     ctx = f"Źródło 1. Mapa\n{fm.IMG}\nŹródło 2. Fragment tekstu\nTekst."
     assert fm.image_needed(ctx, "Podaj nazwę bitwy opisanej w źródle 1.")
     assert not fm.image_needed(ctx, "Podaj nazwisko autora źródła 2.")
+
+
+def test_train_answers_use_the_first_model_answer():
+    spec2 = importlib.util.spec_from_file_location(
+        "build_train", Path(__file__).resolve().parent.parent / "scripts/build_train_from_papers.py")
+    bt = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(bt)
+    row = {"category": "source_analysis", "decision": "Nie",
+           "question": "Rozstrzygnij, czy … Odpowiedź uzasadnij.\nRozstrzygnięcie: …\nUzasadnienie: …",
+           "gold": "Rozstrzygnięcie: Nie\nPrzykładowe uzasadnienia:\n• Pierwszy powód.\n• Drugi powód."}
+    assert bt.answer_for(row) == "Rozstrzygnięcie: Nie\nUzasadnienie: Pierwszy powód."
+    assert bt.answer_for({"category": "true_false", "gold": "P, F", "question": ""}) == "1. P\n2. F"
+    assert bt.clean_open("[Ignacy] Łukasiewicz / Łukasiewicz Ignacy") == "Łukasiewicz"

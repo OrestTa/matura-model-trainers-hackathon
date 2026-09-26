@@ -26,7 +26,7 @@ BUCKET="$(bucket_name)"
 
 echo "Uploading code ($(git rev-parse --short HEAD)) to s3://$BUCKET/code/$NAME.tar.gz"
 git archive --format=tar.gz HEAD | aws s3 cp - "s3://$BUCKET/code/$NAME.tar.gz" --only-show-errors
-for f in data/eval/matura.jsonl data/train/synthetic.jsonl; do
+for f in data/eval/matura.jsonl data/train/synthetic.jsonl data/train/past_papers.jsonl; do
   [ -f "$f" ] && aws s3 cp "$f" "s3://$BUCKET/$f" --only-show-errors
 done
 

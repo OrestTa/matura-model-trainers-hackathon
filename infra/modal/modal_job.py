@@ -44,7 +44,7 @@ image = (
                                           "**/__pycache__", "**/*.safetensors", "**/*.gguf"])
 )
 # data/ is gitignored and may be missing from the checkout; ship what exists.
-for rel in ("data/eval/matura.jsonl", "data/train/synthetic.jsonl"):
+for rel in ("data/eval/matura.jsonl", "data/train/synthetic.jsonl", "data/train/past_papers.jsonl"):
     if (REPO / rel).is_file():
         image = image.add_local_file(REPO / rel, f"/src/{rel}")
 

@@ -172,6 +172,12 @@ python scripts/run_baselines.py --eval data/eval/matura_all.jsonl ...   # score 
 
 Rows carry `paper`, `year`, `formula` (2023 or 2015) and `kind` (main, demo, mock), so the
 summary can be split per paper or per format.
+
+The papers outside the headline set double as training data with official answers:
+`python scripts/build_train_from_papers.py` writes `data/train/past_papers.jsonl` (133 items) in
+`split_by_category.py`'s input format, skipping essays, items that need a picture and anything that
+overlaps the headline eval. `infra/jobs/train.sh` adds it to the synthetic data when present
+(`PAST_PAPERS=0` turns that off), and the Forgehand, Modal and EC2 runners upload it.
 Each item keeps its shared sources in `context` and the instruction in `question`;
 pictures (maps, photos, posters, plans) become a `[ilustracja – …]` placeholder.
 `needs_image: true` marks items that can't be answered without the picture (85 of 154),

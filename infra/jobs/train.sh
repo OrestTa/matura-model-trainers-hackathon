@@ -43,9 +43,18 @@ else
 fi
 cp "$TRAIN" "$OUT/synthetic.jsonl"
 
+# Real past-paper items with official keys (scripts/build_train_from_papers.py), when uploaded.
+# They are not in the eval set; PAST_PAPERS=0 trains on synthetic data only.
+ALL_TRAIN=$TRAIN
+if [ "${PAST_PAPERS:-1}" = 1 ] && [ -s "$REPO/data/train/past_papers.jsonl" ]; then
+  ALL_TRAIN=$OUT/train_all.jsonl
+  cat "$TRAIN" "$REPO/data/train/past_papers.jsonl" > "$ALL_TRAIN"
+  step "adding $(wc -l < "$REPO/data/train/past_papers.jsonl") past-paper items"
+fi
+
 # 2. Split per question type.
 rm -rf data/by_category   # stale files from earlier runs would get trained too
-python scripts/split_by_category.py "$TRAIN" -o data/by_category
+python scripts/split_by_category.py "$ALL_TRAIN" -o data/by_category
 
 # 3. Train one adapter per (model, category), one job per GPU at a time.
 step "training adapters for $TRAIN_MODELS"

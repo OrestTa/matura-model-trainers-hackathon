@@ -153,7 +153,7 @@ JUNK = [
     r"^\s*© CKE", r"^\s*BRUDNOPIS", r"^\s*\(nie podlega ocenie\)", r"^\s*[PF]\s*$",
     r"^\s*\d(\s*[–-]\s*\d+)+\s*[–-]?\s*$", r"^\s*\d+(\.\d+)?\.\s*$", r"^\s*(Próbny e|E)gzamin maturalny z historii",
     r"^\s*Zasady oceniania rozwiązań zadań\s*$", r"^\s*Wypełnia\s*$", r"^\s*egzaminator\s*$",
-    r"^\s*Nr zadania", r"^\s*[A-Z]{3,4}-R\d_\d+", r"^\s*(\d+\.\d+\.\s*){2,}$", r"^\s*\d\s*$", r"^\s*Maks\. liczba", r"^\s*Uzyskana liczba",
+    r"^\s*Nr zadania", r"^\s*[A-Z]{3,4}-R\d_\d+", r"^\s*[ME]HIP?_\w+\s*$", r"^\s*(\d+\.\d+\.\s*){2,}$", r"^\s*\d\s*$", r"^\s*Maks\. liczba", r"^\s*Uzyskana liczba",
 ]
 JUNK_RE = re.compile("|".join(JUNK), re.I)
 
