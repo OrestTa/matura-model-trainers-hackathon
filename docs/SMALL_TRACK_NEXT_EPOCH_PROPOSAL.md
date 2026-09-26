@@ -67,7 +67,8 @@ why those three routes are not further trained in this proposal.
    Keep both passing and failed experiments in the record. Do not pick captions or
    adapter routes using per-question evaluator feedback.
 
-Proposed resource ceiling for a future separately approved job: one shared GPU,
+Resource ceiling for the next user-authorized job, subject to normal tool approval
+and live shared-resource gates: one shared GPU,
 PyTorch allocator fraction0.20, free-memory gate(cap+1GiB), hostRAM≥6GiB,900seconds
 plus15seconds termination grace. Reuse staged native weights and isolated packages;
 no top-ups, new model downloads, shared-environment edits or other-agent process

@@ -183,8 +183,9 @@ exam inference itself remains offline. Preserve upstream licenses/attribution.
    Inspect current code/config and live shared GPU capacity first; no cloud launch
    is implied by reading this document. Model preloading is CPU-only; inference
    uses Modal `block_network=True` and an actual outbound-denial probe.
-7. Grade completed submissions separately through Forgehand GPT-6-Luna against
-   official CKE keys (latest user instruction). Keep historical Sol scores labeled.
+7. Grade completed submissions separately through the user's own ChatGPT Codex
+   `gpt-6-luna`, using official CKE keys and original images where relevant.
+   Keep historical Sol scores labeled.
    No Astra grading. Retain unresolved marks, full denominators, five categories,
    paired baseline/optimized deltas, and the unmatched-Ania caveat.
 
