@@ -30,7 +30,9 @@ def test_keyword_and_row_scoring():
     row = {"question": "q", "category": "essay", "gold": "wzór", "points": 4}
     assert score_row(row, "cokolwiek") is None
     assert score_row(row, "x", judge=lambda p: "3 pkt") == 3
-    assert score_row(row, "x", judge=lambda p: "9") == 4
+    assert score_row(row, "x", judge=lambda p: "9") == 0
+    assert score_row(row, "x", judge=lambda p: "Punkty: 2") == 2
+    assert score_row(row, "x", judge=lambda p: "Sejm w 1791 roku uchwalił...") == 0
 
 
 def test_router_modes():

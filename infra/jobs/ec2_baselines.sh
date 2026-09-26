@@ -3,6 +3,7 @@
 #
 #   infra/jobs/ec2_baselines.sh                         # all models, raw + routed
 #   MODELS=bielik-11b,qwen3-8b TYPE=g6e.12xlarge infra/jobs/ec2_baselines.sh
+#   JUDGE_HF= infra/jobs/ec2_baselines.sh               # no judge: only auto-scored items count
 #
 # Uses the guarded launcher in infra/aws (credit-only, budget cap, self-terminates at
 # the deadline). Code ships as a tarball of HEAD through S3, so the instance needs
@@ -12,7 +13,7 @@
 source "$(dirname "$0")/../aws/common.sh"
 cd "$(git rev-parse --show-toplevel)"
 
-TYPE="${TYPE:-g6e.12xlarge}"   # 4x L40S 48 GB: four models at a time
+TYPE="${TYPE:-g6e.48xlarge}"   # 8x L40S 48 GB: six models at a time + a 2-GPU judge
 REGION="${REGION:-$AWS_DEFAULT_REGION}"
 NAME="${NAME:-baselines-$(date -u +%m%d-%H%M)}"
 MODELS="${MODELS:-all}"; MODES="${MODES:-raw,routed}"
@@ -35,7 +36,7 @@ until [ "$(aws ssm describe-instance-information --region "$REGION" \
 done
 
 CMD="mkdir -p /opt/work/repo && aws s3 cp s3://$BUCKET/code/$NAME.tar.gz - | tar xz -C /opt/work/repo && \
-BUCKET=$BUCKET NAME=$NAME MODELS=$MODELS MODES=$MODES HF_TOKEN=${HF_TOKEN:-} \
+BUCKET=$BUCKET NAME=$NAME MODELS=$MODELS MODES=$MODES HF_TOKEN=${HF_TOKEN:-} JUDGE_HF=${JUDGE_HF-Qwen/Qwen3-32B} \
 STOP_WHEN_DONE=${STOP_WHEN_DONE:-1} bash /opt/work/repo/infra/jobs/baselines.sh 2>&1 | tail -40"
 echo "Running baselines on $ID (progress: aws s3 cp s3://$BUCKET/$NAME/job.log -)"
 "$(dirname "$0")/../aws/run.sh" "$ID" "$CMD" "$REGION"

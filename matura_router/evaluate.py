@@ -44,6 +44,7 @@ def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
             out = {"id": row["id"], "answer": "", "raw": "", "category": None,
                    "adapter": None, "error": str(e), "latency_s": 0.0}
         out["gold_category"] = row.get("category")
+        out["needs_image"] = bool(row.get("needs_image"))
         out["points"] = float(row.get("points", 1))
         out["score"] = score_row(row, out["answer"], judge)
         return out
@@ -70,6 +71,10 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
     earned = sum(b["earned"] for b in by_cat.values())
     maximum = sum(b["max"] for b in by_cat.values())
     labelled = [r for r in results if r.get("gold_category") and r.get("category")]
+    # Items whose source is a photo/map/chart can't be answered from text alone;
+    # the text-only score is the fairer measure of the model itself.
+    text = [r for r in results if not r.get("needs_image") and r["score"] is not None]
+    text_max = sum(r["points"] for r in text)
     lat = [r["latency_s"] for r in results if r.get("latency_s")]
     return {
         "n": len(results),
@@ -78,6 +83,8 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
         "earned": round(earned, 2),
         "max": maximum,
         "pct": round(100 * earned / maximum, 1) if maximum else None,
+        "pct_text_only": round(100 * sum(r["score"] for r in text) / text_max, 1) if text_max else None,
+        "unscored": sum(1 for r in results if r["score"] is None),
         "routing_accuracy": round(100 * sum(r["category"] == r["gold_category"] for r in labelled)
                                   / len(labelled), 1) if labelled else None,
         "latency_p50_s": round(statistics.median(lat), 3) if lat else None,

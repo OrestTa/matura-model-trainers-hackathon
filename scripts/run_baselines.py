@@ -83,7 +83,8 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
     judge = None
     if args.judge_url:
         jb = OpenAICompatBackend(base_url=args.judge_url, base_model=args.judge_model,
-                                 api_key=os.environ.get("JUDGE_API_KEY", "none"))
+                                 api_key=os.environ.get("JUDGE_API_KEY", "none"),
+                                 extra_body={"chat_template_kwargs": {"enable_thinking": False}})
         from matura_router.backends import GenerationParams
         judge = lambda p: jb.chat([{"role": "user", "content": p}], None,  # noqa: E731
                                   GenerationParams(max_tokens=8))
@@ -93,7 +94,7 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
         out_dir.mkdir(parents=True, exist_ok=True)
         results, summary = evaluate(router, rows, mode=mode, concurrency=args.concurrency,
                                     judge=judge, use_gold_category=args.gold_category)
-        summary.update(model=key, mode=mode, eval=str(args.eval),
+        summary.update(model=key, mode=mode, eval=str(args.eval), judge=args.judge_hf or args.judge_url,
                        **{k: spec.get(k) for k in ("hf_id", "params_b", "disk_gb", "quantization")})
         with open(out_dir / "answers.jsonl", "w", encoding="utf-8") as f:
             for r in results:
@@ -119,6 +120,9 @@ def main():
                    help="route by the eval set's category instead of the classifier")
     p.add_argument("--judge-url", help="OpenAI-compatible endpoint that grades open answers")
     p.add_argument("--judge-model", default="judge")
+    p.add_argument("--judge-hf", help="start this HF model with vLLM as the judge, e.g. Qwen/Qwen3-32B")
+    p.add_argument("--judge-gpus", default="", help="GPUs reserved for the judge, e.g. 6,7")
+    p.add_argument("--text-only", action="store_true", help="skip items that need an image")
     args = p.parse_args()
     args.modes = args.modes.split(",")
 
@@ -129,7 +133,48 @@ def main():
     if unknown:
         p.error(f"unknown models: {unknown}")
     rows = load_rows(args.eval)
+    if args.text_only:
+        rows = [r for r in rows if not r.get("needs_image")]
     log(f"{len(rows)} eval rows from {args.eval}; models: {', '.join(keys)}")
+
+    judge_proc = None
+    if args.judge_hf:
+        judge_proc = start_judge(args)
+    try:
+        run_all(p, args, cfg, models, keys, rows)
+    finally:
+        if judge_proc:
+            stop(judge_proc)
+
+
+def start_judge(args) -> subprocess.Popen:
+    """Serves a larger open model that grades open answers against the CKE key."""
+    gpus = args.judge_gpus or "0"
+    port = 8099
+    cmd = ["vllm", "serve", args.judge_hf, "--served-model-name", "judge", "--port", str(port),
+           "--max-model-len", "8192", "--tensor-parallel-size", str(len(gpus.split(",")))]
+    log_path = Path(args.out) / "judge_vllm.log"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    log(f"[judge] GPU {gpus}: {' '.join(cmd)}")
+    proc = subprocess.Popen(cmd, env={**os.environ, "CUDA_VISIBLE_DEVICES": gpus},
+                            stdout=open(log_path, "w"), stderr=subprocess.STDOUT)
+    args.judge_url = f"http://127.0.0.1:{port}/v1"
+    args.judge_model = "judge"
+    wait_ready(args.judge_url, proc)
+    log("[judge] ready")
+    return proc
+
+
+def stop(proc: subprocess.Popen) -> None:
+    if proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(60)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+
+def run_all(p, args, cfg, models, keys, rows):
 
     if args.base_url:
         if len(keys) != 1:
@@ -162,12 +207,8 @@ def main():
                 log(f"[{key}] FAILED: {e} (see {Path(args.out) / key / 'vllm.log'})")
                 failures.append(key)
             finally:
-                if proc and proc.poll() is None:
-                    proc.terminate()
-                    try:
-                        proc.wait(60)
-                    except subprocess.TimeoutExpired:
-                        proc.kill()
+                if proc:
+                    stop(proc)
 
     threads = [threading.Thread(target=worker, args=(g,)) for g in args.gpus.split(",")]
     for t in threads:

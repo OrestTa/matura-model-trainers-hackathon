@@ -153,11 +153,11 @@ def plot_size(summaries, mode: str, out: Path):
 def write_table(summaries, out_dir: Path):
     cats = sorted({c for s in summaries for c in s["by_category"]},
                   key=lambda c: CATEGORY_ORDER.index(c) if c in CATEGORY_ORDER else 99)
-    head = ["model", "mode", "pct", "disk_gb", "quantization", "scored", "n",
+    head = ["model", "mode", "pct", "pct_text_only", "disk_gb", "quantization", "scored", "n",
             "routing_accuracy", "latency_p50_s"] + cats
     rows = []
     for s in sorted(summaries, key=lambda s: (-s["pct"], s["mode"])):
-        rows.append([s.get(k) for k in head[:9]] +
+        rows.append([s.get(k) for k in head[:10]] +
                     [(s["by_category"].get(c) or {}).get("pct") for c in cats])
     with open(out_dir / "baselines.csv", "w", newline="") as f:
         w = csv.writer(f)

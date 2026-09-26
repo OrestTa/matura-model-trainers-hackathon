@@ -107,14 +107,19 @@ type heatmap, and shipped size vs score with the 8 GB limit.
 On EC2 (all compute-heavy work runs there, on credits):
 
 ```bash
-infra/jobs/ec2_baselines.sh                                   # all models, 1x g6e.12xlarge
+infra/jobs/ec2_baselines.sh                                   # all models, 1x g6e.48xlarge
 MODELS=bielik-11b,qwen3-8b infra/jobs/ec2_baselines.sh        # a subset
 ```
 
 It ships HEAD as a tarball through S3, starts a guarded instance with
 `infra/aws/launch.sh`, runs `infra/jobs/baselines.sh` on it over SSM, and downloads
 the results and charts to `runs/ec2/<name>/`. The instance powers off when the job
-ends. Set `HF_TOKEN` for Gemma (it is gated). Put the eval set at
+ends. Six GPUs run candidate models; the last two serve an open judge model
+(`JUDGE_HF`, default Qwen/Qwen3-32B) that grades open answers against the CKE key and
+rubric, since most matura items are open. `JUDGE_HF=` turns the judge off. Each
+summary reports the full score and `pct_text_only`, the score on items that don't
+depend on a picture or map, which text-only models can't see. If no eval set is
+given, the instance builds it with `scripts/fetch_matura.py`. Set `HF_TOKEN` for Gemma (it is gated). Put the eval set at
 `data/eval/matura.jsonl` (not committed) and it is uploaded with the job.
 
 Locally against a server you already run:

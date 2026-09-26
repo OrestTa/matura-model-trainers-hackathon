@@ -70,11 +70,18 @@ def score_keywords(answer: str, groups: list[list[str]]) -> float:
     return hits / len(groups) if groups else 0.0
 
 
-JUDGE_PROMPT = """Oceniasz odpowiedź ucznia na zadanie z matury z historii.
+JUDGE_PROMPT = """Jesteś egzaminatorem CKE i oceniasz odpowiedź ucznia na zadanie z matury z historii.
+Oceniaj ściśle według zasad oceniania. Przykładowe rozwiązanie jest tylko przykładem:
+uznaj każdą merytorycznie poprawną odpowiedź spełniającą zasady.
+
 Zadanie: {question}
-Wzorcowa odpowiedź / klucz: {gold}
+
+Zasady oceniania: {rubric}
+
+Przykładowe rozwiązanie: {gold}
+
 Odpowiedź ucznia: {answer}
-Maksymalna liczba punktów: {points}
+
 Podaj tylko liczbę przyznanych punktów (liczba całkowita od 0 do {points})."""
 
 
@@ -90,8 +97,11 @@ def score_row(row: dict, answer: str,
     if row.get("gold_keywords"):
         return points * score_keywords(answer, row["gold_keywords"])
     if judge and gold:
-        out = judge(JUDGE_PROMPT.format(question=row["question"], gold=gold,
-                                        answer=answer, points=int(points)))
-        m = re.search(r"\d+", out)
-        return min(points, float(m.group())) if m else 0.0
+        out = judge(JUDGE_PROMPT.format(question=row["question"], gold=gold, answer=answer,
+                                        rubric=row.get("rubric") or "brak – oceń według przykładu",
+                                        points=int(points)))
+        # Expect a bare small integer; anything else (an essay, a year) counts as 0.
+        m = re.match(r"\D{0,20}?(\d{1,2})\b", out.strip())
+        got = float(m.group(1)) if m else 0.0
+        return got if got <= points else 0.0
     return None
