@@ -7,6 +7,10 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 23:40 CEST: e628683..69d70ee (12 commits, 2 non-status) and board 40ec224 (no change)
+
+Verdict: sound, no flags. d89e013 orders the SD2 build list (still overlap-filtered by build_selfdistill.py). 69d70ee runs the essay arms (plan/guard, length target, best-of-3) on the 12 dev essays on a second llama-server, so these experiments tune on dev papers, not held-out. Secrets grep clean. The frozen stage setting is unchanged.
+
 ## 2026-09-26 22:55 CEST: 8e69d7b..e628683 (64 commits) and board 40ec224 (no change)
 
 Verdict: sound, no new flags. The frozen on-stage setting (raw, gemma4-12b-think, THINK_FALLBACK=1, no LoRA) is untouched.
