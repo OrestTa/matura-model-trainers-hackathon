@@ -74,3 +74,48 @@ plus15seconds termination grace. Reuse staged native weights and isolated packag
 no top-ups, new model downloads, shared-environment edits or other-agent process
 changes. Estimated training work is202small-model updates; runtime/billing must be
 verified before launch. No job or paid API call was launched for this proposal.
+
+## Implemented local readiness (2026-09-27)
+
+`infra/small_track/train_bielik_epoch_gate.py` implements this exact two-route
+protocol. Its default invocation checks the frozen 101 training and 12 validation
+rows without loading a model. Both datasets passed locally. Fifteen CPU tests
+cover prompt masking, EOS inclusion, causal target counting, per-example NLL
+aggregation, the two stopping gates, source exclusions and hash tampering.
+The tiny likelihood fixture is Python-only; this does **not** verify a native
+PyTorch training run or optimizer reload on GPU. No GPU job has been launched.
+
+CPU preflight, from the repository root:
+
+```sh
+python3 infra/small_track/train_bielik_epoch_gate.py \
+  --data data/small_track_real_training_boundary_clean_v3 \
+  --validation data/small_track_legacy_audit_20260927/optional-text-training.jsonl
+```
+
+When live capacity passes the resource gates, stage only the two-route training
+files, their frozen manifest, the 12-row validation file and the two trainer
+scripts into our isolated directory. Use the existing clean-v3 native model and
+venv. Do not copy current examination keys or change shared packages. The launcher
+must apply an external 900-second timeout with 15-second termination grace.
+Illustrative isolated-runtime command (paths must be verified before execution):
+
+```sh
+timeout --signal=TERM --kill-after=15s 900s \
+  /workspace/codex-small-track-clean-v3/venv/bin/python \
+  /workspace/codex-small-track-epoch-gate/train_bielik_epoch_gate.py \
+  --data /workspace/codex-small-track-epoch-gate/data \
+  --validation /workspace/codex-small-track-epoch-gate/validation.jsonl \
+  --model /workspace/codex-small-track-clean-v3/model \
+  --output /workspace/codex-small-track-epoch-gate/output-NEW-RUN-ID \
+  --execute
+```
+
+Output is a fresh directory containing a pinned protocol, incremental base/epoch
+NLL records, per-route epoch checkpoints, optimizer state, RNG state and trainable
+parameter ordering, resource-gate results, and the final decision. Epoch 2 reloads
+the exact epoch-1 adapter and optimizer; provenance and parameter ordering must
+match. An interrupted run is incomplete: never select it from partial records.
+All tokenization is checked before training; an overlength or empty example aborts
+the experiment rather than silently changing the frozen sample. No conversion or
+full-paper grading is triggered automatically by this script.
