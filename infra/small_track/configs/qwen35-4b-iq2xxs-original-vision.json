@@ -1,0 +1,49 @@
+{
+  "repo": "unsloth/Qwen3.5-4B-GGUF",
+  "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+  "model": "Qwen3.5-4B",
+  "quantization": "UD-IQ2_XXS",
+  "files": [
+    {
+      "file": "Qwen3.5-4B-UD-IQ2_XXS.gguf",
+      "bytes": 1520217248,
+      "sha256": "4c1ba794e8d6098f4fb6482b4db6e880c80b5ee0b4c64d8668afaf9541163677"
+    },
+    {
+      "file": "mmproj-F16.gguf",
+      "bytes": 672423616,
+      "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864"
+    }
+  ],
+  "aggregate_deployed_bytes": 2192640864,
+  "candidate_sha256": "3ecfcc62c05cc28ba668ff751fa6ce33a81e54a5cd8e958cf1ae0d2e5c6b031a",
+  "image_sha256": {
+    "images/Z01.png": "4d0ff9329b3c695f5337d320e408a063946f6ffb966c9b907523b224006f218c",
+    "images/Z03-S2.png": "dd6f7a86072ac62716ffe4051cfa3a302ea0b1695e5d32321b237deb2636a8d0",
+    "images/Z04-S2.png": "7cb3e99c206985c47839f10c81dce61faae7e68957277f8f0fdc490ad63fae9f",
+    "images/Z05-S1.png": "52d8c00805795371a096114fd111b54f23172184338aead15b38f25aef510dd8",
+    "images/Z05-S2.png": "0d7a4e8337d8755912219f37036d8f1a15b70c8d6e11e4d14b9bb73235cf748b",
+    "images/Z07.png": "112cabc9ab4d2fa1c7de55e50bc5633174073bd02e062ca99a384b493aa1730f",
+    "images/Z08.png": "2a32f5aaf1ce4c75c696d612c03d032fcaf73f53dc2a99521c7e544312002d46",
+    "images/Z09-S2.png": "e5012960357a2a268393c67b645d5c03f859da2d7a41c4014f0f12183e83735d",
+    "images/Z13-A.png": "4f1f8c064910476a573b8a27367176ebed5cbebd32032f0389c645bda7610d3e",
+    "images/Z13-B.png": "3b817ec3c0f4c4d3b2d6dca019f84dbd9140225dfe45a0296eef12f9a65a21a8",
+    "images/Z14.png": "a2ec564c34ec714bf5cb89a94edf542a53b6f1ce968697c05c8ed79f9412cb1a",
+    "images/Z15.png": "d5ecddfda41e177455237f939cdf3beb7c37c9ec391f51072f3176378fdd68de",
+    "images/Z17-S2.png": "2c49c2c46bd6e4eb6d21473be8210940ef8298eb269e3f0a4d7f35478dda2f3f",
+    "images/Z18.png": "a07b69b1bf7b1eed689cec2f64eff226f9d6cac5127798c03d9ff8d8de6b0639",
+    "images/Z19-S2.png": "8e7e540f37ace07b32b713dfca8ae22c7cbe1ceb43d2b7a0274d72fb5fcd55f2",
+    "images/Z20-S2.png": "fc913907b1cec8e7392fb6f7897bc58192c2a85571044eb43b27d0f81db1b3dc",
+    "images/Z21.png": "f4609ad5788fb2826fbb727495dc271d2a094149dee32b80e86250c3d5918b68",
+    "images/Z24-S1.png": "5a4cad1ad46b1b00631ac708a008797a2e66467fe30560d200e4fcd172adaef6",
+    "images/Z24-S2.png": "a3cf2d86fbd741a02c5bfbc057ded725022134902b79a8cad06188a87799db01"
+  },
+  "seed": 42,
+  "temperature": 0,
+  "short_tokens": 500,
+  "essay_tokens": 1600,
+  "concurrency": 2,
+  "scope": "full37 after five-category generation smoke; no OCR/router/adapter",
+  "historical_comparison": "original Q3 question/source/image bytes and prompts preserved; runtime and concurrency differ, so no pure quantization-causal claim",
+  "runtime_binary_sha256": "efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf"
+}

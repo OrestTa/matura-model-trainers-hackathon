@@ -1,0 +1,96 @@
+{
+  "source": "https://huggingface.co/api/models/unsloth/Qwen3.5-4B-GGUF/revision/e87f176479d0855a907a41277aca2f8ee7a09523?blobs=true",
+  "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+  "files": [
+    {
+      "name": "Qwen3.5-4B-Q3_K_M.gguf",
+      "bytes": 2293388448,
+      "lfs": {
+        "sha256": "d6981ab4d77ba712b48ef69d69042d75b5e39b9dce5fb5a5b054fd08e06afb95",
+        "size": 2293388448,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-Q3_K_S.gguf",
+      "bytes": 2105791648,
+      "lfs": {
+        "sha256": "7e2dd96b6141226b62fa88c775db06e0e9ff0aa84130805d7091a768868a3353",
+        "size": 2105791648,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-UD-IQ2_M.gguf",
+      "bytes": 1759997088,
+      "lfs": {
+        "sha256": "cb4c45ca42c0d7777667e94e3963f8e59e939b3665098328ce601feb5be129c1",
+        "size": 1759997088,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-UD-IQ2_XXS.gguf",
+      "bytes": 1520217248,
+      "lfs": {
+        "sha256": "4c1ba794e8d6098f4fb6482b4db6e880c80b5ee0b4c64d8668afaf9541163677",
+        "size": 1520217248,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-UD-IQ3_XXS.gguf",
+      "bytes": 1949047968,
+      "lfs": {
+        "sha256": "00aab66a2359a9afc52f0ab757e61f9be1656e6fcaba8468bd95579a8b2cbc40",
+        "size": 1949047968,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-UD-Q2_K_XL.gguf",
+      "bytes": 1940825248,
+      "lfs": {
+        "sha256": "79aa0b583c888976013002f66b9f617070d91cf8de6a09dc775983640ac59463",
+        "size": 1940825248,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "Qwen3.5-4B-UD-Q3_K_XL.gguf",
+      "bytes": 2436420768,
+      "lfs": {
+        "sha256": "1874727e4bb6ac23fd0cd134ac6562d2759fe44f37fa68c55197b36526da4e37",
+        "size": 2436420768,
+        "pointerSize": 135
+      }
+    },
+    {
+      "name": "mmproj-BF16.gguf",
+      "bytes": 675569344,
+      "lfs": {
+        "sha256": "302b92d565080b9cc0281186979ae75a7429ec23d14f6f7607a035539b21f3a6",
+        "size": 675569344,
+        "pointerSize": 134
+      }
+    },
+    {
+      "name": "mmproj-F16.gguf",
+      "bytes": 672423616,
+      "lfs": {
+        "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864",
+        "size": 672423616,
+        "pointerSize": 134
+      }
+    },
+    {
+      "name": "mmproj-F32.gguf",
+      "bytes": 1334075072,
+      "lfs": {
+        "sha256": "758b74e604c5374577c21026c5bdc3aec75560eccb4c67844c8f585d6ec74804",
+        "size": 1334075072,
+        "pointerSize": 135
+      }
+    }
+  ]
+}
