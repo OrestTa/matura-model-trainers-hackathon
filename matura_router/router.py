@@ -79,7 +79,9 @@ class Router:
         return adapter
 
     def answer(self, question: str, context: str = "",
-               category: Optional[Category] = None) -> RoutedAnswer:
+               category: Optional[Category] = None, mode: str = "adapters") -> RoutedAnswer:
+        """mode: "adapters" (full harness), "routed" (per-type prompts, base model only)
+        or "raw" (one generic prompt, base model, no post-processing) for baselines."""
         t0 = time.perf_counter()
         if category is None:
             c = self.classifier.classify(question, context)
@@ -88,8 +90,9 @@ class Router:
             confidence, method = 1.0, "forced"
 
         route = self.routes.get(category) or self.routes[Category.GENERAL]
-        adapter = self.resolve_adapter(category)
-        messages = build_messages(category, question, context)
+        adapter = self.resolve_adapter(category) if mode == "adapters" else None
+        prompt_cat = Category.GENERAL if mode == "raw" else category
+        messages = build_messages(prompt_cat, question, context)
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:
@@ -100,7 +103,8 @@ class Router:
             adapter = None
             raw = self.backend.chat(messages, None, route.params)
 
-        return RoutedAnswer(answer=postprocess(category, raw), raw=raw,
+        answer = raw.strip() if mode == "raw" else postprocess(category, raw)
+        return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,
                             latency_s=round(time.perf_counter() - t0, 3))

@@ -88,6 +88,51 @@ python -m matura_router serve --port 8080
 # or a category name such as "essay" to force a route
 ```
 
+## Baselines per model
+
+`configs/models.yaml` lists the candidate base models (Bielik-11B, Qwen3-8B,
+Gemma-3-12B, plus small ones for the "Mały, ale wariat" category), each with the
+quantization we'd ship under 8 GB. `scripts/run_baselines.py` serves each one with
+vLLM on its own GPU and scores it on the eval set in two modes:
+
+- `raw`: one generic prompt, untouched base model. This is the official baseline.
+- `routed`: the router's per-type prompts and answer clean-up, still no adapters.
+- `adapters` (later): the full harness, with `--adapters-dir adapters/` holding
+  `adapters/<model>/<category>/`.
+
+`scripts/plot_baselines.py` turns the results into `runs/report/index.html` with
+three charts: score per model (raw vs routed, with the 35% line), a model × question
+type heatmap, and shipped size vs score with the 8 GB limit.
+
+On EC2 (all compute-heavy work runs there, on credits):
+
+```bash
+infra/jobs/ec2_baselines.sh                                   # all models, 1x g6e.12xlarge
+MODELS=bielik-11b,qwen3-8b infra/jobs/ec2_baselines.sh        # a subset
+```
+
+It ships HEAD as a tarball through S3, starts a guarded instance with
+`infra/aws/launch.sh`, runs `infra/jobs/baselines.sh` on it over SSM, and downloads
+the results and charts to `runs/ec2/<name>/`. The instance powers off when the job
+ends. Set `HF_TOKEN` for Gemma (it is gated). Put the eval set at
+`data/eval/matura.jsonl` (not committed) and it is uploaded with the job.
+
+Locally against a server you already run:
+
+```bash
+python scripts/run_baselines.py --models qwen3-8b --base-url http://localhost:8000/v1
+python scripts/plot_baselines.py
+```
+
+### Eval set format
+
+One JSONL row per exam item: `id`, `question`, optional `context` (source text),
+`category` (gold question type), `points` (default 1), and either `gold` (the key:
+`"B"`, `"P, F, P"`, `"1 – B, 2 – D"`, `"C, A, D, B"`, or a model answer for open
+items) or `gold_keywords` (groups of alternatives an open answer must mention). Closed
+items get partial credit per statement or pair. Open items without keywords are
+scored by an LLM judge when `--judge-url` is given, otherwise reported as unscored.
+
 ## Training the adapters
 
 `scripts/split_by_category.py` turns a Q&A set into one chat-format dataset per

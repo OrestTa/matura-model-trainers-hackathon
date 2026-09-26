@@ -7,7 +7,8 @@ dependencies = ["pyyaml>=6"]
 
 [project.optional-dependencies]
 peft = ["torch", "transformers>=4.45", "peft>=0.12", "bitsandbytes", "accelerate"]
-dev = ["pytest"]
+eval = ["matplotlib"]
+dev = ["pytest", "matplotlib"]
 
 [project.scripts]
 matura-router = "matura_router.cli:main"

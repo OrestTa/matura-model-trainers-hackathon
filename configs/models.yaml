@@ -1,0 +1,52 @@
+# Candidate base models for baselines. Each entry is served by vLLM on its own GPU.
+#
+# `quantization` is what we'd actually ship under the 8 GB limit; bitsandbytes
+# quantizes the bf16 weights to 4-bit at load time, so no pre-quantized repo is
+# needed. `disk_gb` is the approximate size of the shipped form (for the 8 GB check
+# and the size-vs-score chart). Entries with a `-bf16` key are full-precision
+# references, to see what quantization costs.
+#
+# Gated models (Gemma) need HF_TOKEN in the environment.
+
+models:
+  bielik-11b:
+    hf_id: speakleash/Bielik-11B-v2.3-Instruct
+    params_b: 11.2
+    quantization: bitsandbytes
+    disk_gb: 6.5
+  qwen3-8b:
+    hf_id: Qwen/Qwen3-8B
+    params_b: 8.2
+    quantization: bitsandbytes
+    disk_gb: 5.0
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  gemma3-12b:
+    hf_id: google/gemma-3-12b-it
+    params_b: 12.2
+    quantization: bitsandbytes
+    disk_gb: 7.3
+  # Small-model category ("Mały, ale wariat": smallest model scoring >= 35%).
+  bielik-4.5b:
+    hf_id: speakleash/Bielik-4.5B-v3.0-Instruct
+    params_b: 4.6
+    quantization: bitsandbytes
+    disk_gb: 2.9
+  bielik-1.5b:
+    hf_id: speakleash/Bielik-1.5B-v3.0-Instruct
+    params_b: 1.6
+    disk_gb: 3.2
+  qwen3-1.7b:
+    hf_id: Qwen/Qwen3-1.7B
+    params_b: 1.7
+    disk_gb: 3.4
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  # Full-precision reference for the strongest candidate.
+  bielik-11b-bf16:
+    hf_id: speakleash/Bielik-11B-v2.3-Instruct
+    params_b: 11.2
+    disk_gb: 22.4
+
+vllm:
+  max_model_len: 8192
+  gpu_memory_utilization: 0.90
+  extra_args: []

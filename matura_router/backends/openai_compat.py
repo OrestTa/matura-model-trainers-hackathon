@@ -29,7 +29,8 @@ class OpenAICompatBackend(Backend):
     def __init__(self, base_url: str = "http://localhost:8000/v1",
                  base_model: str = "base", adapter_mode: str = "model_name",
                  llamacpp_lora_ids: Optional[dict[str, int]] = None,
-                 api_key: str = "none", timeout: float = 300.0):
+                 api_key: str = "none", timeout: float = 300.0,
+                 extra_body: Optional[dict] = None):
         if adapter_mode not in ("model_name", "llamacpp"):
             raise ValueError("adapter_mode must be 'model_name' or 'llamacpp'")
         self.base_url = base_url.rstrip("/")
@@ -38,6 +39,9 @@ class OpenAICompatBackend(Backend):
         self.lora_ids = llamacpp_lora_ids or {}
         self.api_key = api_key
         self.timeout = timeout
+        # Merged into every request, e.g. {"chat_template_kwargs": {"enable_thinking": false}}
+        # to switch off Qwen3's thinking mode.
+        self.extra_body = extra_body or {}
 
     def _post(self, path: str, body: dict) -> dict:
         req = urllib.request.Request(
@@ -50,7 +54,7 @@ class OpenAICompatBackend(Backend):
     def request_body(self, messages, adapter, params: GenerationParams) -> dict:
         body = {"model": self.base_model, "messages": messages,
                 "max_tokens": params.max_tokens, "temperature": params.temperature,
-                "top_p": params.top_p}
+                "top_p": params.top_p, **self.extra_body}
         if self.adapter_mode == "model_name":
             if adapter:
                 body["model"] = adapter

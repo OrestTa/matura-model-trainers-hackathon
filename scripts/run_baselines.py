@@ -1,0 +1,183 @@
+"""Scores every candidate base model on the eval set, one model per GPU in parallel.
+
+For each model in configs/models.yaml this starts a vLLM server on its own GPU,
+runs the eval in each requested mode, and writes
+    runs/baselines/<model>/<mode>/{answers.jsonl,summary.json}
+
+Modes: raw    = one generic prompt, the untouched base model (the official baseline)
+       routed = the router's per-type prompts and post-processing, still no adapters
+       adapters = the full harness with LoRA adapters (needs --adapters-dir)
+
+    python scripts/run_baselines.py --eval data/eval/matura.jsonl --gpus 0,1,2,3
+    python scripts/run_baselines.py --models qwen3-8b --base-url http://localhost:8000/v1
+
+Then draw the charts with scripts/plot_baselines.py.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import queue
+import subprocess
+import sys
+import threading
+import time
+import urllib.request
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from matura_router.backends.openai_compat import OpenAICompatBackend  # noqa: E402
+from matura_router.evaluate import evaluate, load_rows  # noqa: E402
+from matura_router.router import Router  # noqa: E402
+
+print_lock = threading.Lock()
+
+
+def log(msg: str):
+    with print_lock:
+        print(time.strftime("%H:%M:%S"), msg, flush=True)
+
+
+def wait_ready(url: str, proc: subprocess.Popen | None, timeout: float = 1800) -> None:
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        if proc is not None and proc.poll() is not None:
+            raise RuntimeError(f"vLLM exited with code {proc.returncode}")
+        try:
+            urllib.request.urlopen(url + "/models", timeout=5)
+            return
+        except Exception:
+            time.sleep(5)
+    raise TimeoutError(f"{url} not ready after {timeout}s")
+
+
+def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: Path,
+               adapters_dir: Path | None) -> subprocess.Popen:
+    cmd = ["vllm", "serve", spec["hf_id"], "--served-model-name", "base",
+           "--port", str(port), "--max-model-len", str(vcfg.get("max_model_len", 8192)),
+           "--gpu-memory-utilization", str(vcfg.get("gpu_memory_utilization", 0.9))]
+    if spec.get("quantization"):
+        cmd += ["--quantization", spec["quantization"]]
+    if adapters_dir:
+        mods = [f"{d.name}={d}" for d in sorted((adapters_dir / key).glob("*")) if d.is_dir()]
+        if mods:
+            cmd += ["--enable-lora", "--max-loras", str(len(mods)), "--max-lora-rank", "64",
+                    "--lora-modules", *mods]
+    cmd += list(vcfg.get("extra_args", [])) + list(spec.get("vllm_args", []))
+    env = {**os.environ, "CUDA_VISIBLE_DEVICES": gpu}
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    log(f"[{key}] GPU {gpu}: {' '.join(cmd)}")
+    return subprocess.Popen(cmd, env=env, stdout=open(log_path, "w"), stderr=subprocess.STDOUT)
+
+
+def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> None:
+    backend = OpenAICompatBackend(base_url=base_url, base_model="base",
+                                  extra_body=spec.get("extra_body"))
+    router = Router.from_config(args.routes, backend=backend)
+    judge = None
+    if args.judge_url:
+        jb = OpenAICompatBackend(base_url=args.judge_url, base_model=args.judge_model,
+                                 api_key=os.environ.get("JUDGE_API_KEY", "none"))
+        from matura_router.backends import GenerationParams
+        judge = lambda p: jb.chat([{"role": "user", "content": p}], None,  # noqa: E731
+                                  GenerationParams(max_tokens=8))
+
+    for mode in args.modes:
+        out_dir = Path(args.out) / key / mode
+        out_dir.mkdir(parents=True, exist_ok=True)
+        results, summary = evaluate(router, rows, mode=mode, concurrency=args.concurrency,
+                                    judge=judge, use_gold_category=args.gold_category)
+        summary.update(model=key, mode=mode, eval=str(args.eval),
+                       **{k: spec.get(k) for k in ("hf_id", "params_b", "disk_gb", "quantization")})
+        with open(out_dir / "answers.jsonl", "w", encoding="utf-8") as f:
+            for r in results:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        (out_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2))
+        log(f"[{key}] {mode}: {summary['pct']}% ({summary['scored']}/{summary['n']} scored, "
+            f"{summary['errors']} errors, {summary['wall_s']}s)")
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--eval", default=str(ROOT / "data/eval/matura.jsonl"))
+    p.add_argument("--models", default="all", help="comma list of keys from models.yaml")
+    p.add_argument("--models-config", default=str(ROOT / "configs/models.yaml"))
+    p.add_argument("--routes", default=str(ROOT / "configs/routes.yaml"))
+    p.add_argument("--modes", default="raw,routed")
+    p.add_argument("--gpus", default="0", help="one model per GPU at a time, e.g. 0,1,2,3")
+    p.add_argument("--base-url", help="use an already running server (single model only)")
+    p.add_argument("--adapters-dir", help="adapters/<model>/<category>/ for mode 'adapters'")
+    p.add_argument("--out", default=str(ROOT / "runs/baselines"))
+    p.add_argument("--concurrency", type=int, default=32)
+    p.add_argument("--gold-category", action="store_true",
+                   help="route by the eval set's category instead of the classifier")
+    p.add_argument("--judge-url", help="OpenAI-compatible endpoint that grades open answers")
+    p.add_argument("--judge-model", default="judge")
+    args = p.parse_args()
+    args.modes = args.modes.split(",")
+
+    cfg = yaml.safe_load(Path(args.models_config).read_text())
+    models = cfg["models"]
+    keys = list(models) if args.models == "all" else args.models.split(",")
+    unknown = [k for k in keys if k not in models]
+    if unknown:
+        p.error(f"unknown models: {unknown}")
+    rows = load_rows(args.eval)
+    log(f"{len(rows)} eval rows from {args.eval}; models: {', '.join(keys)}")
+
+    if args.base_url:
+        if len(keys) != 1:
+            p.error("--base-url needs exactly one --models entry")
+        wait_ready(args.base_url, None, timeout=60)
+        run_model(keys[0], models[keys[0]], args.base_url, rows, args)
+        return
+
+    todo: queue.Queue = queue.Queue()
+    for k in keys:
+        todo.put(k)
+    failures = []
+
+    def worker(gpu: str):
+        port = 8100 + int(gpu.split(",")[0])
+        while True:
+            try:
+                key = todo.get_nowait()
+            except queue.Empty:
+                return
+            proc = None
+            try:
+                proc = start_vllm(key, models[key], cfg.get("vllm", {}), gpu, port,
+                                  Path(args.out) / key / "vllm.log",
+                                  Path(args.adapters_dir) if args.adapters_dir else None)
+                url = f"http://127.0.0.1:{port}/v1"
+                wait_ready(url, proc)
+                run_model(key, models[key], url, rows, args)
+            except Exception as e:  # noqa: BLE001
+                log(f"[{key}] FAILED: {e} (see {Path(args.out) / key / 'vllm.log'})")
+                failures.append(key)
+            finally:
+                if proc and proc.poll() is None:
+                    proc.terminate()
+                    try:
+                        proc.wait(60)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+
+    threads = [threading.Thread(target=worker, args=(g,)) for g in args.gpus.split(",")]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    if failures:
+        log(f"failed models: {failures}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,86 @@
+"""Runs an eval set through the router and summarises the score per question type."""
+
+from __future__ import annotations
+
+import collections
+import json
+import statistics
+import time
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from typing import Callable, Optional
+
+from .router import Router
+from .scoring import score_row
+
+
+def load_rows(path: str | Path) -> list[dict]:
+    rows = []
+    with open(path, encoding="utf-8") as f:
+        for i, line in enumerate(f):
+            if line.strip():
+                row = json.loads(line)
+                row.setdefault("id", i)
+                rows.append(row)
+    return rows
+
+
+def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
+             concurrency: int = 16, judge: Optional[Callable[[str], str]] = None,
+             use_gold_category: bool = False) -> tuple[list[dict], dict]:
+    """Answers every row, scores it, returns (per-row results, summary).
+
+    use_gold_category skips the classifier, to separate routing mistakes from
+    model mistakes.
+    """
+    from .categories import Category
+
+    def one(row):
+        forced = Category(row["category"]) if use_gold_category and row.get("category") else None
+        try:
+            res = router.answer(row["question"], row.get("context", ""), category=forced, mode=mode)
+            out = {"id": row["id"], **res.to_dict()}
+        except Exception as e:  # noqa: BLE001 - one bad row shouldn't kill a baseline run
+            out = {"id": row["id"], "answer": "", "raw": "", "category": None,
+                   "adapter": None, "error": str(e), "latency_s": 0.0}
+        out["gold_category"] = row.get("category")
+        out["points"] = float(row.get("points", 1))
+        out["score"] = score_row(row, out["answer"], judge)
+        return out
+
+    t0 = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=concurrency) as pool:
+        results = list(pool.map(one, rows))
+    return results, summarise(results, time.perf_counter() - t0)
+
+
+def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
+    by_cat = collections.defaultdict(lambda: {"n": 0, "scored": 0, "earned": 0.0, "max": 0.0})
+    for r in results:
+        cat = r.get("gold_category") or r.get("category") or "unknown"
+        b = by_cat[cat]
+        b["n"] += 1
+        if r["score"] is not None:
+            b["scored"] += 1
+            b["earned"] += r["score"]
+            b["max"] += r["points"]
+    for b in by_cat.values():
+        b["pct"] = round(100 * b["earned"] / b["max"], 1) if b["max"] else None
+
+    earned = sum(b["earned"] for b in by_cat.values())
+    maximum = sum(b["max"] for b in by_cat.values())
+    labelled = [r for r in results if r.get("gold_category") and r.get("category")]
+    lat = [r["latency_s"] for r in results if r.get("latency_s")]
+    return {
+        "n": len(results),
+        "scored": sum(b["scored"] for b in by_cat.values()),
+        "errors": sum(1 for r in results if r.get("error")),
+        "earned": round(earned, 2),
+        "max": maximum,
+        "pct": round(100 * earned / maximum, 1) if maximum else None,
+        "routing_accuracy": round(100 * sum(r["category"] == r["gold_category"] for r in labelled)
+                                  / len(labelled), 1) if labelled else None,
+        "latency_p50_s": round(statistics.median(lat), 3) if lat else None,
+        "wall_s": round(wall_s, 1),
+        "by_category": dict(sorted(by_cat.items())),
+    }
