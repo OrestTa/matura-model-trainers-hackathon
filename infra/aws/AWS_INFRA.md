@@ -23,12 +23,18 @@ mirror, not a repo content requirement; this file is the canonical repo doc.
 
 | Metric | Value |
 | --- | --- |
+| Credit name | **AWS Activate - Andreessen Horowitz** |
+| Status | **Active** |
+| Issued credits | **$100,000.00** |
 | Remaining credits | **$98,383.45** |
 | Used credits | **$1,616.55** |
 | Estimated remaining credits | **$98,355.81** |
 | Estimated used credits | **$1,644.19** |
 | Active credits | **1** |
-| Credit expiry | **TBD** |
+| Credit start date | **09/01/2024** |
+| Credit expiry | **Credits table: 09/30/2026; detail page also shows 10/1/2026** |
+| Applicable services shown | **EC2, SageMaker, VPC, Data Transfer** |
+| Exclusions shown | **None displayed** |
 
 ## Exam constraints
 
@@ -52,7 +58,10 @@ Committed public key file: [`orest-noninteractive.pub`](./orest-noninteractive.p
 | Setting | Value |
 | --- | --- |
 | EC2 key pair name | `Orest-Noninteractive` |
+| Key type | `ed25519` |
+| Key pair status | Imported |
 | Scope | Every GPU VM used for the hackathon |
+| Launch wizard security group note | TCP 22 from `0.0.0.0/0`; public-access warning shown; no instance created |
 
 Example SSH command once a VM has a public address:
 
@@ -80,22 +89,33 @@ instance in this order:
 
 Aggressive Service Quotas increase requests are in flight to make that possible.
 
-## Current instance tracker
+## EC2 quota snapshot (`us-east-1`)
 
-Fill these rows from the console or CLI when instances are launched.
-
-| Name | Instance ID | Instance type | Availability Zone | Public IP / DNS | State | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| `hackathon-gpu-max` | `TBD` | `TBD` | `TBD` | `TBD` | `TBD` | First shared GPU box |
-| `hackathon-gpu-max-2` | `TBD` | `TBD` | `TBD` | `TBD` | `TBD` | Add rows as needed |
+| Quota | Verified value |
+| --- | --- |
+| Running On-Demand G and VT instances | **0** |
+| Running On-Demand P instances | **0** |
+| Family-specific P4 / P5 / G5 / G6 / G4dn / Trn1-related quotas shown in console | **0** |
 
 ## Quota request tracker
 
-Record exact request IDs and outcomes here once visible.
-
-| Region | Family / quota | Current value | Requested value | Request ID | Status |
+| Region | Service / quota | Requested value | Request / case | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `us-east-1` | `TBD` | `TBD` | `TBD` | `TBD` | In flight |
+| `us-east-1` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `TBD` | Pending | Request submitted |
+| `us-east-1` | EC2 Running On-Demand P | `1024 vCPUs` | `TBD` | Pending | Request submitted |
+| `us-west-2` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `179041346400081` | Case Opened | Request submitted |
+| `us-west-2` | EC2 Running On-Demand P | `1024 vCPUs` | `179041351000024` | Case Opened | Request submitted |
+| `us-east-1` | SageMaker `ml.p5.48xlarge` training | `8` | `TBD` | Blocked | Quota-request limit hit while prior request is open |
+
+## Launch attempts (`us-east-1`)
+
+No instance IDs were created from these attempts.
+
+| Instance type | Result | Reason shown | Linux hourly price shown |
+| --- | --- | --- | --- |
+| `p5.48xlarge` | Failed | Insufficient capacity | `~$55.04/hr` |
+| `p4d.24xlarge` | Failed | vCPU limit 0 | `~$21.96/hr` |
+| `g6e.48xlarge` | Failed | vCPU limit 0 | `~$30.13/hr` |
 
 ## Operating notes for humans and agents
 
