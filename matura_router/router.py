@@ -111,10 +111,14 @@ class Router:
 
     def apply_model(self, spec: dict) -> "Router":
         """Per-model settings from a configs/models.yaml entry: `vision` (send the exam's
-        pictures) and `think_tokens` (a thinking model's reasoning budget, added to every
+        pictures), `extra_body` (sent with every request) and `think_tokens` (a thinking model's reasoning budget, added to every
         route's max_tokens so short closed answers aren't cut off mid-thought)."""
         if "vision" in spec:
             self.vision = bool(spec["vision"])
+        if spec.get("extra_body") and hasattr(self.backend, "extra_body"):
+            # e.g. chat_template_kwargs.enable_thinking; run_exam.py builds its backend from
+            # routes.yaml, so without this the stage harness would drop the model's switch.
+            self.backend.extra_body = {**self.backend.extra_body, **spec["extra_body"]}
         extra = int(spec.get("think_tokens") or 0)
         if extra:
             for r in self.routes.values():

@@ -7,6 +7,41 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 15:45 CEST: a54fe23..223a5f4 (26 commits) and board repo e65a47e
+
+Times below are CEST (UTC+2). The three headings below this one say "UTC" but were CEST too.
+
+- 4886b08 (Grok bot, 15:24) board ownership note: OK, matches Orest's 13:19 UTC instruction.
+- a43289b (Grok bot, 15:26) Track 01 demotes AWQ + fh LoRA (29.8% vs 37.6%): the decision is right (don't ship a
+  regression), but both numbers are still UNVERIFIED: no summary.json or answers for either run is committed, so
+  we can't tell if 37.6% is of 240 points or of the 70 auto-scorable. Grok bot: commit the summaries.
+- dcb43b3 (us, 15:26) gpu_admit frees a reservation once $WORK/<job>.log says "done (exit": OK. fh_job.py writes
+  exactly that log name (setsid nohup ... > /workspace/work/<name>.log, truncated per run); reservations with no
+  such log (dapt.sh's "$NAME-train") keep the old 600 s hold, which is the safe side.
+- 48ad8e5 (us, 15:28) free_port per vLLM server: OK. Shared-GPU mode picks the port inside the `starting`
+  lock and waits for readiness there, so two servers can't grab the same port; per-GPU mode uses disjoint ranges.
+- 5448480, d988f99, 5496ee8 (us, 15:28-15:30) findings/INSIGHTS/status.py notes: OK, no secrets or IPs.
+- adcf503 (us, 15:31) qwen3.5-9b Q5_K_M + mmproj = 7.50 GB: OK, under 8.0 (Q6_K + mmproj ~8.4 would not be).
+- 7b369c9 (us, 15:31) claude_grade.py: Claude grades open answers of judge-less baseline runs. A research aid
+  only; a closed API is fine off-stage but those grades must be labelled as Claude-graded, not CKE-official.
+- 3906516 (us, 15:31) Qwen3.5-0.8B/2B/4B, Gemma-4-E2B in small_models.yaml: PROBLEM, fixed as a note. The file's
+  disk_gb means Q8_0 GGUF size, but these four have no gguf and list bf16 sizes, so "smallest" isn't comparable,
+  and qwen3.5-4b (9.3 GB) and gemma4-e2b (10.3 GB) are over 8.0 GB as listed. Added a comment saying so; they
+  need a quantized pack before they can count for a track.
+- 2ba3331 (us, 15:32) gemma4-12b-think (7.16 GB, OK) and Router.apply_model: BUG, fixed. run_exam.py (the stage
+  harness) builds its backend from routes.yaml and apply_model only set vision/think_tokens, so a model's
+  extra_body (enable_thinking true for gemma4-12b-think, false for the Qwen3/3.5 models) was silently dropped on
+  stage: the "think" variant would run without thinking, and Qwen3.5 would think and hit max_tokens. apply_model
+  now merges spec.extra_body into the backend. Per-route params are separate objects, so +think_tokens is added
+  once per route (checked). Gemma thought-channel regex in strip_think: OK.
+- 1162e07 (us, 15:32) train.sh MODELS_CONFIG / SCORE_MODES: OK, train_lora.py and baselines.sh both take
+  --models-config.
+- Status-only (us, 15:26-15:34): fa54bd1, fd242e1, d5b5c91, 3f8f30d, e363709, a9e16cc, 6b9be66, e27bd97, beb28bc,
+  f1ec42a, c2c253a, 9a924a3, 571f3ba, 223a5f4: OK, no secrets.
+- Board repo e65a47e (Grok bot, 15:24): headline 37.1% -> 37.6% (7B AWQ), bf16 7B and GPTQ-Int8 (8.875 GB)
+  marked illegal, 3B history-v2 28.3%. Labels are right now; same caveat: 37.6% and 28.3% have no committed
+  summaries, so the board should mark them unverified until they do.
+
 ## 2026-09-26 15:35 UTC: results page (3807583, b49f9b8, 1d9d6cc, 3abfebe), public board repo, cd69d79..9aaaf30
 
 Orest (13:19 UTC): the Grok bot owns refreshing the results page; this review checks every commit to it and to
