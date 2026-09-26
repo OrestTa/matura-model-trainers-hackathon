@@ -195,6 +195,13 @@ class Router:
         if images and not self.vision:
             context = (context + "\n" + "\n".join(
                 "[ilustracja – niedostępna w wersji tekstowej]" for _ in images)).strip()
+        if images and self.vision:
+            # Our eval rows keep the text-only placeholder where a picture sits; a vision model
+            # that reads "niedostępna" tends to answer that it can't see the picture. Point it at
+            # the attached image instead, numbered in the order they are sent.
+            n = iter(range(1, 1000))
+            context = re.sub(r"\[ilustracja – niedostępna w wersji tekstowej\]",
+                             lambda _: f"[ilustracja {next(n)} – obraz dołączony do wiadomości]", context)
         full_context = f"{knowledge}\n\n{context}".strip() if knowledge else context
         messages = build_messages(prompt_cat, question, full_context, fill_template=mode != "raw",
                                   images=tuple(images) if self.vision else ())
