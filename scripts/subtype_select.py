@@ -56,6 +56,12 @@ def by_subtype(rows):
     return d
 
 
+def lat(rows):
+    """Median and max seconds per answer (on the sweep's GPU, all slots busy: an upper bound for stage)."""
+    xs = sorted(r.get("latency_s") or 0 for r in rows)
+    return (xs[len(xs) // 2], xs[-1]) if xs else (0, 0)
+
+
 def fmt(e, m, u=0):
     s = f"{e:g}/{m:g} = {100 * e / m:.1f}%" if m else "–"
     return s + (f" ({u} ungraded)" if u else "")
@@ -86,7 +92,8 @@ def select(args):
         chosen[st] = {"name": best, **(grid.get(st, {}).get(best) or {})}
         lines.append(f"## {st} ({n_items} dev items)")
         for name, (e, m, u, n) in sorted(res.items(), key=lambda kv: -kv[1][0] / max(kv[1][1], 1)):
-            lines.append(f"- {name}{' **chosen**' if name == best else ''}: {fmt(e, m, u)}"
+            p50, mx = lat(list(cands[name].values()))
+            lines.append(f"- {name}{' **chosen**' if name == best else ''}: {fmt(e, m, u)}, {p50:.0f}s median / {mx:.0f}s max per answer"
                          + (f", only {n}/{n_items} items" if n < n_items else ""))
     report = "\n".join(lines)
     print(report)
