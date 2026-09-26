@@ -1,0 +1,79 @@
+{
+  "routes": [
+    {
+      "route": "closed_without_images",
+      "steps": 16,
+      "bytes": 16135968,
+      "sha256": "ba3a3249822e8978303f9da15ce53d58db31b9399af991b133feba6d62a8c704",
+      "source_sha256": "c849b0104bb8f4094b3fda504aae17d56d92a4caad26e481095cfa1bcbe4f8d3",
+      "repo": "cpral/Bielik-1.5B-v3.0-Instruct-ungated",
+      "revision": "a3a660b10fdba3a7b03c3349567e54d8875f9ac9",
+      "synthetic": false,
+      "loss": "assistant_only",
+      "rank": 8,
+      "lr": 5e-05
+    },
+    {
+      "route": "open_without_images",
+      "steps": 16,
+      "bytes": 16135968,
+      "sha256": "f9cab931dcea3e03c2aa66f23475c1dd79da4432e3bd0f970c5c52d12983a77d",
+      "source_sha256": "9b32ba207db972457dd98650794765ab655b1516afe4cba5dadc902ca22f720d",
+      "repo": "cpral/Bielik-1.5B-v3.0-Instruct-ungated",
+      "revision": "a3a660b10fdba3a7b03c3349567e54d8875f9ac9",
+      "synthetic": false,
+      "loss": "assistant_only",
+      "rank": 8,
+      "lr": 5e-05
+    },
+    {
+      "route": "closed_with_images",
+      "steps": 16,
+      "bytes": 16135392,
+      "sha256": "6c5231bc427b237e2fbd9fff56182b68b1880ef348f9106017ffef353b4ab2d9",
+      "source_sha256": "4632df39b35402967b6f9b70f10257ae7d1e46be6317a83fad1f3a0b117434c9",
+      "repo": "cpral/Bielik-1.5B-v3.0-Instruct-ungated",
+      "revision": "a3a660b10fdba3a7b03c3349567e54d8875f9ac9",
+      "synthetic": false,
+      "loss": "assistant_only",
+      "rank": 8,
+      "lr": 5e-05
+    },
+    {
+      "route": "open_with_images",
+      "steps": 16,
+      "bytes": 16135392,
+      "sha256": "39364c09119a70381a9bd772ab2fdab14bdcd07cf27f385ad1473da424cad0a3",
+      "source_sha256": "ed193fad44917676f6de4caffdf7dd6b8b7c95d80de630e2b4dc3bd17ff18a29",
+      "repo": "cpral/Bielik-1.5B-v3.0-Instruct-ungated",
+      "revision": "a3a660b10fdba3a7b03c3349567e54d8875f9ac9",
+      "synthetic": false,
+      "loss": "assistant_only",
+      "rank": 8,
+      "lr": 5e-05
+    },
+    {
+      "route": "essay",
+      "steps": 4,
+      "bytes": 16135392,
+      "sha256": "0021aa278c2d6fb124b2b9ed4bd4aceff2f45b47c9dc92ac87423ca0f13d92ab",
+      "source_sha256": "ee74e7db015e365c71e58f710f88c2100a683ce81eea4a96d29a9598eac2f6c2",
+      "repo": "cpral/Bielik-1.5B-v3.0-Instruct-ungated",
+      "revision": "a3a660b10fdba3a7b03c3349567e54d8875f9ac9",
+      "synthetic": false,
+      "loss": "assistant_only",
+      "rank": 8,
+      "lr": 5e-05
+    }
+  ],
+  "excluded_training_papers": [
+    2015,
+    2016,
+    2023,
+    2024
+  ],
+  "essay": "Four actual CKE exemplars; Charlemagne example excluded",
+  "exam_data_or_keys_included": false,
+  "aggregate_adapter_bytes": 80678112,
+  "evaluation_status": "Recovery does not assert score improvement"
+}

@@ -44,6 +44,27 @@
       "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
       "license": "apache-2.0",
       "transfer": "HF server-side cross-repository copy"
+    },
+    {
+      "path": "models/bielik15/adapters-real/closed_with_images/adapter-f16.gguf",
+      "bytes": 16135392,
+      "sha256": "6c5231bc427b237e2fbd9fff56182b68b1880ef348f9106017ffef353b4ab2d9",
+      "commit": "b9df21dc184775f24397b9f30813bf13a82ff616",
+      "verified": true
+    },
+    {
+      "path": "models/bielik15/adapters-real/open_with_images/adapter-f16.gguf",
+      "bytes": 16135392,
+      "sha256": "39364c09119a70381a9bd772ab2fdab14bdcd07cf27f385ad1473da424cad0a3",
+      "commit": "b9df21dc184775f24397b9f30813bf13a82ff616",
+      "verified": true
+    },
+    {
+      "path": "models/bielik15/adapters-real/essay/adapter-f16.gguf",
+      "bytes": 16135392,
+      "sha256": "0021aa278c2d6fb124b2b9ed4bd4aceff2f45b47c9dc92ac87423ca0f13d92ab",
+      "commit": "b9df21dc184775f24397b9f30813bf13a82ff616",
+      "verified": true
     }
   ],
   "commit": "8d8624a48b0fb74537491b7de3f565bdc5da6e52",
@@ -54,14 +75,16 @@
   },
   "trained_specialists_backed_up": [
     "closed_without_images",
-    "open_without_images"
-  ],
-  "pending_clean_specialists": [
+    "open_without_images",
     "closed_with_images",
     "open_with_images",
     "essay"
   ],
+  "pending_clean_specialists": [],
   "exam_data_or_keys_included": false,
   "synthetic_trained_artifacts_included": false,
-  "documentation_commit": "0153d0683f3cf21be40b486b65745376bc213432"
+  "documentation_commit": "bdddf2b493edf9e21c550d351b11ad2c27dca547",
+  "all_five_adapters_commit": "b9df21dc184775f24397b9f30813bf13a82ff616",
+  "aggregate_adapter_bytes": 80678112,
+  "complete_bielik_bundle_bytes": 1062839483
 }

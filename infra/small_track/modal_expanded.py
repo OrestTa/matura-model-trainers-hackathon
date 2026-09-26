@@ -54,6 +54,11 @@ def evaluate(config,paths,rows,images,run):
    assert isinstance(loaded,list) and len(loaded)==len(adapter_paths),'Loaded adapter count does not match declared specialists'
    for i,expected in enumerate(adapter_paths):
     assert any(a.get('id')==i and a.get('path')==expected for a in loaded),'Loaded adapter ID/path mismatch'
+   zero_response=requests.post('http://127.0.0.1:8080/lora-adapters',json=[{'id':i,'scale':0.0} for i in range(len(adapter_paths))],timeout=10);zero_response.raise_for_status()
+   zero_check=requests.get('http://127.0.0.1:8080/lora-adapters',timeout=10);zero_check.raise_for_status();loaded=zero_check.json()
+   assert isinstance(loaded,list) and len(loaded)==len(adapter_paths),'Adapter registry changed during reset'
+   for i,expected in enumerate(adapter_paths):
+    assert any(a.get('id')==i and a.get('path')==expected and a.get('scale')==0 for a in loaded),'Adapter zero-scale initialization failed'
    manifest['verified_loaded_adapters']=loaded
    (dest/'manifest.json').write_text(json.dumps(manifest,indent=2));volume.commit()
   def one(row):
