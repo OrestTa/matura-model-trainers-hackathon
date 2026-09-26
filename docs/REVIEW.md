@@ -7,6 +7,16 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 22:55 CEST: 8e69d7b..e628683 (64 commits) and board 40ec224 (no change)
+
+Verdict: sound, no new flags. The frozen on-stage setting (raw, gemma4-12b-think, THINK_FALLBACK=1, no LoRA) is untouched.
+- New essay helpers (c116e75/f07d25d length guard, 1c23b4b ESSAY_BEST_OF, ESSAY_TARGET_WORDS/ESSAY_MIN_WORDS) are env-gated and off by default (router.py:38-47), so raw mode and the frozen commands in EXAM_DAY_BEST_SCORE.md are unchanged. If any of them is switched on for stage, the base-vs-optimised table needs a run with it.
+- 2f9e7dd/005434b/dab51bc: per-subtype harness on held-out 123 vs raw 122 on 3 papers, OCR notes lost 6.5 points on 26 paired picture items; keeping raw is the right call.
+- Self-distill data (53f5b07, 9d41a50, 44b89bf, 0d718df): build_selfdistill.py drops items sharing >10% of 8-word runs with a held-out item and fails loudly if the held-out file is missing; the SD2 extra papers (CKE mocks, formuła 2015/2005) go through the same filter (docs/DATA.md table). fetch_matura's headline set is unchanged.
+- docs/DATA.md quotes three short CKE item excerpts as samples (a sentence each); same practice as earlier docs, not a copy of a paper.
+- c12ac25: A01 on all four papers 131/240 vs base 163 (rejected). 1211450: subtype_modal now uses its own claude- app and volume (C-054 partly done; modal_job.py still "matura-jobs"). f02c157: Modal credit exhausted.
+- Secrets grep over the diff: clean.
+
 ## 2026-09-26 22:15 CEST: 040fc56..8e69d7b (78 commits) and board 40ec224 (no change)
 
 Verdict: the freeze decision (ship the base, no LoRA) is supported by the committed grades; one doc flag (C-056).
