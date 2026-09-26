@@ -16,7 +16,8 @@ from pathlib import Path
 
 import modal
 
-REPO = Path(__file__).resolve().parents[2]
+# Inside the container this file is /root/subtype_modal.py, without the repo around it.
+REPO = Path(__file__).resolve().parents[2] if modal.is_local() else Path("/src")
 VOL = "/vol"
 volume = modal.Volume.from_name("claude-matura-subtype", create_if_missing=True)
 image = (
