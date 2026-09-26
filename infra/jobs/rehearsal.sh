@@ -44,7 +44,7 @@ for p in $PAPERS; do
   python scripts/make_exam_package.py "$p" --eval "$EVAL" -o "$WORK/packages/$p"
   mkdir -p "$OUT/$p"
   t0=$(date +%s)
-  python scripts/run_exam.py "$WORK/packages/$p" --model "$MODEL" --mode "$MODE" --concurrency 16 \
+  python scripts/run_exam.py "$WORK/packages/$p" --model "$MODEL" --mode "$MODE" --concurrency "${CONCURRENCY:-16}" \
     -o "$OUT/$p/answers.json" || status=1
   n=$(python -c "import json; print(len(json.load(open('$WORK/packages/$p/exam.json'))['items']))")
   printf "%s\t%s\t%s\n" "$p" "$n" "$(( $(date +%s) - t0 ))" | tee -a "$OUT/timing.tsv"
