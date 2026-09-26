@@ -7,6 +7,34 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 14:55 UTC: 00603d6..b0b9604 (size caps, new candidates, Nebius, Solari, Claude synthetic data)
+
+Secrets scan of every added line: no keys, tokens, redeem codes, IPs or account/project IDs. The Nebius runner
+(infra/nebius/nb_job.py) takes the service-account key, project ID and HF_TOKEN from the environment only, and
+keeps the generated S3 key in ~/.nebius/s3.env outside the repo; FINDINGS says the Solari redeem code stays out.
+notes/SIZE_CAP_8GB.md (Grok) omits access details. Tests pass (39); no conflict markers left after 68ca9fe.
+
+- 261d0b2 / 68ca9fe / 9064c57 / d81562f (size caps from two threads at once): consistent with 53ad0d3; the bad merge
+  was fixed. Removed a duplicated gemma3-12b comment in models.yaml (this commit).
+- 639bdc7 (new best-score candidates): Bielik-11B v3 AWQ 6.19 GB, Gemma-4-12B QAT Q4_0 GGUF 6.98 GB, Qwen3.5-9B
+  Q6_K 7.46 GB: all under 8.0 on the stated sizes. OPEN: scripts/serve_exam.sh only starts vLLM, so the two GGUF
+  (llama.cpp) candidates have no on-stage harness yet, and ensure_llama_server clones and builds llama.cpp from
+  GitHub, which must happen before going offline. If a GGUF model wins, serve_exam.sh needs a llama.cpp branch
+  with its LoRA adapters (router adapter_mode: llamacpp).
+- d8503f9 / ed6342a (pretrained Bielik-11B-v2 as the progress-track base with a plain chat template): sensible;
+  the raw baseline and our SFT use the same template, so the progress number is fair.
+- e1209f3 / 9c9cce0 (SINGLE_ADAPTER, EXTRA_TRAIN, TEACHER_HF=none): OK.
+- 2584fed (serve_exam.sh serves pre-quantized AWQ without --quantization): OK.
+- da1f57e / d6ba23f (Nebius Serverless AI Jobs runner): OK, draft; no secrets.
+- 9278ea5 / faf6f32 (Solari: CPU-only credits, no runner): OK.
+- b0b9604 (953 Claude-written items in train_data/claude_synth.jsonl): shapes are checked by merge_synth.py,
+  closed-choice answers are balanced (A 33, B 38, C 37, D 35). 8-word overlap with the headline eval is only
+  instruction boilerplate ("jest prawdziwe albo F, jeśli jest fałszywe", "Dokończ zdanie. Zaznacz…") plus one
+  item quoting the Communist Manifesto, which asked for its authors, the same question and answer as eval item
+  2023-05-z16.2. Removed that item (this commit, 952 left). Content-word similarity to any eval item is at most
+  0.23 (boilerplate), so no other near-copies. Caveat: the writer model may know the 2023-2025 papers; the
+  2026-05 paper is the cleanest check of any gain from this data.
+
 ## 2026-09-26 14:40 UTC: new size limits (base 8.0 GB, fine-tuned 8.8 GB) and 2eeda9e..a1f8ae5
 
 Size limits corrected by Orest: base before fine-tuning <= 8.0 GB, fine-tuned model as shipped <= 8.8 GB.

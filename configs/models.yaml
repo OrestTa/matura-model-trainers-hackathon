@@ -89,9 +89,6 @@ models:
     hf_id: google/gemma-3-12b-it
     params_b: 12.2
     quantization: bitsandbytes
-    # NF4 estimate: ~5.7 GB of 4-bit linears + 2.0 GB bf16 embedding (262k vocab) + ~0.8 GB
-    # bf16 vision tower: over the 8.0 GB base limit, so MODELS=all skips it. Measure with
-    # quantize_checkpoint.py before relying on it.
     disk_gb: 8.4
   # Small-model category ("Mały, ale wariat": smallest model scoring >= 35%).
   bielik-4.5b:
