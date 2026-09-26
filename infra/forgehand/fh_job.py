@@ -21,7 +21,7 @@ detached with nohup. Outputs go to /workspace/work/out/<job>-<time>/, the log to
 /workspace/work/<job>-<time>.log; the venv and adapters live in /workspace/work; Hugging Face
 downloads are cached in /team/hf so every session and workspace reuses them.
 WORKSPACE (default: the team workspace below) selects another workspace.
-WAIT_GPU=1 makes `run` wait until the GPU is free (the team may run only one GPU session).
+AFTER=<run name> queues a run behind another; WAIT_GPU=1 makes `run` wait until the GPU is free (the team may run only one GPU session).
 start, run, stop and a `log` that sees the job finish update docs/STATUS.md on main.
 """
 import base64, io, json, os, re, shlex, ssl, subprocess, sys, tarfile, time, uuid
@@ -170,6 +170,10 @@ def main():
         wait = ("while [ $(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | "
                 "sort -n | tail -1) -gt 2000 ]; do echo waiting for a free GPU; sleep 60; done"
                 if os.environ.get("WAIT_GPU") == "1" else "")
+        # AFTER=<run name>: start only once that run's log says it finished.
+        if os.environ.get("AFTER"):
+            wait = (f"until grep -q 'done (exit' /workspace/work/{os.environ['AFTER']}.log; do "
+                    f"echo waiting for {os.environ['AFTER']}; sleep 60; done\n") + wait
         # Fresh code dir per run; venv, adapters and HF cache are shared across runs.
         script = (f"set -e\nmkdir -p /workspace/runs/{name} /workspace/work /team/hf\n"
                   f"tar xzf /workspace/work/upload/{name}.tar.gz -C /workspace/runs/{name}\n"
