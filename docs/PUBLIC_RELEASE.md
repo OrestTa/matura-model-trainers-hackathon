@@ -22,7 +22,7 @@ key only. Team name and GitHub handle appear on purpose.
 
 | What | Where it was | Risk |
 |---|---|---|
-| `docs/hackathon-brief.pdf` with the door code | added in ac49a23 | venue access code, organiser's file |
+| `docs/hackathon-brief.pdf` with the door code | added in 58d5dce | venue access code, organiser's file |
 | GPU VM public IP | docs/STATUS.md, docs/FINDINGS.md, dashboard seed | VM is reachable over SSH |
 | Second IP (localtunnel "password" IP) and a `*.loca.lt` URL | README / dashboard, later removed | tunnel is dead; IP identifies a host |
 | AWS account ID | infra/aws/AWS_INFRA.md, notes/AWS_INFRA.md | low (not a credential) |
