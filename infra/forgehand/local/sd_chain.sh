@@ -50,7 +50,7 @@ stop
 # 6. eval exactly like the base (raw, 2k thinking, THINK_FALLBACK, pictures), essays on the base + length guard
 mkdir -p /scratch/work/adapters-SD1-serve/gemma4-12b-think && ln -sfn $D /scratch/work/adapters-SD1-serve/gemma4-12b-think/all
 export EVAL=$SRC LLAMA_SERVER=$LS THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 \
-  LORA_NO_ESSAY=1 ESSAY_MIN_WORDS=${ESSAY_MIN_WORDS:-350}
+  LORA_NO_ESSAY=1 ESSAY_MIN_WORDS=${ESSAY_MIN_WORDS:-0}  # 0 = no length guard (blind grid: guard cost 7/150)
 for P in ${PAPERS:-probny-2026-01 2023-05 2024-05 2025-05 2026-05}; do
   id=matura-infer-gemma4-12b-think-sd1-raw-$P-$(date -u -d '+2 hours' +%Y%m%d-%H%M)-sd1e
   log "START eval $P"
@@ -58,7 +58,7 @@ for P in ${PAPERS:-probny-2026-01 2023-05 2024-05 2025-05 2026-05}; do
     NAME=$id OUT=/scratch/out/$id bash infra/jobs/rehearsal.sh > /scratch/out/$id.console 2>&1
   log "END eval $P rc=$? -> /scratch/out/$id"
 done
-# 7. the base in the same setting with the same essay guard (apples to apples; also the guard's own test)
+# 7. the base in the same setting (apples to apples)
 mkdir -p /scratch/work/adapters-none
 for P in ${PAPERS:-probny-2026-01 2023-05 2024-05 2025-05 2026-05}; do
   id=matura-infer-gemma4-12b-think-base-guard-raw-$P-$(date -u -d '+2 hours' +%Y%m%d-%H%M)-bg35

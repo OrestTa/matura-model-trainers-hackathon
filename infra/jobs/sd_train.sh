@@ -36,11 +36,11 @@ python "$WORK/llama.cpp/convert_lora_to_gguf.py" --base-model-id google/gemma-4-
   --outfile "$AD/adapter.gguf" "$AD" > "$OUT/gguf.log" 2>&1 || { tail -20 "$OUT/gguf.log"; finish 1; }
 mkdir -p "$OUT/adapter" && cp "$AD"/adapter.gguf "$AD"/adapter_config.json "$AD"/adapter_model.safetensors "$AD"/train_meta.json "$OUT/adapter/"
 sync_out 2>/dev/null || true
-step "eval SD1: raw, 2k thinking, THINK_FALLBACK, essays on the base (LORA_NO_ESSAY) + ESSAY_MIN_WORDS=350"
+step "eval SD1: raw, 2k thinking, THINK_FALLBACK, essays on the base (LORA_NO_ESSAY), no length guard"
 mkdir -p "$WORK/serve-SD1" && ln -sfn "$AD" "$WORK/serve-SD1/all"
 for P in ${PAPERS:-probny-2026-01 2023-05 2024-05 2025-05 2026-05}; do
   env MODEL=gemma4-12b-think MODE=raw CONCURRENCY=16 ADAPTERS="$WORK/serve-SD1" PAPERS="$P" EVAL="$REPO/data/eval/matura_all.jsonl" \
-    THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 LORA_NO_ESSAY=1 ESSAY_MIN_WORDS=350 \
+    THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 LORA_NO_ESSAY=1 ESSAY_MIN_WORDS=0 \
     NAME="$NAME-$P" OUT="$OUT/eval/$P" bash infra/jobs/rehearsal.sh > "$OUT/eval-$P.console" 2>&1
   step "eval $P rc=$?"; sync_out 2>/dev/null || true
 done
