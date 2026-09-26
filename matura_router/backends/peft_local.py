@@ -1,6 +1,6 @@
 """In-process backend: transformers + PEFT, all adapters loaded on one base model.
 
-Needs `pip install -e .[peft]`. Loading in 4-bit keeps an ~11B base under 8 GB;
+Needs `pip install -e .[peft]`. Loading in 4-bit keeps an ~11B base under the 8.9 GB limit;
 adapters are a few tens of MB each and don't count toward the limit.
 """
 
