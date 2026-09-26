@@ -12,6 +12,7 @@ closed_text:
   v3: {votes: 3}
   rag: {votes: 1, rag: true}
   nothink: {think: false}            # the old routed setup (5 votes on choice / P-F)
+  t2k: {votes: 1, think_tokens: 2000}  # 2k graded better than 8k overall (77 vs 84 pts, 2023+2024)
 
 closed_image:
   base: {votes: 1}
@@ -19,12 +20,14 @@ closed_image:
   ocr: {votes: 1, ocr: true}
   look_ocr: {votes: 1, ocr: true, prompt_suffix: *look}
   nothink: {think: false}
+  t2k: {votes: 1, think_tokens: 2000}
 
 open_text:
   base: {}
   rag: {rag: true}
   facts: {prompt_suffix: *facts, max_tokens: 384}
   nothink: {think: false}
+  t2k: {think_tokens: 2000}
 
 open_image:
   base: {}
@@ -32,9 +35,11 @@ open_image:
   look_ocr: {ocr: true, prompt_suffix: *look}
   rag_ocr: {rag: true, ocr: true}
   nothink: {think: false}
+  t2k: {think_tokens: 2000}
 
 essay:
   base: {think_tokens: 16384}
   plan: {think_tokens: 16384, prompt_suffix: *essay_plan, max_tokens: 2600}
   rag_plan: {think_tokens: 16384, rag: true, prompt_suffix: *essay_plan, max_tokens: 2600}
   t4k: {think_tokens: 4096}
+  t2k: {think_tokens: 2000}
