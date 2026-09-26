@@ -105,6 +105,19 @@ if [ "${SINGLE_ADAPTER:-0}" = 1 ]; then  # the one adapter answers every route
     done
   done
 fi
+# GGUF models (llama.cpp) take their LoRAs as GGUF files: convert every trained adapter.
+for m in ${TRAIN_MODELS//,/ }; do
+  base=$(python -c "import yaml; s=yaml.safe_load(open('${MODELS_CONFIG:-configs/models.yaml}'))['models']['$m']; print(s.get('train_hf_id', '') if s.get('server') == 'llamacpp' else '')")
+  [ -n "$base" ] || continue
+  ensure_llama_server || { step "llama.cpp missing: can't convert $m adapters"; finish 1; }
+  pip install -q -e "$WORK/llama.cpp/gguf-py" 2>/dev/null || pip install -q gguf
+  for d in "$WORK"/adapters/$m/*/; do
+    [ -L "${d%/}" ] || [ ! -f "$d/adapter_config.json" ] && continue   # symlinked routes share one file
+    python "$WORK/llama.cpp/convert_lora_to_gguf.py" --base-model-id "$base" --outtype f16 \
+      --outfile "$d/adapter.gguf" "$d" > "$OUT/train_logs/$m-$(basename "$d")-gguf.log" 2>&1 \
+      && step "GGUF LoRA: $d/adapter.gguf" || { step "GGUF conversion failed for $d"; finish 1; }
+  done
+done
 # Without adapters the "adapters" mode silently equals "routed"; don't publish that.
 ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapter trained"; finish 1; }
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"

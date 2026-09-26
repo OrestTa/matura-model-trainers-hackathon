@@ -60,8 +60,10 @@ class OpenAICompatBackend(Backend):
                 body["model"] = adapter
         else:
             # llama.cpp keeps every loaded adapter at scale 0 unless listed here.
-            body["lora"] = [{"id": i, "scale": 1.0 if name == adapter else 0.0}
-                            for name, i in self.lora_ids.items()]
+            # Several route names may share one file (a single adapter for every type): one entry per id.
+            on = self.lora_ids.get(adapter) if adapter else None
+            body["lora"] = [{"id": i, "scale": 1.0 if i == on else 0.0}
+                            for i in sorted(set(self.lora_ids.values()))]
         return body
 
     def chat(self, messages, adapter, params: GenerationParams) -> str:

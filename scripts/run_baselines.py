@@ -78,8 +78,25 @@ def served_weights(key: str, spec: dict) -> str:
     return str(ckpt) if (ckpt / "config.json").exists() else spec["hf_id"]
 
 
+def llamacpp_loras(key: str, adapters_dir: Path | None) -> tuple[list[Path], dict[str, int]]:
+    """GGUF LoRAs (adapters/<model>/<category>/adapter.gguf, made by train.sh) for llama-server:
+    the unique files, and each category name -> the file's index (llama.cpp's per-request `lora`)."""
+    if not adapters_dir:
+        return [], {}
+    files: list[Path] = []
+    ids: dict[str, int] = {}
+    for d in sorted((adapters_dir / key).glob("*")):
+        f = d / "adapter.gguf"
+        if f.exists():
+            real = f.resolve()
+            if real not in files:
+                files.append(real)
+            ids[d.name] = files.index(real)
+    return files, ids
+
+
 def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
-                   log_path: Path) -> subprocess.Popen:
+                   log_path: Path, adapters_dir: Path | None = None) -> subprocess.Popen:
     """GGUF models (`server: llamacpp`) run on llama.cpp's OpenAI-compatible llama-server
     (LLAMA_SERVER, built by infra/jobs/common.sh `ensure_llama_server`)."""
     slots = int(spec.get("parallel", 16))
@@ -87,6 +104,11 @@ def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
            "--alias", "base", "--host", "127.0.0.1", "--port", str(port), "-ngl", "999",
            "--parallel", str(slots), "-c", str(slots * int(vcfg.get("max_model_len", 8192))),
            "--jinja", "-fa", "on", "--no-webui"] + list(spec.get("llamacpp_args", []))
+    loras, _ = llamacpp_loras(key, adapters_dir)
+    for f in loras:  # loaded at scale 0; the router turns one on per request (adapters mode only)
+        cmd += ["--lora", str(f)]
+    if loras:
+        cmd += ["--lora-init-without-apply"]
     if spec.get("vision") and spec.get("mmproj_file"):  # the vision projector, a second GGUF
         from huggingface_hub import hf_hub_download
         cmd += ["--mmproj", hf_hub_download(spec["hf_id"], spec["mmproj_file"])]
@@ -99,7 +121,7 @@ def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
 def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: Path,
                adapters_dir: Path | None, util: float | None = None) -> subprocess.Popen:
     if spec.get("server") == "llamacpp":
-        return start_llamacpp(key, spec, vcfg, gpu, port, log_path)
+        return start_llamacpp(key, spec, vcfg, gpu, port, log_path, adapters_dir)
     cmd = ["vllm", "serve", served_weights(key, spec), "--served-model-name", "base",
            "--port", str(port), "--max-model-len", str(vcfg.get("max_model_len", 8192)),
            "--gpu-memory-utilization", f"{util or vcfg.get('gpu_memory_utilization', 0.9):.3f}"]
@@ -123,8 +145,12 @@ def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: 
 
 
 def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> None:
+    lora_ids = {}
+    if spec.get("server") == "llamacpp":
+        _, lora_ids = llamacpp_loras(key, Path(args.adapters_dir) if args.adapters_dir else None)
     backend = OpenAICompatBackend(base_url=base_url, base_model="base",
-                                  extra_body=spec.get("extra_body"))
+                                  extra_body=spec.get("extra_body"),
+                                  **({"adapter_mode": "llamacpp", "llamacpp_lora_ids": lora_ids} if lora_ids else {}))
     router = Router.from_config(args.routes, backend=backend)
     router.apply_model(spec)  # models.yaml: vision (pictures), think_tokens (reasoning budget)
     if "rag" in args.modes and router.retriever is None:

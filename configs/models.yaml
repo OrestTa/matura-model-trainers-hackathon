@@ -53,6 +53,10 @@ models:
     gguf_file: gemma-4-12b-it-qat-q4_0.gguf
     mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
     vision: true      # the exam sends PNGs; eval rows carry them with fetch_matura.py --images
+    # LoRA: trained on the QAT weights before packing (bf16, not gated), language model only,
+    # converted to a GGUF LoRA (train.sh) that llama-server applies on top of the q4_0 file.
+    train_hf_id: google/gemma-4-12B-it-qat-q4_0-unquantized
+    lora_target: '.*language_model.*\.(q_proj|k_proj|v_proj|o_proj|gate_proj|up_proj|down_proj)$'
     server: llamacpp
     params_b: 12.0
     disk_gb: 7.16     # 6.98 model + 0.18 mmproj

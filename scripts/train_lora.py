@@ -81,7 +81,8 @@ def main():
         # the adapter then loads onto the quantized weights at serve time.
         model=spec.get("train_hf_id") or spec["hf_id"], train_dataset=ds, args=SFTConfig(**cfg_kwargs), **extra,
         peft_config=LoraConfig(r=args.rank, lora_alpha=2 * args.rank, lora_dropout=0.05,
-                               target_modules="all-linear", task_type="CAUSAL_LM"),
+                               target_modules=spec.get("lora_target") or "all-linear",  # a regex keeps LoRA off vision layers
+                               task_type="CAUSAL_LM"),
     )
     result = trainer.train()
     trainer.save_model(str(out))
