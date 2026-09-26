@@ -1,51 +1,30 @@
-# Warsaw Model Trainers - status (box)
+# Job status
 
-Updated: 2026-09-26 ~12:32 (Europe/Warsaw)
+Live table of GPU jobs, one row per job, newest first. Written by
+`infra/jobs/status.py` (the job wrappers call it); pull before reading.
+Times are UTC.
 
-## Live practice
-- Team Tarasiuk Lab - practice board ~#2
-- Base `e109c73d-...`: 14 / 15 (missed GEO-025)
-- Tuned v1 `7bd1dd95-...`: 14 / 15 (finished ~09:31 Warsaw; GEO-025=A wrong)
-- Tuned v2 `d211824b-...`: 15 / 15 (finished ~10:45 Warsaw; GEO-025=`C` via `public_answer_consensus`)
-- `probny_best` = 15; practice perfect - no further probny retries needed
-- Artifact: `runs/official/probny-tuned-v2-live.json` (answers from `probny-tuned-v2-answers.json`)
-
-## Honest bare-model local geo estimate: 4/15 pts - NOT the filed practice base which used harness
-- Model: Qwen2.5-3B-Instruct, greedy, no `try_deterministic`, no RAG
-- Script: `harness/bare_geo_eval.py` -> `runs/official/probny-bare-model-local.json` (+ `.log`)
-- Correct: GEO-006, GEO-019, GEO-028, GEO-029
-- Wrong: GEO-001, GEO-003, GEO-004, GEO-005 (2pt), GEO-011, GEO-013, GEO-014, GEO-015, GEO-023, GEO-025
-- GEO-025 caveat: placeholder options A/B/C/D only -> `method=opaque_options` (model guessed D; gold C) - not a fair item for bare LLM
-- Fairable subset (excl. GEO-025): 4/14 pts on 13 items (max 14 without the opaque 1pt)
-- Optional 1.5B same harness: 3/15 pts -> `runs/official/probny-bare-1.5b-local.json` (correct: GEO-006, GEO-013, GEO-019)
-
-## Stack
-- Declared base: Qwen2.5-3B-Instruct ~5.8 GB
-- Sunday size rule: declared base must stay <=8.0 GB on disk; after fine-tuning / shipped form must stay <=8.8 GB total
-- Oversize lanes cancelled for Sunday declare: Bielik-11B bf16 and Qwen2.5-7B bf16-as-base
-- Preferred lanes now: Qwen2.5-3B as the safe default, or a quantized Qwen2.5-7B only if measured <=8.0 GB base and <=8.8 GB after FT
-- Also on disk: Qwen2.5-1.5B-Instruct ~2.9 GB - baseline history 48/90 (53.3%), first30 14/30 (46.7%) (clears >=35%)
-- Bielik: gated stub only
-- History LoRA v1: 27/40 = 67.5%
-- History LoRA v2: trained 120/120 on 90 MCQs; full-90 eval 68/90 = 75.6% (first 30: 20/30 = 66.7% vs baseline 15/30)
-- Modal GPU LoRA (L4, bf16, r=16/a=32, q/k/v/o_proj, 270 steps = 3x90) - COMPLETED ~12:31 Warsaw
-  - 3B v3: app `ap-jZI7wqs9siZtbENVUk6YCM` - train ~102s - mean_loss~=0.595 - volume `matura/lora-3b-v3/` - box `runs/lora/modal-3b-v3/`
-  - 1.5B v1: app `ap-ClF9KedVfK86Wg7OT6tTck` - train ~79s - mean_loss~=0.675 - volume `matura/lora-1.5b-v1/` - box `runs/lora/modal-1.5b-v1/`
-  - Script: `harness/modal_lora_train.py` - notes: `notes/MODAL_TRAIN.md`
-  - Billing after runs: metered ~$2.27 (was ~$2.18), billed $0.00 (credits)
-  - Local history eval of Modal adapters: not run yet (optional)
-- Geo harness: 13/14 deterministic + GEO-025 public_answer_consensus -> 15/15 practice
-- RAG 93 - History MCQ 90
-- Client: `harness/k3exam.py` (stand-in; start_run returns question count, not bodies)
-
-## Tracks / next
-1. Practice tuned 15/15 locked - done
-2. Modal LoRA 3B v3 + 1.5B v1 trained on L4 - download done; run local_eval next
-3. Bare geo baseline locked (3B 4/15; 1.5B 3/15) - contrast vs harness 15/15
-4. Final still locked (`final_unlocked=false`) until Sunday 11:00
-5. Sunday: true bare base then harness+LoRA+local RAG for finalny
-
-## In progress
-- Practice GEO-025 retry complete (15/15)
-- Modal LoRA jobs COMPLETED (both stopped successfully)
-- Next: `local_eval.py --adapter runs/lora/modal-3b-v3` (and 1.5B) vs history MCQ
+| job | what | where | state | started | updated | out | owner |
+|---|---|---|---|---|---|---|---|
+| size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; cancel Bielik-11B/dapt/train | box + Forgehand | active | 2026-09-26 12:33 | 2026-09-26 12:33 | notes/SIZE_CAP_8GB.md | Grok bot |
+| stop-bielik-11b | CANCEL dapt-bielik / train-bielik / 11B baselines / router-ablation-11B — ~22.3 GB illegal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | work/STOP/ | Grok bot |
+| stop-cke-7b-bf16 | SIGTERM cke_7b_fh (+ queued fh-v2): bf16 7B ~15.2 GB not Sunday-legal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | runs/history_eval/ | Grok bot |
+| cke_7b_fh | CKE eval Qwen2.5-7B + forgehand-lora-7b-fh, routed (~20 GB) | Forgehand L40S, tmux gpu_par | CANCEL_REQUESTED (bf16 base>8GB) (~15.3 GiB VRAM; started after 3B wave freed room) | 2026-09-26 12:13 | 2026-09-26 12:13 | runs/history_eval/cke_7b_fh.json | Grok bot |
+| cke_3b_history_v2 | CKE eval Qwen2.5-3B + history-v2 LoRA, routed, matura.jsonl (~9 GB) | Forgehand L40S, tmux gpu_par (MPS+budget scheduler) | running (parallel with cke_7b_fh) | 2026-09-26 12:02 | 2026-09-26 12:13 | runs/history_eval/cke_3b_history_v2.json | Grok bot |
+| gpu_par | scripts/gpu_parallel_jobs.sh queue-worker: MCQ/CKE wave on one L40S (MPS + reserved MiB) | Forgehand L40S, tmux gpu_par | running (live: cke_3b_history_v2 + cke_7b_fh; queue: cke_7b_fh_v2 @20 GB) | 2026-09-26 11:42 | 2026-09-26 12:13 | runs/history_eval/parallel/ | Grok bot |
+| cke_7b_fh_v2 | CKE eval Qwen2.5-7B + forgehand-lora-7b-fh-v2, routed (~20 GB) | Forgehand L40S, gpu_par queue | CANCEL_REQUESTED (bf16 base>8GB): after cke_7b_fh / history_v2 free ~20 GB | 2026-09-26 11:42 | 2026-09-26 12:13 | runs/history_eval/cke_7b_fh_v2.json | Grok bot |
+| cke_3b_modal_v3 | CKE eval Qwen2.5-3B + modal-3b-v3 LoRA, routed, matura.jsonl (~9 GB) | Forgehand L40S, tmux gpu_par | completed (scored 60/154, 12/70=17.1%) | 2026-09-26 11:43 | 2026-09-26 12:13 | runs/history_eval/cke_3b_modal_v3.summary.json | Grok bot |
+| cke_3b_base | CKE eval Qwen2.5-3B base, routed, matura.jsonl (~9 GB) | Forgehand L40S, tmux gpu_par | completed (scored 60/154, 18.67/70=26.7%) | 2026-09-26 11:45 | 2026-09-26 12:13 | runs/history_eval/cke_3b_base.summary.json | Grok bot |
+| cke_7b_base | CKE eval Qwen2.5-7B base, routed, matura.jsonl (was ~20 GB) | Forgehand L40S, tmux gpu_par | completed (scored 60/154, 26/70=37.1%) | 2026-09-26 11:44 | 2026-09-26 12:13 | runs/history_eval/cke_7b_base.summary.json | Grok bot |
+| mcq_7b_fh_v2 | history MCQ 90: Qwen2.5-7B + fh-v2 LoRA (train-overlap risk) | Forgehand L40S, tmux gpu_par | completed (89/90 = 98.9%) | 2026-09-26 11:44 | 2026-09-26 12:13 | runs/history_eval/mcq_7b_fh_v2.summary.json | Grok bot |
+| mcq_7b_fh | history MCQ 90: Qwen2.5-7B + fh LoRA (train-overlap risk) | Forgehand L40S, tmux gpu_par | completed (90/90 = 100%) | 2026-09-26 11:43 | 2026-09-26 12:13 | runs/history_eval/mcq_7b_fh.summary.json | Grok bot |
+| mcq_7b_base | history MCQ 90: Qwen2.5-7B base | Forgehand L40S, tmux gpu_par | completed (69/90 = 76.7%) | 2026-09-26 11:42 | 2026-09-26 12:13 | runs/history_eval/mcq_7b_base.summary.json | Grok bot |
+| dl7b | download Qwen/Qwen2.5-7B-Instruct into HF hub cache for CKE/MCQ | Forgehand L40S, tmux dl7b | completed (download exit 0; irrelevant for further GPU) | 2026-09-26 11:42 | 2026-09-26 12:13 | HF hub cache Qwen2.5-7B-Instruct | Grok bot |
+| grok-lora-7b-fh-v2 | Grok bot: harness/forgehand_lora_train.py --model-size 7b, 80 rows, tag lora-7b-fh-v2, 2000 steps | Forgehand L40S, tmux train | completed (TRAIN_V2_EXIT:0; adapter forgehand-lora-7b-fh-v2) | 2026-09-26 11:06 | 2026-09-26 12:13 | runs/lora/forgehand-lora-7b-fh-v2 | Grok bot |
+| baselines-all2 | baselines, all 16 papers, bielik-11b + qwen3-8b + qwen3-1.7b side by side (gated models need HF_TOKEN) | Forgehand L40S | CANCEL_REQUESTED for 11B serve (<=8GB bases OK) (Python 3.12 venv) | 2026-09-26 12:05 | 2026-09-26 12:05 | /workspace/work/out/baselines-all2 | Modal compute setup thread |
+| dapt-bielik | dapt DAPT_MODEL=bielik-11b DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand L40S | CANCEL_REQUESTED (11B>8GB): after dapt-prep, then waits for 36 GB of GPU (code cebc119+, filtered FineWeb) | 2026-09-26 11:46 | 2026-09-26 11:51 | /workspace/work/out/dapt-bielik | Polish Wikipedia thread |
+| baselines-all | baselines, all 16 papers (573 items), models side by side, no judge | Forgehand L40S | failed: vLLM 0.27.1 flashinfer import error on Python 3.11; replaced by baselines-all2 | 2026-09-26 11:46 | 2026-09-26 12:05 | /workspace/work/out/baselines-all | Modal compute setup thread |
+| dapt-prep | dapt PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand L40S | running | 2026-09-26 11:41 | 2026-09-26 11:41 | /workspace/work/out/dapt-prep | Polish Wikipedia thread |
+| router-ablation | bielik-11b MODES=raw,routed,rag on headline eval (needs data/kb from build_kb.py); measures template+voting+RAG gains | next free GPU | queued: wants a GPU after labqoat-baselines | 2026-09-26 11:13 | 2026-09-26 11:13 | work/out/router-ablation | Question router thread |
+| train-bielik-l40s | train TRAIN_MODELS=bielik-11b-dapt VLLM_UTIL=0.8 | Forgehand L40S | CANCEL_REQUESTED (11B>8GB): after dapt-bielik, SFT on the DAPT model (code d09ac3d) | 2026-09-26 10:58 | 2026-09-26 12:05 | /workspace/work/out/train-bielik-l40s | Modal compute setup thread |
+| labqoat-baselines | baselines on all 16 papers (matura_all.jsonl, 573 items), no judge | Forgehand L40S | superseded by baselines-all: old sequential code on vLLM 0.30 (no bitsandbytes), will fail | 2026-09-26 10:58 | 2026-09-26 11:46 | /workspace/work/out/labqoat-baselines | Modal compute setup thread |
