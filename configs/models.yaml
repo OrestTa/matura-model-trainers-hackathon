@@ -19,6 +19,14 @@ models:
     params_b: 11.2
     quantization: bitsandbytes
     disk_gb: 6.5
+  # Bielik-11B after continued pretraining on Polish history text (infra/jobs/dapt.sh merges
+  # the domain LoRA into it). Path on the Forgehand box; TRAIN_MODELS=bielik-11b-dapt trains
+  # the per-type adapters on top of it. Skipped by MODELS=all until it exists.
+  bielik-11b-dapt:
+    hf_id: /workspace/work/models/bielik-11b-dapt
+    params_b: 11.2
+    quantization: bitsandbytes
+    disk_gb: 6.5
   qwen3-8b:
     hf_id: Qwen/Qwen3-8B
     params_b: 8.2

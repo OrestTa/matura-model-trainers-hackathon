@@ -88,7 +88,7 @@ python scripts/corpus/plwiki.py search "unia lubelska 1569"
 ```
 
 This writes `data/rag/plwiki.sqlite` (every Polish Wikipedia article plus Wikisource primary
-sources and Wolne Lektury, ~150-word passages, SQLite FTS5; about 1 h on 4 CPUs) and history
+sources and Wolne Lektury, ~100-word passages, SQLite FTS5; about 1 h on 4 CPUs) and history
 slices in `data/dapt/*.jsonl`. Point `rag.path` in `configs/routes.yaml` at the `.sqlite` file
 to use it; `matura_router/rag.py` detects its schema. Paragraphs that share an 8-word run with
 the eval set are dropped. On the GPU box, `PREP_ONLY=1 bash infra/jobs/dapt.sh` does the same

@@ -144,7 +144,10 @@ def main():
     cfg = yaml.safe_load(Path(args.models_config).read_text())
     models = cfg["models"]
     # "all" = every model we could ship; the -bf16 reference entries are over the size limit.
-    keys = [k for k in models if not k.endswith("-bf16")] if args.models == "all" else args.models.split(",")
+    # Local checkpoints (hf_id is a path, e.g. the DAPT-merged model) join "all" only once they exist.
+    keys = ([k for k in models if not k.endswith("-bf16")
+             and not (models[k]["hf_id"].startswith("/") and not Path(models[k]["hf_id"]).exists())]
+            if args.models == "all" else args.models.split(","))
     unknown = [k for k in keys if k not in models]
     if unknown:
         p.error(f"unknown models: {unknown}")

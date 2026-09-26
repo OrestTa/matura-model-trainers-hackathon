@@ -10,7 +10,7 @@ Source: Hugging Face `wikimedia/wikipedia`, config 20231101.pl (1.6M articles, p
 CC BY-SA 4.0 / GFDL). Only this script is in the repo; the data is not.
 
 Outputs (both under data/, gitignored):
-- data/rag/plwiki.sqlite: every article split into ~150-word passages, with an SQLite FTS5
+- data/rag/plwiki.sqlite: every article split into ~100-word (~700-char) passages, with an SQLite FTS5
   index. Stdlib only at query time (sqlite3), no GPU, no internet: this is the exam-day
   knowledge base. It sits beside the model and does not count toward the 8 GB model limit.
   Polish inflects heavily, so the index holds 6-letter word prefixes ("powstania" and
@@ -139,7 +139,7 @@ def paragraphs(text: str) -> list[str]:
     return out
 
 
-def passages(title: str, pars: list[str], target: int = 150) -> list[str]:
+def passages(title: str, pars: list[str], target: int = 100) -> list[str]:
     """Groups paragraphs into ~target-word passages; very long paragraphs are split."""
     out, cur, n = [], [], 0
     for p in pars:
