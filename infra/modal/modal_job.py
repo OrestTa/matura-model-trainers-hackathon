@@ -81,8 +81,14 @@ def run_job(job: str, env: str, name: str) -> int:
         prep += " && python3 scripts/build_train_from_papers.py"
     if not Path("/repo/data/eval/matura.jsonl").is_file() or job == "train":
         subprocess.run(prep, shell=True, env=job_env, check=True)
+    if job == "papers":  # infra/jobs/gemma_papers.sh; LORA_FROM=<train job> applies its single adapter
+        if job_env.get("LORA_FROM"):
+            job_env["LORA"] = f"{VOL}/out/{job_env['LORA_FROM']}/adapters/gemma4-12b/all/adapter.gguf"
+        job_env.setdefault("EVAL", "/repo/data/eval/matura.jsonl")
+        job_env["WORK"] = "/work"
     # Commit the volume every few minutes so partial results survive a crash or timeout.
-    proc = subprocess.Popen(["bash", f"/repo/infra/jobs/{job}.sh"], env=job_env)
+    script = "gemma_papers" if job == "papers" else job
+    proc = subprocess.Popen(["bash", f"/repo/infra/jobs/{script}.sh"], env=job_env)
     while proc.poll() is None:
         time.sleep(60)
         if int(time.time()) % 300 < 60:

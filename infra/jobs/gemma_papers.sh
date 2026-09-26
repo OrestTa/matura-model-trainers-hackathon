@@ -5,6 +5,7 @@
 # The lean twin of rehearsal.sh for the llama.cpp CUDA image (infra/modal/claude_gemma.py). Env:
 #   MODEL=gemma4-12b-think8k  PAPERS="probny-2026-01"  MODE=raw  EVAL=data/eval/matura_all.jsonl
 #   OUT=work/out/gemma-papers  LLAMA_SERVER=/app/llama-server
+#   LORA=/path/adapter.gguf   a GGUF LoRA applied to every request (static, scale 1)
 set -uo pipefail
 cd "$(dirname "$0")/../.."
 MODEL="${MODEL:-gemma4-12b-think8k}"; PAPERS="${PAPERS:-probny-2026-01}"; MODE="${MODE:-raw}"
@@ -30,7 +31,7 @@ PY
 [ -s "$GGUF" ] || { step "download failed"; exit 1; }
 
 step "llama-server, $SLOTS slots x $CTX"
-"$LLAMA_SERVER" -m "$GGUF" ${MMPROJ:+--mmproj "$MMPROJ"} --alias base --host 127.0.0.1 --port 8000 -ngl 999 \
+"$LLAMA_SERVER" -m "$GGUF" ${MMPROJ:+--mmproj "$MMPROJ"} ${LORA:+--lora "$LORA"} --alias base --host 127.0.0.1 --port 8000 -ngl 999 \
   --parallel "$SLOTS" -c $((SLOTS * CTX)) --jinja -fa on --no-webui > "$OUT/llama-server.log" 2>&1 &
 SRV=$!
 trap 'kill $SRV 2>/dev/null' EXIT
