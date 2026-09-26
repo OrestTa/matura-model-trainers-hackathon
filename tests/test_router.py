@@ -148,3 +148,24 @@ def test_subtype_profiles_budget_and_thinking():
     assert off.params.extra["chat_template_kwargs"]["enable_thinking"] is False
     res = r.answer("Napisz wypracowanie na temat unii lubelskiej.", mode="subtype")
     assert res.subtype == "essay" and res.profile
+
+
+def test_keyed_answer_format():
+    """The organisers' closed answer_format ("1: P\\n2: F", "A: 1\\nB: 1", "1: A\\n2: A")."""
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    from run_exam import answer_format_text
+    from matura_router.prompts import conform_keyed, keyed_format
+
+    q = "Oceń prawdziwość.\n" + answer_format_text("1: P\n2: F\n3: P")
+    assert "P" not in q.split("składni")[-1].replace("P", "", 0) or "1: …" in q
+    keys = keyed_format(q)
+    assert keys == ["1", "2", "3"]
+    assert conform_keyed("1. Prawda\n2. fałsz\n3) P", keys) == "1: P\n2: F\n3: P"
+    assert conform_keyed("P, F, F", keys) == "1: P\n2: F\n3: F"
+    assert conform_keyed("1: A\n2: A", ["1", "2"]) == "1: A\n2: A"          # not collapsed to "A"
+    assert conform_keyed("A – 1, B – 3", ["A", "B"]) == "A: 1\nB: 3"
+    assert conform_keyed("nie wiem", keys) == "nie wiem"
+    assert keyed_format("Podaj nazwę.\nTekst po polsku.") == []
+    assert answer_format_text("A") == "Format odpowiedzi: tylko litera (litery) wybranej odpowiedzi."
