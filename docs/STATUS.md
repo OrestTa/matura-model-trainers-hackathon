@@ -16,11 +16,10 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 3. **Before any GPU work:** register the job here with `infra/jobs/status.py` and admit it with
    `python3 infra/jobs/gpu_admit.py <job> <need-gb>`.
 
-Leader summary and hard rules now live in [`../INSIGHTS.md`](../INSIGHTS.md); keep this file job-centric.
-
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
-| matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4 | DAPT Bielik-11B-v2 via QLoRA / bitsandbytes nf4 (DAPT_MERGE=0; live id supersedes 1451-d2fe; KEEP) | Forgehand L40S | running step 16/154 (~10%); ~82-98 s/it; ETA ~22:17 CEST (+/-30m); adapter tree empty at step 16 | 2026-09-26 16:01 | 2026-09-26 16:31 | /scratch/dapt-work-matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4/adapters | Grok bot |
+| forgehand-box-heartbeat | Box heartbeat: L40S 22.1/46 GB used (only the hung DAPT), 4 vCPU/32 GB RAM. /workspace and /team NFS: Permission denied since ~18:31 CEST; new work runs on local /scratch (repo /scratch/repo, venv /scratch/work/venv-py312, HF cache /scratch/hf). | Forgehand L40S session 01a0ddc1 | degraded: NFS down, GPU OK | 2026-09-26 18:01 | 2026-09-26 18:01 | /scratch | Take over the GPU box thread |
+| matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4 | DAPT Bielik-11B-v2 via QLoRA / bitsandbytes nf4 (DAPT_MERGE=0; live id supersedes 1451-d2fe; KEEP) | Forgehand L40S | HUNG (verified 19:40-19:55 CEST: 0% GPU, ~0 CPU, no checkpoint; its /workspace NFS returns Permission denied). Holds 22 GB. Treat as lost. | 2026-09-26 16:01 | 2026-09-26 18:01 | /scratch/dapt-work-matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4/adapters | Take over the GPU box thread |
 | solari-small-cpu-score-20260926-1820 | 7x Solari cpu_score routed heldout jobs (gyms/wuzd/mx1f/31xn/n9wu/6sqy/kum4) | Solari org pool | not_started (0/7; org concurrency 10/10; HTTP 429 ConcurrencyLimitExceeded; Mały fill occupies all 10x8vCPU slots) | 2026-09-26 16:20 | 2026-09-26 16:31 | results/small/quant/ | Grok bot |
 | maly-fill-refill | Mały fill-refill (owner=solari-setup) | Solari sandbox AlIOGLMx... (2 vCPU / 4 GB) | running | 2026-09-26 15:49 | 2026-09-26 15:49 | notes/SOLARI_MALY_FLEET.json | Solari Credits Setup |
 | maly-ocr3f-w5 | Mały OCR wave ocr3f worker 5 (fill) | Solari sandbox Aj1qF05T... (2 vCPU / 4 GB) | running | 2026-09-26 15:48 | 2026-09-26 15:48 | notes/SOLARI_MALY_FLEET.json | Matura Mały ale wariat |
