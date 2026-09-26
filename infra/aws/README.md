@@ -1,6 +1,8 @@
 # AWS training infrastructure
 
 Scripts for running training on AWS GPUs, paid for by AWS Activate credits only.
+For the live account snapshot, GPU VM naming plan, shared SSH public key, and
+current inventory placeholders, see [AWS_INFRA.md](AWS_INFRA.md).
 
 Credentials come from `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`
 (environment settings, never committed), or from 1Password: set `OP_SERVICE_ACCOUNT_TOKEN` and

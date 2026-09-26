@@ -117,6 +117,9 @@ the results and charts to `runs/ec2/<name>/`. The instance powers off when the j
 ends. Set `HF_TOKEN` for Gemma (it is gated). Put the eval set at
 `data/eval/matura.jsonl` (not committed) and it is uploaded with the job.
 
+For the live AWS account snapshot, GPU VM naming plan, and shared SSH public key,
+see [infra/aws/AWS_INFRA.md](infra/aws/AWS_INFRA.md).
+
 Locally against a server you already run:
 
 ```bash
