@@ -11,6 +11,11 @@
 # quantize_checkpoint.py wins. MODELS=all skips entries over ship_limit_gb.
 # Entries with a `-bf16` key are full-precision references, to see what quantization costs.
 #
+# `deck_size_gb` + `ship_precision`: the REFERENCE size, copied from the organisers' benchmark
+# deck (see scripts/model_size.py; Orest, 15:47 CEST: use the deck's sizes, don't compute our own).
+# "not in deck" = the deck lists no figure for that model at the precision we ship; `disk_gb`
+# stays as our old estimate and is only a fallback, labelled "not in deck".
+#
 # Gated models (Gemma) need HF_TOKEN in the environment.
 
 # Organisers (via Orest, 2026-09-26 12:29 UTC): the base model before fine-tuning at most
@@ -21,6 +26,8 @@ finetuned_limit_gb: 8.8
 models:
   # 11.2B: 0.26B bf16 embeddings (0.5 GB) + 10.9B NF4 (6.2 GB). Leaves ~2.1 GB for adapters.
   bielik-11b:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: speakleash/Bielik-11B-v2.3-Instruct
     params_b: 11.2
     quantization: bitsandbytes
@@ -29,6 +36,8 @@ models:
   # checkpoint, 6.19 GB on disk (HF API, measured), not gated, loads natively in vLLM
   # (compressed-tensors, no --quantization flag). Leaves 2.6 GB for adapters under 8.8 GB.
   bielik-11b-v3:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     vision: false
     hf_id: speakleash/Bielik-11B-v3.0-Instruct-awq
     train_hf_id: speakleash/Bielik-11B-v3.0-Instruct   # bf16, gated (auto-approve): needs HF_TOKEN
@@ -38,6 +47,8 @@ models:
   # ever send pictures). Served by llama.cpp (infra/jobs/common.sh ensure_llama_server); Google's
   # vLLM-native w4a16 checkpoint is 10.3 GB because the 262k-vocab embedding stays bf16.
   gemma4-12b:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
     hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
     gguf_file: gemma-4-12b-it-qat-q4_0.gguf
     mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
@@ -48,6 +59,8 @@ models:
     gpu_gb: 14
   # The same Gemma 4 with its thinking mode on (chat template kwarg), 2000 extra tokens per answer.
   gemma4-12b-think:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
     hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
     gguf_file: gemma-4-12b-it-qat-q4_0.gguf
     mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
@@ -61,6 +74,8 @@ models:
   # Qwen3.5 9B (Feb 2026), a vision model: Q5_K_M GGUF 6.58 GB + mmproj-F16 0.92 GB = 7.50 GB
   # (Q6_K + mmproj would be 8.4, over), on llama.cpp.
   qwen3.5-9b:
+    deck_size_gb: {bf16: 19.31, 8bit: 9.65, 4bit: 4.83}
+    ship_precision: 5bit
     hf_id: unsloth/Qwen3.5-9B-GGUF
     gguf_file: Qwen3.5-9B-Q5_K_M.gguf
     mmproj_file: mmproj-F16.gguf
@@ -74,6 +89,8 @@ models:
   # the domain LoRA into it). Path on the Forgehand box; TRAIN_MODELS=bielik-11b-dapt trains
   # the per-type adapters on top of it. Skipped by MODELS=all until it exists.
   bielik-11b-dapt:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: /workspace/work/models/bielik-11b-dapt
     params_b: 11.2
     quantization: bitsandbytes
@@ -83,6 +100,8 @@ models:
   # applies `chat_template` (a neutral plain-text Q/A format ending the answer with </s>) to
   # its tokenizer: the raw baseline and our own SFT use the same format. Ungated.
   bielik-11b-base:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: speakleash/Bielik-11B-v2
     params_b: 11.2
     quantization: bitsandbytes
@@ -90,12 +109,16 @@ models:
     chat_template: configs/chat_templates/plain_pl.jinja
   # bielik-11b-base after DAPT on Polish history text (dapt.sh DAPT_MODEL=bielik-11b-base).
   bielik-11b-base-dapt:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: /workspace/work/models/bielik-11b-base-dapt
     params_b: 11.2
     quantization: bitsandbytes
     disk_gb: 6.7
     chat_template: configs/chat_templates/plain_pl.jinja
   qwen3-8b:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: Qwen/Qwen3-8B
     params_b: 8.2
     quantization: bitsandbytes
@@ -104,27 +127,37 @@ models:
   # Over the 8.0 GB base limit: its 262k-token embeddings alone are 2.0 GB in bf16, so
   # 4-bit NF4 lands at ~8.3 GB. Kept for reference; MODELS=all skips it.
   gemma3-12b:
+    deck_size_gb: not in deck
+    ship_precision: 4bit
     hf_id: google/gemma-3-12b-it
     params_b: 12.2
     quantization: bitsandbytes
     disk_gb: 8.4
   # Small-model category ("Mały, ale wariat": smallest model scoring >= 35%).
   bielik-4.5b:
+    deck_size_gb: {bf16: 9.51}
+    ship_precision: 4bit
     hf_id: speakleash/Bielik-4.5B-v3.0-Instruct
     params_b: 4.6
     quantization: bitsandbytes
     disk_gb: 2.9
   bielik-1.5b:
+    deck_size_gb: {bf16: 3.19}
+    ship_precision: bf16
     hf_id: speakleash/Bielik-1.5B-v3.0-Instruct
     params_b: 1.6
     disk_gb: 3.2
   qwen3-1.7b:
+    deck_size_gb: {bf16: 3.44}
+    ship_precision: bf16
     hf_id: Qwen/Qwen3-1.7B
     params_b: 1.7
     disk_gb: 3.4
     extra_body: {chat_template_kwargs: {enable_thinking: false}}
   # Full-precision reference for the strongest candidate.
   bielik-11b-bf16:
+    deck_size_gb: not in deck
+    ship_precision: bf16
     hf_id: speakleash/Bielik-11B-v2.3-Instruct
     params_b: 11.2
     disk_gb: 22.4

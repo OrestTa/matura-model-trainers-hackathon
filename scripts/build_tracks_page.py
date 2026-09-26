@@ -61,7 +61,24 @@ def eval_kind(path: str, judged: bool) -> str:
     return "dev"
 
 
+def deck_sizes() -> dict:
+    """model key -> (reference GB, source label) from the configs' deck_size_gb (scripts/model_size.py)."""
+    import sys
+    import yaml
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from model_size import deck_size
+    out = {}
+    for cfg in ("configs/small_models.yaml", "configs/models.yaml"):  # models.yaml wins on shared keys
+        try:
+            models = yaml.safe_load((ROOT / cfg).read_text())["models"]
+        except (OSError, KeyError, TypeError):
+            continue
+        out.update({k: deck_size(v) for k, v in models.items()})
+    return out
+
+
 def load_summaries() -> list[dict]:
+    deck = deck_sizes()
     files = sorted((ROOT / "runs/baselines").glob("*/*/summary.json"))
     files += sorted((ROOT / "results").glob("**/summary.json"))
     rows = []
@@ -78,13 +95,17 @@ def load_summaries() -> list[dict]:
         # With a judge the score is over all 240 points: rows the judge left unscored count as 0
         # (`pct` alone divides by the scored rows only and would overstate the result).
         pct = s.get("pct_all_rows") if judged and s.get("pct_all_rows") is not None else s["pct"]
+        # Sizes come from the organisers' deck (Orest, 15:47 CEST); ours only where it has none.
+        deck_gb, size_src = deck.get(s["model"], (None, "not in deck"))
         rows.append({
+            "size_src": size_src if deck_gb is not None else "not in deck",
             "id": f"{run}/{s['model']}/{mode}", "run": run, "model": s["model"],
             "stage": MODE_STAGE.get(mode, "harness"), "mode": mode,
             "method": MODE_METHOD.get(mode, mode),
             "eval": eval_kind(str(s.get("eval", "")), judged),
             "pct": pct, "pct_text_only": s.get("pct_text_only"),
-            "earned": s.get("earned"), "max": s.get("max"), "disk_gb": s.get("disk_gb"),
+            "earned": s.get("earned"), "max": s.get("max"),
+            "disk_gb": deck_gb if deck_gb is not None else s.get("disk_gb"),
             "by": "Claude threads", "verified": True,
             "date": datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),
             "note": f"run {run}",
@@ -140,6 +161,8 @@ def result_cells(r: dict) -> str:
     pts = f"{r['earned']:g} / {r['max']:g}" if r.get("earned") is not None and r.get("max") else "–"
     gb = f"{r['disk_gb']:.2f}" if r.get("disk_gb") is not None else "–"
     size_flag = "" if r.get("disk_gb") is None or legal(r) else ' <span class="over">over</span>'
+    if r.get("disk_gb") is not None:
+        size_flag += f"<div class='sub'>{esc(r.get('size_src') or 'not in deck')}</div>"
     src = pill("ok", "ours") if r.get("verified") else pill("warn", "unverified")
     txt = f"{r['pct_text_only']:.1f}" if r.get("pct_text_only") is not None else "–"
     return (f"<td class='l'><b>{esc(r['model'])}</b><div class='sub'>{esc(r.get('method'))}</div></td>"

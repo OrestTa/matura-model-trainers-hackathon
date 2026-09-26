@@ -3,6 +3,21 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:00 CEST · model-benchmark thread: model sizes now come from the organisers' deck
+
+- **Rule (Orest, 15:47 CEST): use the sizes in Ania's latest benchmark deck; don't compute our own.**
+  Every entry in configs/models.yaml and configs/small_models.yaml now has `deck_size_gb` (copied as printed:
+  bf16 for every deck model, 8-bit/4-bit only for the five 8B+ multimodal ones) and `ship_precision`, or
+  `deck_size_gb: not in deck`. `scripts/model_size.py` picks the deck figure at the precision we ship.
+- Used by: `run_baselines.py` (summary `disk_gb` = deck size, `size_source`, our measurement kept as
+  `measured_gb`; the MODELS=all size filter), `quantize_checkpoint.py --check` with a model key, and
+  `build_tracks_page.py` (GB column shows the source). No deck figure → old number, labelled "not in deck".
+- What the deck says for ours: **gemma4-12b 5.98 GB (4-bit) ✅**. qwen3.5-9b: deck has 9.65 (8-bit) and 4.83
+  (4-bit), not our Q5_K_M → "not in deck at 5bit"; a 4-bit build would be 4.83 by the deck. Bielik-11B v2/v3
+  and every Bielik-11B variant: not in deck. Small models in bf16: gemma3-1b 2.00, bielik-1.5b 3.19,
+  qwen3-1.7b 3.44, qwen3-vl-2b 4.26, **qwen3-4b 8.04, gemma3-4b 8.60, bielik-4.5b 9.51: over 8.0 in bf16 by
+  the deck** (the deck has no 8/4-bit figure for them).
+
 ## 2026-09-26 15:55 CEST · smallest-model thread: first small-model scores, CPU scoring path
 
 - Judge-free scores on the 154 held-out items (closed items + keywords + verdict check only), Q8_0 GGUF on CPU:
