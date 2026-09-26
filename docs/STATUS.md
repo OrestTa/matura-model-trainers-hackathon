@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| dapt-0926-1254 | dapt NAME=dapt-prep2 PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/dapt-0926-1254 | Polish Wikipedia thread (relaunched by compute thread) |
 | progress-base-raw | baselines MODELS=bielik-11b-base MODES=raw,routed (untouched pretrained Bielik-11B-v2, NF4, ~12 GB GPU) on matura.jsonl + matura_all.jsonl | Forgehand L40S | queued: after the box's storage fix | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-base-raw | Best progress thread |
 | progress-dapt | dapt DAPT_MODEL=bielik-11b-base (same corpus as dapt-bielik, ~36 GB GPU) | Forgehand L40S | queued: after dapt-prep's corpus exists | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-dapt | Best progress thread |
 | progress-sft | train TRAIN_MODELS=bielik-11b-base-dapt SINGLE_ADAPTER=1 EXTRA_TRAIN=train_data/claude_synth.jsonl, then raw/routed/adapters/rag eval | Forgehand L40S | queued: after progress-dapt | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-sft | Best progress thread |
