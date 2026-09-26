@@ -1,0 +1,19 @@
+{
+  "request_id": "23fe7010-f08b-4ae7-91bf-4488918f16c4",
+  "receipt": {
+    "id": "06f2b35d-7636-48e3-ba55-2a80884b6dc1",
+    "models": [
+      {
+        "name": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "quantization": "AWQ"
+      }
+    ],
+    "status": "awaiting_grading",
+    "exam_id": "history-2023-mock-v1",
+    "blank_count": 0,
+    "answer_count": 37,
+    "submitted_at": "2026-09-26T14:10:59.433645+00:00",
+    "improvement_entered": false,
+    "baseline_submission_id": null
+  }
+}

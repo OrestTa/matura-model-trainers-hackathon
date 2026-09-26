@@ -1,6 +1,6 @@
 {
   "_readme": "Times (updated, date) are UTC in this file; the page shows them in CEST. Source for the three-track results page. Add a row to `results` whenever a score lands, then run `python scripts/build_tracks_page.py` (writes results/tracks/index.html). Scores from runs/baselines/*/*/summary.json and results/**/summary.json are picked up automatically. eval: headline = held-out May 2023-2026 papers with a judge (240 pts); headline-auto = same papers, auto-scorable items only, no judge; contaminated = older papers (matura_all.jsonl), also used for training; dev = not the matura (MCQ sets, practice geography). No IPs, tokens or account IDs here.",
-  "updated": "2026-09-26 13:19 UTC",
+  "updated": "2026-09-26 14:14 UTC",
   "tracks": [
     {
       "id": "score",
@@ -73,6 +73,8 @@
     }
   ],
   "results": [
+    {"id": "g-official-mock-awq7b", "model": "Qwen2.5-7B-Instruct-AWQ", "stage": "base", "method": "official mock history-2023-mock-v1 answers.json", "eval": "official-mock", "disk_gb": 5.58, "by": "Grok bot", "verified": false, "date": "2026-09-26 14:11", "note": "37/37 format-complete; essay ~809 words; submitted for LLM grading receipt 06f2b35d-7636-48e3-ba55-2a80884b6dc1 awaiting_grading. Artifacts: results/grok/official_mock_awq7b/", "answers": "results/grok/official_mock_awq7b/answers.json", "submission_id": "06f2b35d-7636-48e3-ba55-2a80884b6dc1"},
+    {"id": "g-official-mock-bielik45-fp8", "model": "bielik45-fp8", "stage": "base", "method": "official mock history-2023-mock-v1 answers.json", "eval": "official-mock", "by": "Grok bot", "verified": false, "date": "2026-09-26 14:09", "note": "37/37 format-complete; essay ~418 words; Forgehand mock lock cleared. Artifacts: results/grok/official_mock_bielik45_fp8/. Not yet submitted for LLM grading in this pass.", "answers": "results/grok/official_mock_bielik45_fp8/answers.json"},
     {"id": "g-7b-awq", "model": "Qwen2.5-7B-Instruct-AWQ", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 37.6, "pct_text_only": 38.9, "earned": 26.33, "max": 70, "disk_gb": 5.58, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:56", "note": "Best legal result so far. Not the untouched base: router prompts on."},
     {"id": "g-7b-bf16", "model": "Qwen2.5-7B-Instruct bf16", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 37.1, "pct_text_only": 40.1, "earned": 26.0, "max": 70, "disk_gb": 15.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:13", "note": "Over the 8.0 GB limit; research signal only."},
     {"id": "g-3b-base", "model": "Qwen2.5-3B-Instruct", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 26.7, "pct_text_only": 27.4, "earned": 18.67, "max": 70, "disk_gb": 6.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:13", "note": "Base registered on the site."},
