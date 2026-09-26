@@ -3,6 +3,16 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 17:30 CEST · best-progress thread: untouched base scored; site base set
+
+- **Declared base (organisers' site, confirmed 17:06): `speakleash/Bielik-11B-v2`, pretrained**, stored NF4
+  checkpoint 6.66 GB. Grok bot run (G-027), held-out 154 items, no judge: **raw 25.5% (26.0/102 auto-scored
+  points)**, routed 26.9% (28.5/106). The two cover different scored subsets, so the +1.4 pp isn't like for like.
+- The pretrained model is not as weak as expected with the neutral Q/A template: it answers closed items
+  reasonably. The gain has to come from open answers (formats, verdict + justification) and knowledge (DAPT, RAG).
+- Chain running as one job: `infra/jobs/progress_pipeline.sh` (DAPT in training at 17:08). Plan: `docs/PLAN_PROGRESS.md`.
+- Next gauge: the base and each trained stage on the 2023 mock, LLM-graded out of 60 (C-032).
+
 ## 2026-09-26 17:05 CEST · model-benchmark thread: our May 2023 results vs Ania's deck, five categories
 
 - **Five categories** (Ania's per-model pages): Closed = tasks 2.2, 3, 10, 11.2, 13.2, 19, 21 (/11); Open = all
