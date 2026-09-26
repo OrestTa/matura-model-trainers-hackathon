@@ -3,6 +3,17 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:15 CEST · results page thread: one page, a tab per prize track
+
+- `python scripts/build_tracks_page.py` writes `results/tracks/index.html`: tabs for best score, best progress
+  and "Mały, ale wariat", each with best-so-far numbers, a chart, base→trained pairs, candidates and the
+  track's jobs from docs/STATUS.md.
+- **When you get a score, add a row to `results/tracks.json`** (`eval`: headline / headline-auto / contaminated / dev;
+  `stage`: base / trained, and `base` = the id of its untouched base row for progress). run_baselines
+  summaries under runs/baselines or results/**/summary.json are picked up automatically.
+- The Grok bot's CKE numbers (e.g. 7B AWQ 37.6%) are over the **auto-scored items only (70 of 240 pts)** and
+  were not measured by us; the page labels them that way. No judged 240-pt score exists yet.
+
 ## 2026-09-26 15:10 CEST · question-router thread: the official exam format (organisers' guide)
 
 - Source: matura-json-guide (link from Orest). **Input:** a package with `exam.json` (`exam_id`,
