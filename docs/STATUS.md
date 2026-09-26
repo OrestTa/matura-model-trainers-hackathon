@@ -15,6 +15,7 @@ baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| rehearsal-gemma4 | rehearsal MODEL=gemma4-12b MODE=routed | Forgehand session 01a0ddc1 | running | 2026-09-26 13:35 | 2026-09-26 13:35 | /workspace/work/out/rehearsal-gemma4 | Win best matura score thread |
 | score-think | baselines MODELS=gemma4-12b-think MODES=routed JUDGE_HF= GPU_BUDGET_GB=18 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:34 | 2026-09-26 13:34 | /workspace/work/out/score-think | Win best matura score thread |
 | small-baselines3 | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=qwen3.5-0.8b,qwen3.5-2b,qwen3.5-4b,gemma4-e2b,bielik-4.5b MODES=raw,routed GPU_BUDGET_GB=25 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:34 | 2026-09-26 13:34 | /workspace/work/out/small-baselines3 | Win smallest model thread |
 | score-vision-qwen | baselines MODELS=qwen3.5-9b MODES=raw,routed JUDGE_HF= GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:34 | 2026-09-26 13:34 | /workspace/work/out/score-vision-qwen | Win best matura score thread |
