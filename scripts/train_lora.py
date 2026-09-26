@@ -61,7 +61,7 @@ def main():
         per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.grad_accum,
         learning_rate=args.lr, lr_scheduler_type="cosine",
         bf16=True, gradient_checkpointing=True, logging_steps=5, save_strategy="no",
-        report_to="none", model_init_kwargs={"torch_dtype": torch.bfloat16},
+        report_to="none", model_init_kwargs={"torch_dtype": torch.bfloat16},  # transformers 5 reads "dtype" (set below)
     )
     # TRL renamed max_seq_length -> max_length; support both.
     params = inspect.signature(SFTConfig.__init__).parameters
@@ -70,6 +70,10 @@ def main():
     cfg_kwargs["warmup_ratio" if "warmup_ratio" in params else "warmup_steps"] = 0.03
     # TRL >= 1.x defaults to loss_type="chunked_nll", whose lm_head patch crashes on Gemma 4
     # ("'functools.partial' object has no attribute '__func__'"); plain nll is the same math.
+    # transformers 5 ignores torch_dtype: the 12B loaded in fp32 (48 GB) and got offloaded to meta/CPU.
+    import transformers
+    if int(transformers.__version__.split(".")[0]) >= 5:
+        cfg_kwargs["model_init_kwargs"] = {"dtype": torch.bfloat16}
     if "loss_type" in params:
         cfg_kwargs["loss_type"] = "nll"
     if "completion_only_loss" in params:
