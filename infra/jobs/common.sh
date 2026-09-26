@@ -21,6 +21,10 @@ s3() { [ -n "$BUCKET" ] && aws s3 "$@" --only-show-errors; }
 step() { echo "== $(date -u +%H:%M:%S) $*"; }
 
 step "setting up"
+# The vllm/vllm-openai image (Nebius jobs) has only python3; the jobs call `python`.
+if ! command -v python >/dev/null; then
+  mkdir -p "$WORK/bin" && ln -sf "$(command -v python3)" "$WORK/bin/python" && export PATH="$WORK/bin:$PATH"
+fi
 # vLLM 0.28 dropped load-time bitsandbytes quantization, which every 4-bit model here
 # relies on (configs/models.yaml, scripts/quantize_checkpoint.py): stay on 0.27.1. Its
 # pinned flashinfer needs Python 3.12 (it fails to import on 3.11), so the venv is
