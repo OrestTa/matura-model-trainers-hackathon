@@ -8,6 +8,8 @@ TYPE="${1:?instance type required}"
 NAME="${2:-$TYPE}"
 REGION="${3:-$AWS_DEFAULT_REGION}"
 DISK_GB="${DISK_GB:-1000}"
+# Key pair from AWS_INFRA.md, so the VM also accepts SSH once port 22 is opened. Set KEY_NAME= to skip.
+KEY_NAME="${KEY_NAME-Orest-Noninteractive}"
 BUCKET="$(bucket_name)"
 
 # Card guard: refuse if anything is already being billed beyond the credits.
@@ -54,6 +56,7 @@ aws ec2 run-instances --region "$REGION" \
   --image-id "$AMI" --instance-type "$TYPE" \
   --iam-instance-profile Name="$ROLE_NAME" \
   --security-group-ids "$SG" \
+  ${KEY_NAME:+--key-name "$KEY_NAME"} \
   --instance-initiated-shutdown-behavior terminate \
   --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":$DISK_GB,\"VolumeType\":\"gp3\",\"Throughput\":1000,\"Iops\":16000,\"DeleteOnTermination\":true}}]" \
   --metadata-options HttpTokens=required \

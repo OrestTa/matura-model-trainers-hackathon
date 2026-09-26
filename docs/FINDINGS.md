@@ -3,6 +3,27 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 12:40 CEST: AWS access and spending guards
+
+- **GPU quota is the bottleneck, not money.** Applied EC2 quota for P and G/VT instances is 0 in
+  every scanned region; requests are pending (tracker in `infra/aws/AWS_INFRA.md`). p5.48xlarge in
+  us-east-1 also failed on capacity. Until a quota lands, `infra/aws/launch.sh` cannot start GPUs.
+- **Only the Activate credit may pay** (about $98.4k left, expires 2026-09-30). `launch.sh` refuses
+  to start anything if month-to-date cost after credits is above `MAX_NET_USD` ($5), or if the
+  projected on-demand cost of everything running until the Sunday 10:30 CEST cutoff passes
+  `BUDGET_USD` ($95k). Cost Explorer lags a few hours, so the $5 check catches card charges late.
+- **Every instance self-terminates at `DEADLINE_UTC`** (shutdown behaviour terminate plus a
+  `shutdown -h` timer), and `/opt/work/out` syncs to S3 every 10 minutes. Anything not under that
+  path is lost at the cutoff.
+- **No SSH needed:** `infra/aws/run.sh <id> <cmd>` runs commands over SSM. The security group has no
+  inbound rules. `launch.sh` now attaches the `Orest-Noninteractive` key pair (set `KEY_NAME=` to
+  skip) in case someone opens port 22.
+- **Scripts run on macOS** (bash 3.2, BSD date/sed) as of commit 274b411; earlier versions failed
+  there on an empty array under `set -u` and on `date -d`.
+- **Claude cloud sessions** reach AWS endpoints through the proxy but have no AWS keys; only
+  Orest's Mac (profile `matura`) has credentials. AWS work from cloud threads needs keys added to
+  the project environment settings first.
+
 ## 2026-09-26 12:40 CEST · question-router thread: baselines are blocked on EC2 quota
 
 - **No GPU can be launched yet: EC2 quota is 0 everywhere** (see
