@@ -65,6 +65,19 @@ models:
     # the routed caps (16-256 tokens) then run out mid-thought and `content` comes back empty
     # (gemma4-vision routed, 16:32 CEST: 146/154 empty, 1.3%). Thinking lives in gemma4-12b-think.
     extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  # The same Gemma 4 with pictures OFF (no mmproj, text placeholder per picture): the A/B that
+  # measures what images buy on the exam (images-or-not question, 2026-09-26 19:05 CEST). Ships 6.98 GB.
+  gemma4-12b-text:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    vision: false
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 6.98
+    gpu_gb: 14
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
   # The same Gemma 4 with its thinking mode on (chat template kwarg), 2000 extra tokens per answer.
   gemma4-12b-think:
     deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
@@ -124,6 +137,9 @@ models:
     quantization: bitsandbytes
     disk_gb: 6.7
     chat_template: configs/chat_templates/plain_pl.jinja
+    # Harness only (the raw base keeps none): cut the run-on the base shows on a third of the
+    # May 2023 answers (a new "### Pytanie" turn after the answer).
+    extra_body: {stop: ["\n### Pytanie", "\n### Odpowiedź"]}
   qwen3-8b:
     deck_size_gb: not in deck
     ship_precision: 4bit

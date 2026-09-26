@@ -7,6 +7,30 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 19:08 CEST: 1aa047d..0bf7c38 (about 24 commits) and board 640b7b3
+
+- 6359957 (us) Gemma 4 thinking off by default + empty-answer warning in openai_compat: OK. It is the root cause of
+  gemma4-vision routed = 1.3% (146/154 empty: the caps went to reasoning_content).
+- 7defc43, e42582a (us) DAPT_ADAPTER hand-off in progress_pipeline.sh: OK. An explicit DAPT_ADAPTER (adapter dir or
+  out-dir) is checked before the default. A missing adapter stops the chain instead of starting a new multi-hour
+  DAPT, and merge_dapt gets --adapter explicitly, so the path issue in C-035 is gone.
+- 6ad9026 (us) stop strings ["\n### Pytanie", "\n### Odpowiedź"] only on bielik-11b-base-dapt (the trained side);
+  the raw base keeps none, so the base stays untouched: OK. Harness-level, and part of the trained model's setup.
+- 552f7f3 (us) gemma4-12b-text (no mmproj, 6.98 GB) for the images A/B: OK, under 8.0. 0ca99ee/ad10e4e images analysis:
+  findings only, OK.
+- 08aa7fe (us) Claude judge of the progress base raw on the May 2023 mock: 12/60 = 20.0%. It graded answers.json.
+  44fc9a1 (Grok bot) also committed answers.cleaned.json, which is byte-identical in all 37 answers (checked), so
+  no cleaning touched the base. Its summary shows the stored NF4 checkpoint was served
+  (/workspace/runs/gemma4-vision/work/checkpoints/bielik-11b-base, kind raw): this settles the C-017 question for
+  this run. OK.
+- b04e032 (Grok bot) gemma4-vision raw/routed summaries + answers: raw 43/90 scored points (47.8%, pct_all_rows
+  17.9%); routed 1.3% is void (thinking, see above). 28b335d/5951d78 (us) Claude grade of Gemma 4 raw May 2023:
+  41/60 = 68.3%. OK.
+- Board 640b7b3 / main 3be4319 (Orest): Gemma 68.3% row, base/honest_bare, raw plain prompt: OK. results/tracks.json
+  doesn't have it yet (C-049).
+- Channel-only (us): b61d75b, c441ecd, ccc4e60, fee9312, 49bca2e, 3da0557; (Grok bot): 0ddb8b2, 6864694, 8d443b9, 0bf7c38;
+  merges 287f9f2, 71cede8: OK, no secrets.
+
 ## 2026-09-26 18:08 CEST: 8bb2a7b..1aa047d (1 new commit; no board commits)
 
 - 1aa047d (Grok bot, 17:52) G-033 + 11 docs/STATUS.md rows with where = "Solari sandbox …" + notes/SOLARI_MALY_FLEET.json

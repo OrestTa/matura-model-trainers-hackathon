@@ -1,0 +1,650 @@
+[
+ {
+  "id": "2023-05-z1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Caption says 'reconstruction of dwellings', so neolithic plus settled-life justification follows from the caption."
+ },
+ {
+  "id": "2023-05-z3",
+  "points": 2,
+  "category": "true_false",
+  "class": "partial",
+  "guess_ev": 0.625,
+  "why": "Statements 1-2 are pure knowledge (Corsica after 1st Punic War, censor lists senators); statement 3 needs the map but Zama is almost surely marked."
+ },
+ {
+  "id": "2023-05-z4.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Knowledge that Elblag had Lubeck law gives 'Tak'; the plan detail (market street, no square) can be asserted plausibly without seeing it. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2023-05-z5.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Caption names Crecy 1346, so Hundred Years' War is pure knowledge."
+ },
+ {
+  "id": "2023-05-z5.3",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Edward III's quartered arms (French lilies with English lions) are well known, so the visual element can be inferred without seeing it."
+ },
+ {
+  "id": "2023-05-z7",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Caption names the church; Gothic is an easy guess (1 pt), but the second style (Renaissance, not Baroque) needs the photo."
+ },
+ {
+  "id": "2023-05-z8",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Anonymous 16th-c. print; the arguments (Bible outweighing papal symbols on scales) depend on image content only."
+ },
+ {
+  "id": "2023-05-z13.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The text identifies Ostroleka, but whether it is plan A or B is only in the picture (coin flip). (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2023-05-z14.1",
+  "points": 1,
+  "category": "short_open",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Context is just 'commemorative coin'; the person is only in the image (the sibling item 14.2 hints oil industry only if shown together)."
+ },
+ {
+  "id": "2023-05-z14.2",
+  "points": 1,
+  "category": "short_open",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Where the oil industry was born (Galicia) is pure knowledge."
+ },
+ {
+  "id": "2023-05-z15",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Caption names Chelmonski's 'Bociany'; realism and a generic realist feature follow from knowledge."
+ },
+ {
+  "id": "2023-05-z17",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Speech text plus a 'Le Petit Journal' 1897 cover about the British in India makes 'Tak' very likely; the image description must be improvised. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2023-05-z18",
+  "points": 3,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Title, date and labels (Francja, La Fayette, one billion dollars) are in the text, so the message and 1917 context can be reconstructed; graphic details can't."
+ },
+ {
+  "id": "2023-05-z19",
+  "points": 2,
+  "category": "true_false",
+  "class": "partial",
+  "guess_ev": 0.625,
+  "why": "Statement 1 (March Constitution not presidential) is knowledge; statements 2-3 depend on which letter marks what on the map."
+ },
+ {
+  "id": "2023-05-z20",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "The Saar plebiscite was not a Versailles breach, so 'Nie' follows from knowledge; source 2's content (Rhineland) must be guessed for the justification. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2023-05-z21",
+  "points": 2,
+  "category": "closed_choice",
+  "class": "blind",
+  "guess_ev": 0.5,
+  "why": "The dispatch text (ZWZ renamed to AK) is only in the image, so the addressee and signer (Rowecki/Sikorski) can't be identified from the caption."
+ },
+ {
+  "id": "2023-05-z24",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Both sources are images with generic PRL captions; campaign identification is image-only, and the binary decision is a coin flip. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The text says Narmer's double crown, but which relief (A or B) shows it is image-only (coin flip). (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The map legend (Ptolemies, Seleucids, Attalids) is in the text, so the diadochi-era 'Nie' is derivable. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z4",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Knowledge of St Alexander's in Warsaw (a Pantheon-like rotunda with portico and dome) gives the Greek and Roman elements without the photo."
+ },
+ {
+  "id": "2024-05-z5.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The map's expeditions (not crusades, answer Nie) are only in the image; the caption pushes a text model toward the wrong 'Tak'. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z6",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "The inscriptions 'Ty modl sie / Ty ochraniaj / A ty pracuj' are in the text, so the three estates can be explained; graphic elements are inferred."
+ },
+ {
+  "id": "2024-05-z8.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The letter legend (king, bishops, senators, szlachta) is in the text, which makes 'Tak' with a justification straightforward. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z9",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The Latin inscription about pope and king pillars is given; the graphic element (pope/king figures) is trivially inferable. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z10",
+  "points": 1,
+  "category": "closed_choice",
+  "class": "partial",
+  "guess_ev": 0.25,
+  "why": "The chart content is hidden, but royal-estate income division (kwarta) points to the 1562-63 execution sejm by knowledge."
+ },
+ {
+  "id": "2024-05-z11.1",
+  "points": 1,
+  "category": "matching",
+  "class": "text_ok",
+  "guess_ev": 0.028,
+  "why": "The genealogy text lists the rulers; St Bartholomew maps to Charles IX and Nantes to Henry IV, all by knowledge."
+ },
+ {
+  "id": "2024-05-z12.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The text (abdication after Ludwika Maria's death) identifies Jan Kazimierz."
+ },
+ {
+  "id": "2024-05-z12.3",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "A Paris tomb of Jan Kazimierz (1670s) implies Baroque by date; the cited visible feature is a generic guess. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z13",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Context is just 'period print'; the leaked date '30 Jan 1649' sits in another item's context, so the event and justification are image-only."
+ },
+ {
+  "id": "2024-05-z14.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The order is clearly from 1812, but that the map shows 1809 (Raszyn) is image-only; a text model likely assumes a match. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z14.2",
+  "points": 1,
+  "category": "closed_choice",
+  "class": "partial",
+  "guess_ev": 0.25,
+  "why": "Poniatowski is the natural answer for Polish chief commander in Napoleonic campaigns even without the map."
+ },
+ {
+  "id": "2024-05-z16.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Caricature labels ('Ameryka dla Amerykanow', Uncle Sam, 'Zakaz wstepu', Venezuela) are in the text along with the Monroe message. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z17.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The 'Kapitulacja pod Sedanem' label is in the text, and the Sedan to 1871 proclamation link is knowledge."
+ },
+ {
+  "id": "2024-05-z18",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The decision needs two graphic elements of an undescribed WWI poster; only a coin-flip decision with invented details. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z19.1",
+  "points": 2,
+  "category": "true_false",
+  "class": "partial",
+  "guess_ev": 0.625,
+  "why": "The text gives stamps A (Allenstein) and D (Upper Silesia), so statements 1 and 3 are derivable; statement 2 (stamp C) is image-only."
+ },
+ {
+  "id": "2024-05-z19.2",
+  "points": 1,
+  "category": "short_open",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Stamp B is unseen, but with A/D given and 'state entity created by a general' Zeligowski/Central Lithuania is strongly inferable."
+ },
+ {
+  "id": "2024-05-z21",
+  "points": 1,
+  "category": "short_open",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Triumph of the Will's iconic imagery (massed ranks, swastika banners) is common knowledge, so the argument is inferable."
+ },
+ {
+  "id": "2024-05-z23.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "The official vs real result table in the text shows falsification, and 'poster' gives propaganda."
+ },
+ {
+  "id": "2024-05-z23.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Which referendum question the poster addresses (the Senate) is image-only; the table alone can't decide. (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z24",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "The text is Hungary 1956; that the map shows Czechoslovakia 1968 is image-only (decision guessable, justification not). (open item; the binary decision alone is a coin flip but needs a justification)"
+ },
+ {
+  "id": "2024-05-z25",
+  "points": 3,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Context is only 'period drawing'; the Jaruzelski/Solidarnosc content is entirely in the image."
+ },
+ {
+  "id": "2025-05-z1.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Which photo (A/B/C) is the canopic jar is visible only in the picture; text only says mummification (1/3 lucky guess)."
+ },
+ {
+  "id": "2025-05-z3.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Caption 'ancient building' plus 'other than a bridge' strongly suggests a Roman aqueduct (water transport)."
+ },
+ {
+  "id": "2025-05-z3.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "If aqueduct is inferred, 'Rome, semicircular arches' is the standard answer without seeing the photo."
+ },
+ {
+  "id": "2025-05-z5.1",
+  "points": 1,
+  "category": "matching",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Genealogy table is transcribed in context; Świnka coronation = Wacław II, 1038 raid = Brzetysław I."
+ },
+ {
+  "id": "2025-05-z5.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Relics taken from Gniezno = St Adalbert, answerable from Fragment B text."
+ },
+ {
+  "id": "2025-05-z6",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Which legend number (1/2/3) marks the German-law area is only on the plan; justification is generic but number is a 1/3 guess."
+ },
+ {
+  "id": "2025-05-z7.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Text is the 1454 incorporation act; guessing 'yes, Thirteen Years' War' is likely and map references can be plausibly invented."
+ },
+ {
+  "id": "2025-05-z7.2",
+  "points": 1,
+  "category": "closed_choice",
+  "class": "text_ok",
+  "guess_ev": 0.25,
+  "why": "Incorporation act of Prussia 1454 by Casimir Jagiellon is pure knowledge from the text."
+ },
+ {
+  "id": "2025-05-z8",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Caption names the church (Gniezno, St John Baptist); styles guessable from knowledge (Gothic + Baroque), visible features generic."
+ },
+ {
+  "id": "2025-05-z10",
+  "points": 1,
+  "category": "true_false",
+  "class": "text_ok",
+  "guess_ev": 0.25,
+  "why": "Medal inscription (recovered Kamieniec) is in the question text, so Karlowitz 1699 (F,P) follows from knowledge."
+ },
+ {
+  "id": "2025-05-z12",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Whether the banknote is Duchy of Warsaw 1810 vs Bank Polski is only on the banknote; decision is a coin flip."
+ },
+ {
+  "id": "2025-05-z14.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Which uprising the map shows and which saber arms (A/B) is picture-only; 1/2 guess on letter."
+ },
+ {
+  "id": "2025-05-z14.2",
+  "points": 2,
+  "category": "true_false",
+  "class": "partial",
+  "guess_ev": 0.625,
+  "why": "Statements 2 (Tilsit, F) and 1 are knowledge-based; statement 3 needs the uprising, and guessing November gets all three."
+ },
+ {
+  "id": "2025-05-z16.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Author (Piłsudski/PPS) is inferable but which title page A/B is 'Robotnik' is only in the image; 1/2 guess."
+ },
+ {
+  "id": "2025-05-z17.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "XIX Amendment text gives women's suffrage movement directly."
+ },
+ {
+  "id": "2025-05-z17.2",
+  "points": 1,
+  "category": "closed_choice",
+  "class": "text_ok",
+  "guess_ev": 0.25,
+  "why": "Women's suffrage in Poland 1918 is pure knowledge."
+ },
+ {
+  "id": "2025-05-z18",
+  "points": 3,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Title and 1919 give Versailles context; the two graphic elements must be guessed (Marianne/Germania), so partial credit likely."
+ },
+ {
+  "id": "2025-05-z20",
+  "points": 1,
+  "category": "short_open",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Book title is hidden but 'communism and nazism/fascism' is the default answer and very likely matches."
+ },
+ {
+  "id": "2025-05-z21.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Sources hidden, but interwar state investments (Gdynia/COP) point to Kwiatkowski as the canonical guess."
+ },
+ {
+  "id": "2025-05-z23",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Title 'Armia pokoju' and Polish painter suggest socialist realism; 'peace propaganda' feature is acceptable without seeing."
+ },
+ {
+  "id": "2026-05-z1",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Civilization names (Egypt, China) come from text for 1 pt; map numbers are picture-only."
+ },
+ {
+  "id": "2026-05-z3.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Text is Pharsalus (Caesar vs Pompey); the battle plan (Actium) is picture-only, so decision is a coin flip."
+ },
+ {
+  "id": "2026-05-z4.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Text is Constantinople 1453; that the plan shows Acre is picture-only, decision a coin flip."
+ },
+ {
+  "id": "2026-05-z4.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Question shows 'Palestine / Mediterranean' labels; a crusader port with Venetian/Genoese/Pisan quarters is a plausible knowledge guess."
+ },
+ {
+  "id": "2026-05-z7",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "No period or region given; the process (reconquista) is only on the map."
+ },
+ {
+  "id": "2026-05-z12.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Text is Vienna 1683; that the plan shows Chocim is picture-only, decision a coin flip."
+ },
+ {
+  "id": "2026-05-z13",
+  "points": 2,
+  "category": "matching",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Translations hint at which stamps exist but letter-to-stamp assignment and justification need the images."
+ },
+ {
+  "id": "2026-05-z14.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Text is post-1831 Organic Statute; coin translation '3 rubles' signals post-uprising Russian coinage, so 'yes' is inferable."
+ },
+ {
+  "id": "2026-05-z15.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Ems dispatch -> Franco-Prussian war is text; title 'Chrzest bojowy' (Prince Imperial at Saarbrücken 1870) supports 'yes'."
+ },
+ {
+  "id": "2026-05-z16.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Plan legend (workers' houses, school, hospital, canteen) is transcribed in the question."
+ },
+ {
+  "id": "2026-05-z16.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "text_ok",
+  "guess_ev": 0,
+  "why": "Legend says spinning mill -> textile industry -> Łódź."
+ },
+ {
+  "id": "2026-05-z18.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Stamp is hidden but 'two Polish delegates' strongly suggests Versailles: Paderewski/Dmowski."
+ },
+ {
+  "id": "2026-05-z18.2",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Text is Potsdam; if stamp is guessed as Versailles (two delegates), 'no' follows."
+ },
+ {
+  "id": "2026-05-z19.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Title page content (May Coup 1926) is picture-only; text is Narutowicz 1922, decision a coin flip."
+ },
+ {
+  "id": "2026-05-z19.2",
+  "points": 1,
+  "category": "true_false",
+  "class": "partial",
+  "guess_ev": 0.25,
+  "why": "Statement 1 (F) is from text/knowledge; statement 2 needs the journal (Robotnik/PPS), 50% guess."
+ },
+ {
+  "id": "2026-05-z20",
+  "points": 2,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Title 'Spring cleaning in Europe' allows a 1930s guess (Anschluss, Spain) but arguments must match invisible details."
+ },
+ {
+  "id": "2026-05-z22",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Chart countries (Poland, Belarus, Ethiopia...) are not in this item's context (they leaked into z23.1), so 'no' plus justification is a guess."
+ },
+ {
+  "id": "2026-05-z23.1",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Szpilki was a state satirical weekly hostile to the 1965 bishops' letter, so 'no' is knowledge-inferable."
+ },
+ {
+  "id": "2026-05-z24",
+  "points": 3,
+  "category": "source_analysis",
+  "class": "partial",
+  "guess_ev": 0,
+  "why": "Herblock, late 1960s, 'Czech spirit' -> 1968 invasion context is clear; the two graphic elements must be guessed."
+ },
+ {
+  "id": "2026-05-z25",
+  "points": 1,
+  "category": "source_analysis",
+  "class": "blind",
+  "guess_ev": 0,
+  "why": "Leaflet content (1st anniversary of August Accords) is picture-only; decision a coin flip."
+ }
+]

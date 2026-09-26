@@ -3,6 +3,44 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 19:15 CEST · Skip pictures? Keep them for best score, skip them for smallest (images-or-not thread)
+
+Orest asked whether to drop images and optimise a text-only model. We classified all 81 non-essay picture items on
+the four held-out papers (2023–2026, 240 pts) by what a text model sees (placeholder plus caption and other
+sources): `results/images_value/picture_items_classified.json`. This was judged from the text and the key, with few
+scans opened, so treat it as an estimate.
+
+| Paper | blind (answer only in the picture) | partial (picture helps) | text_ok | random-guess EV on blind closed items |
+|---|---|---|---|---|
+| 2023-05 | 7 | 13 | 4 | 0.5 |
+| 2024-05 | 10 | 10 | 8 | 0 |
+| 2025-05 | 5 | 13 | 6 | 0 |
+| 2026-05 | 9 | 14 | 2 | 0 |
+| mean /60 | **7.75 (13%)** | **12.5 (21%)** | 5 | ~0.1 |
+
+- **Guessing buys almost nothing.** Blind items are almost all open "Rozstrzygnij … uzasadnij" items that need a
+  justification referring to the picture, not A–D or P/F. The closed-item EV is ~0.1 pt per paper. A coin-flip
+  verdict with an invented justification may score ~1–3 pts per paper at best with a lenient grader.
+- **What pictures are worth to Gemma 4 12B:** on the Claude-graded May 2023 run with images, it scored 2/4 on the
+  blind points it answered (z21 2/2, z14.1 0, z24 0; z8 and z13.1 were empty from the thinking bug). Estimate:
+  images give ≈ +4 blind + 2–3 partial ≈ **+5–7 pts per paper (8–12 pp)**. Cost is the 0.18 GB mmproj, so we stay
+  at 7.16 GB, under 8.0. This is not yet measured: the A/B run `gemma4-12b` vs `gemma4-12b-text` was requested
+  as C-046.
+- **Smallest track:** a text-only ceiling is ~87%, far above the 35% bar. Small VLMs read scans badly (deck:
+  Qwen3-VL-2B 15.0% with images vs 10.9% text), and an mmproj is 10–20% of a 2–4 GB model. Go text-only.
+- **Progress track:** Bielik-11B-v2 is text-only, so the question doesn't apply. The delta is measured on the same
+  inputs for base and trained.
+- **Eval-set bug:** some picture text sits in a sibling item's context (2026-z22's chart numbers are in z23.1;
+  2024-z13's date is in z14). `fetch_matura.py` splits context at the wrong place there. Our text-only scores on
+  those items are slightly pessimistic.
+- **Open unknown:** we don't know whether the official `exam.json` `source_text` describes the pictures. The
+  deck's text mode had descriptions written out. If it does, text-only loses less.
+
+## 2026-09-26 18:58 CEST · Untouched base Bielik-11B-v2 NF4 scores 12/60 = 20.0% on the May 2023 mock, Claude-graded (best progress)
+- Job `matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1`, raw, graded by "Grading open answers": closed 2/11, open 10/34, essay 0/15, text-only 5/28, text+table 7/30. Score: `results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json`. This is the "before" number for the improvement track.
+- About a third of answers run on past the answer (new chat turns, English Q&A, LaTeX); the essay is 234 words, so 0/15. Easy gains for the trained side: SFT ends answers with EOS, the essay route asks for 300+ words, and the trained model spec now sends stop strings `\n### Pytanie` / `\n### Odpowiedź` (configs/models.yaml, `bielik-11b-base-dapt` only; the raw base keeps none).
+- DAPT restarted at 18:01 CEST as `matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4` (QLoRA on the NF4 base; the 14:51 run crashed at 23/154 with nothing kept). ETA ~22:17 CEST, then `DAPT_ADAPTER=... STAGES="3 4 5 6 7" progress_pipeline.sh` (C-042).
+
 ## 2026-09-26 18:35 CEST · Gemma 4 12B QAT (7.16 GB) scores 41/60 = 68.3% on the May 2023 mock, Claude-graded (best score)
 
 Untouched Gemma 4 12B QAT GGUF + mmproj, raw mode, pictures sent (gemma4-vision run, 16:17 CEST), graded against the CKE key by the grading thread: **41/60 = 68.3%** (closed 8/11, open 24/34, essay 9/15). Score: `results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/claude_score.json`.
