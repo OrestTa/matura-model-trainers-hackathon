@@ -109,6 +109,18 @@ class Router:
         text = format_knowledge(hits, int(self.rag.get("max_chars", 3000)))
         return text, tuple(p.title for p in hits)
 
+    def apply_model(self, spec: dict) -> "Router":
+        """Per-model settings from a configs/models.yaml entry: `vision` (send the exam's
+        pictures) and `think_tokens` (a thinking model's reasoning budget, added to every
+        route's max_tokens so short closed answers aren't cut off mid-thought)."""
+        if "vision" in spec:
+            self.vision = bool(spec["vision"])
+        extra = int(spec.get("think_tokens") or 0)
+        if extra:
+            for r in self.routes.values():
+                r.params.max_tokens += extra
+        return self
+
     def resolve_adapter(self, category: Category) -> Optional[str]:
         route = self.routes.get(category) or self.routes[Category.GENERAL]
         adapter = route.adapter

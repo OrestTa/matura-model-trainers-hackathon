@@ -46,6 +46,18 @@ models:
     params_b: 12.0
     disk_gb: 7.16     # 6.98 model + 0.18 mmproj
     gpu_gb: 14
+  # The same Gemma 4 with its thinking mode on (chat template kwarg), 2000 extra tokens per answer.
+  gemma4-12b-think:
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    think_tokens: 2000
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
   # Qwen3.5 9B (Feb 2026), a vision model: Q5_K_M GGUF 6.58 GB + mmproj-F16 0.92 GB = 7.50 GB
   # (Q6_K + mmproj would be 8.4, over), on llama.cpp.
   qwen3.5-9b:

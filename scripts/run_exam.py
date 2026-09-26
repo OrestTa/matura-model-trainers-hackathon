@@ -127,8 +127,7 @@ def main() -> int:
         import yaml
         spec = yaml.safe_load((Path(__file__).resolve().parent.parent / "configs/models.yaml")
                               .read_text())["models"][args.model]
-        if "vision" in spec:
-            router.vision = bool(spec["vision"])
+        router.apply_model(spec)
     print(f"vision: {router.vision}", file=sys.stderr)
 
     def one(item):

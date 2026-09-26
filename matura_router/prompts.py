@@ -78,8 +78,10 @@ def build_messages(category: Category, question: str, context: str = "",
 
 
 def strip_think(text: str) -> str:
-    """Drop Qwen3-style <think>...</think> reasoning (also an unclosed one cut off by max_tokens)."""
+    """Drop Qwen3-style <think>...</think> reasoning (also an unclosed one cut off by max_tokens),
+    and Gemma 4's thought channel, <|channel>thought ... <channel|>, if the server leaves it in."""
     text = re.sub(r"<think>.*?(</think>|$)", "", text, flags=re.S)
+    text = re.sub(r"<\|channel\|?>thought.*?(<channel\|>|$)", "", text, flags=re.S)
     return text.strip()
 
 

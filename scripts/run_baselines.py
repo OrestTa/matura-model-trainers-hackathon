@@ -123,8 +123,7 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
     backend = OpenAICompatBackend(base_url=base_url, base_model="base",
                                   extra_body=spec.get("extra_body"))
     router = Router.from_config(args.routes, backend=backend)
-    if "vision" in spec:  # models.yaml decides whether this model sees the pictures
-        router.vision = bool(spec["vision"])
+    router.apply_model(spec)  # models.yaml: vision (pictures), think_tokens (reasoning budget)
     if "rag" in args.modes and router.retriever is None:
         sys.exit("mode rag needs the knowledge base in configs/routes.yaml (rag.path); "
                  "without it rag = routed and the comparison measures nothing")
