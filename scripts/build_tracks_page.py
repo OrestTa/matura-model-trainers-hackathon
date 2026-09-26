@@ -37,6 +37,11 @@ STAGE_LABEL = {"base": "Base", "harness": "Base + harness", "trained": "Trained"
 MODE_STAGE = {"raw": "base", "routed": "harness", "rag": "harness", "adapters": "trained"}
 MODE_METHOD = {"raw": "plain prompt (untouched)", "routed": "router prompts",
                "rag": "router prompts + RAG", "adapters": "router + RAG + LoRA"}
+INVALID_SUMMARY_IDS = {
+    # Hidden Gemma thinking filled the routed caps with reasoning content and returned mostly empty answers.
+    # Keep the committed artifacts, but do not show this 1.3% as a legitimate harness score.
+    "gemma4-vision/gemma4-12b/routed",
+}
 
 CEST = timezone(timedelta(hours=2), "CEST")  # the whole hackathon is in summer time
 
@@ -93,6 +98,9 @@ def load_summaries() -> list[dict]:
             continue
         mode = s.get("mode", "raw")
         run = f.parent.parent.name
+        summary_id = f"{run}/{s['model']}/{mode}"
+        if summary_id in INVALID_SUMMARY_IDS:
+            continue
         judged = bool(s.get("judge"))
         # With a judge the score is over all 240 points: rows the judge left unscored count as 0
         # (`pct` alone divides by the scored rows only and would overstate the result).
@@ -102,7 +110,7 @@ def load_summaries() -> list[dict]:
         deck_q = ref_gb if size_src.startswith("deck") else None  # a quantized deck figure
         rows.append({
             "size_src": size_src if deck_q is not None else "shipped file",
-            "id": f"{run}/{s['model']}/{mode}", "run": run, "model": s["model"],
+            "id": summary_id, "run": run, "model": s["model"],
             "stage": MODE_STAGE.get(mode, "harness"), "mode": mode,
             "method": MODE_METHOD.get(mode, mode),
             "eval": eval_kind(str(s.get("eval", "")), judged),
