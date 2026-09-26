@@ -24,7 +24,7 @@ Authoritative merge payload from `uploads/LEARNINGS_MERGE_20260926_1905_81e1.md`
    - Base <= **8.0 GB**; after FT shipped pack <= **8.8 GB**.
    - LoRA/RAG do **not** count toward size.
 2. **Mały size = largest single pack**, not sum of serial specialists (Orest 2026-09-26). Two ~1.7 GB specialists -> size ~1.7 GB.
-3. **Judges:** every `answers.json` at 37/37 gets **Grok + Claude + Sol** in parallel. Sol = `gpt-6-sol` / Solari CPU. Never headline without Sol (say "Sol pending").
+3. **Judges:** every `answers.json` at 37/37 gets **Claude + Sol** in parallel. Grok is **skipped for tokens** under Orest's 2026-09-26 ~19:05 CEST hard lock. Sol = `gpt-6-sol` / Solari CPU. Never headline without both Claude and Sol.
 4. **Always report** bare vs optimised **separately** per judge; never one blended %.
 5. **Five CKE categories** when showing scores: open-text, open-vision, closed-text, closed-vision, essay.
 6. **Apples-to-apples vs Ania:** her text runs = drop tasks 7,8,15 -> **/55**; her image runs -> **/60**. Our official mock `history-2023-mock-v1` -> **/60**. Never mix /55 with /60 or vision packs vs Ania's text headlines.
@@ -74,7 +74,7 @@ Authoritative merge payload from `uploads/LEARNINGS_MERGE_20260926_1905_81e1.md`
 - Floor remains **Bielik-4.5 FP8** ~**4.90 GB** with official-mock judges **40.0 / 46.7 / 48.3** (Claude / Grok / Sol).
 - Tiny text-only probes failed the threshold path: Qwen/Bielik **0.5B / 1.5B** at roughly Claude **5-6.7%** and Grok/Sol around **10%**.
 - Chase **Bielik-1.5B FP8** ~**1.70 GB** via infer `...1736-b543`; judges armed `...1902-4c6c`. Prefer **text+OCR serial** over Gemma vision here.
-- Always report **bare x optimised x judges** with the **five CKE categories**; Sol remains mandatory and burns on Solari CPU.
+- Always report **bare x optimised x judges** with the **five CKE categories**; **Claude + Sol** are the mandatory duo, and Grok is skipped for tokens.
 - Solari create-cap is **10**; target about **$3.19/h**; sandbox overnight should be roughly **$50-55**, not **$230**. **HOLD** and do not free slots for C-038.
 - Never self-admit or steal dapt. `33+OCR` is **19/19 for H1**; forbidden-flags are mostly false positives.
 - Deadline stays **Sunday 10:00**.
@@ -93,7 +93,7 @@ Authoritative merge payload from `uploads/LEARNINGS_MERGE_20260926_1905_81e1.md`
 | **Forgehand L40S** | Protect dapt; fill leftover VRAM with Mały/Score admits (`gpu_admit`); SSH flaky - retry. Pack path for 1.5 FP8: `/workspace/hackathon/models/speakleash__Bielik-1.5B-v3.0-Instruct-FP8-Dynamic`. Never cancel Progress keepers (`n7k2` / `p2w8` / `me2k8`). `dde1` H1 stays PARKED until after Mały `b543`. |
 | **Nebius** | Console topics = **GitHub** login; protect Progress `aijob-e00me2k8j1ge1vw19k`; saturate H100s; transformers/AutoAWQ version pins matter for sticky AWQ. Snapshot ~19:05: **12/12 ACTIVE**; `me2k8` loss about **1.20 -> 0.057** at epoch ~**0.405**; twin `sy573` RUNNING; sticky AWQ `kn4a` + `jx0z` filling; **zero recreate of `me2k8`**. |
 | **Token Factory** | Must use G Suite `orest@t1protocol.com` (**not** GitHub `o@tarasiuk.me`). Burners are about **$32-37/h combined**, spend about **$32**; throttle only when roughly **$8-15** remain. |
-| **Solari** | CPU-only (no GPU). Org cap **10/10**. Mały fleet fill; **do not free for C-038** unless Orest overturns. Sol third judge burns here. |
+| **Solari** | CPU-only (no GPU). Org cap **10/10**. Mały fleet fill; **do not free for C-038** unless Orest overturns. Sol burns here as a mandatory judge. |
 | **Watch** | Routine floor `@every 5m`; live 10s optimiser on box until Sunday 10:00. Ping Orest only on underuse/block/decision. |
 
 ### Best Score serve / finetune pins
@@ -106,7 +106,7 @@ Authoritative merge payload from `uploads/LEARNINGS_MERGE_20260926_1905_81e1.md`
 
 ## Judging / eval hygiene
 
-- Dedicated **fast cloud Grok Bot (2x)** judges <=10 min; never Bielik/AWQ as judge.
+- Orest hard lock 2026-09-26 ~19:05 CEST: **stop using Grok Bot as a matura judge** (usage tokens). Going forward the mandatory judge duo is **Claude + Sol** only.
 - Claude secondary via BOT_CHANNEL (C-/G- protocol).
 - Contaminated answers (chat rolls, `### Pytanie` leaks, EN junk) -> HOLD judges; re-infer.
 - Thinking-off / empty-answer fixes matter (Gemma empties; trainers tip >=6359957).

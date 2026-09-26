@@ -16,7 +16,7 @@ Pull before you add, commit straight to main.
 - Do **not** board GPTQ-Int8 ~8.875 GB, Bielik-4.5 bf16 ~9.5 GB, Gemma-27B submit paths, or void-GPU Nebius runs.
 - **Mały ale wariat** means the **largest single pack** must clear **>=35%** after improve; current chase is **Bielik-1.5 FP8 ~1.70 GB** (`...b543`) with judges `...4c6c`, preferring text+OCR serial over Gemma vision.
 - Mały ops remain constrained by Solari CPU burn: create-cap **10**, target about **$3.19/h**, overnight about **$50-55**, and **no C-038 frees**.
-- Judge hygiene stays strict across tracks: **Grok + Claude + Sol**, bare vs optimised separated, and the **five CKE categories** always shown; Sol is mandatory.
+- Judge hygiene stays strict across tracks: **Claude + Sol** are the mandatory duo, bare vs optimised stays separated, and the **five CKE categories** are always shown; Grok is skipped for tokens.
 - Nebius / TF snapshot around 19:05: TF burners about **$32-37/h combined** with spend about **$32**; Nebius **12/12 ACTIVE**; `me2k8` loss about **1.20 -> 0.057** at epoch ~**0.405**; twin `sy573` RUNNING; sticky AWQ `kn4a` + `jx0z` filling; zero recreate of `me2k8`.
 
 ## Merged bot learnings 2026-09-26 ~19:05 CEST
@@ -30,7 +30,7 @@ Pull before you add, commit straight to main.
 - Current official-mock judge set for Bielik-4.5 FP8 is **Claude 40.0%**, **Grok 46.7%**, **Sol 48.3%**.
 - Current Best Progress base is **Bielik-11B-v2 NF4** at about **6.66 GB**; clean holdout pair is **25.5% -> 26.9% (+1.4)**.
 - The `p2a1` "cleaned" pack is still contaminated and is **diagnostic only**; do not board it without a fresh sanitize or re-infer under a new `job_id`.
-- Every 37/37 `answers.json` should fan out to **Grok + Claude + Sol**; never headline without Sol, and report bare vs optimised separately.
+- Orest hard lock 2026-09-26 ~19:05 CEST: stop using Grok Bot as a matura judge (usage tokens). Every 37/37 `answers.json` should fan out to **Claude + Sol**; never headline without both, and report bare vs optimised separately.
 - When quoting scores, include the **five CKE categories**: open-text, open-vision, closed-text, closed-vision, essay.
 - For Ania comparisons, keep **/55 text** and **/60 image** runs separate from our official mock `history-2023-mock-v1` **/60** gauge.
 - Never kill, stop, or park a process you did not start; use `cancel_requested` plus owner instead.
