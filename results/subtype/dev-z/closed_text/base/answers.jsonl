@@ -1,0 +1,1 @@
+{"id": "pokaz-2022-03-z8.2", "answer": "D", "raw": "D", "category": "closed_choice", "adapter": null, "confidence": 0.645, "method": "rules", "latency_s": 103.243, "retrieved": [], "subtype": "closed_text", "profile": "base", "gold_category": "closed_choice", "needs_image": false, "paper": "pokaz-2022-03", "points": 1.0, "score": 1.0}
