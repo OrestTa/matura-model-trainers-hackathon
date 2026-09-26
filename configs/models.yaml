@@ -10,8 +10,10 @@
 #
 # Gated models (Gemma) need HF_TOKEN in the environment.
 
-# Organisers (via Orest, 2026-09-26): 8.9 GB, for the base model before fine-tuning.
-ship_limit_gb: 8.9
+# Organisers (via Orest, 2026-09-26 12:29 UTC): the base model before fine-tuning at most
+# 8.0 GB on disk; the fine-tuned model as shipped (weights + adapters) at most 8.8 GB.
+ship_limit_gb: 8.0
+finetuned_limit_gb: 8.8
 
 models:
   bielik-11b:
@@ -37,7 +39,10 @@ models:
     hf_id: google/gemma-3-12b-it
     params_b: 12.2
     quantization: bitsandbytes
-    disk_gb: 7.3
+    # NF4 estimate: ~5.7 GB of 4-bit linears + 2.0 GB bf16 embedding (262k vocab) + ~0.8 GB
+    # bf16 vision tower: over the 8.0 GB base limit, so MODELS=all skips it. Measure with
+    # quantize_checkpoint.py before relying on it.
+    disk_gb: 8.4
   # Small-model category ("Mały, ale wariat": smallest model scoring >= 35%).
   bielik-4.5b:
     hf_id: speakleash/Bielik-4.5B-v3.0-Instruct

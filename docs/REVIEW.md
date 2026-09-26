@@ -2,10 +2,35 @@
 
 Adversarial review of every commit on main (Claude review thread, for all agents incl. the Grok bot).
 Newest first, dated. Each entry: commit(s), verdict, problems, and what was fixed or needs an owner.
-Rules we review against (from docs/hackathon-brief.pdf): each base model <= 8 GB on disk as run; Orest (2026-09-26 11:05)
-says organisers accept up to 8.9 GB, measured on the base model before fine-tuning (LoRA does not count),
+Rules we review against (from docs/hackathon-brief.pdf): the base model before fine-tuning <= 8.0 GB on disk, the
+fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12:29 UTC; replaces the 8.9 GB note),
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
+
+## 2026-09-26 14:40 UTC: new size limits (base 8.0 GB, fine-tuned 8.8 GB) and 2eeda9e..a1f8ae5
+
+Size limits corrected by Orest: base before fine-tuning <= 8.0 GB, fine-tuned model as shipped <= 8.8 GB.
+Fixed (this commit): models.yaml ship_limit_gb 8.0 + finetuned_limit_gb 8.8; quantize_checkpoint.py checks the
+base against 8.0 and, with --finetuned --adapters, weights + adapters against 8.8; serve_exam.sh uses the
+fine-tuned check; MODELS=all skips any model whose disk_gb is over 8.0; chart line at 8.0.
+
+Candidates against the new limits (4-bit NF4 estimates from the model shapes; measure with quantize_checkpoint):
+| model | as shipped | base <= 8.0 | notes |
+|---|---|---|---|
+| Bielik-11B NF4 | ~6.7 GB | OK | + 7 rank-16 adapters ~0.7 GB = ~7.4 GB <= 8.8 OK |
+| Bielik-11B DAPT-merged, re-quantized NF4 | ~6.7 GB | (base is the untouched Bielik) | fine-tuned total must stay <= 8.8 |
+| Qwen3-8B NF4 | ~6.2 GB (yaml says 5.0) | OK | untied 151k-vocab embeddings in bf16 |
+| gemma3-12b NF4 | ~8.4 GB | OVER | 262k-vocab bf16 embedding + vision tower; now skipped by MODELS=all |
+| Bielik-4.5B NF4 | ~2.9 GB | OK | |
+| Bielik-1.5B / Qwen3-1.7B bf16 | 3.2 / 4.1 GB | OK | |
+| bielik-11b-bf16 reference | 22.4 GB | OVER | reference only |
+| Grok: Qwen2.5-7B bf16 / GPTQ-Int8 / AWQ | 15.2 / 8.9 / 5.6 GB | OVER / OVER / OK | its 7B runs must ship AWQ (or 4-bit) |
+| Grok: Qwen2.5-3B bf16 (registered base) | ~6.2 GB | OK | |
+
+Other commits: 2eeda9e (release prep: brief PDF removed from HEAD, VM IP and AWS account ID redacted, SOURCES.md
+and docs/PUBLIC_RELEASE.md added) OK; history still holds them, which PUBLIC_RELEASE.md should cover.
+cebc119 (fineweb merge re-applies the exam/answer-key skip) OK. a79e502 (job venv on Python 3.12 via uv
+for vLLM 0.27.1) OK. a1f8ae5 (Grok registers its gpu_par job in STATUS.md) OK. Status commits OK.
 
 ## 2026-09-26 13:55 UTC: GPU sharing, vLLM pin, corpus, Grok board (e5e4deb..fe8a197, 19 commits)
 

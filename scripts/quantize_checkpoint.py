@@ -1,7 +1,9 @@
 """Writes the exam model as a pre-quantized checkpoint that fits the size limit on disk.
 
-The limit counts the base model's weights as stored before the exam (8.9 GB, per the
-organisers; LoRA adapters and the RAG knowledge base don't count). Quantizing at load
+The limits count weights on disk: the base model before fine-tuning at most 8.0 GB
+(`ship_limit_gb`), the fine-tuned model as shipped, weights plus LoRA adapters, at most
+8.8 GB (`finetuned_limit_gb`, check with --finetuned [--adapters DIR]). The RAG knowledge
+base doesn't count. Quantizing at load
 time doesn't help, since the 11-12B candidates are 22-24 GB in bf16. This script loads
 a model from configs/models.yaml in 4-bit NF4 (bitsandbytes, the same method the
 baselines use when vLLM quantizes at load time), saves it, measures it and fails if it
@@ -57,9 +59,12 @@ def main() -> int:
     ap.add_argument("--out", help="output dir (default work/checkpoints/<model>)")
     ap.add_argument("--check", help="only measure an existing checkpoint dir or weights file")
     ap.add_argument("--limit-gb", type=float, help="size limit (default: ship_limit_gb in models.yaml)")
+    ap.add_argument("--finetuned", action="store_true",
+                    help="check against finetuned_limit_gb (the shipped fine-tuned model) instead")
+    ap.add_argument("--adapters", help="LoRA adapter dir counted on top of the weights (with --finetuned)")
     args = ap.parse_args()
     cfg = load_config()
-    limit = args.limit_gb or float(cfg.get("ship_limit_gb", 8.9))
+    limit = args.limit_gb or float(cfg["finetuned_limit_gb"] if args.finetuned else cfg["ship_limit_gb"])
 
     if args.check:
         target = Path(args.check)
@@ -75,6 +80,8 @@ def main() -> int:
              "size_gb": round(weights_gb(target), 2)}, indent=2))
 
     size = weights_gb(target)
+    if args.adapters and Path(args.adapters).exists():
+        size += weights_gb(Path(args.adapters))
     ok = 0 < size <= limit
     print(f"{target}: {size:.2f} GB of weights, limit {limit} GB -> {'OK' if ok else 'OVER THE LIMIT'}")
     return 0 if ok else 1

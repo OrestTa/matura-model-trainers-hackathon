@@ -77,7 +77,8 @@ def test_ship_size_check_and_served_checkpoint(tmp_path, monkeypatch):
     (tmp_path / "model.safetensors").write_bytes(b"\0" * 2_000_000)
     (tmp_path / "config.json").write_text("{}")
     assert abs(qc.weights_gb(tmp_path) - 0.002) < 1e-9
-    assert qc.load_config()["ship_limit_gb"] == 8.9
+    assert qc.load_config()["ship_limit_gb"] == 8.0
+    assert qc.load_config()["finetuned_limit_gb"] == 8.8
 
     spec = importlib.util.spec_from_file_location("rb", ROOT / "scripts/run_baselines.py")
     rb = importlib.util.module_from_spec(spec)

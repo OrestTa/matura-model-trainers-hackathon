@@ -16,7 +16,8 @@ VLLM_PIN="${VLLM_PIN:-0.27.1}"
 have=$(python -c "import vllm; print(vllm.__version__)" 2>/dev/null || echo none)
 [ "$have" = "$VLLM_PIN" ] || { echo "vLLM $have found, need $VLLM_PIN: pip install vllm==$VLLM_PIN (before going offline)"; exit 1; }
 
-python scripts/quantize_checkpoint.py --check "$CHECKPOINT"   # refuses a model over the limit
+# The shipped model (weights + adapters) must be at most finetuned_limit_gb (8.8 GB).
+python scripts/quantize_checkpoint.py --check "$CHECKPOINT" --finetuned --adapters "$ADAPTERS"
 KB=$(python -c "import yaml; print((yaml.safe_load(open('configs/routes.yaml')).get('rag') or {}).get('path', ''))")
 [ -n "$KB" ] && [ -s "$KB" ] && echo "RAG: $KB" \
   || echo "WARNING: no RAG knowledge base at '$KB' (scripts/build_kb.py or the plwiki index; set rag.path)"

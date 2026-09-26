@@ -4,7 +4,7 @@
     python scripts/plot_baselines.py --runs s3dir --out report
 
 Writes overall.png (score per model, raw vs routed), by_category.png (model x
-question type heatmap), size_vs_score.png (shipped size vs score, with the 8.9 GB
+question type heatmap), size_vs_score.png (shipped size vs score, with the 8.0 GB
 limit and the 35% small-model bar), baselines.csv and index.html.
 """
 
@@ -31,7 +31,7 @@ MODE_LABELS = {"raw": "Base model, plain prompt", "routed": "Base model + router
                "rag": "Router prompts + RAG", "adapters": "Router + RAG + LoRA adapters"}
 BLUES = LinearSegmentedColormap.from_list(
     "blues", ["#cde2fb", "#86b6ef", "#3987e5", "#256abf", "#184f95", "#0d366b"])
-SMALL_MODEL_BAR, SIZE_LIMIT_GB = 35.0, 8.9
+SMALL_MODEL_BAR, SIZE_LIMIT_GB = 35.0, 8.0   # base model limit (configs/models.yaml ship_limit_gb)
 CATEGORY_ORDER = ["closed_choice", "true_false", "matching", "chronology",
                   "source_analysis", "short_open", "essay", "general"]
 
