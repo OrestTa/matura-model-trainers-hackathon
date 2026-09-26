@@ -6,7 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
-| score-vision | baselines MODELS=gemma4-12b (vision, with the exam pictures) MODES=raw,routed, judge Qwen3-14B-AWQ JUDGE_GB=16 | Forgehand L40S | queued: via the compute thread, after score-shootout | 2026-09-26 13:15 | 2026-09-26 13:15 | /workspace/work/out/score-vision | Win best matura score thread |
+| score-vision | baselines MODELS=gemma4-12b MODES=raw,routed JUDGE_HF=Qwen/Qwen3-14B-AWQ JUDGE_GB=16 GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:15 | 2026-09-26 13:17 | /workspace/work/out/score-vision | Win best matura score thread |
 | progress-sft0 | train TRAIN_MODELS=bielik-11b-base SINGLE_ADAPTER=1 TEACHER_HF=none EXTRA_TRAIN=/workspace/runs/progress-sft0/train_data/claude_synth.jsonl EPOCHS=2 VLLM_UTIL=0.35 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:14 | 2026-09-26 13:14 | /workspace/work/out/progress-sft0 | Best progress thread |
 | small-baselines2 | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=qwen3-vl-2b,qwen2.5-vl-3b,qwen3-4b,qwen3-vl-4b,gemma3-4b MODES=raw,routed GPU_BUDGET_GB=20 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:12 | 2026-09-26 13:12 | /workspace/work/out/small-baselines2 | Win smallest model thread |
 | baselines-all3 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:12 | 2026-09-26 13:12 | /workspace/work/out/baselines-all3 | Modal compute setup thread |
