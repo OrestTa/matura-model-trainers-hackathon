@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| progress-base-raw-r | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw-r/data/eval/matura_all.jsonl GPU_BUDGET_GB=0 VLLM_UTIL=0.3 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:26 | 2026-09-26 13:26 | /workspace/work/out/progress-base-raw-r | Best progress thread |
 | score-vision | baselines MODELS=gemma4-12b MODES=raw,routed JUDGE_HF=Qwen/Qwen3-14B-AWQ JUDGE_GB=16 GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:15 | 2026-09-26 13:17 | /workspace/work/out/score-vision | Win best matura score thread |
 | progress-sft0 | train TRAIN_MODELS=bielik-11b-base SINGLE_ADAPTER=1 TEACHER_HF=none EXTRA_TRAIN=/workspace/runs/progress-sft0/train_data/claude_synth.jsonl EPOCHS=2 VLLM_UTIL=0.35 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:14 | 2026-09-26 13:14 | /workspace/work/out/progress-sft0 | Best progress thread |
 | small-baselines2 | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=qwen3-vl-2b,qwen2.5-vl-3b,qwen3-4b,qwen3-vl-4b,gemma3-4b MODES=raw,routed GPU_BUDGET_GB=20 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:12 | 2026-09-26 13:12 | /workspace/work/out/small-baselines2 | Win smallest model thread |
@@ -40,10 +41,3 @@ Times are UTC.
 | router-ablation | bielik-11b MODES=raw,routed,rag on headline eval (needs data/kb from build_kb.py); measures template+voting+RAG gains | next free GPU | queued: wants a GPU after labqoat-baselines | 2026-09-26 11:13 | 2026-09-26 11:13 | work/out/router-ablation | Question router thread |
 | train-bielik-l40s | train TRAIN_MODELS=bielik-11b-dapt VLLM_UTIL=0.8 | Forgehand L40S | queued: after dapt-bielik; ships 4-bit base + bf16 adapters (<8.8 GB), so NOT cancelled | 2026-09-26 10:58 | 2026-09-26 13:13 | /workspace/work/out/train-bielik-l40s | Modal compute setup thread |
 | labqoat-baselines | baselines on all 16 papers (matura_all.jsonl, 573 items), no judge | Forgehand L40S | superseded by baselines-all: old sequential code on vLLM 0.30 (no bitsandbytes), will fail | 2026-09-26 10:58 | 2026-09-26 11:46 | /workspace/work/out/labqoat-baselines | Modal compute setup thread |
-
-## Track 01 update
-
-- Best legal committed CKE result remains the bare `Qwen/Qwen2.5-7B-Instruct-AWQ` base at **37.6% full / 38.9% text-only** with an approximately **5.582 GB** pack on disk.
-- Latest legal tuned check, **AWQ + `forgehand-lora-7b-fh` (offline)**, scored **29.8% full / 32.1% text-only** and regresses versus the bare AWQ base.
-- Keep the bare AWQ base as the preferred Sunday quality path; do not promote the fh adapter pack from this result.
-- Canonical note: `notes/TRACK01_BEST_SCORE.md`.
