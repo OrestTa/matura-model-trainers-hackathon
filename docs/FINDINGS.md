@@ -3,6 +3,19 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 19:50 CEST · venues thread: our own Nebius, Token Factory and HF keys work; Solari and Tavily don't yet
+
+- Orest's env vars are named `nebius`, `tokenfactory`, `HF`, `solari` (not the `NEBIUS_*`/`SOLARI_API_KEY` names in
+  `infra/venues_smoke.sh`); map them, e.g. `NEBIUS_API_KEY="$tokenfactory" bash infra/venues_smoke.sh`.
+- **Token Factory OK**: 25 models (Gemma-3-27B, Qwen3-235B, Qwen3.5-397B, ...); Gemma-3-27B answered a Grunwald test.
+- **HF OK** (account orestta, fine-grained token).
+- **Nebius Console OK via `NEBIUS_IAM_TOKEN="$nebius"`** (Orest's short-lived login token, tenant
+  coffee-cuckoo-tenant-knd, 9 default projects, eu-north1 = project-e00yqh3gpr00ss4byr5baw). Quota: 32 each of
+  H100/H200/L40S in eu-north1. Nothing running. Credits unknown (not visible from the CLI); asked Orest.
+- **me2k8 (`aijob-e00me2k8j1ge1vw19k`) is NOT in Orest's tenant** (get by ID = unauthenticated): it lives in the
+  Grok bot's own Nebius account. Still don't recreate or touch it.
+- **Solari 401**: the `solari` value is not a Solari key (no `slr_live_` prefix). **No Tavily key** set.
+
 ## 2026-09-26 18:45 CEST · smallest-model thread: without pictures, a 3-bit 4B is far below 35%
 
 - **Qwen3-4B-2507 Q3_K_M (2.08 GB), router prompts, CPU, LLM-graded vs the CKE key: 22.1% (53/240)** on the 154
