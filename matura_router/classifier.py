@@ -109,6 +109,13 @@ class RuleClassifier:
             scores[cat.value] = sum(w for rx, w in pats if rx.search(text))
         if context.strip():
             scores[Category.SOURCE_ANALYSIS.value] += 1.0
+        # Open tasks that look closed (dev-paper misroutes, 2026-09-26): "Rozstrzygnij, który fragment
+        # jest chronologicznie późniejszy … uzasadnij" (a verdict + justification, not an ordering) and
+        # tables filled with names ("uzupełnij tabelę – wpisz … nazwiska"), whose A./B. rows read as choices.
+        if re.match(r"\s*rozstrzygnij\b", question, re.I) or re.search(
+                r"\buzupełnij\s+tabelę\b.{0,80}\bwpisz\b.{0,60}\b(nazw|nazwisk|imi)", question, re.I | re.S):
+            for c in (Category.CHRONOLOGY, Category.CLOSED_CHOICE, Category.MATCHING):
+                scores[c.value] = 0.0
 
         # A clear closed-format instruction beats "it has a source": P/F or A-D
         # tasks based on a source are still answered in the closed format, so the
