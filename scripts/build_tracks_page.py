@@ -30,6 +30,8 @@ EVAL_LABEL = {
     "headline-auto": "Held-out 2023–26, auto-scored items only",
     "contaminated": "Older papers (contaminated)",
     "dev": "Not the matura",
+    # The organisers' mock = the May 2023 paper, officially LLM-graded: a practice set, not the headline.
+    "official-mock": "Official mock (May 2023, practice set)",
 }
 STAGE_LABEL = {"base": "Base", "harness": "Base + harness", "trained": "Trained"}
 MODE_STAGE = {"raw": "base", "routed": "harness", "rag": "harness", "adapters": "trained"}
@@ -178,7 +180,7 @@ RESULT_HEAD = ("<tr><th class='l'>Model</th><th class='l'>Stage</th><th>Score</t
                "<th>Points</th><th>GB on disk</th><th class='l'>Source</th><th class='l'>Note</th></tr>")
 
 
-def results_by_eval(rows: list[dict], order=("headline", "headline-auto", "contaminated", "dev")) -> str:
+def results_by_eval(rows: list[dict], order=("headline", "headline-auto", "official-mock", "contaminated", "dev")) -> str:
     out = []
     for kind in order:
         group = sorted([r for r in rows if r["eval"] == kind], key=lambda r: -r["pct"])
@@ -490,6 +492,8 @@ def build(data: dict, rows: list[dict], jobs: list[dict]) -> str:
                                  "This is the headline number."),
         (EVAL_LABEL["headline-auto"], "Same papers, only the items scored without a judge (about 60 items, 70 pts). "
                                       "The percentage is of those points, not of the whole exam."),
+        (EVAL_LABEL["official-mock"], "The organisers' mock exam (history-2023-mock-v1 = the May 2023 paper, 37 items, "
+                                      "60 pts), graded by their LLM. A practice set: May 2023 is also in our held-out set."),
         (EVAL_LABEL["contaminated"], "Older papers (2015–2022, mocks). Used as training data, so they overstate trained models."),
         (EVAL_LABEL["dev"], "Practice geography exam and the 90-question MCQ set. Several adapters were trained on these."),
         ("Unverified", "Measured by the Grok bot in its own runs; the raw outputs are not in this repo."),

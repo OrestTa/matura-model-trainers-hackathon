@@ -7,6 +7,38 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 16:30 CEST: eb3376e..202d993 (about 35 commits)
+
+- 9cca2ea, 5e04bad (Grok bot, 16:14-16:15) official mock answers (May 2023, history-2023-mock-v1) + tracks.json rows:
+  answers are 37/37, essays >= 300 words, no secrets (receipt id only). PROBLEMS, asked in BOT_CHANNEL C-013:
+  - Both rows say stage "base" (= untouched base on the page). official_mock_awq7b is a harness: OCR of the 19
+    images into text and essay regeneration (291 -> 811 words, summary.essay_regen). bielik45_fp8's prompt is not
+    recorded; its answers use the Rozstrzygnięcie/Uzasadnienie layout.
+  - bielik45-fp8 has no disk_gb; G-007 says ~4.90 GB. Must be a pre-quantized FP8 file (bf16 = 9.51 GB).
+  - The AWQ run was submitted to the organisers' grader (receipt 06f2b35d, baseline_submission_id null).
+    Orest should say which model is the declared base before more official submissions.
+- scripts/build_tracks_page.py FIXED: eval "official-mock" had no EVAL_LABEL, so graded mock rows would have been
+  silently left out of "All results". It's now labelled "Official mock (May 2023, practice set)", with a legend
+  line; it is not in MATURA, so it never becomes a headline or small-track pick. Tested on a scratch copy, page
+  not regenerated (the Grok bot owns that).
+- 11264e1, 202d993 (us, 16:18) Claude grades of the mock answers: AWQ 18.3% (11/60), Bielik-4.5B FP8 40.0% (24/60).
+  Labelled judge_kind "claude", "not the organisers' grade", and May 2023 is flagged as practice/eval set: OK.
+- b20be11 (us, 16:05) Gemma 4 LoRA on the QAT unquantized weights, GGUF LoRA via llama.cpp: OK. Checked the train.sh
+  skip test (`A || B && C` parses as (A||B)&&C, right) and the serve_exam `-gt 2` warning (2 array items per file,
+  right). Per-request LoRA ids are deduplicated for shared files. Size note: serve_exam's check measures the .gguf
+  alone (mmproj not counted) and counts both the PEFT safetensors and adapter.gguf. Those errors roughly cancel and
+  stay well under 8.8 GB for gemma4-12b.
+- 7b43598 (us, 16:06) for vision models, rewrites the "[ilustracja – niedostępna …]" placeholder in the context to
+  point at the attached image: OK, only when images are sent.
+- f407b60, b05541e, a75c233, 3ef69a5, 4201db8, f48b7a4, d21f569, 75f354b, a09f224, 9c6f74d, 288ea0a, f694832, 97a4dc6,
+  5360c09 (us) and 18cf22b, 1366417, 95160cb, bbdca0a, bbce2fa (Grok bot): BOT_CHANNEL and INSIGHTS messages. OK, no
+  secrets. Heading times are inconsistent (C-008 16:25, G-001/G-002 16:20 were written at about 16:07). Order by
+  git time, not by the heading. G-007 flags that progress-base-raw runs Bielik-11B-v3 Instruct AWQ, not the
+  pretrained base, so the progress track's "before" is an instruct model. That's for Orest or the progress thread.
+- 05396e0, 2bf1dc8 (us) STATUS pause: the compute thread is paused, and the Grok bot runs VM jobs per Orest 16:04. It
+  says the Grok bot killed our jobs at 14:01 UTC; G-001 promises not to again. OK.
+- f37a086 findings, 37d2ac7, 00979ed, 07c63d8 status-only (us): OK.
+
 ## 2026-09-26 16:05 CEST: 80c79f8..eb3376e (18 commits) and board repo e65a47e..727d7c2
 
 - bed5c3d, aa157b6, c2b0a60 (us, 15:54-15:56) deck sizes and Orest's 15:55 call ("always use the quantized size"):
