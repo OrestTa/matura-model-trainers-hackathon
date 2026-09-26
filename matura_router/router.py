@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import collections
 import logging
+import os
 import re
 import dataclasses
 import time
@@ -22,6 +23,28 @@ from .rag import BM25Retriever, SQLiteRetriever, format_knowledge, load_retrieve
 from .subtypes import DEFAULT_SUBTYPES, Profile, load_profiles, subtype_of
 
 log = logging.getLogger(__name__)
+
+# Essay length (Orest 22:14 CEST): CKE scores an essay under 300 words 0, and the base writes 305-369.
+# ESSAY_TARGET_WORDS=550 asks for that length in the essay prompt; ESSAY_MIN_WORDS=350 re-asks a shorter one.
+ESSAY_TARGET_TEXT = "Wypracowanie powinno mieć około {} słów (minimum 300; krótsze otrzymuje 0 punktów)."
+ESSAY_RETRY_TEXT = ("Twoje wypracowanie ma tylko {} słów, a musi mieć co najmniej 300 (krótsze otrzymuje 0 punktów). "
+                    "Napisz je od nowa, w całości, na ten sam temat, około {} słów: rozbuduj każdy argument "
+                    "o konkretne fakty, daty i postacie, nie powtarzaj zdań. Zacznij od tej samej linii z numerem tematu.")
+_ESSAY_HEADER = re.compile(r"^\W*(wypracowanie|na temat nr\s*\d+|temat( nr)?\s*\d+\.?|historia|poziom rozszerzony)\W*$", re.I)
+
+
+def essay_min_words() -> int:
+    return int(os.environ.get("ESSAY_MIN_WORDS") or 0)
+
+
+def essay_target() -> int:
+    return int(os.environ.get("ESSAY_TARGET_WORDS") or 0)
+
+
+def essay_words(text: str) -> int:
+    """Words in the essay body: header lines ("WYPRACOWANIE", "na temat nr 1", "Temat nr 2", ...) not counted."""
+    body = [ln for ln in text.replace("*", "").splitlines() if not _ESSAY_HEADER.match(ln.strip())]
+    return len(re.findall(r"\w+", " ".join(body)))
 
 # Closed types: post-processed answers are comparable strings, so they can be voted on.
 VOTABLE = {Category.CLOSED_CHOICE, Category.TRUE_FALSE, Category.MATCHING, Category.CHRONOLOGY}
@@ -164,6 +187,27 @@ class Router:
             log.warning("adapter %r not loaded, using base model for %s", adapter, category.value)
             return None
         return adapter
+
+    def _lengthen_essay(self, answer: str, raw: str, messages, adapter, params):
+        """ESSAY_MIN_WORDS=N: an essay whose body (header lines not counted) is under N words is asked for
+        again, whole and longer, up to twice; the longest version wins. CKE gives 0 points under 300 words,
+        and the base's essays land at 305-369 (docs/LORA_ROOT_CAUSE.md)."""
+        best, best_raw, n = answer, raw, essay_words(answer)
+        for _ in range(2):
+            if n >= essay_min_words():
+                break
+            log.warning("essay body %d words < ESSAY_MIN_WORDS=%d: asking for a longer one", n, essay_min_words())
+            retry = messages + [{"role": "assistant", "content": best},
+                                {"role": "user", "content": ESSAY_RETRY_TEXT.format(n, essay_target() or 550)}]
+            try:
+                r = self.backend.chat(retry, adapter, params)
+            except Exception:  # noqa: BLE001 - keep what we have
+                log.exception("essay retry failed")
+                break
+            a = strip_think(r)
+            if essay_words(a) > n:
+                best, best_raw, n = a, r, essay_words(a)
+        return best, best_raw
 
     def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
               route: Route, category: Category, keys: Optional[list] = None) -> str:
@@ -318,6 +362,8 @@ class Router:
                                   images=tuple(images) if self.vision else ())
         if profile is not None and profile.prompt_suffix:
             messages[0]["content"] += "\n" + profile.prompt_suffix.strip()
+        if category == Category.ESSAY and essay_target():
+            messages[0]["content"] += "\n" + ESSAY_TARGET_TEXT.format(essay_target())
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:
@@ -332,6 +378,8 @@ class Router:
         answer = strip_think(raw) if mode == "raw" else postprocess(category, raw, keys)
         if mode != "raw" and profile is not None and profile.min_words:
             answer = self._lengthen(answer, messages, adapter, route, category, profile.min_words)
+        if category == Category.ESSAY and essay_min_words():
+            answer, raw = self._lengthen_essay(answer, raw, messages, adapter, route.params)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
             answer = self._vote(answer, messages, adapter, route, category, keys)
         return RoutedAnswer(answer=answer, raw=raw,
