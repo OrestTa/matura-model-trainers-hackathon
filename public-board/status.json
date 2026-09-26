@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-26T16:51:00+02:00",
+  "updated": "2026-09-26T17:18:07+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
@@ -21,7 +21,8 @@
         "Commit audit: relabel 37.6% as headline-auto; prefer Claude-graded official-mock rows in tracks.json.",
         "C-013: mark official_mock_awq7b as harness (ocr_fallback + essay_regen), not untouched base.",
         "Progress base must stay pretrained Bielik-11B-v2 NF4 (~6.7 GB), not Instruct-AWQ v3.",
-        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs."
+        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs.",
+        "Claude master also logged honest Qwen2.5-0.5B at 5.0% and Qwen2.5-1.5B at 6.7%; both stay far below the small-model >=35% bar."
       ]
     },
     "history_ext_multi_year": {
@@ -37,9 +38,9 @@
       "sort": 5,
       "name": "Official mock Bielik-4.5B FP8 (Claude)",
       "model": "Bielik-4.5B FP8",
-      "stage": "base",
+      "stage": "harness",
       "status": "COMPLETED",
-      "honest_bare": true,
+      "honest_bare": false,
       "overall_pct": 40.0,
       "text_open": null,
       "text_closed": null,
@@ -104,9 +105,9 @@
       "sort": 18,
       "name": "E2E 2023 mock Qwen2.5-3B (Grok)",
       "model": "Qwen2.5 3B",
-      "stage": "base",
+      "stage": "harness",
       "status": "COMPLETED",
-      "honest_bare": true,
+      "honest_bare": false,
       "overall_pct": 25.0,
       "text_open": 27.3,
       "text_closed": 50.0,
@@ -117,13 +118,47 @@
       "source": "results/judged/e2e_oneyear_2023_qwen25-3b/"
     },
     {
+      "id": "mock-qwen05b-claude",
+      "sort": 19,
+      "name": "Official mock Qwen2.5-0.5B (Claude)",
+      "model": "Qwen2.5 0.5B",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 5.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Claude master 3/60 on history-2023-mock-v1; coarse only closed 3/11, open 0/34, essay 0/15, so five CKE fields stay null. Fails Mały >=35%; job_id=matura-judge-claude-qwen25-05b-2023-20260926-1449-68f6.",
+      "source": "results/tracks.json#g-official-mock-qwen25-05b-claude"
+    },
+    {
+      "id": "mock-qwen15b-claude",
+      "sort": 20,
+      "name": "Official mock Qwen2.5-1.5B (Claude)",
+      "model": "Qwen2.5 1.5B",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 6.7,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Claude master 4/60 on history-2023-mock-v1; coarse only closed 2/11, open 2/34, essay 0/15, so five CKE fields stay null. Fails Mały >=35%; job_id=matura-judge-claude-qwen25-15b-2023-20260926-1639-2b53.",
+      "source": "results/tracks.json#g-official-mock-qwen25-15b-claude"
+    },
+    {
       "id": "cke-3b-base",
       "sort": 30,
       "name": "3B CKE headline-auto",
       "model": "Qwen2.5 3B",
-      "stage": "base",
+      "stage": "harness",
       "status": "COMPLETED",
-      "honest_bare": true,
+      "honest_bare": false,
       "overall_pct": 26.7,
       "text_open": null,
       "text_closed": null,
@@ -172,9 +207,9 @@
       "sort": 60,
       "name": "7B AWQ CKE headline-auto",
       "model": "Qwen2.5 7B AWQ",
-      "stage": "base",
+      "stage": "harness",
       "status": "COMPLETED",
-      "honest_bare": true,
+      "honest_bare": false,
       "overall_pct": 37.6,
       "text_open": null,
       "text_closed": null,
@@ -203,7 +238,7 @@
     },
     {
       "id": "progress-nf4-raw",
-      "sort": 20,
+      "sort": 22,
       "name": "Bielik-11B-v2 NF4 bare raw",
       "model": "Bielik-11B-v2 NF4",
       "stage": "base",
@@ -219,7 +254,7 @@
     },
     {
       "id": "progress-nf4-routed",
-      "sort": 21,
+      "sort": 23,
       "name": "Bielik-11B-v2 NF4 routed harness",
       "model": "Bielik-11B-v2 NF4",
       "stage": "harness",
@@ -244,19 +279,18 @@
       "sections": [
         {
           "title": "Baselines (honest bare)",
-          "stage_ids": [
-            "mock-bielik45-fp8-claude",
-            "mock-e2e-3b-grok",
-            "cke-3b-base",
-            "cke-7b-awq-base"
-          ]
+          "stage_ids": []
         },
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-bielik45-fp8-claude",
             "mock-bielik45-fp8-grok",
             "mock-awq7b-claude",
             "mock-awq7b-grok",
+            "mock-e2e-3b-grok",
+            "cke-3b-base",
+            "cke-7b-awq-base",
             "cke-3b-history-v2"
           ]
         },
@@ -279,8 +313,7 @@
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "progress-nf4-raw",
-            "cke-3b-base"
+            "progress-nf4-raw"
           ]
         },
         {
@@ -304,21 +337,23 @@
       "title": "Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
       "status": "RUNNING",
-      "summary": "Bielik-4.5B FP8 (~4.90 GB) cleared 40.0% Claude-graded official mock — first legal ≤8 GB pack past 35% on the gauge. E2E 3B is 25.0% Grok.",
+      "summary": "Bielik-4.5B FP8 (~4.90 GB) remains the best verified >=35% row at 40.0% (Claude); Qwen2.5-0.5B scored 5.0% and Qwen2.5-1.5B 6.7%, so C-027 still stands: no sub-2B pass yet, 3-bit and 2-bit 4B first.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "mock-bielik45-fp8-claude",
-            "mock-e2e-3b-grok",
-            "cke-3b-base"
+            "mock-qwen05b-claude",
+            "mock-qwen15b-claude"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-bielik45-fp8-claude",
             "mock-bielik45-fp8-grok",
-            "mock-awq7b-claude"
+            "mock-awq7b-claude",
+            "mock-e2e-3b-grok",
+            "cke-3b-base"
           ]
         },
         {
@@ -349,6 +384,18 @@
       "name": "E2E 2023 mock Qwen2.5-3B",
       "state": "COMPLETED",
       "detail": "Grok 25.0% / Claude 18.3% / Sol 21.7%"
+    },
+    {
+      "id": "mock-qwen05b-claude",
+      "name": "Official mock Qwen2.5-0.5B (Claude)",
+      "state": "COMPLETED",
+      "detail": "Claude 5.0% (3/60); coarse only closed 3/11, open 0/34, essay 0/15; no five-cat split"
+    },
+    {
+      "id": "mock-qwen15b-claude",
+      "name": "Official mock Qwen2.5-1.5B (Claude)",
+      "state": "COMPLETED",
+      "detail": "Claude 6.7% (4/60); coarse only closed 2/11, open 2/34, essay 0/15; no five-cat split"
     },
     {
       "id": "cke-7b-awq-base",
@@ -450,7 +497,8 @@
     ],
     "score_conflicts": [
       "Grok vs Claude official-mock totals disagree on identical answers (AWQ 33.3 vs 18.3; Bielik 46.7 vs 40.0).",
-      "Board shows both; Claude rows marked verified in tracks.json; Grok primary for E2E 3B until Claude secondary lands."
+      "Board shows both; Claude rows marked verified in tracks.json; Grok primary for E2E 3B until Claude secondary lands.",
+      "Claude master rows for Qwen2.5-0.5B and Qwen2.5-1.5B have only coarse closed/open/essay splits, so the five CKE category fields remain null."
     ]
   }
 }
