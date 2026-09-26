@@ -31,7 +31,8 @@ routes:
   general:         {adapter: null,            max_tokens: 512,  temperature: 0.0}
 
 # Offline retrieval (modes "rag" and "adapters"): BM25 over a local knowledge base
-# built by scripts/build_kb.py. Missing file = no RAG. `categories` limits it to
+# built by scripts/build_kb.py (.jsonl, BM25 in memory) or an SQLite FTS5 file
+# (.sqlite, table passages(title, text)) for all of Wikipedia. Missing file = no RAG. `categories` limits it to
 # some question types (omit for all).
 rag:
   path: data/kb/passages.jsonl

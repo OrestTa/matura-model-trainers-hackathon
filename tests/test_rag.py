@@ -58,3 +58,18 @@ def test_kb_chunking_drops_references():
     parts = chunk(text, size=300)
     assert parts and all(len(p) <= 600 for p in parts)
     assert not any("ref ref" in p for p in parts)
+
+
+def test_sqlite_fts_retriever_matches_interface(tmp_path):
+    import sqlite3
+    from matura_router.rag import load_retriever
+    db = tmp_path / "kb.sqlite"
+    con = sqlite3.connect(db)
+    con.execute("CREATE VIRTUAL TABLE passages USING fts5(title, text)")
+    con.executemany("INSERT INTO passages VALUES (?, ?)", [(p.title, p.text) for p in PASSAGES])
+    con.commit()
+    con.close()
+    r = load_retriever(db)
+    hits = r.search("Co postanowiono na mocy unii lubelskiej?", k=1)
+    assert hits[0].title == "Unia lubelska" and hits[0].score > 0
+    assert len(r.passages) == 3

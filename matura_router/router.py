@@ -15,7 +15,7 @@ from .backends import Backend, GenerationParams, make_backend
 from .categories import Category
 from .classifier import Classifier, LLMClassifier, RuleClassifier
 from .prompts import build_messages, postprocess, strip_think
-from .rag import BM25Retriever, format_knowledge
+from .rag import BM25Retriever, SQLiteRetriever, format_knowledge, load_retriever
 
 log = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ class RoutedAnswer:
 class Router:
     def __init__(self, backend: Backend, routes: dict[Category, Route],
                  classifier: Optional[Classifier] = None,
-                 retriever: Optional[BM25Retriever] = None, rag: Optional[dict] = None):
+                 retriever: Optional[BM25Retriever | SQLiteRetriever] = None, rag: Optional[dict] = None):
         self.backend = backend
         self.routes = routes
         self.classifier = classifier or Classifier()
@@ -86,7 +86,7 @@ class Router:
             kb = Path(rag["path"])
             kb = kb if kb.is_absolute() else Path(path).resolve().parent.parent / kb
             if kb.exists():
-                retriever = BM25Retriever.load(kb)
+                retriever = load_retriever(kb)
                 log.info("RAG: %d passages from %s", len(retriever.passages), kb)
             else:
                 log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)

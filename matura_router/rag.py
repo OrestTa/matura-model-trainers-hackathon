@@ -1,10 +1,15 @@
 """Offline retrieval over a local history knowledge base (allowed at the exam; not
 counted toward the size limit).
 
-The knowledge base is a JSONL of {"id", "title", "text"} passages, built before the
-exam by scripts/build_kb.py (Polish Wikipedia, CC BY-SA). Retrieval is plain BM25
-with crude Polish stemming (a word's first 6 letters), in pure Python: no extra
-model, no GPU, and ~30k passages index in a few seconds.
+Two knowledge-base formats, picked by file extension (`load_retriever`):
+
+- `.jsonl` of {"id", "title", "text"} passages, e.g. from scripts/build_kb.py (a
+  history slice of Polish Wikipedia, CC BY-SA). In-memory BM25 with crude Polish
+  stemming (a word's first 6 letters), pure Python; fine up to ~100k passages.
+- `.sqlite` / `.db` with an FTS5 table `passages(title, text)` (other columns
+  UNINDEXED are fine), for the full Polish Wikipedia. SQLite ranks with its own BM25.
+
+Both return the same Passage objects, so the router doesn't care which one it has.
 """
 
 from __future__ import annotations
@@ -67,6 +72,36 @@ class BM25Retriever:
         best = sorted(scores.items(), key=lambda x: -x[1])[:k]
         return [Passage(self.passages[i].id, self.passages[i].title, self.passages[i].text, round(s, 2))
                 for i, s in best]
+
+
+class SQLiteRetriever:
+    """FTS5 over a large knowledge base on disk; the query is OR-ed prefix terms."""
+
+    def __init__(self, path: str | Path, table: str = "passages"):
+        import sqlite3
+        self.db = sqlite3.connect(f"file:{path}?mode=ro", uri=True, check_same_thread=False)
+        self.table = table
+
+    @property
+    def passages(self) -> list:  # len() for logging only
+        return range(self.db.execute(f"SELECT count(*) FROM {self.table}").fetchone()[0])
+
+    def search(self, query: str, k: int = 4) -> list[Passage]:
+        words = list(dict.fromkeys(terms(query)))[:32]
+        if not words:
+            return []
+        match = " OR ".join(f'"{w}"*' for w in words)
+        rows = self.db.execute(
+            f"SELECT rowid, title, text, bm25({self.table}, 2.0, 1.0) AS s FROM {self.table} "
+            f"WHERE {self.table} MATCH ? ORDER BY s LIMIT ?", (match, k)).fetchall()
+        return [Passage(str(r[0]), r[1], r[2], round(-r[3], 2)) for r in rows]
+
+
+def load_retriever(path: str | Path):
+    path = Path(path)
+    if path.suffix in (".sqlite", ".db", ".sqlite3"):
+        return SQLiteRetriever(path)
+    return BM25Retriever.load(path)
 
 
 def format_knowledge(passages: list[Passage], max_chars: int = 3000) -> str:
