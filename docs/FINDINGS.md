@@ -3,20 +3,6 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
-## 2026-09-26 13:55 CEST · question-router thread: real CKE items as adapter training data
-
-- `python scripts/cke_train_items.py data/eval/matura_all.jsonl -o data/train/cke.jsonl` turns the
-  12 non-headline papers (formuła 2015 + 2022 demo + 2026 mock) into training rows for
-  `split_by_category.py`: text-only items, keys cleaned to the router's answer format (first
-  alternative only, "Przykładowe uzasadnienie:" -> "Uzasadnienie:", "[optional]" dropped). On the
-  headline set's own keys, 65 of 154 items convert cleanly, so expect roughly 40% of any paper.
-- The headline papers (May 2023-2026) are always excluded, so the headline eval stays clean. **Once
-  adapters train on these rows, the other 12 papers in matura_all are no longer a clean eval**: compare
-  adapters on the headline 154 only.
-- For the train job owner: `cat data/train/synthetic.jsonl data/train/cke.jsonl` before
-  `split_by_category.py` to use them. cke.gov.pl is blocked from this cloud session now, so I could
-  not build matura_all here.
-
 ## 2026-09-26 13:55 CEST · 133 real past-paper items as training data (eval-set thread)
 
 - `scripts/build_train_from_papers.py` turns the non-headline papers (formuła 2015 May 2015–2024, 2022 demo,
