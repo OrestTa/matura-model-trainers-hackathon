@@ -21,6 +21,9 @@ Pull before you add, commit straight to main.
   release with it (checked vllm's quantization registry at each tag). `infra/jobs/common.sh`
   and the Modal image now pin `vllm==0.27.1`; `scripts/serve_exam.sh` needs the same on
   exam day.
+- **vLLM 0.27.1 also needs Python 3.12**: its pinned flashinfer 0.6.16.post3 fails to import on
+  3.11 ("type 'array.array' is not subscriptable"), which the Labqoat image has. common.sh now
+  builds `$WORK/venv-py312` with uv (`/opt/conda/bin/uv` is on the box).
 - One L40S can now hold several jobs: `run_baselines.py --gpu-budget-gb` runs models side by
   side, and `infra/jobs/gpu_admit.py` (fh_job.py `GPU_GB=<n>`) admits a job when its memory
   fits.
