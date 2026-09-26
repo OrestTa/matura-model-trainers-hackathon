@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| eval-base-subtype-2025-05 | papers MODEL=gemma4-12b-think8k MODE=subtype THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 PAPERS=2025-05 | Modal H100 | running | 2026-09-26 20:04 | 2026-09-26 20:04 | modal volume matura-jobs:out/eval-base-subtype-2025-05 | Modal wrapper |
 | eval-base-subtype-2024-05 | papers MODEL=gemma4-12b-think8k MODE=subtype THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 PAPERS=2024-05 | Modal H100 | running | 2026-09-26 20:03 | 2026-09-26 20:03 | modal volume matura-jobs:out/eval-base-subtype-2024-05 | Modal wrapper |
 | eval-base-subtype-2023-05 | papers MODEL=gemma4-12b-think8k MODE=subtype THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 PAPERS=2023-05 | Modal H100 | running | 2026-09-26 20:03 | 2026-09-26 20:03 | modal volume matura-jobs:out/eval-base-subtype-2023-05 | Modal wrapper |
 | eval-Gm3b | papers MODEL=gemma4-12b-think MODE=routed THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 LORA_FROM=gemma-lora-Gm3 PAPERS='2023-05 2024-05 2025-05 2026-05' | Modal H100 | running | 2026-09-26 19:49 | 2026-09-26 19:49 | modal volume matura-jobs:out/eval-Gm3b | Modal wrapper |
