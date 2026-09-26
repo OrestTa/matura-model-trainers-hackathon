@@ -76,7 +76,7 @@ def run_job(job: str, env: str, name: str) -> int:
                               "&& ls /opt/llama.cpp/convert_lora_to_gguf.py", shell=True, env=job_env).returncode
     # Eval set with pictures (held-out papers) and the past-paper training items, when not shipped.
     prep = ("cd /repo && pip install -q -e . && python3 scripts/fetch_matura.py --images -o data/eval/matura.jsonl "
-            "&& python3 scripts/fetch_matura.py --papers all -o data/eval/matura_all.jsonl")
+            "&& python3 scripts/fetch_matura.py --papers all --images -o data/eval/matura_all.jsonl")
     if job == "train" and job_env.get("PAST_PAPERS", "1") == "1":
         prep += " && python3 scripts/build_train_from_papers.py"
     if not Path("/repo/data/eval/matura.jsonl").is_file() or job == "train":
