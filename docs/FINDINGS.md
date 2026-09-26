@@ -3,6 +3,14 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 18:30 CEST · Gemma 4 routed scored 1.3% because llama-server thinks by default (best score)
+
+`results/gemma4/gemma4-vision/` (Grok bot run, finished 16:32 CEST, held-out 154 items, auto-scored): **raw 47.8%, routed 1.3%**.
+- Routed: 146/154 answers came back **empty** (`raw` = ""). Only routes with big token caps answered: the 3 essays (2000 tokens) and a few `general` items (512), one of them cut off mid-word ("Cecha: ł"). Every closed/source route (16–256 tokens) was empty.
+- The routed median latency was 32 s even for empty answers, so the model was generating the whole cap. llama-server turns Gemma 4's thinking **on by default** and returns it in `reasoning_content`, not `content`. Raw mode survived because it gets the largest cap (2000) for every item, so the thought finished before the answer.
+- Fix (main): `gemma4-12b` now sends `chat_template_kwargs.enable_thinking: false` (like qwen3.5-9b); thinking stays available as `gemma4-12b-think` (+2000 tokens per answer). The OpenAI backend now logs a warning whenever an answer is empty because max_tokens went to reasoning.
+- Consequence: the running C-021 step 1 (`…-raw-heldout-20260926-1815-gm4a`) started before the fix, so it measures Gemma **with** hidden thinking at a 2000-token cap. Step 2 runs routed both ways (thinking off, and `gemma4-12b-think`).
+
 ## 2026-09-26 17:30 CEST · best-progress thread: untouched base scored; site base set
 
 - **Declared base (organisers' site, confirmed 17:06): `speakleash/Bielik-11B-v2`, pretrained**, stored NF4

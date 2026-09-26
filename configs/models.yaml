@@ -61,6 +61,10 @@ models:
     params_b: 12.0
     disk_gb: 7.16     # 6.98 model + 0.18 mmproj
     gpu_gb: 14
+    # llama-server turns Gemma 4's thinking ON by default and hides it in reasoning_content:
+    # the routed caps (16-256 tokens) then run out mid-thought and `content` comes back empty
+    # (gemma4-vision routed, 16:32 CEST: 146/154 empty, 1.3%). Thinking lives in gemma4-12b-think.
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
   # The same Gemma 4 with its thinking mode on (chat template kwarg), 2000 extra tokens per answer.
   gemma4-12b-think:
     deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}

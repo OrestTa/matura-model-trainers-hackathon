@@ -19,10 +19,13 @@ Only the stdlib is used so the harness runs on a bare exam machine.
 from __future__ import annotations
 
 import json
+import logging
 import urllib.request
 from typing import Optional
 
 from .base import Backend, GenerationParams
+
+log = logging.getLogger(__name__)
 
 
 class OpenAICompatBackend(Backend):
@@ -68,7 +71,14 @@ class OpenAICompatBackend(Backend):
 
     def chat(self, messages, adapter, params: GenerationParams) -> str:
         out = self._post("/chat/completions", self.request_body(messages, adapter, params))
-        return out["choices"][0]["message"]["content"]
+        choice = out["choices"][0]
+        content = choice["message"].get("content") or ""
+        if not content.strip() and choice["message"].get("reasoning_content"):
+            # A thinking model spent the whole max_tokens reasoning (the server keeps that apart).
+            log.warning("empty answer: max_tokens=%d went to reasoning (finish_reason=%s); "
+                        "turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens",
+                        params.max_tokens, choice.get("finish_reason"))
+        return content
 
     def available_adapters(self) -> Optional[set[str]]:
         if self.adapter_mode == "llamacpp":
