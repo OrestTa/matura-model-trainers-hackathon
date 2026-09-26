@@ -1,0 +1,68 @@
+{
+  "n": 154,
+  "scored": 96,
+  "errors": 0,
+  "earned": 5.5,
+  "max": 108.0,
+  "pct": 5.1,
+  "pct_text_only": 8.8,
+  "pct_all_rows": 2.3,
+  "decision_acc": 32.7,
+  "unscored": 58,
+  "routing_accuracy": 85.7,
+  "latency_p50_s": 21.819,
+  "wall_s": 1885.8,
+  "by_category": {
+    "closed_choice": {
+      "n": 12,
+      "scored": 12,
+      "earned": 1.0,
+      "max": 13.0,
+      "pct": 7.7
+    },
+    "essay": {
+      "n": 4,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 4,
+      "scored": 4,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 13,
+      "scored": 7,
+      "earned": 0.0,
+      "max": 7.0,
+      "pct": 0.0
+    },
+    "source_analysis": {
+      "n": 109,
+      "scored": 61,
+      "earned": 0.5,
+      "max": 64.0,
+      "pct": 0.8
+    },
+    "true_false": {
+      "n": 12,
+      "scored": 12,
+      "earned": 4.0,
+      "max": 18.0,
+      "pct": 22.2
+    }
+  },
+  "model": "qwen3-0.6b",
+  "mode": "raw",
+  "eval": "/home/user/matura-model-trainers-hackathon/data/eval/matura.jsonl",
+  "judge": null,
+  "served": "Qwen/Qwen3-0.6B",
+  "hf_id": "Qwen/Qwen3-0.6B",
+  "params_b": 0.6,
+  "disk_gb": 0.64,
+  "quantization": null
+}

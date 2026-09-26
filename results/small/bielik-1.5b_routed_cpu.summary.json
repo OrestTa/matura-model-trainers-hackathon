@@ -1,0 +1,68 @@
+{
+  "n": 154,
+  "scored": 97,
+  "errors": 0,
+  "earned": 19.33,
+  "max": 109.0,
+  "pct": 17.7,
+  "pct_text_only": 22.8,
+  "pct_all_rows": 8.1,
+  "decision_acc": 30.8,
+  "unscored": 57,
+  "routing_accuracy": 85.7,
+  "latency_p50_s": 13.091,
+  "wall_s": 2263.4,
+  "by_category": {
+    "closed_choice": {
+      "n": 12,
+      "scored": 12,
+      "earned": 7.0,
+      "max": 13.0,
+      "pct": 53.8
+    },
+    "essay": {
+      "n": 4,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 4,
+      "scored": 4,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 13,
+      "scored": 7,
+      "earned": 0.0,
+      "max": 7.0,
+      "pct": 0.0
+    },
+    "source_analysis": {
+      "n": 109,
+      "scored": 62,
+      "earned": 9.333333333333334,
+      "max": 65.0,
+      "pct": 14.4
+    },
+    "true_false": {
+      "n": 12,
+      "scored": 12,
+      "earned": 3.0,
+      "max": 18.0,
+      "pct": 16.7
+    }
+  },
+  "model": "bielik-1.5b",
+  "mode": "routed",
+  "eval": "/home/user/matura-model-trainers-hackathon/data/eval/matura.jsonl",
+  "judge": null,
+  "served": "speakleash/Bielik-1.5B-v3.0-Instruct",
+  "hf_id": "speakleash/Bielik-1.5B-v3.0-Instruct",
+  "params_b": 1.6,
+  "disk_gb": 1.68,
+  "quantization": null
+}

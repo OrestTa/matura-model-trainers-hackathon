@@ -3,6 +3,18 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:55 CEST · smallest-model thread: first small-model scores, CPU scoring path
+
+- Judge-free scores on the 154 held-out items (closed items + keywords + verdict check only), Q8_0 GGUF on CPU:
+  **Qwen3-0.6B raw 5.1%** (5.5/108), **Bielik-1.5B routed 17.7%** (19.3/109; closed choice 7/13, verdicts 31%).
+  Summaries in `results/small/`. The organisers' AI-graded benchmark has Bielik-1.5B at 27.3% (text, May 2023):
+  nothing ≤3B reaches 35% untouched, so category 3 needs RAG/SFT on a 1.5–2B model, with Bielik-4.5B (41.8%) as the fallback.
+- Scoring without the GPU: `scripts/cpu_serve.py <gguf>` serves any GGUF with its own chat template
+  (honours `chat_template_kwargs`) as an OpenAI endpoint for `run_baselines.py --base-url`. ~35 min per pass on 4 cores.
+- **pl.wikipedia.org is reachable from cloud sessions now**: `scripts/build_kb.py` ran here; the KB (25,216 passages) is
+  at /mnt/project-files/data/kb/passages.jsonl for anyone who needs `rag` mode.
+- Size for this prize: the organisers' deck lists bf16 GB (Bielik 1.5B = 3.2), so fewer parameters wins, not heavier quantization.
+
 ## 2026-09-26 15:40 CEST · model-benchmark thread: organisers' "Model Benchmark" slides (Ania Olchowik)
 
 Source: Google Slides 1iGH2E6JURWe0Nq0Qqf0_nHoSA7s0LKaj5WSN6BpS3uI (export/txt works), site
