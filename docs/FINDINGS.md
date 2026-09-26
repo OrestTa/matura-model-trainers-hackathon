@@ -3,6 +3,12 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 12:39 CEST: AWS account suspended, stop using AWS
+
+- Orest reports the AWS account is suspended. Don't plan training or baselines on AWS anymore;
+  `infra/aws/` and `infra/jobs/ec2_job.sh` are dead ends unless that changes. Use the other
+  compute (Nebius, Labqoat/Forgehand, Modal free tier, per the brief).
+
 ## 2026-09-26 12:40 CEST: AWS access and spending guards
 
 - **GPU quota is the bottleneck, not money.** Applied EC2 quota for P and G/VT instances is 0 in
