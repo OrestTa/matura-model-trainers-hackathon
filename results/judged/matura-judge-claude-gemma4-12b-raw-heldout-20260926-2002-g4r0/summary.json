@@ -1,0 +1,34 @@
+{
+ "answers": "results/gemma4/matura-infer-gemma4-12b-raw-heldout-20260926-2002-g4r0/<paper>/answers.json",
+ "model": "Gemma 4 12B QAT q4_0 GGUF + mmproj, raw, thinking OFF (7.16 GB)",
+ "judge": "claude",
+ "papers": {
+  "2023-05": {
+   "total": 34.0,
+   "max": 60.0,
+   "pct": 56.7,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf"
+  },
+  "2024-05": {
+   "total": 30.0,
+   "max": 60.0,
+   "pct": 50.0,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Historia/MHIP-R0-100-2405-zasady.pdf"
+  },
+  "2025-05": {
+   "total": 34.0,
+   "max": 60.0,
+   "pct": 56.7,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf"
+  },
+  "2026-05": {
+   "total": 28.0,
+   "max": 60.0,
+   "pct": 46.7,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-2605-zasady.pdf"
+  }
+ },
+ "total": 126.0,
+ "max": 240.0,
+ "pct": 52.5
+}
