@@ -29,12 +29,26 @@ def rows_for(paper):
     sys.exit("no eval set")
 
 
-def answers(path):
-    return {a["id"]: a.get("answer") or "" for a in json.load(open(path, encoding="utf-8"))["answers"]}
+def answers(path, paper):
+    """answers.json ({"answers": [...]}) or a pipeline answers.jsonl; full ids like "2024-05-z3" are
+    filtered to --paper and stripped to the bare item id."""
+    if str(path).endswith(".jsonl"):
+        rows = [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()]
+    else:
+        rows = json.load(open(path, encoding="utf-8"))["answers"]
+    out = {}
+    for a in rows:
+        i = a["id"]
+        if "-z" in i:
+            p, i = i.split("-z", 1)
+            if not p.endswith(paper):
+                continue
+        out[i] = a.get("answer") or ""
+    return out
 
 
 def dump(a):
-    rows, ans = rows_for(a.paper), answers(a.answers)
+    rows, ans = rows_for(a.paper), answers(a.answers, a.paper)
     for i, r in rows.items():
         print(f"\n===== {i} [{r['category']}] max {r['points']} auto={score_row(r, ans.get(i, ''))} decision={r.get('decision')}")
         print(f"Q: {r['question'][:900]}\nCTX: {r.get('context', '')[:1500]}")
@@ -43,7 +57,7 @@ def dump(a):
 
 
 def score(a):
-    rows, ans = rows_for(a.paper), answers(a.answers)
+    rows, ans = rows_for(a.paper), answers(a.answers, a.paper)
     g = json.load(open(a.grades))
     items, tot, mx = [], 0.0, 0.0
     for i, r in rows.items():

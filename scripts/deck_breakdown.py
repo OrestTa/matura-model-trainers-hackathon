@@ -52,18 +52,30 @@ def breakdown(items: list[dict], text_mode: bool = False) -> dict:
     return out
 
 
-def needs_image(paper: str = "2023-05") -> dict[str, bool]:
+CLOSED_KINDS = {"closed_choice", "true_false", "matching"}
+
+
+def eval_rows(paper: str) -> dict[str, dict]:
     for p in EVALS:
         if p.exists():
             rows = (json.loads(l) for l in open(p, encoding="utf-8") if l.strip())
-            return {r["id"].split("-z", 1)[1]: bool(r.get("needs_image")) for r in rows if r.get("paper") == paper}
+            return {r["id"].split("-z", 1)[1]: r for r in rows if r.get("paper") == paper}
     return {}
 
 
-def split(items: list[dict], img: dict[str, bool]) -> dict:
+def kind_of(item_id: str, paper: str, rows: dict[str, dict]) -> str:
+    """closed/open/essay: the deck's lists for May 2023, the eval row's category for other papers."""
+    if paper == "2023-05":
+        return categories(item_id)[0]
+    cat = rows.get(item_id, {}).get("category")
+    return "essay" if cat == "essay" else "closed" if cat in CLOSED_KINDS else "open"
+
+
+def split(items: list[dict], rows: dict[str, dict], paper: str) -> dict:
     out = {c: [0.0, 0.0] for c in ["open-text", "open-vision", "closed-text", "closed-vision", "essay"]}
+    img = {i: bool(r.get("needs_image")) for i, r in rows.items()}
     for it in items:
-        kind = categories(it["id"])[0]
+        kind = kind_of(it["id"], paper, rows)
         c = "essay" if kind == "essay" else f"{kind}-{'vision' if img.get(it['id']) else 'text'}"
         out[c][0] += float(it.get("claude_points", it.get("points")) or 0)
         out[c][1] += float(it["max_points"])
@@ -76,13 +88,22 @@ def fmt(b: dict) -> str:
 
 def main() -> None:
     for path in sys.argv[1:]:
-        items = json.load(open(path))["items"]
-        print(path)
-        print("  all items (/60):     ", fmt(breakdown(items)))
-        print("  deck text mode (/55):", fmt(breakdown(items, text_mode=True)))
-        img = needs_image()
-        if img:
-            print("  text/vision split:   ", fmt(split(items, img)))
+        data = json.load(open(path))
+        items, paper = data["items"], data.get("paper", "2023-05")
+        rows = eval_rows(paper)
+        print(path, paper)
+        if paper == "2023-05":
+            print("  all items (/60):     ", fmt(breakdown(items)))
+            print("  deck text mode (/55):", fmt(breakdown(items, text_mode=True)))
+        else:  # the deck's categories exist only for May 2023
+            tot = {"closed": [0.0, 0.0], "open": [0.0, 0.0], "essay": [0.0, 0.0], "total": [0.0, 0.0]}
+            for it in items:
+                for c in (kind_of(it["id"], paper, rows), "total"):
+                    tot[c][0] += float(it.get("claude_points", it.get("points")) or 0)
+                    tot[c][1] += float(it["max_points"])
+            print("  closed/open/essay:   ", fmt(tot))
+        if rows:
+            print("  text/vision split:   ", fmt(split(items, rows, paper)))
 
 
 if __name__ == "__main__":
