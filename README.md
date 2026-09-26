@@ -146,18 +146,24 @@ python scripts/plot_baselines.py
 
 ### Building the eval set from past papers
 
-`scripts/fetch_matura.py` downloads the real CKE history papers (poziom rozszerzony,
-formuła 2023, May 2023–2026) and their official answer keys from cke.gov.pl into
-`data/raw/cke/`, and parses them into `data/eval/matura.jsonl`. Nothing it downloads
-is committed.
+`scripts/fetch_matura.py` downloads every history paper (poziom rozszerzony) CKE publishes with an
+answer key, into `data/raw/cke/`, and parses them into eval JSONL. Nothing it downloads is committed.
+Sets: `headline` (default: formuła 2023, May 2023–2026, 154 items → `data/eval/matura.jsonl`),
+`formula2023` (plus the 2022 demo paper and the January 2026 mock), `formula2015` (the previous
+format, May 2015–2024) and `all` (16 papers, 573 items, 860 points → `data/eval/matura_all.jsonl`).
+Per-paper coverage is in [results/eval_set_papers.md](results/eval_set_papers.md).
 
 ```bash
 pip install -e .[data]
-python scripts/fetch_matura.py                     # 154 items, 4 × 60 points
+python scripts/fetch_matura.py                     # headline set
+python scripts/fetch_matura.py --papers all        # every paper
 python scripts/fetch_matura.py --text-only         # drop items that need a picture
 python scripts/fetch_matura.py --papers 2025-05 -o data/eval/2025.jsonl
+python scripts/run_baselines.py --eval data/eval/matura_all.jsonl ...   # score the full set
 ```
 
+Rows carry `paper`, `year`, `formula` (2023 or 2015) and `kind` (main, demo, mock), so the
+summary can be split per paper or per format.
 Each item keeps its shared sources in `context` and the instruction in `question`;
 pictures (maps, photos, posters, plans) become a `[ilustracja – …]` placeholder.
 `needs_image: true` marks items that can't be answered without the picture (85 of 154),

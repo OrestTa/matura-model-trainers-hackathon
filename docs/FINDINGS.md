@@ -3,6 +3,23 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:30 CEST · Every past history matura with a key is now in the eval set (eval-set thread)
+
+- `python scripts/fetch_matura.py --papers all` builds `data/eval/matura_all.jsonl`: **16 papers, 573 items,
+  860 points**. That is every historia (rozszerzony) paper CKE publishes with an answer key: formuła 2023
+  May 2023–2026 plus the March 2022 demo and January 2026 mock (6 × 60 pts), and formuła 2015 May 2015–2024
+  (10 × 50 pts). Every paper parses to exactly its official point total. Per-paper table:
+  `results/eval_set_papers.md`. The default (`headline`) is still the four real formuła 2023 May papers.
+- CKE only publishes the main May session for history. No June/August papers, and no poziom podstawowy
+  since 2015. Pre-2015 papers (the old matura, 2005–2014) are no longer linked on cke.gov.pl.
+- Auto-scorable without a judge: 205 of 573 items. Needs a picture: 305 of 573.
+- **Chronology is essentially absent from every format since 2015**: 1 item in 573. Source analysis is 379.
+- Formuła 2015 keys differ from formuła 2023 keys ("Schemat punktowania" before "Poprawna odpowiedź",
+  "Odpowiedź: A" + justification). Two keys are images in the PDF (f15-2016 z8, f15-2019 z11.2) and are
+  marked with a `warning`.
+- Baseline scores per paper are not run yet: no GPU is reachable from this session. The baseline job
+  picks the full set up with `--eval data/eval/matura_all.jsonl`.
+
 ## 2026-09-26 13:20 CEST · question-router thread: answer templates, verdict check, frozen exam checkpoint
 
 - **72 of 154 eval items carry an answer-sheet template** ("Rozstrzygnięcie: … / Uzasadnienie: …",

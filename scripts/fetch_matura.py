@@ -6,8 +6,9 @@ This script downloads them from cke.gov.pl into data/raw/cke/ and parses them in
 data/eval/matura.jsonl in the format scripts/run_baselines.py reads (see the README,
 "Eval set format"):
 
-    python scripts/fetch_matura.py                  # all papers in PAPERS
-    python scripts/fetch_matura.py --papers 2025-05 # just one
+    python scripts/fetch_matura.py                   # headline: May 2023-2026 -> data/eval/matura.jsonl
+    python scripts/fetch_matura.py --papers all      # all 16 papers -> data/eval/matura_all.jsonl
+    python scripts/fetch_matura.py --papers 2025-05  # just one
 
 Each row is one scored item ("Zadanie 5.1."): the shared sources go in `context`,
 the instruction (with any A-D options or P/F statements) in `question`, and the key
@@ -36,26 +37,66 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne"
+B15 = "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2015/Arkusze_egzaminacyjne"
+EXTRA = "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/materialy_dodatkowe"
 
-# Formuła 2023, main May session. Each paper is worth 60 points.
+# Every historia (poziom rozszerzony) paper CKE publishes with an answer key. CKE only posts the
+# main May session. "formula" 2023 is the current exam; 2015 is the previous one (2015-2020 "MHI-R1",
+# 2021-2024 "EHIP", still sat by technikum students until 2024). The default set is the current format.
 PAPERS = {
-    "2023-05": {
-        "arkusz": f"{BASE}/2023/Historia/MHIP-R0-100-2305.pdf",
-        "zasady": f"{BASE}/2023/Historia/MHIP-R0-100-2305-zasady.pdf",
-    },
-    "2024-05": {
-        "arkusz": f"{BASE}/2024/Historia/MHIP-R0-100-A-2405-arkusz.pdf",
-        "zasady": f"{BASE}/2024/Historia/MHIP-R0-100-2405-zasady.pdf",
-    },
-    "2025-05": {
-        "arkusz": f"{BASE}/2025/Historia/MHIP-R0-100-A-2505-arkusz.pdf",
-        "zasady": f"{BASE}/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf",
-    },
-    "2026-05": {
-        "arkusz": f"{BASE}/2026/Historia/MHIP-R0-100-A-2605-arkusz.pdf",
-        "zasady": f"{BASE}/2026/Historia/MHIP-R0-100-2605-zasady.pdf",
-    },
+    # formuła 2023, main May session (the headline eval set)
+    "2023-05": {"formula": 2023, "kind": "main",
+                "arkusz": f"{BASE}/2023/Historia/MHIP-R0-100-2305.pdf",
+                "zasady": f"{BASE}/2023/Historia/MHIP-R0-100-2305-zasady.pdf"},
+    "2024-05": {"formula": 2023, "kind": "main",
+                "arkusz": f"{BASE}/2024/Historia/MHIP-R0-100-A-2405-arkusz.pdf",
+                "zasady": f"{BASE}/2024/Historia/MHIP-R0-100-2405-zasady.pdf"},
+    "2025-05": {"formula": 2023, "kind": "main",
+                "arkusz": f"{BASE}/2025/Historia/MHIP-R0-100-A-2505-arkusz.pdf",
+                "zasady": f"{BASE}/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf"},
+    "2026-05": {"formula": 2023, "kind": "main",
+                "arkusz": f"{BASE}/2026/Historia/MHIP-R0-100-A-2605-arkusz.pdf",
+                "zasady": f"{BASE}/2026/Historia/MHIP-R0-100-2605-zasady.pdf"},
+    # formuła 2023, CKE demo paper (March 2022) and mock exam (January 2026)
+    "pokaz-2022-03": {"formula": 2023, "kind": "demo",
+                      "arkusz": f"{EXTRA}/pokazowe/Historia/MHIP-R0-100-2305.pdf",
+                      "zasady": f"{EXTRA}/pokazowe/Historia/MHIP-R0-100-200-300-400-660-700-Q00-2203-zasady.pdf"},
+    "probny-2026-01": {"formula": 2023, "kind": "mock",
+                       "arkusz": f"{EXTRA}/probny_egzamin/2026_styczen/Historia/MHIP-R0-100-A-2601-arkusz.pdf",
+                       "zasady": f"{EXTRA}/probny_egzamin/2026_styczen/Historia/MHIP-R0-100-2601-zasady.pdf"},
+    # formuła 2015, main May session
+    "f15-2015-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2015/formula_od_2015/MHI-R1_1P-152.pdf",
+                    "zasady": f"{B15}/2015/formula_od_2015/odpowiedzi/MHI-R1-N.pdf"},
+    "f15-2016-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2016/formula_od_2015/MHI-R1_1P-162.pdf",
+                    "zasady": f"{B15}/2016/formula_od_2015/zasady_oceniania/MHI-R1-N.pdf"},
+    "f15-2017-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2017/formula_od_2015/historia/MHI-R1_1P-172.pdf",
+                    "zasady": f"{B15}/2017/formula_od_2015/zasady_oceniania/MHI-R1-N.pdf"},
+    "f15-2018-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2018/formula_od_2015/historia/MHI-R1_1P-182.pdf",
+                    "zasady": f"{B15}/2018/formula_od_2015/Zasady_oceniania/MHI-R1_1P-182_zasady_oceniania.pdf"},
+    "f15-2019-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2019/formula_od_2015/historia/MHI-R1_1P-192.pdf",
+                    "zasady": f"{B15}/2019/formula_od_2015/Zasady_oceniania/MHI-R1_1P-192_model.pdf"},
+    "f15-2020-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2020/formula_od_2015/historia/MHI-R1_1P-202.pdf",
+                    "zasady": f"{B15}/2020/formula_od_2015/Zasady_oceniania/MHI-PR-202_zasady.pdf"},
+    "f15-2021-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2021/Historia/poziom_rozszerzony/EHIP-R0-100-2105.pdf",
+                    "zasady": f"{B15}/2021/Zasady_Oceniania/EHIP-R0-100-2105-zasady.pdf"},
+    "f15-2022-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2022/Historia/poziom_rozszerzony/EHIP-R0-100-2205.pdf",
+                    "zasady": f"{B15}/2022/Zasady_oceniania/EHIP-R0-100-2205-zasady.pdf"},
+    "f15-2023-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2023/Historia/EHIP-R0-100-2305.pdf",
+                    "zasady": f"{B15}/2023/Historia/EHIP-R0-100-2305-zasady.pdf"},
+    "f15-2024-05": {"formula": 2015, "kind": "main",
+                    "arkusz": f"{B15}/2024/Historia/EHIP-R0-100-A-2405-arkusz.pdf",
+                    "zasady": f"{B15}/2024/Historia/EHIP-R0-100-2405-zasady.pdf"},
 }
+HEADLINE = [p for p, v in PAPERS.items() if v["formula"] == 2023 and v["kind"] == "main"]
 
 IMG = "[ilustracja – niedostępna w wersji tekstowej]"
 
@@ -110,9 +151,9 @@ def pdf_lines(path: Path, mark_images: bool) -> list[str]:
 JUNK = [
     r"^\s*Strona \d+ z \d+\s*$", r"^\s*MHIP-R0_100\s*$", r"^\s*MHIP-R0-\d+", r"^\s*Układ graficzny",
     r"^\s*© CKE", r"^\s*BRUDNOPIS", r"^\s*\(nie podlega ocenie\)", r"^\s*[PF]\s*$",
-    r"^\s*\d(\s*[–-]\s*\d+)+\s*[–-]?\s*$", r"^\s*\d+(\.\d+)?\.\s*$", r"^\s*Egzamin maturalny z historii",
+    r"^\s*\d(\s*[–-]\s*\d+)+\s*[–-]?\s*$", r"^\s*\d+(\.\d+)?\.\s*$", r"^\s*(Próbny e|E)gzamin maturalny z historii",
     r"^\s*Zasady oceniania rozwiązań zadań\s*$", r"^\s*Wypełnia\s*$", r"^\s*egzaminator\s*$",
-    r"^\s*Nr zadania", r"^\s*Maks\. liczba", r"^\s*Uzyskana liczba",
+    r"^\s*Nr zadania", r"^\s*[A-Z]{3,4}-R\d_\d+", r"^\s*(\d+\.\d+\.\s*){2,}$", r"^\s*\d\s*$", r"^\s*Maks\. liczba", r"^\s*Uzyskana liczba",
 ]
 JUNK_RE = re.compile("|".join(JUNK), re.I)
 
@@ -152,7 +193,7 @@ def join(lines: list[str]) -> str:
 
 # ---------------------------------------------------------------- splitting
 
-HEADER = re.compile(r"^Zadanie (\d+)(?:\.(\d+))?\.?(?=\s|$)\s*(?:\(0\s*[–-]\s*(\d+)\))?\s*(.*)$")
+HEADER = re.compile(r"^Zadanie\.? (\d+)(?:\.(\d+))?\.?(?=\s|$|\()\s*(?:\(0\s*[–-]\s*(\d+)\))?\s*(.*)$")
 
 
 def split_tasks(lines: list[str]) -> list[dict]:
@@ -225,7 +266,9 @@ def paper_items(lines: list[str]) -> list[dict]:
 
 # ---------------------------------------------------------------- answer keys
 
-KEY_START = re.compile(r"^(Rozwiązani[ea]|Przykładow\w+ (odpowied|rozwiąz|realizacj)|Poprawn\w+ odpowied)", re.I)
+KEY_START = re.compile(r"^(Rozwiązani[ea]|Odpowiedź:|Przykładow\w+ (odpowied|rozwiąz|realizacj|argument)|(Poprawn|Prawidłow)\w+ (odpowied|rozwiąz))", re.I)
+KEY_LABEL = re.compile(r"^(Rozwiązani[ea]|Przykładow\w+ (odpowied|rozwiąz)\w*|(Poprawn|Prawidłow)\w+ (odpowied|rozwiąz)\w*)\s*:?\s*$", re.I)
+RUBRIC_START = re.compile(r"^(Zasady oceniania|Schemat (punktowania|oceniania))\b")
 FOOTNOTE = re.compile(r"^(\d\s*)?Rozporządzenie Ministra|^\(Dz\.\s?U\.|^programowej kształcenia|^Załącznik nr", re.I)
 
 
@@ -235,14 +278,17 @@ def key_items(lines: list[str]) -> dict[str, dict]:
         if t["points"] is None:
             continue
         body = [ln for ln in t["lines"] if not FOOTNOTE.search(ln)]
-        rub_i = next((i for i, ln in enumerate(body) if ln.startswith("Zasady oceniania")), None)
+        rub_i = next((i for i, ln in enumerate(body) if RUBRIC_START.match(ln)), None)
         sol_i = next((i for i, ln in enumerate(body) if KEY_START.match(ln)), None)
-        rubric = body[rub_i + 1: sol_i if sol_i and sol_i > (rub_i or -1) else None] if rub_i is not None else []
-        solution = body[sol_i:] if sol_i is not None else []
-        if solution and re.match(r"^Rozwiązani[ea]\s*$", solution[0]):
+        rubric, solution = [], []
+        if rub_i is not None:   # rubric runs to the solution if that follows it, else to the end
+            rubric = body[rub_i + 1: sol_i if sol_i is not None and sol_i > rub_i else None]
+        if sol_i is not None:   # formuła 2015 keys put the solution before the rubric
+            solution = body[sol_i: rub_i if rub_i is not None and rub_i > sol_i else None]
+        if solution and KEY_LABEL.match(solution[0]):
             solution = solution[1:]
-        if not rubric and not solution and t["points"] >= 10:
-            rubric = body   # 2025 essay: no "Zasady oceniania" line, the whole section is the criteria
+        if not rubric and not solution:   # essays: the criteria come under their own headings
+            rubric = [ln for ln in body if not re.match(r"^Wymagani[ea]", ln)]
         qid = f"{t['num']}.{t['sub']}" if t["sub"] else f"{t['num']}"
         if qid in keys:   # the essay criteria can span two "Zadanie 26." sections
             keys[qid]["rubric"] = (keys[qid]["rubric"] + "\n" + join(rubric)).strip()
@@ -295,15 +341,21 @@ def alts(value: str) -> list[str]:
         if m:
             out += [m[1], *re.split(r",\s*", m[2])]
             continue
-        base = re.sub(r"\[[^\]]*\]|\([^)]*\)", "", part)
-        out.append(re.sub(r"\s+", " ", base))
+        part = re.sub(r"\([^)]*\)", "", part)
+        opts = re.findall(r"\[[^\]]*\]", part)
+        # every combination of the optional [..] words: "Jan [II] Kazimierz" -> "Jan Kazimierz", "Jan II Kazimierz"
+        for mask in range(2 ** min(len(opts), 3)):
+            v, n = part, 0
+            for j, o in enumerate(opts):
+                v = v.replace(o, o[1:-1] if j < 3 and mask >> j & 1 else "", 1)
+            out.append(re.sub(r"\s+", " ", v))
     out = [x.strip(" .,;:") for x in out]
     return list(dict.fromkeys(x for x in out if len(x) > 1))
 
 
 def closed_gold(cat: str, solution: str) -> str | None:
     s = solution.strip()
-    first = re.sub(r"^Rozstrzygnięcie:\s*", "", s.splitlines()[0]).strip() if s else ""
+    first = re.sub(r"^(Rozstrzygnięcie|Odpowiedź):\s*", "", s.splitlines()[0]).strip() if s else ""
     if cat == "closed_choice":
         if re.fullmatch(r"[A-F](\s*(,|i|oraz)\s*[A-F])*\.?", first):
             return ", ".join(re.findall(r"[A-F]", first))
@@ -319,7 +371,7 @@ def closed_gold(cat: str, solution: str) -> str | None:
         seq = re.findall(r"\b([A-F]|\d)\b", first)
         return ", ".join(seq) if len(seq) >= 3 else None
     if cat == "matching":
-        pairs = re.findall(r"^(\d+)\.?\s*[–-]\s*([A-F])\s*$", s, re.M)
+        pairs = re.findall(r"^(\d+)\.?\s*[–-]\s*([A-F])\.?\s*$", s, re.M)
         return ", ".join(f"{a} – {b}" for a, b in pairs) if pairs else None
     return None
 
@@ -331,14 +383,17 @@ def pair_keywords(solution: str) -> list[list[str]] | None:
         return None
     groups = []
     for ln in lines:
-        m = re.match(r"^(?:Fragment |Opis |Dokument |Źródło )?([A-F1-9]|[A-ZĄĆĘŁŃÓŚŹŻ]\w+(?: \w+){0,2})\.?\s*[–-]\s*(.+)$", ln)
+        m = re.match(r"^(?:Fragment |Opis |Dokument |Źródło )?([A-F1-9]|[A-ZĄĆĘŁŃÓŚŹŻ]\w+(?: \w+){0,2})\.?\s*[–-]\s*(.+)$", ln) \
+            or re.match(r"^(?:Tekst )?([A-F])\.?\s*[–-]?\s+(.+)$", ln)
         if not m or len(m[2]) > 80:
             if len(lines) <= 4 and len(ln.split()) <= 5 and not re.match(r"^(Rozstrzygnięcie|Przykładow|Nazwa|•)", ln) \
                     and ":" not in ln:
                 groups.append(alts(ln))     # a plain list: one answer per line
                 continue
             return None
-        label, value = m[1], m[2].strip()
+        label, value = m[1], m[2].strip().rstrip(".")
+        if (short := re.search(r"\b([A-F1-9])$", label)):   # "Tekst A" -> "A"
+            label = short[1]
         if re.fullmatch(r"[A-F1-9]", value):     # letter <-> number pair
             groups.append([f"{label} – {value}", f"{label} - {value}", f"{label}-{value}",
                            f"{label}–{value}", f"{label}: {value}", f"{label} {value}"])
@@ -418,11 +473,15 @@ def build_row(paper: str, url: str, it: dict, key: dict | None) -> dict:
         "visuals": visuals,
         "rubric": key["rubric"] if key else "",
         "paper": paper,
-        "year": int(paper[:4]),
+        "year": int(re.search(r"20\d\d", paper)[0]),
+        "formula": PAPERS[paper]["formula"],
+        "kind": PAPERS[paper]["kind"],
         "source_url": url,
     })
     if not key:
         row["warning"] = "no answer key found"
+    elif not solution and cat != "essay":
+        row["warning"] = "answer key is an image in the PDF; not machine-readable"
     return row
 
 
@@ -431,8 +490,8 @@ def build_row(paper: str, url: str, it: dict, key: dict | None) -> dict:
 
 def build(paper: str, raw: Path) -> list[dict]:
     urls = PAPERS[paper]
-    ark = download(urls["arkusz"], raw / Path(urls["arkusz"]).name)
-    zas = download(urls["zasady"], raw / Path(urls["zasady"]).name)
+    ark = download(urls["arkusz"], raw / f"{paper}-arkusz.pdf")
+    zas = download(urls["zasady"], raw / f"{paper}-zasady.pdf")
     items = paper_items(clean(pdf_lines(ark, mark_images=True)))
     keys = key_items(clean(pdf_lines(zas, mark_images=False)))
     # CKE sometimes numbers the essay differently in the key (2025: item 25, key 26).
@@ -450,31 +509,66 @@ def build(paper: str, raw: Path) -> list[dict]:
     return rows
 
 
+SETS = {
+    "headline": HEADLINE,                                                   # current format, real May exams
+    "formula2023": [p for p, v in PAPERS.items() if v["formula"] == 2023],  # + demo and mock papers
+    "formula2015": [p for p, v in PAPERS.items() if v["formula"] == 2015],
+    "all": list(PAPERS),
+}
+AUTO_TYPES = {"closed_choice", "true_false", "chronology", "matching"}
+
+
+def auto_scorable(r: dict) -> bool:
+    return bool((r.get("gold") and r["category"] in AUTO_TYPES) or r.get("gold_keywords"))
+
+
+def report(rows: list[dict]) -> str:
+    """Markdown table: one line per paper."""
+    out = ["| paper | formuła | items | points | auto-scorable items (points) | needs image | types |",
+           "|---|---|---|---|---|---|---|"]
+    for paper in dict.fromkeys(r["paper"] for r in rows):
+        rs = [r for r in rows if r["paper"] == paper]
+        auto = [r for r in rs if auto_scorable(r)]
+        cats = Counter(r["category"] for r in rs)
+        out.append(f"| {paper} | {rs[0]['formula']} | {len(rs)} | {sum(r['points'] for r in rs)} | "
+                   f"{len(auto)} ({sum(r['points'] for r in auto)}) | {sum(r['needs_image'] for r in rs)} | "
+                   + ", ".join(f"{k} {v}" for k, v in cats.most_common()) + " |")
+    return "\n".join(out)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--papers", default=",".join(PAPERS), help="comma-separated, e.g. 2024-05,2025-05")
+    ap.add_argument("--papers", default="headline",
+                    help=f"a set ({', '.join(SETS)}) or comma-separated paper ids, e.g. 2024-05,f15-2019-05")
     ap.add_argument("--raw-dir", default=str(ROOT / "data/raw/cke"))
-    ap.add_argument("-o", "--out", default=str(ROOT / "data/eval/matura.jsonl"))
+    ap.add_argument("-o", "--out", default=None,
+                    help="default: data/eval/matura.jsonl for headline, data/eval/matura_<set>.jsonl otherwise")
     ap.add_argument("--text-only", action="store_true", help="drop items that need an image")
+    ap.add_argument("--report", help="also write the per-paper table (markdown) here")
     args = ap.parse_args()
 
+    papers = SETS.get(args.papers) or [p.strip() for p in args.papers.split(",")]
     rows = []
-    for p in args.papers.split(","):
-        rows += build(p.strip(), Path(args.raw_dir))
+    for p in papers:
+        rows += build(p, Path(args.raw_dir))
     if args.text_only:
         rows = [r for r in rows if not r["needs_image"]]
-    out = Path(args.out)
+    default = "matura.jsonl" if args.papers == "headline" else f"matura_{args.papers.replace(',', '_')}.jsonl"
+    out = Path(args.out or ROOT / "data/eval" / default)
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
+    table = report(rows)
+    if args.report:
+        Path(args.report).write_text(table + "\n", encoding="utf-8")
     cats = Counter(r["category"] for r in rows)
-    auto = sum(1 for r in rows if (r.get("gold") and r["category"] in
-               {"closed_choice", "true_false", "chronology", "matching"}) or r.get("gold_keywords"))
+    print(table, file=sys.stderr)
     print(f"wrote {len(rows)} items ({sum(r['points'] for r in rows)} points) to {out}", file=sys.stderr)
     print(f"  by type: {dict(cats)}", file=sys.stderr)
-    print(f"  auto-scorable: {auto}, needs image: {sum(r['needs_image'] for r in rows)}", file=sys.stderr)
+    print(f"  auto-scorable: {sum(map(auto_scorable, rows))}, needs image: {sum(r['needs_image'] for r in rows)}",
+          file=sys.stderr)
 
 
 if __name__ == "__main__":

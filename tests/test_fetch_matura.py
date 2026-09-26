@@ -27,7 +27,8 @@ def test_closed_gold_formats():
 
 
 def test_keyword_alternatives():
-    assert fm.alts("[Ignacy] Łukasiewicz") == ["Łukasiewicz"]
+    assert fm.alts("[Ignacy] Łukasiewicz") == ["Łukasiewicz", "Ignacy Łukasiewicz"]
+    assert "Jan II Kazimierz" in fm.alts("Jan [II] Kazimierz [Waza]")
     assert fm.alts("Hanza [hanza niemiecka, związek hanzeatycki]") == ["Hanza", "hanza niemiecka", "związek hanzeatycki"]
     assert fm.alts("abdykacja / zrzeczenie się tronu") == ["abdykacja", "zrzeczenie się tronu"]
 
