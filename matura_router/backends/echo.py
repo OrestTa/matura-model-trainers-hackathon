@@ -13,4 +13,7 @@ class EchoBackend(Backend):
 
     def chat(self, messages, adapter, params: GenerationParams) -> str:
         self.calls.append((adapter, messages))
-        return f"[{adapter or 'base'}] {messages[-1]['content'][:80]}"
+        content = messages[-1]["content"]
+        if isinstance(content, list):  # text + image parts
+            content = " ".join(c.get("text", "") for c in content if c.get("type") == "text")
+        return f"[{adapter or 'base'}] {content[:80]}"

@@ -6,7 +6,9 @@ writes them into each adapter's dataset), so train and inference stay aligned.
 
 from __future__ import annotations
 
+import base64
 import re
+from pathlib import Path
 
 from .categories import Category
 
@@ -21,7 +23,9 @@ SYSTEM_PROMPTS: dict[Category, str] = {
     Category.SOURCE_ANALYSIS: _BASE + "Odpowiedz zwięźle na podstawie podanego źródła i własnej wiedzy. Wskaż konkretne fakty, nazwiska i daty.",
     Category.SHORT_OPEN: _BASE + "Odpowiedz krótko i konkretnie, jednym lub dwoma zdaniami. Podawaj dokładne nazwy, nazwiska i daty.",
     Category.ESSAY: _BASE + ("Napisz wypracowanie: postaw tezę, uzasadnij ją co najmniej trzema argumentami "
-                             "opartymi na faktach (daty, postacie, wydarzenia), uwzględnij tło epoki i sformułuj wniosek."),
+                             "opartymi na faktach (daty, postacie, wydarzenia), uwzględnij tło epoki i sformułuj wniosek. "
+                             "Jeśli podano kilka tematów, wybierz jeden i zacznij od linii „Temat nr X”. "
+                             "Wypracowanie musi mieć co najmniej 300 słów, najlepiej 400–600."),
     Category.GENERAL: _BASE + "Odpowiedz poprawnie i zwięźle, w formacie wymaganym w poleceniu.",
 }
 
@@ -50,16 +54,26 @@ def template_instruction(question: str) -> str:
     return text
 
 
+def image_part(path: str | Path) -> dict:
+    """An OpenAI-style image content part (PNG/JPEG file as a data URL), for vision models."""
+    p = Path(path)
+    mime = "image/jpeg" if p.suffix.lower() in (".jpg", ".jpeg") else "image/png"
+    return {"type": "image_url",
+            "image_url": {"url": f"data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"}}
+
+
 def build_messages(category: Category, question: str, context: str = "",
-                   fill_template: bool = True) -> list[dict]:
-    """fill_template=False keeps the raw baseline free of harness help."""
+                   fill_template: bool = True, images: tuple = ()) -> list[dict]:
+    """fill_template=False keeps the raw baseline free of harness help. `images` are file
+    paths sent as image parts (only for a vision model; the router decides)."""
     user = f"{context.strip()}\n\n{question.strip()}" if context.strip() else question.strip()
     system = SYSTEM_PROMPTS[category]
     if fill_template and category not in _CLOSED:
         system += template_instruction(question)
+    content = [{"type": "text", "text": user}, *(image_part(i) for i in images)] if images else user
     return [
         {"role": "system", "content": system},
-        {"role": "user", "content": user},
+        {"role": "user", "content": content},
     ]
 
 

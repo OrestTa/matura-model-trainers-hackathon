@@ -64,4 +64,5 @@ until curl -sf http://127.0.0.1:8000/v1/models >/dev/null; do
   kill -0 $VLLM 2>/dev/null || { echo "vLLM died, see work/exam-vllm.log"; exit 1; }
   sleep 5
 done
+echo "ready: python scripts/run_exam.py <package dir> -o answers.json (in another shell)"
 python -m matura_router serve --port "${ROUTER_PORT:-8080}"

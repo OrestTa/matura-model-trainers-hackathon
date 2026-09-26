@@ -59,6 +59,9 @@ class Router:
         self.classifier = classifier or Classifier()
         self.retriever = retriever
         self.rag = rag or {}
+        # A vision model gets the exam's PNGs; a text model gets a placeholder per picture,
+        # the same one our eval set uses.
+        self.vision = False
         self._available = backend.available_adapters()
 
     @classmethod
@@ -92,7 +95,9 @@ class Router:
                 log.info("RAG: %d passages from %s", len(retriever.passages), kb)
             else:
                 log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)
-        return cls(backend, routes, classifier, retriever, rag)
+        router = cls(backend, routes, classifier, retriever, rag)
+        router.vision = bool(cfg.get("backend", {}).get("vision", False))
+        return router
 
     def knowledge(self, category: Category, question: str, context: str) -> tuple[str, tuple]:
         """Retrieved passages for this question, or ("", ()) when RAG is off for it."""
@@ -147,7 +152,8 @@ class Router:
         return greedy if counts.get(key(greedy)) == top else next(a for a in answers if a and counts[key(a)] == top)
 
     def answer(self, question: str, context: str = "",
-               category: Optional[Category] = None, mode: str = "adapters") -> RoutedAnswer:
+               category: Optional[Category] = None, mode: str = "adapters",
+               images: tuple = ()) -> RoutedAnswer:
         """mode: "adapters" (full harness: adapters + RAG), "rag" (per-type prompts + RAG,
         base model), "routed" (per-type prompts, base model only) or "raw" (one generic
         prompt, base model, no post-processing) for baselines."""
@@ -166,8 +172,12 @@ class Router:
         prompt_cat = Category.GENERAL if mode == "raw" else category
         knowledge, retrieved = self.knowledge(category, question, context) \
             if mode in ("adapters", "rag") else ("", ())
+        if images and not self.vision:
+            context = (context + "\n" + "\n".join(
+                "[ilustracja – niedostępna w wersji tekstowej]" for _ in images)).strip()
         full_context = f"{knowledge}\n\n{context}".strip() if knowledge else context
-        messages = build_messages(prompt_cat, question, full_context, fill_template=mode != "raw")
+        messages = build_messages(prompt_cat, question, full_context, fill_template=mode != "raw",
+                                  images=tuple(images) if self.vision else ())
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:

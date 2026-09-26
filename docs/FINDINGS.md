@@ -3,6 +3,25 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:10 CEST · question-router thread: the official exam format (organisers' guide)
+
+- Source: matura-json-guide (link from Orest). **Input:** a package with `exam.json` (`exam_id`,
+  `instructions`, `items[]` with `id` string like "2.1", `max_points`, `question`, `source_text`,
+  `images[{path, source_page, sha256}]`, `answer_format`), `images/*.png` and `answers-template.json`.
+  **Output:** `answers.json` = `{"exam_id", "answers": [{"id", "answer"}]}`, every id once, strings
+  only ("" allowed), Polish, `\n` line breaks, ≤ 1 MiB, ≤ 100k chars per answer. Uploaded with the
+  team key on their page; **graded later by an LLM against the CKE key, in batches every ~30 min.**
+  No time limit is stated. The mock is the May 2023 paper (37 items, 60 pts), which is in our eval set.
+- **The exam sends pictures** (separate PNGs; "send the actual image content to your model"). 85 of our
+  154 eval items need one, so a vision-language base under 8.0 GB could win a lot of points a text
+  model can't. Candidates (unverified on vLLM 0.27.1 + bitsandbytes): Qwen2.5-VL-7B-Instruct,
+  Qwen3-VL-8B-Instruct, Gemma-3-4B-it in 4-bit.
+- Essay (item 26): must state the chosen topic number and have **at least 300 words**; the essay prompt
+  now asks for "Temat nr X" and 400-600 words (max_tokens 2000).
+- `scripts/run_exam.py <package> -o answers.json` answers a package through the router and validates
+  the file; `--mode raw` gives the bare-model submission. `backend.vision: true` in routes.yaml sends
+  the PNGs as image parts; otherwise the model sees our eval set's placeholder.
+
 ## 2026-09-26 14:50 CEST · Nebius: reachable from the cloud, use Serverless AI Jobs (no SSH)
 
 - The Nebius API (api.nebius.cloud, gRPC) and Object Storage (storage.eu-north1.nebius.cloud) are reachable from our

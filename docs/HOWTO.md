@@ -152,9 +152,17 @@ The exam runs offline on our own hardware. Serve the frozen checkpoint (step 2b)
 adapters and put the router in front:
 
 ```bash
-bash scripts/serve_exam.sh bielik-11b     # checkpoint + adapters in vLLM, router on :8080
-python -m matura_router run exam.jsonl -o answers.jsonl   # or answer a file directly
+bash scripts/serve_exam.sh bielik-11b &   # checkpoint + adapters in vLLM, router on :8080
+python scripts/run_exam.py exam-package/ -o answers.json                    # the harness
+python scripts/run_exam.py exam-package/ --mode raw -o answers-base.json    # the bare model
 ```
+
+The organisers' package (see their guide, matura-json-guide) is `exam.json` + `images/*.png`
++ `answers-template.json`; we upload `answers.json` (`{"exam_id", "answers": [{"id",
+"answer"}]}`, every id once, strings only, ≤ 1 MiB) with the team key on their
+submission page, and they grade it later with an LLM against the CKE key.
+**The exam sends pictures** as PNG files: set `backend.vision: true` in
+`configs/routes.yaml` for a vision-language base model; a text model gets a placeholder.
 
 Install the pinned stack on the exam box while it's still online: `pip install
 vllm==0.27.1 bitsandbytes && pip install -e .` (vLLM 0.28+ dropped the bitsandbytes
