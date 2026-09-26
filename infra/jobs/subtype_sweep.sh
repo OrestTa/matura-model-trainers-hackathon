@@ -47,14 +47,21 @@ PY
 [ -s "$GGUF" ] || { step "download failed"; exit 1; }
 
 step "llama-server, $SLOTS slots"
-"$LLAMA_SERVER" -m "$GGUF" --mmproj "$MMPROJ" --alias base --host 127.0.0.1 --port 8000 -ngl 999 \
-  --parallel "$SLOTS" -c $((SLOTS * 24576)) --jinja -fa on -ctk q8_0 -ctv q8_0 --no-webui \
-  > "$OUT/llama-server.log" 2>&1 &
+# Supervised: a crash (e.g. an image the vision encoder chokes on) restarts the server; the
+# sweep's requests retry a refused connection, so a crash costs seconds, not the shard.
+(
+  while true; do
+    "$LLAMA_SERVER" -m "$GGUF" --mmproj "$MMPROJ" --alias base --host 127.0.0.1 --port 8000 -ngl 999 \
+      --parallel "$SLOTS" -c $((SLOTS * 24576)) --jinja -fa on -ctk q8_0 -ctv q8_0 --no-webui \
+      >> "$OUT/llama-server.log" 2>&1
+    echo "== $(date -u +%H:%M:%S) llama-server exited ($?), restarting; log tail:"; tail -25 "$OUT/llama-server.log"
+    sleep 2
+  done
+) &
 SRV=$!
-trap 'kill $SRV 2>/dev/null' EXIT
+trap 'kill $SRV 2>/dev/null; pkill -f llama-server' EXIT
 for _ in $(seq 180); do
   curl -sf http://127.0.0.1:8000/v1/models >/dev/null && break
-  kill -0 $SRV 2>/dev/null || { tail -30 "$OUT/llama-server.log"; exit 1; }
   sleep 5
 done
 nvidia-smi --query-gpu=name,memory.used,memory.total --format=csv

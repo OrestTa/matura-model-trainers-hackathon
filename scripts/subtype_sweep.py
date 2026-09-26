@@ -122,11 +122,16 @@ def main() -> int:
     def one(t):
         group, name, mode, prof, row = t
         imgs = sub_of[row["id"]][1]
-        try:
-            res = router.answer(row["question"], row.get("context", ""), mode=mode, images=imgs, profile=prof)
-            out = {"id": row["id"], **res.to_dict()}
-        except Exception as e:  # noqa: BLE001 - one failed item shouldn't stop the sweep
-            out = {"id": row["id"], "answer": "", "raw": "", "category": None, "error": str(e), "latency_s": 0.0}
+        for attempt in range(8):
+            try:
+                res = router.answer(row["question"], row.get("context", ""), mode=mode, images=imgs, profile=prof)
+                out = {"id": row["id"], **res.to_dict()}
+                break
+            except Exception as e:  # noqa: BLE001 - one failed item shouldn't stop the sweep
+                out = {"id": row["id"], "answer": "", "raw": "", "category": None, "error": str(e), "latency_s": 0.0}
+                if "Connection refused" not in str(e) and "Connection reset" not in str(e):
+                    break
+                time.sleep(15)  # llama-server is restarting (infra/jobs/subtype_sweep.sh supervises it)
         out.update(gold_category=row.get("category"), needs_image=bool(row.get("needs_image")),
                    paper=row.get("paper"), points=float(row.get("points", 1)), subtype=sub_of[row["id"]][0],
                    score=score_row(row, out["answer"], None))
