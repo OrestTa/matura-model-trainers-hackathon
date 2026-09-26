@@ -6,3 +6,4 @@
 | matura-judge-claude-gemma4-12b-routed-heldout-20260926-2012-g4t1 | Gemma 4 12B QAT q4_0, routed, thinking off (g4t1) | 30 | 31 | 28 | 40 | **129/240** | 128/239 | 50/101 | 52/79 | 27/60 | Sol 87 / Claude 79 of 139 |
 | matura-judge-claude-gemma4-12b-raw-heldout-20260926-2002-g4r0 | Gemma 4 12B QAT q4_0 GGUF + mmproj, raw, thinking OFF (7.16 GB) | 33 | 29 | 33 | 28 | **123/240** | 122/239 | 48/101 | 56/79 | 19/60 | Sol 85 / Claude 75 of 139 |
 | matura-judge-claude-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8 | Gemma 4 12B QAT q4_0 + mmproj, raw, thinking ON at deck budgets (8k, essay 16k) (g4k8) | 40 | 41 | - | - | **81/120** | 80/119 | 31/52 | 28/38 | 22/30 | Sol 51 / Claude 50 of 68 |
+| matura-judge-claude-eval-Hm2b | Hm2b: Gemma 4 12B QAT + LoRA Hm2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 28 | - | - | - | **28/60** | 27/59 | 15/24 | 13/21 | 0/15 | - |
