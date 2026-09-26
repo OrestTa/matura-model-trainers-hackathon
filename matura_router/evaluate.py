@@ -46,6 +46,7 @@ def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
                    "adapter": None, "error": str(e), "latency_s": 0.0}
         out["gold_category"] = row.get("category")
         out["needs_image"] = bool(row.get("needs_image"))
+        out["paper"] = row.get("paper")
         out["points"] = float(row.get("points", 1))
         out["score"] = score_row(row, out["answer"], judge)
         if row.get("decision"):
@@ -58,7 +59,30 @@ def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
     return results, summarise(results, time.perf_counter() - t0)
 
 
+# The held-out papers (scripts/fetch_matura.py HEADLINE). Every other paper in matura_all.jsonl
+# is adapter training data (scripts/build_train_from_papers.py), so its score after training
+# is contaminated and must never be the headline.
+HEADLINE_PAPERS = {"2023-05", "2024-05", "2025-05", "2026-05"}
+
+
 def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
+    """Headline numbers cover only the held-out papers; trained-on papers are reported apart."""
+    trained = [r for r in results if r.get("paper") and r["paper"] not in HEADLINE_PAPERS]
+    if trained and len(trained) < len(results):
+        held = [r for r in results if r not in trained]
+        out = _summarise(held, wall_s)
+        out["trained_on_papers"] = {k: v for k, v in _summarise(trained).items()
+                                    if k in ("n", "scored", "earned", "max", "pct", "pct_all_rows")}
+        out["trained_on_papers"]["note"] = ("training data for the adapters: contaminated after training, "
+                                            "not part of the headline")
+        return out
+    out = _summarise(results, wall_s)
+    if trained:
+        out["warning"] = "no held-out paper in this set: every paper here is adapter training data"
+    return out
+
+
+def _summarise(results: list[dict], wall_s: float = 0.0) -> dict:
     by_cat = collections.defaultdict(lambda: {"n": 0, "scored": 0, "earned": 0.0, "max": 0.0})
     for r in results:
         cat = r.get("gold_category") or r.get("category") or "unknown"
