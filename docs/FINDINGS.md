@@ -3,6 +3,23 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:55 CEST · best-progress thread: pretrained Bielik-11B-v2 as the progress base
+
+- **Progress = trained score − untouched base score**, so the progress category wants a base that is weak
+  raw but strong once trained. Proposed to Orest: **`speakleash/Bielik-11B-v2`**, the *pretrained* model
+  (no instruction/chat tuning) that SpeakLeash built the Instruct versions from. Ungated, ~6.7 GB in NF4
+  (under 8.0). Our own DAPT + SFT + RAG does the instruction tuning, so the whole gain is ours; we don't
+  borrow SpeakLeash's instruct tuning. `configs/models.yaml`: `bielik-11b-base`, `bielik-11b-base-dapt`.
+- It has no chat template. `configs/chat_templates/plain_pl.jinja` (plain "### Pytanie / ### Odpowiedź",
+  answer ends in `</s>`) is applied by run_baselines (`--chat-template`), train_lora, train_dapt and
+  quantize_checkpoint, so the raw baseline and our SFT see one neutral format.
+- `train.sh SINGLE_ADAPTER=1`: one adapter on all types, linked under every category name and
+  `general` (the untuned fallback would answer in free text). `routes.yaml` general now uses a
+  `general` adapter when loaded; other models without one fall back to the base as before.
+- Training data: Claude-written matura-style items (allowed: closed LLMs for synthetic data), filtered
+  against the eval set with gen_synthetic's shingle filter, coming to `train_data/claude_synth.jsonl`.
+- Open question for Orest/organisers: does a team file one base/trained pair for all categories?
+
 ## 2026-09-26 14:55 CEST · best-score thread: newer base models that fit 8.0 GB
 
 - **We are testing Bielik v2.3, but Bielik-11B v3.0 is out (Nov 2025)** and speakleash ships

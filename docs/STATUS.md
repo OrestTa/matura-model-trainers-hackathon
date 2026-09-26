@@ -6,6 +6,9 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| progress-base-raw | baselines MODELS=bielik-11b-base MODES=raw,routed (untouched pretrained Bielik-11B-v2, NF4, ~12 GB GPU) on matura.jsonl + matura_all.jsonl | Forgehand L40S | queued: after the box's storage fix | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-base-raw | Best progress thread |
+| progress-dapt | dapt DAPT_MODEL=bielik-11b-base (same corpus as dapt-bielik, ~36 GB GPU) | Forgehand L40S | queued: after dapt-prep's corpus exists | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-dapt | Best progress thread |
+| progress-sft | train TRAIN_MODELS=bielik-11b-base-dapt SINGLE_ADAPTER=1 EXTRA_TRAIN=train_data/claude_synth.jsonl, then raw/routed/adapters/rag eval | Forgehand L40S | queued: after progress-dapt | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-sft | Best progress thread |
 | score-shootout | baselines MODELS=bielik-11b,bielik-11b-v3,gemma4-12b,qwen3.5-9b MODES=raw,routed, headline eval, judge Qwen3-14B-AWQ on the same card (JUDGE_GB=16, GPU_BUDGET_GB=24) | Forgehand L40S | queued: via the compute thread once the box is back | 2026-09-26 12:39 | 2026-09-26 12:39 | /workspace/work/out/score-shootout | Best matura score thread |
 | size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; cancel Bielik-11B/dapt/train | box + Forgehand | active | 2026-09-26 12:33 | 2026-09-26 12:33 | notes/SIZE_CAP_8GB.md | Grok bot |
 | stop-bielik-11b | CANCEL dapt-bielik / train-bielik / 11B baselines / router-ablation-11B — ~22.3 GB illegal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | work/STOP/ | Grok bot |
