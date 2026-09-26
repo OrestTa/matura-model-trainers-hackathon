@@ -15,6 +15,7 @@ baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| small5 | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=gemma3-270m,qwen2.5-0.5b,qwen3-0.6b,gemma3-1b,llama3.2-1b,qwen2.5-1.5b,qwen3-1.7b,qwen3.5-0.8b,qwen3.5-2b,qwen3-vl-2b MODES=raw,routed GPU_BUDGET_GB=20 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:55 | 2026-09-26 13:55 | /workspace/work/out/small5 | Win smallest model thread |
 | progress-base-raw5 | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw5/data/eval/matura_all.jsonl GPU_BUDGET_GB=14 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:55 | 2026-09-26 13:55 | /workspace/work/out/progress-base-raw5 | Best progress thread |
 | baselines-all5 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all5/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:54 | 2026-09-26 13:54 | /workspace/work/out/baselines-all5 | Modal compute setup thread |
 | baselines-all4 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all4/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:49 | 2026-09-26 13:49 | /workspace/work/out/baselines-all4 | Modal compute setup thread |
