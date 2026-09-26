@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 22:50 CEST · Modal: what broke, and the credit is gone
+
+- **Modal's free credit is used up** ($30 of $30 this month, $0.47 billed); the workspace is disabled and refuses new
+  apps ("workspace ... is disabled"). No more Modal runs without new credit.
+- `scripts/train_lora.py` hung after "saved ..." on Modal (transformers 5.17), so train.sh never reached GGUF
+  conversion; it now `os._exit`s after the save (19bfd52).
+- llama-server on H100 aborted ("CUDA error: an illegal instruction") ~10 min into scoring with per-request LoRA
+  switching; scoring with the adapter applied statically (`--job papers`, gemma_papers.sh) and
+  GGML_CUDA_DISABLE_GRAPHS=1 ran clean. See the harness thread's 93144f9 for the graphs root cause.
+- A dropped anonymous HF download failed one GGUF conversion; jobs now get HF_TOKEN from the Modal secret claude-hf.
+- `modal_job.py` / `subtype_modal.py` looked up the repo via `parents[2]`, which does not exist in the container,
+  and the llama.cpp image's entrypoint swallowed Modal's command; both fixed (`modal.is_local()`, `.entrypoint([])`).
+- Adapters (private HF): orestta/matura-gemma4-12b-lora-{B4m2,E2m2,Gm3,S4m2,Hm2}. Answers: results/eval-*/.
+
 ## 2026-09-26 22:35 CEST · Why every Gemma 4 LoRA scores below the base (root cause)
 
 Full analysis: docs/LORA_ROOT_CAUSE.md. Ranked causes, with evidence there:
