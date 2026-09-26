@@ -189,6 +189,10 @@
     {
       "label": "Image ceiling",
       "value": "The eval-set notes still matter: many history items require images, so text-only models have a hard ceiling without tool or image support."
+    },
+    {
+      "label": "Sunday size rule",
+      "value": "Base must stay <=8.0 GB on disk and <=8.8 GB after fine-tuning; prefer Qwen 3B or a quantized 7B, and treat Bielik-11B bf16 / 7B bf16-as-base lanes as cancelled."
     }
   ],
   "refresh": {

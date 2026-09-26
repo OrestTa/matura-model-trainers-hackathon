@@ -1,90 +1,83 @@
 {
-  "updated": "2026-09-26T13:46:08+02:00",
+  "updated": "2026-09-26T14:30:32.013487+02:00",
   "team": "Tarasiuk Lab",
-  "hackathon": "Warsaw Model Trainers \u2014 Polish history matura",
+  "hackathon": "Warsaw Model Trainers -- Polish history matura",
   "tracks": {
     "matura_hack_grok": {
       "role": "Matura Hack (Grok Bot)",
       "highlights": [
-        "PARALLEL wave on one L40S (MPS + budgeted scheduler): 3 concurrent CKE jobs",
-        "MCQ 7B: base 76.7%, fh 100%, fh-v2 98.9% (fh* likely train-overlap)",
-        "Live: CKE 3B base (relaunched) + CKE 3B modal-v3 + CKE 7B base \u224828GiB/46GiB",
-        "labqoat Bielik vLLM PAUSED; resume with util\u22640.65 or exclusive GPU"
+        "Size caps: base <=8.0 GB, after FT <=8.8 GB -- cancel oversize (Bielik-11B bf16, 7B bf16 as base)",
+        "PARALLEL L40S: live cke_3b_history_v2 (~9GB) + cke_7b_fh (~15GB); queue cke_7b_fh_v2",
+        "CKE done: 3B base 26.7%, 3B modal-v3 17.1%, 7B base 37.1% (scored subset)",
+        "fh-v2 LoRA train + dl7b COMPLETED; gpu_admit reservations active"
       ]
     },
     "claude": {
       "role": "Claude Opus on trunk",
       "highlights": [
-        "gpu_admit.py \u2014 share L40S by free GB (not exclusive card)",
-        "dapt-prep CPU: plwiki/Wikisource/Wolne Lektury \u2192 Bielik-11B DAPT",
-        "Queue: labqoat-baselines \u2192 train-bielik \u2192 router-ablation",
-        "matura_all = 512 items / 789 pts (dup EHIP dropped); headline May 23\u201326",
+        "gpu_admit.py -- share L40S by free GB (not exclusive card)",
+        "dapt-prep CPU notes kept for audit, but Bielik-11B bf16 is not a valid Sunday base under the 8.0/8.8 GB rule",
+        "Queue: labqoat-baselines -> router-ablation; train-bielik cancelled by size cap",
+        "matura_all = 512 items / 789 pts (dup EHIP dropped); headline May 23-26",
         "MODELS=all skips -bf16; AWS needs AWS_REENABLED=1"
       ]
     }
   },
   "jobs": [
     {
-      "id": "fh-7b",
-      "name": "Forgehand 7B LoRA fh",
-      "state": "COMPLETED"
-    },
-    {
       "id": "fh-7b-v2",
       "name": "Forgehand 7B LoRA fh-v2",
       "state": "COMPLETED"
     },
     {
-      "id": "mcq-7b-base",
-      "name": "MCQ 7B base",
+      "id": "mcq-7b-family",
+      "name": "MCQ 7B base/fh/fh-v2",
       "state": "COMPLETED",
-      "detail": "69/90 = 76.7%"
-    },
-    {
-      "id": "mcq-7b-fh",
-      "name": "MCQ 7B fh",
-      "state": "COMPLETED",
-      "detail": "90/90 = 100% (contam risk)"
-    },
-    {
-      "id": "mcq-7b-fh-v2",
-      "name": "MCQ 7B fh-v2",
-      "state": "COMPLETED",
-      "detail": "89/90 = 98.9% (contam risk)"
+      "detail": "76.7/100/98.9"
     },
     {
       "id": "cke-3b-base",
       "name": "CKE 3B base",
-      "state": "RUNNING",
-      "detail": "relaunched after PGID kill; ~6.4GiB"
+      "state": "COMPLETED",
+      "detail": "26.7%"
     },
     {
       "id": "cke-3b-modal",
       "name": "CKE 3B modal-v3",
-      "state": "RUNNING",
-      "detail": "~6.6GiB parallel"
+      "state": "COMPLETED",
+      "detail": "17.1%"
+    },
+    {
+      "id": "cke-3b-history-v2",
+      "name": "CKE 3B history-v2",
+      "state": "RUNNING"
     },
     {
       "id": "cke-7b-base",
       "name": "CKE 7B base",
+      "state": "COMPLETED",
+      "detail": "37.1%"
+    },
+    {
+      "id": "cke-7b-fh",
+      "name": "CKE 7B fh",
       "state": "RUNNING",
-      "detail": "~15.2GiB parallel"
+      "detail": "~15.3GiB"
+    },
+    {
+      "id": "cke-7b-fh-v2",
+      "name": "CKE 7B fh-v2",
+      "state": "QUEUED"
     },
     {
       "id": "gpu-parallel",
-      "name": "gpu_parallel_jobs scheduler",
-      "state": "RUNNING",
-      "detail": "MPS + reserved budgets"
+      "name": "gpu_par + gpu_admit",
+      "state": "RUNNING"
     },
     {
-      "id": "labqoat",
-      "name": "labqoat Bielik vLLM",
-      "state": "PAUSED"
-    },
-    {
-      "id": "specialists",
-      "name": "Specialist LoRAs",
-      "state": "BLOCKED"
+      "id": "dl7b",
+      "name": "7B HF download",
+      "state": "COMPLETED"
     }
   ],
   "mcq": {
@@ -103,27 +96,27 @@
     "3b_history_v2": {
       "pct": 75.6,
       "n": "68/90",
-      "note": "contaminated \u2014 not matura"
+      "note": "contaminated -- not matura"
     },
     "3b_modal_v3": {
       "pct": 94.4,
       "n": "85/90",
-      "note": "contaminated \u2014 not matura"
+      "note": "contaminated -- not matura"
     },
     "7b_base": {
       "pct": 76.7,
       "n": "69/90",
-      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
+      "note": "COMPLETED -- same 90-MCQ train set; not matura proof"
     },
     "7b_fh": {
       "pct": 100.0,
       "n": "90/90",
-      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
+      "note": "COMPLETED -- same 90-MCQ train set; not matura proof"
     },
     "7b_fh_v2": {
       "pct": 98.9,
       "n": "89/90",
-      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
+      "note": "COMPLETED -- same 90-MCQ train set; not matura proof"
     },
     "7b_family": {
       "base_pct": 76.7,
@@ -137,10 +130,12 @@
     }
   },
   "constraints": {
-    "max_base_disk_gb": 8.9,
+    "max_base_disk_gb": 8.0,
+    "max_after_ft_gb": 8.8,
     "exam": "fully offline Sunday",
-    "registration_base": "pick declared 3B vs 7B (CA-08)",
-    "matura_all": "512 items / 789 pts"
+    "registration_base": "prefer Qwen2.5-3B; 7B only if quantized <=8.0 GB",
+    "matura_all": "512 items / 789 pts",
+    "cancel": "Bielik-11B bf16 / 7B bf16-as-base jobs -- over size cap"
   },
   "links": {
     "repo": "https://github.com/OrestTa/matura-model-trainers-hackathon",
@@ -152,14 +147,20 @@
     "gpu": "Forgehand L40S 46068 MiB single session",
     "mps": true,
     "scheduler": "scripts/gpu_parallel_jobs.sh",
-    "reserve_mib": 4096,
+    "gpu_admit_reservations_gb": {
+      "cke_3b_history_v2": 9,
+      "cke_7b_fh": 20,
+      "gpu_par": 0
+    },
     "live_slots": [
-      "cke_3b_base~6.4GiB",
-      "cke_3b_modal_v3~6.6GiB",
-      "cke_7b_base~15.2GiB"
+      "cke_3b_history_v2~6.5GiB",
+      "cke_7b_fh~15.3GiB"
     ],
-    "used_mib_approx": 28255,
-    "sandbox_3080": "unreachable on e35e7288",
-    "mcq_7b_done": true
+    "used_mib_approx": 21926,
+    "queued": [
+      "cke_7b_fh_v2@20GiB"
+    ],
+    "mcq_7b_done": true,
+    "cke_7b_base_done": true
   }
 }

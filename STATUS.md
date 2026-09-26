@@ -21,6 +21,9 @@ Updated: 2026-09-26 ~12:32 (Europe/Warsaw)
 
 ## Stack
 - Declared base: Qwen2.5-3B-Instruct ~5.8 GB
+- Sunday size rule: declared base must stay <=8.0 GB on disk; after fine-tuning / shipped form must stay <=8.8 GB total
+- Oversize lanes cancelled for Sunday declare: Bielik-11B bf16 and Qwen2.5-7B bf16-as-base
+- Preferred lanes now: Qwen2.5-3B as the safe default, or a quantized Qwen2.5-7B only if measured <=8.0 GB base and <=8.8 GB after FT
 - Also on disk: Qwen2.5-1.5B-Instruct ~2.9 GB - baseline history 48/90 (53.3%), first30 14/30 (46.7%) (clears >=35%)
 - Bielik: gated stub only
 - History LoRA v1: 27/40 = 67.5%
