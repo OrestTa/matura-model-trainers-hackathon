@@ -7,7 +7,7 @@
 JOBS_COMMON_LOADED=1
 set -uo pipefail
 REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
-WORK="${WORK:-$REPO/work}"; OUT=$WORK/out
+WORK="${WORK:-$REPO/work}"; OUT="${OUT:-$WORK/out}"
 NAME="${NAME:-$(basename "$0" .sh)-$(date -u +%m%d-%H%M)}"
 BUCKET="${BUCKET:-}"
 export HF_HOME="${HF_HOME:-$WORK/hf}" HF_HUB_ENABLE_HF_TRANSFER=1
