@@ -2,21 +2,21 @@
 # papers (not the held-out May 2023-2026) by scripts/subtype_select.py from the
 # configs/subtype_grid.yaml sweep in sweep dev-all, sweep dev-z4, sweep dev-w2, margin 1.0 pts.
 subtypes:
-  # Frozen 26 Sep 22:25 CEST. Raw passthrough (the exact --mode raw request) everywhere except open
-  # picture questions: on held-out the routed prompt beat raw there (36/53 vs 30/54, subtype-hog) and the
-  # 2023-25 full grading (+6), while OCR notes on top lost (-6.5/100 on 26 paired items).
+  # Orest 22:33 CEST: no OCR (the model sees the images); retry blanks (THINK_FALLBACK=1); closed
+  # questions get 5 samples with a majority vote (3 of 5 per key / statement, greedy answer on ties).
+  # Everything else is the exact --mode raw request, so it matches the frozen baseline item for item.
   closed_text:
-    name: raw
-    raw: true
+    name: v5
+    votes: 5
   closed_image:
-    name: raw
-    raw: true
+    name: v5
+    votes: 5
   open_text:
     name: raw
     raw: true
   open_image:
-    name: base
-    think_tokens: 2000   # same reasoning cap as the frozen raw run (gemma4-12b-think): only the prompt differs
+    name: raw
+    raw: true
   essay:
     # length guard (Orest 22:13): an essay under 350 words is continued (under 300 scores 0)
     name: raw_len
