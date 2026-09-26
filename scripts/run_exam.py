@@ -165,6 +165,19 @@ def main() -> int:
     with ThreadPoolExecutor(args.concurrency) as pool:
         results = list(pool.map(one, exam["items"]))
 
+    # Hard guarantee: a blank answer (thought that never closed, a timeout, a crash) is asked again with
+    # thinking off, the whole exam at once after the first pass. Thinking-off scores ~52% vs 0 for "".
+    blanks = [it for it, (_, a, _) in zip(exam["items"], results) if not (a or "").strip()]
+    if blanks and hasattr(router.backend, "extra_body"):
+        print(f"{len(blanks)} blank after pass 1; re-asking with thinking off", file=sys.stderr)
+        kw = router.backend.extra_body.get("chat_template_kwargs") or {}
+        router.backend.extra_body = {**router.backend.extra_body,
+                                     "chat_template_kwargs": {**kw, "enable_thinking": False}}
+        with ThreadPoolExecutor(args.concurrency) as pool:
+            redo = {i: (a, r) for i, a, r in pool.map(one, blanks)}
+        results = [(i, redo[i][0], {**redo[i][1], "retry": "thinking_off", "first": r})
+                   if i in redo and (redo[i][0] or "").strip() else (i, a, r) for i, a, r in results]
+
     out = build_answers(exam, {i: a for i, a, _ in results}, template)
     problems = validate(out, exam)
     Path(args.out).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
