@@ -107,3 +107,16 @@ loss and3072-token exclusion policy remain unchanged.
 Compute inspection found the shared VM's system Transformers4.46.3 differs from
 the tested native runtime. Use a separate pinned environment without modifying
 Claude's packages/processes. No training launch is implied by this readiness check.
+
+Local-only staging recipes are `infra/small_track/stage_clean_bielik_training.sh`
+and `launch_clean_bielik_training.sh`. They have been syntax-checked but not executed
+remotely. They create a new owned venv, reuse system Torch read-only with a resolver
+constraint, and pin the previously tested Transformers5.17.0, PEFT0.21.0 and
+Accelerate1.15.0. The shared system Torch version differs from the tested2.8.0;
+imports are checked and runtime versions recorded, so numerical/runtime equivalence
+is not assumed. The public native model is pinned to revision
+`a3a660b10fdba3a7b03c3349567e54d8875f9ac9`,3193073112bytes,
+SHA256 `3c337d1d0d3f8cafb27f617b97a9a0cf70a2067648cb3946311e2fe370c28978`.
+The converter uses an owned checkout of llama.cpp
+`694ec235484b3b0bf827ab7992a512d285f0e66b`. Launch is separately bounded to900seconds
+plus15seconds termination grace. No shared packages or other-agent jobs are changed.
