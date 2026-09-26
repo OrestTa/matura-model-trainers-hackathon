@@ -1,0 +1,294 @@
+{
+ "answers": "results/gemma4/gemma4-vision/raw/answers.jsonl",
+ "paper": "2024-05",
+ "judge": "forgehand gpt-6-luna",
+ "judge_kind": "sol",
+ "total": 46.0,
+ "max": 60.0,
+ "pct": 76.7,
+ "failed": [
+  "21"
+ ],
+ "items": [
+  {
+   "id": "1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "3.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "3.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "4",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "5.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "5.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "6",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "7",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "8.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "8.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "9",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "10",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "11.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "11.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "12.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "12.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "12.3",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "13",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "14.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "14.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "15.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "15.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "16.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "16.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "17.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "17.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "18",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "19.1",
+   "max_points": 2.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "19.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "20.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "20.2",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "21",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "400 Client Error: Bad Request for url: <url>"
+  },
+  {
+   "id": "22.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "22.2",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "23.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "23.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "24",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "25",
+   "max_points": 3.0,
+   "sol_points": 3.0,
+   "points": 3.0,
+   "raw": "3"
+  },
+  {
+   "id": "26",
+   "max_points": 15.0,
+   "sol_points": 13.0,
+   "points": 13.0,
+   "raw": "13"
+  }
+ ]
+}
