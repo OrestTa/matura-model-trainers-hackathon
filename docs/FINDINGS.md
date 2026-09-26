@@ -3,6 +3,18 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 18:45 CEST · smallest-model thread: without pictures, a 3-bit 4B is far below 35%
+
+- **Qwen3-4B-2507 Q3_K_M (2.08 GB), router prompts, CPU, LLM-graded vs the CKE key: 22.1% (53/240)** on the 154
+  held-out items; May 2023 26.7%, 2024 25.0%, 2025 23.3%, 2026 13.3%. Bielik-1.5B graded the same way: 19.6%.
+  Files: `results/small/qwen3-4b-q3_k_m-routed-llmgrade/`.
+- **The pictures are the gap.** Items that need a picture carry 161 of the 240 points, and the model scores 15.5% on
+  them (it sees a placeholder). On text-only items it scores **35.4%**. The organisers' 40% for Qwen3-4B was in their
+  text mode, where every picture is described in words. The real exam sends PNGs, so a text-only small model can't
+  reach 35%: the small entry has to be a vision model (Qwen3.5-4B/2B + mmproj, Gemma-4-E2B) or get the pictures turned
+  into text by an offline tool.
+- Verdict accuracy ("Rozstrzygnij") 56% vs 31% for Bielik-1.5B.
+
 ## Track bot authoritative addendum 2026-09-26 ~19:09 CEST
 
 - Prefer the track bots' wording over the earlier merge draft where they add specificity; `INSIGHTS.md` is the canonical merged view.
