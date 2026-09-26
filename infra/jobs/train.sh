@@ -14,6 +14,7 @@
 #   PER_CATEGORY=400          synthetic items per question type
 #   REGEN_DATA=0              1 = regenerate data even if S3 has it
 #   EPOCHS=2                  training epochs per adapter
+#   RANK=16 LR=2e-4 MAX_LEN=4096   LoRA rank, learning rate, max tokens per example (sweeps)
 #   SINGLE_ADAPTER=0          1 = one adapter on all types together, served under every
 #                             category name and `general` (for a pretrained base, whose
 #                             untuned fallback can't follow the exam format)
@@ -90,7 +91,7 @@ for g in $(seq 0 $((n - 1))); do
     for job in ${per_gpu[$g]:-}; do
       m=${job%%:*}; c=${job#*:}
       CUDA_VISIBLE_DEVICES=${GPU_LIST[$g]} python scripts/train_lora.py --model "$m" --category "$c" \
-        --models-config "${MODELS_CONFIG:-configs/models.yaml}" --epochs "$EPOCHS" --batch 2 --grad-accum 8 --out-dir "$WORK/adapters" \
+        --models-config "${MODELS_CONFIG:-configs/models.yaml}" --epochs "$EPOCHS" --batch 2 --grad-accum 8 --rank "${RANK:-16}" --lr "${LR:-2e-4}" --max-len "${MAX_LEN:-4096}" --out-dir "$WORK/adapters" \
         > "$OUT/train_logs/$m-$c.log" 2>&1
     done
   ) &
