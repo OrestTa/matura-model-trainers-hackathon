@@ -77,8 +77,10 @@ if [ "$SERVER" = llamacpp ]; then
   MMPROJ=()   # vision projector: run_exam.py --model $MODEL then sends the exam's PNGs
   [ "$(spec vision)" = True ] && [ -n "$(spec mmproj_file)" ] && MMPROJ=(--mmproj "$(HF_HUB_OFFLINE=1 python -c \
     "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec mmproj_file)'))")")
+  # The host prompt cache defaults to 8 GiB per server and OOM-killed llama-server on a 30 GB box: off, if this build knows the flag.
+  EXTRA=(); "$LLAMA_SERVER" --help 2>&1 | grep -q -- "--cache-ram" && EXTRA=(--cache-ram "${CACHE_RAM:-0}")
   CUDA_VISIBLE_DEVICES="${GPU:-0}" "$LLAMA_SERVER" -m "$CHECKPOINT" --alias base --host 127.0.0.1 \
-    --port 8000 -ngl 999 --parallel "$SLOTS" -c "$((SLOTS * CTX))" --jinja -fa "${FA:-on}" --no-webui "${MMPROJ[@]}" "${LORA[@]}" > work/exam-vllm.log 2>&1 &
+    --port 8000 -ngl 999 --parallel "$SLOTS" -c "$((SLOTS * CTX))" --jinja -fa "${FA:-on}" --no-webui "${MMPROJ[@]}" "${LORA[@]}" "${EXTRA[@]}" > work/exam-vllm.log 2>&1 &
 else
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
   ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
