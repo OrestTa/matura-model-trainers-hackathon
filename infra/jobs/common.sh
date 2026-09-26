@@ -71,7 +71,11 @@ ensure_llama_server() {
     [ -d "$WORK/llama.cpp" ] || git clone -q --depth 1 https://github.com/ggml-org/llama.cpp "$WORK/llama.cpp"
     command -v cmake >/dev/null || pip install -q cmake
     if ! command -v nvcc >/dev/null; then
-      for d in /usr/local/cuda/bin /usr/local/cuda-*/bin; do [ -x "$d/nvcc" ] && export PATH="$d:$PATH" && break; done
+      # The Labqoat image has no CUDA toolkit; a conda one lives in $WORK/cuda.
+      [ -x "$WORK/cuda/bin/nvcc" ] || /opt/conda/bin/conda create -y -q -p "$WORK/cuda" \
+        -c nvidia/label/cuda-12.8.1 cuda-nvcc cuda-cudart-dev libcublas-dev cuda-cccl >/dev/null
+      export CUDAToolkit_ROOT="$WORK/cuda"
+      for d in "$WORK/cuda/bin" /usr/local/cuda/bin /usr/local/cuda-*/bin; do [ -x "$d/nvcc" ] && export PATH="$d:$PATH" && break; done
     fi
     cd "$WORK/llama.cpp" && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DCMAKE_CUDA_ARCHITECTURES=89 \
       -DCMAKE_BUILD_TYPE=Release >/dev/null && cmake --build build --target llama-server -j "$(nproc)" >/dev/null
