@@ -150,6 +150,10 @@ bash scripts/serve_exam.sh bielik-11b     # checkpoint + adapters in vLLM, route
 python -m matura_router run exam.jsonl -o answers.jsonl   # or answer a file directly
 ```
 
+Install the pinned stack on the exam box while it's still online: `pip install
+vllm==0.27.1 bitsandbytes && pip install -e .` (vLLM 0.28+ dropped the bitsandbytes
+4-bit format our checkpoint uses; the script refuses any other version).
+
 `serve_exam.sh` is the exact on-stage harness: it refuses a checkpoint over the
 limit, loads every trained adapter from `work/adapters/<model>/`, uses the knowledge
 base in `data/kb/` if present, and runs offline.

@@ -11,9 +11,15 @@ CHECKPOINT="${CHECKPOINT:-work/checkpoints/$MODEL}"
 ADAPTERS="${ADAPTERS:-work/adapters/$MODEL}"
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 VLLM_NO_USAGE_STATS=1 DO_NOT_TRACK=1  # no stats.vllm.ai call
 
+# The checkpoint is bitsandbytes 4-bit, which vLLM 0.28+ can't load: same pin as infra/jobs/common.sh.
+VLLM_PIN="${VLLM_PIN:-0.27.1}"
+have=$(python -c "import vllm; print(vllm.__version__)" 2>/dev/null || echo none)
+[ "$have" = "$VLLM_PIN" ] || { echo "vLLM $have found, need $VLLM_PIN: pip install vllm==$VLLM_PIN (before going offline)"; exit 1; }
+
 python scripts/quantize_checkpoint.py --check "$CHECKPOINT"   # refuses a model over the limit
-[ -s data/kb/passages.jsonl ] && echo "RAG: $(wc -l < data/kb/passages.jsonl) passages" \
-  || echo "WARNING: no RAG knowledge base (python scripts/build_kb.py, before going offline)"
+KB=$(python -c "import yaml; print((yaml.safe_load(open('configs/routes.yaml')).get('rag') or {}).get('path', ''))")
+[ -n "$KB" ] && [ -s "$KB" ] && echo "RAG: $KB" \
+  || echo "WARNING: no RAG knowledge base at '$KB' (scripts/build_kb.py or the plwiki index; set rag.path)"
 
 LORA=()
 for d in "$ADAPTERS"/*/; do
