@@ -22,26 +22,29 @@ step() { echo "== $(date -u +%H:%M:%S) $*"; }
 
 step "setting up"
 # vLLM 0.28 dropped load-time bitsandbytes quantization, which every 4-bit model here
-# relies on (configs/models.yaml, scripts/quantize_checkpoint.py): stay on 0.27.1.
+# relies on (configs/models.yaml, scripts/quantize_checkpoint.py): stay on 0.27.1. Its
+# pinned flashinfer needs Python 3.12 (it fails to import on 3.11), so the venv is
+# built with uv's Python 3.12 when the box's python3 is older.
 VLLM_PIN="${VLLM_PIN:-0.27.1}"
+VENV="${VENV:-$WORK/venv-py312}"
 vllm_version() { "$1" -c "import vllm; print(vllm.__version__)" 2>/dev/null; }
-if [ "$(vllm_version python3)" = "$VLLM_PIN" ] && python3 -c "import trl, peft, matplotlib" 2>/dev/null; then
+if [ "$(vllm_version python3)" = "$VLLM_PIN" ] && python3 -c "import sys, trl, peft, matplotlib; assert sys.version_info >= (3, 12)" 2>/dev/null; then
   :  # the box already has the stack (e.g. a prepared image)
 else
   # Jobs on one box share this venv; the lock keeps two from installing at once.
   mkdir -p "$WORK"
   (
     flock 9
-    if [ "$(vllm_version $WORK/venv/bin/python)" != "$VLLM_PIN" ]; then
-      [ -x $WORK/venv/bin/python ] || python3 -m venv $WORK/venv
-      $WORK/venv/bin/pip install -q --upgrade pip
-      # vllm pins a compatible torch; the training stack goes on top of it.
-      $WORK/venv/bin/pip install -q "vllm==$VLLM_PIN" bitsandbytes hf_transfer pyyaml matplotlib \
-        pymupdf trl peft datasets accelerate
+    if [ "$(vllm_version $VENV/bin/python)" != "$VLLM_PIN" ]; then
+      command -v uv >/dev/null || python3 -m pip install -q uv
+      [ -x $VENV/bin/python ] || uv venv -q -p 3.12 --seed "$VENV"
+      # vllm pins a compatible torch and flashinfer; the training stack goes on top of it.
+      VIRTUAL_ENV=$VENV uv pip install -q "vllm==$VLLM_PIN" bitsandbytes hf_transfer pyyaml \
+        matplotlib pymupdf trl peft datasets accelerate
     fi
   ) 9>"$WORK/venv.lock"
 fi
-[ -f $WORK/venv/bin/activate ] && source $WORK/venv/bin/activate
+[ -f $VENV/bin/activate ] && source $VENV/bin/activate
 pip install -q -e "$REPO"
 python3 -c "import hf_transfer" 2>/dev/null || export HF_HUB_ENABLE_HF_TRANSFER=0
 cd "$REPO"
