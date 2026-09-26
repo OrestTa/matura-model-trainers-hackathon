@@ -1,0 +1,152 @@
+[
+  {
+    "sandboxId": "At7_O0xh...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "project": "matura",
+      "owner": "grok",
+      "job_id": "solari-check-c031",
+      "purpose": "c031-proof"
+    },
+    "createdAt": "2026-09-26T15:45:21.009Z"
+  },
+  {
+    "sandboxId": "Am7IlQh0...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3c",
+      "owner": "maly-ale-wariat",
+      "worker": "6"
+    },
+    "createdAt": "2026-09-26T15:45:21.009Z"
+  },
+  {
+    "sandboxId": "AkWBWg2o...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3c",
+      "owner": "maly-ale-wariat",
+      "worker": "7"
+    },
+    "createdAt": "2026-09-26T15:45:21.009Z"
+  },
+  {
+    "sandboxId": "Ag9LIa4B...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3d",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "2"
+    },
+    "createdAt": "2026-09-26T15:45:21.009Z"
+  },
+  {
+    "sandboxId": "AokkUBx0...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "0"
+    },
+    "createdAt": "2026-09-26T15:48:48.922Z"
+  },
+  {
+    "sandboxId": "AlnjxVt5...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "1"
+    },
+    "createdAt": "2026-09-26T15:48:49.400Z"
+  },
+  {
+    "sandboxId": "AuaTz46k...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "2"
+    },
+    "createdAt": "2026-09-26T15:48:50.116Z"
+  },
+  {
+    "sandboxId": "AhO3Y66V...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "3"
+    },
+    "createdAt": "2026-09-26T15:48:50.755Z"
+  },
+  {
+    "sandboxId": "Aj1qF05T...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "5"
+    },
+    "createdAt": "2026-09-26T15:48:51.711Z"
+  },
+  {
+    "sandboxId": "Al-eVce8...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "wave": "ocr3f",
+      "owner": "maly-ale-wariat",
+      "purpose": "maly-fill",
+      "worker": "4"
+    },
+    "createdAt": "2026-09-26T15:48:51.248Z"
+  },
+  {
+    "sandboxId": "AlIOGLMx...",
+    "cpu": 2,
+    "memMb": 4096,
+    "state": "running",
+    "metadata": {
+      "track": "maly",
+      "owner": "solari-setup",
+      "purpose": "maly-fill",
+      "wave": "fill-refill"
+    },
+    "createdAt": "2026-09-26T15:49:00.821Z"
+  }
+]
