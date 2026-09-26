@@ -37,6 +37,12 @@ fi
 
 # Base weights at most ship_limit_gb (8.0 GB), base + adapters at most finetuned_limit_gb (8.8 GB).
 python scripts/quantize_checkpoint.py --check "$CHECKPOINT" --adapters "$ADAPTERS"
+# Text entries with `ocr: true` read the pictures' printed text with Tesseract (offline).
+if [ "$(spec ocr)" = True ]; then
+  command -v tesseract >/dev/null && tesseract --list-langs 2>/dev/null | grep -qx pol \
+    || { echo "ocr: true needs tesseract with Polish: apt-get install -y tesseract-ocr tesseract-ocr-pol (before going offline)"; exit 1; }
+  echo "OCR: tesseract pol (run_exam.py --model $MODEL turns it on)"
+fi
 KB=$(python -c "import yaml; print((yaml.safe_load(open('configs/routes.yaml')).get('rag') or {}).get('path', ''))")
 [ -n "$KB" ] && [ -s "$KB" ] && echo "RAG: $KB" \
   || echo "WARNING: no RAG knowledge base at '$KB' (scripts/build_kb.py or the plwiki index; set rag.path)"

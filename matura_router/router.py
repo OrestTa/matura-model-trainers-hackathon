@@ -120,12 +120,18 @@ class Router:
 
     def apply_model(self, spec: dict) -> "Router":
         """Per-model settings from a configs/models.yaml entry: `vision` (send the exam's
-        pictures), `extra_body` (sent with every request) and `think_tokens` (a thinking model's reasoning budget, added to every
+        pictures), `ocr` (a text model gets the pictures' OCR text), `extra_body` (sent with every request) and `think_tokens` (a thinking model's reasoning budget, added to every
         route's max_tokens so short closed answers aren't cut off mid-thought)."""
         if "vision" in spec:
             self.vision = bool(spec["vision"])
             if self.vision:
                 self.ocr = False  # a vision model reads the pictures itself (from_config sets ocr only for text models)
+        if spec.get("ocr") and not self.vision:
+            # A text-only entry that reads the pictures' printed text (matura_router/ocr.py).
+            from . import ocr
+            self.ocr = ocr.available()
+            if not self.ocr:
+                log.warning("model wants ocr but tesseract isn't installed; pictures stay placeholders")
         if spec.get("extra_body") and hasattr(self.backend, "extra_body"):
             # e.g. chat_template_kwargs.enable_thinking; run_exam.py builds its backend from
             # routes.yaml, so without this the stage harness would drop the model's switch.
