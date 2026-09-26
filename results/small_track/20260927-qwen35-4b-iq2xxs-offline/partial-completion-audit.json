@@ -1,0 +1,22 @@
+{
+  "verified_utc": "2026-09-26T22:34:41Z",
+  "partial": true,
+  "answers": 17,
+  "expected_answers": 37,
+  "full_score_permitted": false,
+  "nonempty": 17,
+  "api_error_rows": 0,
+  "answers_sha256": "51149257226c09678f6dea61af8eaf04b00dbc16a7f4d5912e1495c51683980f",
+  "owned_supervisor_exited": true,
+  "owned_gpu_server_exited": true,
+  "host_memavailable_mib": 4763,
+  "future_min_host_memavailable_mib": 6144,
+  "resume_permitted_by_current_ram_gate": false,
+  "observed_server_generation_tokens_per_second": [
+    31.55,
+    0.21
+  ],
+  "stopped_after_bounded_timeout_seconds": 900,
+  "cause_caution": "Host memory pressure is consistent with low free RAM and stalled processing but not established as the cause. No Claude workloads changed.",
+  "nebius_available_credit_verified": false
+}

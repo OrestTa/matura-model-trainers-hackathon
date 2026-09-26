@@ -202,3 +202,25 @@ Q8fullpairedrun recovered successfully:37/37base and37/37trainedanswers, allnonb
   in addition to the existing GPU-memory gate. This local change does not alter
   the currently running experiment. Shared-host monitoring has one owner and
   uses at least 60 seconds between retries.
+
+### 22:34:41 UTC recovery checkpoint
+
+SSH access returned after the IQ2 bound. Recovered **17/37** nonempty answers with
+zero recorded API errors at
+`results/small_track/20260927-qwen35-4b-iq2xxs-offline/evaluation/answers.jsonl`.
+The five-task smoke passed, but this remains a partial paper: no full score or
+35% claim is permitted. All prior recovered rows remain unchanged. Logs, original
+candidate, runtime, executed source and a sanitized partial-completion audit are
+local; no raw process-argument listing was archived.
+
+Both our IQ2 supervisor and GPU server were verified absent. Claude's two GPU
+processes remained running and were untouched. Host available RAM was 4,763 MiB,
+below the new 6,144 MiB launch gate, so no resume was launched. The server log
+showed generation slowing from about 31.55 to 0.21 tokens/second before bounded
+cleanup. RAM pressure remains an unconfirmed explanation, not an asserted cause.
+Scratch model files remained intact with 136 GB disk space free.
+
+No fresh Nebius available-credit balance was verified. The installed CLI and
+current public billing API definitions expose cost calculators, pricing policies
+and consumption exports, but no supported balance read method was found. The
+stale earlier console figure is not treated as current spend authorization.
