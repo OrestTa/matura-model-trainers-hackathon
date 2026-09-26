@@ -123,7 +123,7 @@ def download(url: str, dest: Path) -> Path:
 
 def pdf_lines(path: Path, mark_images: bool, image_dir: Path | None = None) -> list[str]:
     """Text lines in reading order, with IMG markers where large pictures sit. With image_dir,
-    each picture is also saved as <image_dir>/<pdf stem>-NNN.png and its marker carries #NNN."""
+    each picture is also saved as <image_dir>/<pdf stem>-NNN.jpg (JPEG q85 keeps the upload small) and its marker carries #NNN."""
     import pymupdf
 
     out: list[str] = []
@@ -145,7 +145,7 @@ def pdf_lines(path: Path, mark_images: bool, image_dir: Path | None = None) -> l
                 continue
             n += 1
             image_dir.mkdir(parents=True, exist_ok=True)
-            page.get_pixmap(clip=rect & page.rect, dpi=150).save(str(image_dir / f"{path.stem}-{n:03d}.png"))
+            page.get_pixmap(clip=rect & page.rect, dpi=150).save(str(image_dir / f"{path.stem}-{n:03d}.jpg"), jpg_quality=85)
             marks.append(f"[ilustracja – niedostępna w wersji tekstowej #{n:03d}]")
         imgs = [y for y, _ in imgs]
         for block in page.get_text("dict")["blocks"]:
@@ -453,11 +453,11 @@ def short_keywords(solution: str) -> list[list[str]] | None:
 
 def strip_ids(text: str, image_dir: Path | None, stem: str) -> tuple[str, list[str]]:
     """Numbered markers -> the plain placeholder (consecutive ones merged, as before), plus the
-    PNG paths they stood for, relative to the repo root."""
+    JPEG paths they stood for, relative to the repo root."""
     paths = []
     if image_dir is not None:
         for num in IMG_ID.findall(text):
-            f = image_dir / f"{stem}-{num}.png"
+            f = image_dir / f"{stem}-{num}.jpg"
             paths.append(str(f.relative_to(ROOT)) if f.is_relative_to(ROOT) else str(f))
     text = IMG_ID.sub(IMG, text)
     text = re.sub(rf"({re.escape(IMG)})(\n{re.escape(IMG)})+", r"\1", text)

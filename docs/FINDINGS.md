@@ -3,6 +3,17 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:35 CEST · best-score thread: the eval set now carries the pictures
+
+- `python scripts/fetch_matura.py --images` (and `--papers all --images`) saves every picture in the
+  papers as a JPEG in `data/eval/images/` (gitignored: CKE content) and lists them per item in
+  `images`. **All 85 headline items that need a picture get one** (103 items have at least one);
+  515 pictures over the 16 papers, 36 MB (8.7 MB for the headline four). Row text is unchanged
+  (154/154 identical to the old set). Copies in /mnt/project-files/data/eval/ (+ images/).
+- A model with `vision: true` in configs/models.yaml sees them in eval (`run_baselines.py`) and at the
+  exam (`run_exam.py --model <key>`; `serve_exam.sh` adds llama.cpp's `--mmproj`). Only `gemma4-12b`
+  has it so far. `fh_job.py run` now ships `data/eval/images` with the eval set.
+
 ## 2026-09-26 15:15 CEST · results page thread: one page, a tab per prize track
 
 - `python scripts/build_tracks_page.py` writes `results/tracks/index.html`: tabs for best score, best progress
