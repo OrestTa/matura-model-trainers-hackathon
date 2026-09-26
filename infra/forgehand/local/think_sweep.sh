@@ -1,9 +1,9 @@
 #!/bin/bash
 # Thinking-budget sweep (Orest 22:34 CEST): base Gemma 4 12B QAT + mmproj, no adapter, THINK_FALLBACK=1, no OCR,
 # practice papers probny-2026-01 + pokaz-2022-03 (+ every dev essay). The 2k arm is the practice-l40s raw run.
-# Runs alone on the card (SD1's eval waits for /scratch/sweep_done) so wall times are clean.
+# Runs next to SD1 target building (inference only), so wall times are shared-card times; SD1 training waits for /scratch/sweep_done.
 L=/scratch/master_chain.log; log() { echo "$(date -u +%H:%M:%S) SWEEP $*" >> $L; }
-until [ -f /scratch/sd1_ready_for_sweep ] && grep -q "END practice-l40s v2" $L; do sleep 20; done
+until grep -q "END practice-l40s v2" $L; do sleep 20; done  # shares the card with SD1 target building; SD1 training waits for /scratch/sweep_done
 export HOME=/scratch/home HF_HOME=/scratch/hf THINK_FALLBACK=1 PATH=/scratch/work/venv-py312/bin:$PATH
 cd /scratch/repo4
 M=$(ls /scratch/hf/hub/models--google--gemma-4-12B-it-qat-q4_0-gguf/snapshots/*/gemma-4-12b-it-qat-q4_0.gguf)
