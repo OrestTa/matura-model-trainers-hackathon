@@ -77,6 +77,6 @@ def update(job, **fields):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1].startswith("-"):
         sys.exit(__doc__)
     update(sys.argv[1], **dict(a.split("=", 1) for a in sys.argv[2:]))
