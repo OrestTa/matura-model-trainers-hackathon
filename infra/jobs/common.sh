@@ -71,6 +71,13 @@ ensure_llama_server() {
   (
     flock 9
     [ -x "$LLAMA_SERVER" ] && exit 0
+    # Nebius jobs share one prebuilt copy (the build costs ~6 H100-minutes per job): pull it if present.
+    local cap; cap=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader 2>/dev/null | head -1 | tr -d .)
+    local cache="${NB_BUCKET:+s3://$NB_BUCKET/bin/llama-cuda-sm${cap:-89}.tgz}"
+    if [ -n "$cache" ] && aws s3 cp "$cache" - --only-show-errors 2>/dev/null | tar xz -C "$WORK" 2>/dev/null \
+       && [ -x "$LLAMA_SERVER" ]; then
+      step "llama.cpp from $cache"; exit 0
+    fi
     step "building llama.cpp with CUDA"
     [ -d "$WORK/llama.cpp" ] || git clone -q --depth 1 https://github.com/ggml-org/llama.cpp "$WORK/llama.cpp"
     command -v cmake >/dev/null || pip install -q cmake
@@ -83,6 +90,10 @@ ensure_llama_server() {
     fi
     cd "$WORK/llama.cpp" && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DCMAKE_CUDA_ARCHITECTURES="$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader | head -1 | tr -d . || echo 89)" \
       -DCMAKE_BUILD_TYPE=Release >/dev/null && cmake --build build --target llama-server -j "$(nproc)" >/dev/null
+    [ -n "$cache" ] && [ -x "$LLAMA_SERVER" ] && tar cz -C "$WORK" --exclude=llama.cpp/.git \
+      --exclude=llama.cpp/build/CMakeFiles --exclude='*.o' llama.cpp | aws s3 cp - "$cache" --only-show-errors \
+      && step "llama.cpp cached to $cache"
+    true
   ) 9>"$WORK/llama.lock"
   [ -x "$LLAMA_SERVER" ]
 }
