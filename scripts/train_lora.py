@@ -59,13 +59,15 @@ def main():
     cfg_kwargs = dict(
         output_dir=str(out / "checkpoints"), num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.grad_accum,
-        learning_rate=args.lr, lr_scheduler_type="cosine", warmup_ratio=0.03,
+        learning_rate=args.lr, lr_scheduler_type="cosine",
         bf16=True, gradient_checkpointing=True, logging_steps=5, save_strategy="no",
         report_to="none", model_init_kwargs={"torch_dtype": torch.bfloat16},
     )
     # TRL renamed max_seq_length -> max_length; support both.
     params = inspect.signature(SFTConfig.__init__).parameters
     cfg_kwargs["max_length" if "max_length" in params else "max_seq_length"] = args.max_len
+    # transformers 5 dropped warmup_ratio; its warmup_steps takes a float < 1 as a ratio.
+    cfg_kwargs["warmup_ratio" if "warmup_ratio" in params else "warmup_steps"] = 0.03
     if "completion_only_loss" in params:
         cfg_kwargs["completion_only_loss"] = True
 
