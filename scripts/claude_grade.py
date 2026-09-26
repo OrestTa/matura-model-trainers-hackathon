@@ -99,7 +99,10 @@ def prep(args):
             question = f"{row['context'][:3000]}\n\n{question}"
         gold = row.get("gold") or ""
         rubric = row.get("rubric") or "brak – oceń według przykładu"
-        batch.append({"item": iid, "max_points": pts,
+        root = Path(__file__).resolve().parent.parent
+        imgs = [str(root / i) for i in row.get("images") or [] if (root / i).exists()]
+        batch.append({"item": iid, "max_points": pts, "images": imgs,  # the grader views these
+
                       "prompt": JUDGE_PROMPT.format(question=question, rubric=rubric,
                                                     gold=gold if gold != rubric else "(patrz zasady oceniania)",
                                                     answer="<ODPOWIEDŹ>", points=pts),
