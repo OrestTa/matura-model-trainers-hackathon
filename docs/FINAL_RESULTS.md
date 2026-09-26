@@ -25,6 +25,7 @@ vs the deck's 46, so the judges agree; the base gap to the deck is the model (4-
 |---|---|---|---|---|---|---|---|---|---|
 | Base (g4vr) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | Sol 101 vs Claude 96 of 139 (text + essays) |
 | Shipped = base (no fine-tune beat it) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | |
+| Harness `--mode subtype` (no LoRA) | 38 | 45 | 40 | pending | 123 on 3 papers (base 122) | | | 23/45 (3 papers) | |
 | A1 LoRA (1 epoch) | 24 | – | – | – | – | | | 0/15 (2023) | |
 | B4m2 LoRA | 23 | – | – | – | – | | | 0/15 (2023) | |
 | Hm2 LoRA | 28 | 30 | – | – | – | | | 0/15 (2023) | |
@@ -39,3 +40,8 @@ Source: `results/judged/TABLE.md`, `scripts/deck_compare.py`.
 because it broke the essay (too short, looping or factually wrong) and never gained on short items.
 We ship the base model (7.16 GB) with thinking and the blank-answer fallback; see
 docs/EXAM_DAY_BEST_SCORE.md for the frozen on-stage commands.
+
+**Harness:** the per-subtype harness (configs/subtypes.yaml, picked on dev papers) scores 123 vs 122 on
+May 2023–2025, within grader noise. By type: open picture questions +6 (OCR notes next to the image),
+open text −2, the rest −1 each. A hybrid (harness only on open picture items) would be about +6, but that
+split was read off the held-out papers, so it is not frozen; validate it on a practice paper first.

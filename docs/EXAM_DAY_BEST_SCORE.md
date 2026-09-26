@@ -55,8 +55,8 @@ Graded with pictures viewed and the full CKE essay criteria (7e6fe48), the base 
 
 Every adapter broke the essay and none beat the base on short items, so the picture LoRA V1 and
 per-type routing (`LORA_ROUTED=1`, 7d705a3) stay unused. The per-subtype harness (`--mode subtype`,
-configs/subtypes.yaml: OCR notes on open picture items) won on dev papers only; its held-out sweep did
-not finish before the 22:15 compute stop, so raw stays the frozen mode.
+configs/subtypes.yaml: OCR notes on open picture items) won on dev papers only; its held-out result
+(123 vs raw 122 on May 2023–2025, c4a87e5) is within grader noise, so raw stays the frozen mode.
 
 ## Before going offline (the evening before)
 
