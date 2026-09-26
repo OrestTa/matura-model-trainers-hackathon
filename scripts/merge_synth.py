@@ -65,7 +65,10 @@ def main():
     df = collections.Counter(s for i in {i for i, _ in eval_parts}
                              for s in set().union(*(sh for j, sh in eval_parts if j == i)))
     common = {s for s, n in df.items() if n >= 3}
-    eval_parts = [(i, sh - common) for i, sh in eval_parts if len(sh - common) >= 3]
+    # Only long parts (essay prompts, source texts) lose the boilerplate; a short question keeps every
+    # shingle, or a copied short item slips through (9ff1c3a: 2023-05-z16.2 did).
+    eval_parts = [(i, sh - common if len(sh) >= 50 else sh) for i, sh in eval_parts]
+    eval_parts = [(i, sh) for i, sh in eval_parts if len(sh) >= 3]
     seen, rows, bad, leaked = set(), [], collections.Counter(), 0
     for part in args.parts:
         for n, line in enumerate(open(part, encoding="utf-8"), 1):
