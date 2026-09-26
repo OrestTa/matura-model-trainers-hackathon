@@ -131,6 +131,7 @@ def main():
     p.add_argument("--rationalize", action="store_true", help="one hinted try for items never answered right")
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--limit", type=int, default=0, help="first N items only (smoke run)")
+    p.add_argument("--only-ids", help="file with item ids, one per line: build just these (a shard)")
     a = p.parse_args()
 
     # Past papers reuse sources: drop items whose question + sources share >10% of 8-word runs with a held-out item.
@@ -151,6 +152,9 @@ def main():
                 print(f"skip {r['id']}: missing image", file=sys.stderr)
             continue
         rows.append((r, imgs))
+    if a.only_ids:
+        want = {l.strip() for l in open(a.only_ids) if l.strip()}
+        rows = [(r, i) for r, i in rows if r["id"] in want]
     rows = rows[: a.limit] if a.limit else rows
     print(f"{len(rows)} items x {a.samples} samples (papers: {sorted({r['paper'] for r, _ in rows})})", flush=True)
     vision = not a.no_vision
