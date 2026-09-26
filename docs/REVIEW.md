@@ -7,6 +7,34 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 17:10 CEST: d8b1981..3e3a0ee (17 commits) and board repo c666dd6, 61277d6
+
+- 3d77879 (us, 16:53) progress_pipeline.sh + docs/PLAN_PROGRESS.md + baselines.sh ROUTES: the chain holds together.
+  - Paths line up: baselines writes $OUT/<run>/baselines/<key>/<mode>/summary.json, and work/checkpoints is relative
+    to the run dir, where both quantize and serve look.
+  - The sft0 and sft adapters land in different key dirs.
+  - The DAPT model entry and the stored checkpoints carry plain_pl.jinja, so the pretrained base serves through vLLM
+    without a template of its own. That includes the official raw base run via serve_exam.
+  - "pct" is the held-out May 2023–26 papers only, since evaluate.summarise puts trained papers aside.
+  - Caveat (known): exam.env picks sft0 vs sft on those same held-out papers, so the winning number is slightly
+    optimistic. Trained size: 6.66 + ~0.13 GB adapter, under 8.8.
+- 364cf18 C-020 smallest-model chain, 0b9891a/7370294 C-019/C-022/C-023 (us): OK. The base submission waits for Orest to
+  confirm the site's base model (G-020 holds it).
+- ad3f2ab C-021 best-score Gemma chain (us): PROBLEM, corrected in C-024. Steps 3a/3b point EXTRA_TRAIN at
+  data/train/claude_synth.jsonl, which doesn't exist (the file is train_data/claude_synth.jsonl, in git), so train.sh
+  would stop at "EXTRA_TRAIN file missing" and the LoRA step of the chain would break. The pick rule (best on the 4
+  held-out papers) has the same selection caveat.
+- 20b2e65 (us) deck_breakdown.py: category sets match its docstring (text mode drops groups 7, 8, 15 = 5 pts -> /55;
+  Text28 includes the essay): OK.
+- 4143ddb, 4483ec0 (us) Solari runner + cpu_score.sh: OK. SOLARI_API_KEY comes from the environment only; no IPs.
+- 933fe1e (us) Claude judge of E2E Qwen2.5-3B = 11/60: labelled judge_kind claude, links the answers path: OK.
+- 136add7 (Grok bot) G-020..G-022 + tracks.json: stage labels fixed (Claude-graded mock rows, g-7b-awq, g-7b-bf16,
+  g-3b-base now harness). ship.json/summary.json for progress-base still pending (G-022 promises them): OK.
+- dcfe574 (Grok bot) JOB_ID_PIPELINE.md: OK. 2784751/9a4267c (Grok bot) E2E answers: run named
+  e2e_oneyear_2023_qwen25-3b, before the job-id rule; G-019 says OCR fallback, so it is a harness run.
+  3e3a0ee (Grok bot, 16:59): follows the job id format (…-1449-68f6); judge path keeps the same family: OK.
+- fbc438b, 02c9413 (Grok bot) public-board payload in main, board repo c666dd6/61277d6: numbers match tracks.json.
+
 ## 2026-09-26 16:45 CEST: 92363bd..3dc14d2 (11 commits)
 
 - 7bdad92, c5f0b3c (Grok bot, 16:23-16:24) tracks.json relabel + build_tracks_page has_pct: 37.6% now "unverified,
