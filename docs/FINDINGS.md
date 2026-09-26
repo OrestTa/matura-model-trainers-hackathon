@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:20 CEST · question-router thread: answer templates, verdict check, frozen exam checkpoint
+
+- **72 of 154 eval items carry an answer-sheet template** ("Rozstrzygnięcie: … / Uzasadnienie: …",
+  "Fragment A – …", "Cecha: …"). Routed and adapter modes now tell the model to fill it in line by
+  line (`matura_router/prompts.py:answer_template`); raw mode doesn't, so the bare baseline stays bare.
+- **The 52 "Rozstrzygnij" items are now partly judge-free.** A verdict that disagrees with the key's
+  `decision` scores 0 (as in the CKE key), and every summary.json has `decision_acc`. All 52 official
+  keys pass the matcher; swapping in any other item's verdict fails except "Fragment 2." vs "Źródło 2".
+- **Size limit is 8.9 GB for the base model's weights on disk** (Orest, from the organisers). vLLM's
+  load-time quantization doesn't count, so `scripts/quantize_checkpoint.py <model>` writes a 4-bit NF4
+  checkpoint to `work/checkpoints/<model>` and fails if it is over the limit. `run_baselines.py` serves
+  it once it exists (`served` in summary.json), and `scripts/serve_exam.sh <model>` is the on-stage
+  harness (checkpoint + adapters + router, offline). Not yet run on a GPU.
+
 ## 2026-09-26 13:10 CEST · compute thread: Forgehand has one GPU for the whole team
 
 - Forgehand team `rst` may run **one GPU session at a time**, and the only GPU class is

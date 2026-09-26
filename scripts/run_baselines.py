@@ -57,9 +57,16 @@ def wait_ready(url: str, proc: subprocess.Popen | None, timeout: float = 1800) -
     raise TimeoutError(f"{url} not ready after {timeout}s")
 
 
+def served_weights(key: str, spec: dict) -> str:
+    """The pre-quantized exam checkpoint when it exists (scripts/quantize_checkpoint.py),
+    so baselines score exactly what we submit; else the HF weights."""
+    ckpt = Path(spec.get("checkpoint") or ROOT / "work/checkpoints" / key)
+    return str(ckpt) if (ckpt / "config.json").exists() else spec["hf_id"]
+
+
 def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: Path,
                adapters_dir: Path | None) -> subprocess.Popen:
-    cmd = ["vllm", "serve", spec["hf_id"], "--served-model-name", "base",
+    cmd = ["vllm", "serve", served_weights(key, spec), "--served-model-name", "base",
            "--port", str(port), "--max-model-len", str(vcfg.get("max_model_len", 8192)),
            "--gpu-memory-utilization", str(vcfg.get("gpu_memory_utilization", 0.9))]
     if spec.get("quantization"):
@@ -96,7 +103,11 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
         results, summary = evaluate(router, rows, mode=mode, concurrency=args.concurrency,
                                     judge=judge, use_gold_category=args.gold_category)
         summary.update(model=key, mode=mode, eval=str(args.eval), judge=args.judge_hf or args.judge_url,
+                       served=served_weights(key, spec),
                        **{k: spec.get(k) for k in ("hf_id", "params_b", "disk_gb", "quantization")})
+        ship = Path(summary["served"]) / "ship.json"
+        if ship.exists():  # measured size of the checkpoint we actually ship
+            summary["disk_gb"] = json.loads(ship.read_text())["size_gb"]
         with open(out_dir / "answers.jsonl", "w", encoding="utf-8") as f:
             for r in results:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")

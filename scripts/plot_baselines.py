@@ -4,7 +4,7 @@
     python scripts/plot_baselines.py --runs s3dir --out report
 
 Writes overall.png (score per model, raw vs routed), by_category.png (model x
-question type heatmap), size_vs_score.png (shipped size vs score, with the 8 GB
+question type heatmap), size_vs_score.png (shipped size vs score, with the 8.9 GB
 limit and the 35% small-model bar), baselines.csv and index.html.
 """
 
@@ -31,7 +31,7 @@ MODE_LABELS = {"raw": "Base model, plain prompt", "routed": "Base model + router
                "adapters": "Router + LoRA adapters"}
 BLUES = LinearSegmentedColormap.from_list(
     "blues", ["#cde2fb", "#86b6ef", "#3987e5", "#256abf", "#184f95", "#0d366b"])
-SMALL_MODEL_BAR, SIZE_LIMIT_GB = 35.0, 8.0
+SMALL_MODEL_BAR, SIZE_LIMIT_GB = 35.0, 8.9
 CATEGORY_ORDER = ["closed_choice", "true_false", "matching", "chronology",
                   "source_analysis", "short_open", "essay", "general"]
 
@@ -128,7 +128,7 @@ def plot_size(summaries, mode: str, out: Path):
     style(ax)
     xmax = max(max(s["disk_gb"] for s in rows) * 1.15, SIZE_LIMIT_GB * 1.3)
     ax.axvspan(SIZE_LIMIT_GB, xmax, color=GRID, alpha=0.5, lw=0)
-    ax.text(SIZE_LIMIT_GB + 0.2, 97, "over the 8 GB limit", color=INK_3, fontsize=8, va="top")
+    ax.text(SIZE_LIMIT_GB + 0.2, 97, f"over the {SIZE_LIMIT_GB:g} GB limit", color=INK_3, fontsize=8, va="top")
     ax.axhline(SMALL_MODEL_BAR, color=INK_3, lw=1, ls="--")
     ax.text(xmax, SMALL_MODEL_BAR + 1, "35% small-model bar ", color=INK_3, fontsize=8, ha="right")
     ax.scatter([s["disk_gb"] for s in rows], [s["pct"] for s in rows], s=70,

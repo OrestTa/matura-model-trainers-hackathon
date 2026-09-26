@@ -43,12 +43,26 @@ CSV) under `results/` and add a line to `docs/FINDINGS.md`.
 - **Score by question type:** a model × type heatmap. Weak columns show which
   adapters matter most.
 - **Size vs score:** shipped size on disk against score. Anything in the grey area
-  is over the 8 GB limit.
+  is over the 8.9 GB limit.
 - The table under the charts adds `pct_text_only`, the score on items that don't
   need a picture. The models can't see pictures, so this is the fairer comparison.
 
-Pick the base model with the best score under 8 GB. Bielik-11B is the expected
+Pick the base model with the best score under the limit. Bielik-11B is the expected
 winner, but the chart decides.
+
+## 2b. Freeze the exam model as a checkpoint under 8.9 GB
+
+The limit counts the base model's weights on disk before the exam (8.9 GB per the
+organisers; adapters and the RAG knowledge base don't count). The 11-12B models are
+22-24 GB in bf16, so write the chosen one as a 4-bit checkpoint on a GPU box:
+
+```bash
+python scripts/quantize_checkpoint.py bielik-11b    # -> work/checkpoints/bielik-11b, fails if over the limit
+```
+
+From then on `run_baselines.py` serves that checkpoint instead of the HF weights
+(`served` in each summary.json says which), so the scores are for exactly the
+weights we submit. Rerun the baseline for that model once the checkpoint exists.
 
 ## 3. Fine-tune: one adapter per question type
 
@@ -88,16 +102,16 @@ If an adapter makes its question type worse, set that type's `adapter: null` in
 
 ## 5. Exam day
 
-The exam runs offline on our own hardware. Serve the chosen base model plus its
-adapters with vLLM (or llama.cpp), then put the router in front:
+The exam runs offline on our own hardware. Serve the frozen checkpoint (step 2b) plus its
+adapters and put the router in front:
 
 ```bash
-vllm serve speakleash/Bielik-11B-v2.3-Instruct --served-model-name base \
-  --quantization bitsandbytes --enable-lora --max-lora-rank 64 \
-  --lora-modules closed_choice=adapters/bielik-11b/closed_choice essay=adapters/bielik-11b/essay ...
-python -m matura_router serve --port 8080        # OpenAI-style endpoint for the exam script
+bash scripts/serve_exam.sh bielik-11b     # checkpoint + adapters in vLLM, router on :8080
 python -m matura_router run exam.jsonl -o answers.jsonl   # or answer a file directly
 ```
+
+`serve_exam.sh` is the exact on-stage harness: it refuses a checkpoint over the
+limit, loads every trained adapter from `work/adapters/<model>/`, and runs offline.
 
 Submit results for both the base model (`--modes raw`) and the trained harness,
 since the progress prize compares them.

@@ -67,3 +67,20 @@ def test_train_lora_skips_small_categories(tmp_path):
                           "--category", "essay", "--data-dir", str(tmp_path)],
                          check=True, capture_output=True, text=True).stdout
     assert "skip bielik-11b/essay: 1 examples" in out
+
+
+def test_ship_size_check_and_served_checkpoint(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("qc", ROOT / "scripts/quantize_checkpoint.py")
+    qc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(qc)
+    (tmp_path / "model.safetensors").write_bytes(b"\0" * 2_000_000)
+    (tmp_path / "config.json").write_text("{}")
+    assert abs(qc.weights_gb(tmp_path) - 0.002) < 1e-9
+    assert qc.load_config()["ship_limit_gb"] == 8.9
+
+    spec = importlib.util.spec_from_file_location("rb", ROOT / "scripts/run_baselines.py")
+    rb = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rb)
+    assert rb.served_weights("x", {"hf_id": "org/x", "checkpoint": str(tmp_path)}) == str(tmp_path)
+    assert rb.served_weights("x", {"hf_id": "org/x", "checkpoint": str(tmp_path / "none")}) == "org/x"

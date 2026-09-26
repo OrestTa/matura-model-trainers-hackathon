@@ -1,12 +1,17 @@
 # Candidate base models for baselines. Each entry is served by vLLM on its own GPU.
 #
-# `quantization` is what we'd actually ship under the 8 GB limit; bitsandbytes
-# quantizes the bf16 weights to 4-bit at load time, so no pre-quantized repo is
-# needed. `disk_gb` is the approximate size of the shipped form (for the 8 GB check
-# and the size-vs-score chart). Entries with a `-bf16` key are full-precision
+# The size limit (ship_limit_gb) counts the base model's weights on disk before the
+# exam, so the 11-12B models must ship pre-quantized: scripts/quantize_checkpoint.py
+# writes a 4-bit NF4 checkpoint to work/checkpoints/<key>, and run_baselines.py
+# serves that checkpoint instead of the HF weights once it exists. Until then vLLM
+# quantizes the HF weights to the same 4-bit NF4 at load time (`quantization`).
+# `disk_gb` is the approximate size of the shipped form (for the size-vs-score chart). Entries with a `-bf16` key are full-precision
 # references, to see what quantization costs.
 #
 # Gated models (Gemma) need HF_TOKEN in the environment.
+
+# Organisers (via Orest, 2026-09-26): 8.9 GB, for the base model before fine-tuning.
+ship_limit_gb: 8.9
 
 models:
   bielik-11b:
