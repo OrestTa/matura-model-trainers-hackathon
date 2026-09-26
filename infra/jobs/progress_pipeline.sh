@@ -12,7 +12,8 @@
 #   5 sft        the same LoRA recipe on the DAPT model
 #   6 compare    sft0 vs sft (train.sh already scored raw, routed, adapters+RAG, rag); picks the better
 #   7 exam env   writes $OUT/progress/exam.env (CHECKPOINT, ADAPTERS) for scripts/serve_exam.sh
-# Env: STAGES="0 1 2 3 4 5 6 7" (subset to run), EVAL (default matura_all.jsonl), DAPT_TOKENS=10000000,
+# Env: EXTRA_SFT="<more gen_synthetic-schema JSONL files>" (added to claude_synth for SFT),
+#      STAGES="0 1 2 3 4 5 6 7" (subset to run), EVAL (default matura_all.jsonl), DAPT_TOKENS=10000000,
 #      EPOCHS=2, CORPUS=$WORK/corpus. Needs the job venv (infra/jobs/common.sh).
 source "$(dirname "$0")/common.sh"
 STAGES="${STAGES:-0 1 2 3 4 5 6 7}"
@@ -33,7 +34,7 @@ r = yaml.safe_load(open("configs/routes.yaml")); r.setdefault("rag", {})["path"]
 yaml.safe_dump(r, open("work/routes-progress.yaml", "w"), allow_unicode=True, sort_keys=False)
 PY
 export ROUTES="$REPO/work/routes-progress.yaml"
-TRAIN_ENV=(SINGLE_ADAPTER=1 TEACHER_HF=none EXTRA_TRAIN="$REPO/train_data/claude_synth.jsonl"
+TRAIN_ENV=(SINGLE_ADAPTER=1 TEACHER_HF=none EXTRA_TRAIN="$REPO/train_data/claude_synth.jsonl${EXTRA_SFT:+ $EXTRA_SFT}"
            EPOCHS="${EPOCHS:-2}" VLLM_UTIL="${VLLM_UTIL:-0.35}" SCORE_MODES=raw,routed,adapters,rag)
 
 has 0 && [ ! -s work/checkpoints/bielik-11b-base/ship.json ] &&
