@@ -3,6 +3,17 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:55 CEST · Solari credits: CPU-only, no GPUs
+
+- **Solari (getsolari.com, organisers' "1 month of credits") has no GPUs.** Per docs.getsolari.com it sells
+  cloud Chrome browsers, Linux VMs and headless sandboxes on Firecracker-style microVMs: max **8 vCPU / 16 GB RAM**
+  per machine, one region (us-west), max session 5 h (Starter) or 24 h (Professional). No GPU option in the
+  docs, API reference or pricing page. It cannot run vLLM, training or GPU eval.
+- api.getsolari.com and docs are reachable from our cloud sandboxes (API returns 401 without a key).
+- At most useful for CPU side-jobs (data cleaning, dedup, BM25/RAG index building). Llama.cpp on 8 vCPU
+  would be far too slow for a 7 GB model on the eval set. No runner built; not worth the effort vs Nebius.
+- Redeem code stays out of the repo (it's in the organisers' announcement).
+
 ## 2026-09-26 14:55 CEST · best-progress thread: pretrained Bielik-11B-v2 as the progress base
 
 - **Progress = trained score − untouched base score**, so the progress category wants a base that is weak
