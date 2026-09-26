@@ -5,7 +5,7 @@ from .echo import EchoBackend
 
 
 def make_backend(cfg: dict) -> Backend:
-    cfg = {k: v for k, v in cfg.items() if k != "vision"}  # router-level flag, not a backend arg
+    cfg = {k: v for k, v in cfg.items() if k not in ("vision", "ocr")}  # router-level flags, not backend args
     kind = cfg.get("kind", "openai")
     if kind == "echo":
         return EchoBackend()

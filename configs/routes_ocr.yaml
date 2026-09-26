@@ -1,3 +1,4 @@
+# routes.yaml with OCR of the pictures on, for text-only models (smallest-model track).
 # Which adapter answers which question type, and how.
 #
 # One base model is loaded once; each category swaps in its own LoRA adapter.
@@ -9,7 +10,7 @@ backend:
   base_url: http://localhost:8000/v1
   base_model: base             # served model name (vLLM) or HF id / path (peft)
   adapter_mode: model_name     # model_name (vLLM) | llamacpp
-  # ocr: true                  # text models: OCR the exam's pictures into the context (tesseract, pol); not in raw mode
+  ocr: true                    # text models: OCR the exam's pictures into the context (tesseract, pol); not in raw mode
   vision: false                # true for a vision-language base: the exam's PNGs are sent as images
   # llamacpp_lora_ids: {closed_choice: 0, true_false: 1, ...}
   # For kind: peft, list adapter dirs:

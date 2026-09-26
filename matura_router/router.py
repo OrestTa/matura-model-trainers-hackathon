@@ -62,6 +62,9 @@ class Router:
         # A vision model gets the exam's PNGs; a text model gets a placeholder per picture,
         # the same one our eval set uses.
         self.vision = False
+        # A text model can instead get the pictures' printed text via offline OCR
+        # (matura_router/ocr.py, `backend.ocr: true`); never in raw mode.
+        self.ocr = False
         self._available = backend.available_adapters()
 
     @classmethod
@@ -97,6 +100,12 @@ class Router:
                 log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)
         router = cls(backend, routes, classifier, retriever, rag)
         router.vision = bool(cfg.get("backend", {}).get("vision", False))
+        router.ocr = bool(cfg.get("backend", {}).get("ocr", False)) and not router.vision
+        if router.ocr:
+            from . import ocr
+            if not ocr.available():
+                log.warning("backend.ocr is on but tesseract isn't installed; pictures stay placeholders")
+                router.ocr = False
         return router
 
     def knowledge(self, category: Category, question: str, context: str) -> tuple[str, tuple]:
@@ -192,7 +201,10 @@ class Router:
         prompt_cat = Category.GENERAL if mode == "raw" else category
         knowledge, retrieved = self.knowledge(category, question, context) \
             if mode in ("adapters", "rag") else ("", ())
-        if images and not self.vision:
+        if images and self.ocr and mode != "raw":
+            from .ocr import with_ocr
+            context = with_ocr(context, images)
+        elif images and not self.vision:
             context = (context + "\n" + "\n".join(
                 "[ilustracja – niedostępna w wersji tekstowej]" for _ in images)).strip()
         if images and self.vision:
