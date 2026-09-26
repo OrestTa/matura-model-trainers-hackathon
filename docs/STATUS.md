@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| dapt-bielik | dapt DAPT_MODEL=bielik-11b DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand session 01a0dd4b | running | 2026-09-26 11:46 | 2026-09-26 11:46 | /workspace/work/out/dapt-bielik | Polish Wikipedia thread |
 | baselines-all | baselines, all 16 papers (573 items), models side by side, no judge | Forgehand session 01a0dd4b | setting up (installing vLLM 0.27.1) | 2026-09-26 11:46 | 2026-09-26 11:46 | /workspace/work/out/baselines-all | Modal compute setup thread |
 | dapt-prep | dapt PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0dd4b | running | 2026-09-26 11:41 | 2026-09-26 11:41 | /workspace/work/out/dapt-prep | Polish Wikipedia thread |
 | router-ablation | bielik-11b MODES=raw,routed,rag on headline eval (needs data/kb from build_kb.py); measures template+voting+RAG gains | next free GPU | queued: wants a GPU after labqoat-baselines | 2026-09-26 11:13 | 2026-09-26 11:13 | work/out/router-ablation | Question router thread |
