@@ -3,6 +3,14 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:15 CEST · compute thread: Modal can't run from Claude cloud sessions
+
+- The Modal client speaks gRPC, which the cloud sandbox proxy can't carry ("Could not
+  connect to the Modal server" even with a token). Launch Modal only from Orest's Mac.
+- Websockets do pass the proxy, so `infra/forgehand/fh_job.py` (JupyterLab terminal
+  over wss) should work from the cloud once signed in to Forgehand.
+- Orest wants runs started from the cloud, so baselines go to Forgehand.
+
 ## 2026-09-26 13:05 CEST · compute thread: Modal runner, Forgehand as fallback
 
 - Orest: **use Modal** for compute. `modal run --detach infra/modal/modal_job.py --job
