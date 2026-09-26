@@ -5,3 +5,4 @@
 | matura-judge-claude-gemma4-12b-vision-raw-heldout-20260926-1617-g4vr | Gemma 4 12B QAT GGUF + mmproj (gemma4-vision, raw, thinking ON, 16:17 CEST run, 7.16 GB) | 41 | 43 | 41 | 44 | **169/240** | 31/60 | 171 |
 | matura-judge-claude-gemma4-12b-routed-heldout-20260926-2012-g4t1 | Gemma 4 12B QAT q4_0, routed, thinking off (g4t1) | 31 | 34 | 26 | 37 | **128/240** | 26/60 | 140 |
 | matura-judge-claude-gemma4-12b-raw-heldout-20260926-2002-g4r0 | Gemma 4 12B QAT q4_0 GGUF + mmproj, raw, thinking OFF (7.16 GB) | 34 | 30 | 34 | 28 | **126/240** | 22/60 | 144 |
+| matura-judge-claude-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8 | Gemma 4 12B QAT q4_0 + mmproj, raw, thinking ON at deck budgets (8k, essay 16k) (g4k8) | 38 | - | - | - | **38/60** | 10/15 | - |
