@@ -6,7 +6,8 @@
 Admits the job once the GPU's free memory, minus what recently admitted jobs have
 reserved but not yet allocated, is at least <need-gb>. A reservation is a file in
 $GPU_RESERVATIONS (default /workspace/work/gpu_reservations) and counts for
-RESERVE_S seconds (default 600, long enough for a vLLM server or trainer to load).
+RESERVE_S seconds (default 600, long enough for a vLLM server or trainer to load),
+or until the job's log ($WORK/<job>.log) says it finished, whichever comes first.
 A lock file makes admission one job at a time. Stdlib only.
 """
 import fcntl
@@ -19,6 +20,7 @@ name, need = sys.argv[1], float(sys.argv[2])
 gpu = sys.argv[3] if len(sys.argv) > 3 else "0"
 root = os.environ.get("GPU_RESERVATIONS", "/workspace/work/gpu_reservations")
 hold = float(os.environ.get("RESERVE_S", 600))
+logs = os.environ.get("WORK", "/workspace/work")
 os.makedirs(root, exist_ok=True)
 
 
@@ -28,11 +30,22 @@ def free_gb() -> float:
     return float(out.stdout.split()[0]) / 1024
 
 
+def finished(job: str) -> bool:
+    """A job that died early must not keep its reservation for the full RESERVE_S."""
+    try:
+        with open(os.path.join(logs, f"{job}.log"), "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - 4096))
+            return b"done (exit" in f.read()
+    except OSError:
+        return False
+
+
 def reserved_gb() -> float:
     total, now = 0.0, time.time()
     for f in os.listdir(root):
         path = os.path.join(root, f)
-        if f.endswith(".gb") and now - os.path.getmtime(path) < hold:
+        if f.endswith(".gb") and now - os.path.getmtime(path) < hold and not finished(f[:-3]):
             total += float(open(path).read() or 0)
     return total
 
