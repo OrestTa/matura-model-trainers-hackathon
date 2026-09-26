@@ -53,6 +53,8 @@ def main():
                               Trainer, TrainingArguments)
 
     tok = AutoTokenizer.from_pretrained(spec["hf_id"])
+    if spec.get("chat_template"):  # pretrained bases have none; the merged model keeps ours
+        tok.chat_template = (ROOT / spec["chat_template"]).read_text()
     # Round-robin over the files so each corpus contributes its best documents first.
     streams = [open(f, encoding="utf-8") for f in args.data]
     blocks, buf, total, docs = [], [], 0, 0

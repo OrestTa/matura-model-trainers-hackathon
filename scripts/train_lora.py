@@ -69,8 +69,15 @@ def main():
     if "completion_only_loss" in params:
         cfg_kwargs["completion_only_loss"] = True
 
+    extra = {}
+    if spec.get("chat_template"):  # pretrained base: train in the same format the raw baseline used
+        from transformers import AutoTokenizer
+        tok = AutoTokenizer.from_pretrained(spec["hf_id"])
+        tok.chat_template = (ROOT / spec["chat_template"]).read_text()
+        tok.pad_token = tok.pad_token or tok.unk_token
+        extra["processing_class"] = tok
     trainer = SFTTrainer(
-        model=spec["hf_id"], train_dataset=ds, args=SFTConfig(**cfg_kwargs),
+        model=spec["hf_id"], train_dataset=ds, args=SFTConfig(**cfg_kwargs), **extra,
         peft_config=LoraConfig(r=args.rank, lora_alpha=2 * args.rank, lora_dropout=0.05,
                                target_modules="all-linear", task_type="CAUSAL_LM"),
     )

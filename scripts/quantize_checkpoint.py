@@ -42,7 +42,7 @@ def load_config() -> dict:
     return yaml.safe_load(open(ROOT / "configs/models.yaml"))
 
 
-def quantize(hf_id: str, out: Path) -> None:
+def quantize(hf_id: str, out: Path, chat_template: str | None = None) -> None:
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
@@ -51,7 +51,10 @@ def quantize(hf_id: str, out: Path) -> None:
     model = AutoModelForCausalLM.from_pretrained(hf_id, quantization_config=q,
                                                  torch_dtype=torch.bfloat16, device_map="auto")
     model.save_pretrained(out, safe_serialization=True)
-    AutoTokenizer.from_pretrained(hf_id).save_pretrained(out)
+    tok = AutoTokenizer.from_pretrained(hf_id)
+    if chat_template:  # pretrained bases ship without one; vLLM reads it from the checkpoint
+        tok.chat_template = (ROOT / chat_template).read_text()
+    tok.save_pretrained(out)
 
 
 def main() -> int:
@@ -76,7 +79,7 @@ def main() -> int:
         spec = cfg["models"][args.model]
         target = Path(args.out or ROOT / "work/checkpoints" / args.model)
         target.mkdir(parents=True, exist_ok=True)
-        quantize(spec["hf_id"], target)
+        quantize(spec["hf_id"], target, spec.get("chat_template"))
         (target / "ship.json").write_text(json.dumps(
             {"model": args.model, "source": spec["hf_id"], "method": "bitsandbytes nf4",
              "size_gb": round(weights_gb(target), 2)}, indent=2))

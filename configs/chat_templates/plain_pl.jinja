@@ -1,0 +1,1 @@
+{{ bos_token }}{% for m in messages %}{% if m['role'] == 'system' %}{{ m['content'] + '\n\n' }}{% elif m['role'] == 'user' %}{{ '### Pytanie:\n' + m['content'] + '\n\n' }}{% else %}{{ '### Odpowiedź:\n' + m['content'] + eos_token + '\n\n' }}{% endif %}{% endfor %}{% if add_generation_prompt %}{{ '### Odpowiedź:\n' }}{% endif %}

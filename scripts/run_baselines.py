@@ -78,6 +78,8 @@ def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: 
            "--gpu-memory-utilization", f"{util or vcfg.get('gpu_memory_utilization', 0.9):.3f}"]
     if spec.get("quantization"):
         cmd += ["--quantization", spec["quantization"]]
+    if spec.get("chat_template"):  # pretrained base without a chat template of its own
+        cmd += ["--chat-template", str(ROOT / spec["chat_template"])]
     if adapters_dir:
         mods = [f"{d.name}={d}" for d in sorted((adapters_dir / key).glob("*"))
                 if (d / "adapter_config.json").exists()]  # a crashed run leaves only checkpoints/

@@ -33,6 +33,23 @@ models:
     params_b: 11.2
     quantization: bitsandbytes
     disk_gb: 6.7
+  # Progress category: the PRETRAINED Bielik-11B-v2 (no instruction or chat tuning), the model
+  # SpeakLeash built the Instruct versions from. It has no chat template, so every script
+  # applies `chat_template` (a neutral plain-text Q/A format ending the answer with </s>) to
+  # its tokenizer: the raw baseline and our own SFT use the same format. Ungated.
+  bielik-11b-base:
+    hf_id: speakleash/Bielik-11B-v2
+    params_b: 11.2
+    quantization: bitsandbytes
+    disk_gb: 6.7
+    chat_template: configs/chat_templates/plain_pl.jinja
+  # bielik-11b-base after DAPT on Polish history text (dapt.sh DAPT_MODEL=bielik-11b-base).
+  bielik-11b-base-dapt:
+    hf_id: /workspace/work/models/bielik-11b-base-dapt
+    params_b: 11.2
+    quantization: bitsandbytes
+    disk_gb: 6.7
+    chat_template: configs/chat_templates/plain_pl.jinja
   qwen3-8b:
     hf_id: Qwen/Qwen3-8B
     params_b: 8.2
