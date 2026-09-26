@@ -69,6 +69,7 @@ def main() -> int:
     ap.add_argument("--model", default="gemma4-12b-think8k", help="key in configs/models.yaml (vision, extra_body)")
     ap.add_argument("--papers", default="dev", choices=["dev", "heldout", "all"])
     ap.add_argument("--subtypes", default=",".join(SUBTYPES))
+    ap.add_argument("--per-subtype", type=int, default=0, help="smoke test: only the first N items of each subtype")
     ap.add_argument("--candidates", default="", help="comma list: only these candidate names")
     ap.add_argument("--raw", action="store_true", help="also the plain single-prompt baseline (mode raw)")
     ap.add_argument("--selected", action="store_true",
@@ -100,6 +101,15 @@ def main() -> int:
         sub_of[r["id"]] = (subtype_of(cat, bool(r.get("images"))), imgs)
     print("items per subtype:", dict(Counter(s for s, _ in sub_of.values())), file=sys.stderr)
 
+    if args.per_subtype:
+        seen = Counter()
+        keep = []
+        for r in rows:
+            st = sub_of[r["id"]][0]
+            if seen[st] < args.per_subtype:
+                seen[st] += 1
+                keep.append(r)
+        rows = keep
     grid = load_grid(Path(args.grid))
     want_sub = set(args.subtypes.split(","))
     want_cand = set(filter(None, args.candidates.split(",")))
