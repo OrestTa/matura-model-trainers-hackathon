@@ -124,6 +124,8 @@ class Router:
         route's max_tokens so short closed answers aren't cut off mid-thought)."""
         if "vision" in spec:
             self.vision = bool(spec["vision"])
+            if self.vision:
+                self.ocr = False  # a vision model reads the pictures itself (from_config sets ocr only for text models)
         if spec.get("extra_body") and hasattr(self.backend, "extra_body"):
             # e.g. chat_template_kwargs.enable_thinking; run_exam.py builds its backend from
             # routes.yaml, so without this the stage harness would drop the model's switch.

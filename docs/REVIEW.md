@@ -25,6 +25,11 @@ SOURCE.md with the exact required line, graded work made from Fri 18:00.
   Claude takes over orchestration because the Grok bot is out of usage (Orest 19:33 CEST), so from here on problems go
   to the orchestrating Claude thread, not to the Grok bot as C-###. OK.
 - Board f1a6402/f18dc8c (Grok bot): board refresh before it stopped. Nothing new to flag.
+- 5c9a7d1 (us) infra/venues_smoke.sh: keys only from the environment, prints OK/FAIL, no secrets committed. OK.
+- 6e2d256 (us) offline OCR for text models (tesseract, backend.ocr, configs/routes_ocr.yaml): off by default, never in
+  raw mode, so untouched-base runs stay untouched. OK. FIXED one edge: from_config sets ocr only when the config says
+  the model is text-only, but run_exam/run_baselines then call apply_model, which can turn vision on (gemma4-12b). With
+  routes_ocr.yaml that model would get OCR text on top of the pictures. apply_model now switches OCR off for vision models.
 
 ## 2026-09-26 19:08 CEST: 1aa047d..0bf7c38 (about 24 commits) and board 640b7b3
 
