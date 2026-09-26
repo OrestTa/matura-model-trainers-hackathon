@@ -16,7 +16,7 @@ OUT="${OUT:-work/out/subtype-sweep}"; mkdir -p "$OUT"
 exec > >(tee -a "$OUT/job.log") 2>&1
 step() { echo "== $(date -u +%H:%M:%S) $*"; }
 
-RAWFLAG="$RAWFLAG"; [ "$RAWFLAG" = none ] && RAWFLAG=" "
+RAWFLAG="${RAW:---raw}"; [ "$RAWFLAG" = none ] && RAWFLAG=" "
 step "deps"
 if ! command -v python3 >/dev/null || ! command -v tesseract >/dev/null; then
   export DEBIAN_FRONTEND=noninteractive
