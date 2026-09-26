@@ -1,0 +1,21 @@
+# Small-model track ("Mały, ale wariat": smallest model scoring >= 35%).
+# hf_id: ungated bf16 weights for vLLM (run_baselines.py on the GPU). gguf: the Q8_0 file
+# scripts/cpu_serve.py scores on CPU. disk_gb = the Q8_0 GGUF size (bf16 is ~1.9x).
+# gpu_gb: card memory per vLLM server when models share one GPU (--gpu-budget-gb).
+# Bielik-1.5B's HF repo is gated (auto-approve, needs HF_TOKEN); its GGUF repo is not.
+ship_limit_gb: 8.0
+finetuned_limit_gb: 8.8
+models:
+  gemma3-270m:  {hf_id: unsloth/gemma-3-270m-it,              gguf: unsloth/gemma-3-270m-it-GGUF,  params_b: 0.27, disk_gb: 0.29, gpu_gb: 5}
+  qwen2.5-0.5b: {hf_id: Qwen/Qwen2.5-0.5B-Instruct,          gguf: Qwen/Qwen2.5-0.5B-Instruct-GGUF, params_b: 0.49, disk_gb: 0.68, gpu_gb: 5}
+  qwen3-0.6b:   {hf_id: Qwen/Qwen3-0.6B,                     gguf: Qwen/Qwen3-0.6B-GGUF,          params_b: 0.60, disk_gb: 0.64, gpu_gb: 5, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  gemma3-1b:    {hf_id: unsloth/gemma-3-1b-it,                gguf: unsloth/gemma-3-1b-it-GGUF,    params_b: 1.0,  disk_gb: 1.07, gpu_gb: 5}
+  llama3.2-1b:  {hf_id: unsloth/Llama-3.2-1B-Instruct,    gguf: unsloth/Llama-3.2-1B-Instruct-GGUF, params_b: 1.24, disk_gb: 1.32, gpu_gb: 5}
+  qwen2.5-1.5b: {hf_id: Qwen/Qwen2.5-1.5B-Instruct,          gguf: Qwen/Qwen2.5-1.5B-Instruct-GGUF, params_b: 1.54, disk_gb: 1.89, gpu_gb: 5}
+  bielik-1.5b:  {hf_id: speakleash/Bielik-1.5B-v3.0-Instruct, gguf: speakleash/Bielik-1.5B-v3.0-Instruct-GGUF, params_b: 1.6, disk_gb: 1.68, gpu_gb: 5}
+  qwen3-1.7b:   {hf_id: Qwen/Qwen3-1.7B,                     gguf: Qwen/Qwen3-1.7B-GGUF,          params_b: 1.7,  disk_gb: 1.83, gpu_gb: 5, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  bielik-4.5b:  {hf_id: speakleash/Bielik-4.5B-v3.0-Instruct, gguf: speakleash/Bielik-4.5B-v3.0-Instruct-GGUF, params_b: 4.6, disk_gb: 4.9, gpu_gb: 14}
+vllm:
+  max_model_len: 8192
+  gpu_memory_utilization: 0.90
+  extra_args: []

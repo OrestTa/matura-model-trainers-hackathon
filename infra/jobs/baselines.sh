@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Scores every model in configs/models.yaml on the eval set and draws the charts.
 # Run on any GPU box: `bash infra/jobs/baselines.sh` (see infra/jobs/common.sh). Env:
-#   MODELS=all               keys from configs/models.yaml
+#   MODELS=all               keys from configs/models.yaml (or MODELS_CONFIG)
+#   MODELS_CONFIG=configs/small_models.yaml   another model list (small-model track)
 #   MODES=raw,routed         baseline modes
 #   HF_TOKEN                 needed for gated models (Gemma)
 #   JUDGE_HF=Qwen/Qwen3-32B  open model that grades open answers (last 2 GPUs); "" = no judge
@@ -44,6 +45,7 @@ ADAPTER_ARGS=()
 
 step "baselines: models=$MODELS modes=$MODES gpus=$GPUS judge=${JUDGE_HF:-none}"
 python scripts/run_baselines.py --eval "$EVAL" --models "$MODELS" --modes "$MODES" \
+  --models-config "${MODELS_CONFIG:-configs/models.yaml}" \
   --gpus "$GPUS" --out "$OUT/baselines" --concurrency "${CONCURRENCY:-64}" \
   "${JUDGE_ARGS[@]}" "${ADAPTER_ARGS[@]}" "${BUDGET_ARGS[@]}"
 status=$?
