@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| baselines-all2 | baselines JUDGE_HF= GPU_BUDGET_GB=40 MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all2/data/eval/matura_all.jsonl | Forgehand session 01a0dd4b | running | 2026-09-26 12:05 | 2026-09-26 12:05 | /workspace/work/out/baselines-all2 | Modal compute setup thread |
 | dapt-bielik | dapt DAPT_MODEL=bielik-11b DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand session 01a0dd4b | queued: after dapt-prep, then waits for 36 GB of GPU (code cebc119+, filtered FineWeb) | 2026-09-26 11:46 | 2026-09-26 11:51 | /workspace/work/out/dapt-bielik | Polish Wikipedia thread |
 | baselines-all | baselines, all 16 papers (573 items), models side by side, no judge | Forgehand session 01a0dd4b | setting up (installing vLLM 0.27.1) | 2026-09-26 11:46 | 2026-09-26 11:46 | /workspace/work/out/baselines-all | Modal compute setup thread |
 | dapt-prep | dapt PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0dd4b | running | 2026-09-26 11:41 | 2026-09-26 11:41 | /workspace/work/out/dapt-prep | Polish Wikipedia thread |
