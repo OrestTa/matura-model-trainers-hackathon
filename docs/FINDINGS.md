@@ -3,6 +3,21 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 22:35 CEST · Why every Gemma 4 LoRA scores below the base (root cause)
+
+Full analysis: docs/LORA_ROOT_CAUSE.md. Ranked causes, with evidence there:
+1. Format mismatch: train_lora.py renders the Gemma 4 template with thinking off, so the adapter learns to
+   answer right after `<|turn>model\n`, the spot where the shipped setting (thinking on) starts reasoning.
+   The training sequence matches neither exam mode.
+2. Data: 72% of rows are Grok `history_ext_synth.jsonl`; its 246 essays repeat the same filler sentences
+   4-5 times each (one sentence 1,041 times), 245 leak "zestawu syntetycznego nr …" (B4m2 reproduces it on
+   the exam), short answers have a median of 4-12 words, answers repeat up to 30 times.
+3. The base essay has only 5-69 words over the 300-word minimum; A01 tied the base on every short item and
+   lost only because its essay body is 296 words (0/15).
+4. More training = bigger loss on short items (0 at 35 steps / 1e-4, up to -11 at 2e-4 or rank 32).
+Recipe: self-distilled targets with the thought channel (enable_thinking=True in training), drop the Grok
+data, no essays in the adapter (route essays to the base), LR 5e-5, checkpoint-by-dev-score, same eval mode.
+
 ## 2026-09-26 20:15 CEST · Gemma 4: thinking ON wins, 169/240 vs 126/240 (best score)
 
 Claude-graded over the four held-out papers (grading thread, 316a39f / 997f811): Gemma 4 12B QAT raw with
