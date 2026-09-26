@@ -36,7 +36,7 @@ python3 -c "import hf_transfer" 2>/dev/null || export HF_HUB_ENABLE_HF_TRANSFER=
 cd "$REPO"
 
 # Eval set: local file, else S3, else build it from the CKE papers.
-EVAL=$REPO/data/eval/matura.jsonl
+EVAL="${EVAL:-$REPO/data/eval/matura.jsonl}"  # EVAL=/path/matura_all.jsonl for every paper
 mkdir -p "$(dirname "$EVAL")"
 if [ ! -s "$EVAL" ] && ! s3 cp "s3://$BUCKET/data/eval/matura.jsonl" "$EVAL"; then
   step "no eval set yet, building it from the CKE papers"
