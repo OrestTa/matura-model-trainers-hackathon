@@ -8,6 +8,8 @@ fine-tuned for just that type. All adapters sit on **one shared base model**, so
 only the base counts toward the 8 GB limit, and switching adapters per question is
 cheap.
 
+**New here? Start with [docs/HOWTO.md](docs/HOWTO.md).**
+
 ```
 question ──► classifier ──► route (adapter + prompt + decoding) ──► base model + LoRA ──► post-process ──► answer
                  │                                                        ▲
@@ -107,8 +109,8 @@ type heatmap, and shipped size vs score with the 8 GB limit.
 On EC2 (all compute-heavy work runs there, on credits):
 
 ```bash
-infra/jobs/ec2_baselines.sh                                   # all models, 1x g6e.48xlarge
-MODELS=bielik-11b,qwen3-8b infra/jobs/ec2_baselines.sh        # a subset
+infra/jobs/ec2_job.sh baselines                               # all models, 1x g6e.48xlarge
+MODELS=bielik-11b,qwen3-8b infra/jobs/ec2_job.sh baselines    # a subset
 ```
 
 It ships HEAD as a tarball through S3, starts a guarded instance with
@@ -162,16 +164,20 @@ scored by an LLM judge when `--judge-url` is given, otherwise reported as unscor
 
 ## Training the adapters
 
-`scripts/split_by_category.py` turns a Q&A set into one chat-format dataset per
-question type, using the same system prompts as inference:
+The whole loop runs as one EC2 job: `infra/jobs/ec2_job.sh train`. See
+[docs/HOWTO.md](docs/HOWTO.md) for the step-by-step version.
 
-```bash
-python scripts/split_by_category.py data/train.jsonl -o data/by_category
-# -> data/by_category/{closed_choice,true_false,...}.jsonl, one LoRA each
-```
-
-Train one LoRA per file against the same base model and drop them in `adapters/`.
-Categories with little data can stay on the base model (`adapter: null`).
+1. `scripts/gen_synthetic.py` asks a big open teacher model (served with vLLM on
+   the instance; any OpenAI-compatible API works) for matura-style items per question
+   type, in the exact answer format the router expects. Items too close to an eval
+   question are dropped.
+2. `scripts/split_by_category.py` turns them into one chat dataset per question
+   type, with the same system prompts as inference.
+3. `scripts/train_lora.py --model <key> --category <type>` trains one LoRA adapter
+   (TRL + PEFT, bf16) into `adapters/<model>/<type>/`. Types with too few examples
+   are skipped and stay on the base model.
+4. `run_baselines.py --modes raw,routed,adapters --adapters-dir adapters` re-scores,
+   so the charts show the gain from routing and from each adapter.
 
 ## Data and copyright
 

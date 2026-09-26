@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Runs on the GPU instance (started by infra/jobs/ec2_job.sh train). The whole
+# fine-tuning loop in one go:
+#   1. synthetic training data from a big open teacher (skipped if S3 already has it)
+#   2. split it per question type
+#   3. one LoRA adapter per (model, question type), one per GPU in parallel
+#   4. re-score raw / routed / adapters and draw the charts
+# Env:
+#   TRAIN_MODELS=bielik-11b   keys from configs/models.yaml to train adapters for
+#   TEACHER_HF=Qwen/Qwen3-235B-A22B-Instruct-2507-FP8   served on all GPUs for step 1
+#   PER_CATEGORY=400          synthetic items per question type
+#   REGEN_DATA=0              1 = regenerate data even if S3 has it
+#   EPOCHS=2                  training epochs per adapter
+#   JUDGE_HF, HF_TOKEN, STOP_WHEN_DONE as in baselines.sh
+source "$(dirname "$0")/common.sh"
+TRAIN_MODELS="${TRAIN_MODELS:-bielik-11b}"
+TEACHER_HF="${TEACHER_HF:-Qwen/Qwen3-235B-A22B-Instruct-2507-FP8}"
+PER_CATEGORY="${PER_CATEGORY:-400}"; EPOCHS="${EPOCHS:-2}"
+TRAIN=$REPO/data/train/synthetic.jsonl
+mkdir -p "$(dirname "$TRAIN")"
+
+# 1. Training data.
+if [ "${REGEN_DATA:-0}" != 1 ] && aws s3 cp "s3://$BUCKET/data/train/synthetic.jsonl" "$TRAIN" --only-show-errors; then
+  step "using training data from S3 ($(wc -l < "$TRAIN") items)"
+else
+  step "serving teacher $TEACHER_HF on all GPUs"
+  serve_vllm "$TEACHER_HF" "$(IFS=,; echo "${GPU_LIST[*]}")" 8200 teacher || finish 1
+  step "generating $PER_CATEGORY items per question type"
+  python scripts/gen_synthetic.py --base-url http://127.0.0.1:8200/v1 --model teacher \
+    --per-category "$PER_CATEGORY" --eval "$EVAL" -o "$TRAIN"
+  kill $SERVED_PID; wait $SERVED_PID 2>/dev/null
+  aws s3 cp "$TRAIN" "s3://$BUCKET/data/train/synthetic.jsonl" --only-show-errors
+fi
+cp "$TRAIN" "$OUT/synthetic.jsonl"
+
+# 2. Split per question type.
+python scripts/split_by_category.py "$TRAIN" -o data/by_category
+
+# 3. Train one adapter per (model, category), one job per GPU at a time.
+step "training adapters for $TRAIN_MODELS"
+mkdir -p "$OUT/train_logs" "$WORK/adapters"
+# Round-robin the (model, category) jobs over GPUs; each GPU works through its own list.
+n=${#GPU_LIST[@]}; i=0
+declare -a per_gpu
+for m in ${TRAIN_MODELS//,/ }; do
+  for f in data/by_category/*.jsonl; do
+    per_gpu[$((i % n))]+="$m:$(basename "$f" .jsonl) "; i=$((i + 1))
+  done
+done
+for g in $(seq 0 $((n - 1))); do
+  (
+    for job in ${per_gpu[$g]:-}; do
+      m=${job%%:*}; c=${job#*:}
+      CUDA_VISIBLE_DEVICES=${GPU_LIST[$g]} python scripts/train_lora.py --model "$m" --category "$c" \
+        --epochs "$EPOCHS" --batch 2 --grad-accum 8 --out-dir "$WORK/adapters" \
+        > "$OUT/train_logs/$m-$c.log" 2>&1
+    done
+  ) &
+done
+wait
+grep -h "saved\|skip" "$OUT"/train_logs/*.log
+aws s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/" --only-show-errors
+
+# 4. Re-score with adapters (and without, for the comparison charts).
+MODELS="$TRAIN_MODELS" MODES="raw,routed,adapters" source "$(dirname "$0")/baselines.sh"
