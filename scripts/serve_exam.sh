@@ -35,8 +35,15 @@ have=$(python -c "import vllm; print(vllm.__version__)" 2>/dev/null || echo none
 [ "$have" = "$VLLM_PIN" ] || { echo "vLLM $have found, need $VLLM_PIN: pip install vllm==$VLLM_PIN (before going offline)"; exit 1; }
 fi
 
-# Base weights at most ship_limit_gb (8.0 GB), base + adapters at most finetuned_limit_gb (8.8 GB).
-python scripts/quantize_checkpoint.py --check "$CHECKPOINT" --adapters "$ADAPTERS"
+# Base weights at most ship_limit_gb (8.0 GB); everything the submission loads (base + mmproj + LoRAs +
+# Tesseract's Polish model, which the OCR subtype config uses) at most finetuned_limit_gb (8.8 GB) in total.
+EXTRA=()
+[ "$SERVER" = llamacpp ] && [ "$(spec vision)" = True ] && [ -n "$(spec mmproj_file)" ] && EXTRA+=("$(HF_HUB_OFFLINE=1 \
+  python -c "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec mmproj_file)'))")")
+TESSDATA="$(tesseract --list-langs 2>&1 | sed -n 's/.*"\(.*\)".*/\1/p' | head -1 || true)"
+[ -f "$TESSDATA/pol.traineddata" ] && EXTRA+=("$TESSDATA/pol.traineddata")
+python scripts/quantize_checkpoint.py --check "$CHECKPOINT" --adapters "$ADAPTERS" --extra "${EXTRA[@]}" \
+  || { [ "${SIZE_CHECK:-1}" = 1 ] && { echo "over the 8.8 GB submission limit (SIZE_CHECK=0 to serve anyway for a dev run)"; exit 1; }; }
 # Text entries with `ocr: true` read the pictures' printed text with Tesseract (offline).
 if [ "$(spec ocr)" = True ]; then
   command -v tesseract >/dev/null && tesseract --list-langs 2>/dev/null | grep -qx pol \

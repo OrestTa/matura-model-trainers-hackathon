@@ -38,7 +38,8 @@ WEIGHT_SUFFIXES = (".safetensors", ".bin", ".gguf", ".pt")
 def weights_gb(path: Path) -> float:
     """Size of the weight files in a checkpoint dir (or of a single weights file), in GB."""
     files = [path] if path.is_file() else [p for p in path.rglob("*") if p.suffix in WEIGHT_SUFFIXES]
-    return sum(p.stat().st_size for p in files) / 1e9
+    # per-type adapter routes are symlinks to one all/ dir: count each real file once
+    return sum(p.stat().st_size for p in {f.resolve() for f in files}) / 1e9
 
 
 def load_config() -> dict:
@@ -68,6 +69,9 @@ def main() -> int:
     ap.add_argument("--limit-gb", type=float, help="size limit (default: ship_limit_gb in models.yaml)")
     ap.add_argument("--finetuned", action="store_true",
                     help="the checkpoint is a merged fine-tuned model: check against finetuned_limit_gb")
+    ap.add_argument("--extra", nargs="*", default=[],
+                    help="every other model file the submission loads (mmproj, OCR traineddata, a second model): "
+                         "organisers 26.09 21:46 CEST, all models of one submission together <= finetuned_limit_gb")
     ap.add_argument("--adapters", help="LoRA adapter dir: base <= ship_limit_gb and base + adapters <= finetuned_limit_gb")
     args = ap.parse_args()
     cfg = load_config()
@@ -88,6 +92,7 @@ def main() -> int:
              "size_gb": round(weights_gb(target), 2)}, indent=2))
 
     size = weights_gb(target)
+    measured = size
     # Quantized size (Orest, 15:55 CEST): the deck's 8/4-bit figure when it has one for the model at
     # the precision we ship, else the measured file. A bf16 deck figure is information only.
     if args.model in cfg["models"] and not args.finetuned:  # a merged fine-tune isn't the deck's model
@@ -107,7 +112,20 @@ def main() -> int:
         print(f"with adapters in {adapters}: {total:.2f} GB, fine-tuned limit {tuned_limit} GB -> "
               f"{'OK' if tuned_ok else 'OVER THE LIMIT (save adapters in bf16, lower the rank or drop one)'}")
         ok = ok and tuned_ok
-    return 0 if ok else 1
+    # Organisers (Orest 21:46 CEST): "If you have a few models for the SAME submission (e.g. vision+text
+    # separately, a few models voting), their total size needs to 8GB + 10% margin." Sum every file
+    # the submission loads, as measured on disk (never a smaller deck figure).
+    extras = [Path(e) for e in args.extra if e]
+    missing = [e for e in extras if not e.exists()]
+    for e in missing:
+        print(f"MISSING model file {e}")
+    total = (max(measured, size) + (weights_gb(adapters) if adapters and adapters.exists() else 0)
+             + sum(e.stat().st_size for e in extras if e.exists() and e.is_file()) / 1e9
+             + sum(weights_gb(e) for e in extras if e.exists() and e.is_dir()))
+    total_ok = total <= tuned_limit and not missing
+    print(f"SUBMISSION TOTAL (base {measured:.2f} GB + adapters + {len(extras)} extra file(s)): {total:.2f} GB, "
+          f"limit {tuned_limit} GB -> {'OK' if total_ok else 'OVER THE LIMIT'}")
+    return 0 if ok and total_ok else 1
 
 
 if __name__ == "__main__":

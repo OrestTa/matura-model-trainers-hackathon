@@ -8,6 +8,12 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
 - **Model:** Gemma 4 12B QAT, `google/gemma-4-12B-it-qat-q4_0-gguf`: `gemma-4-12b-it-qat-q4_0.gguf`
   (6.98 GB) + `mmproj-gemma-4-12b-it-qat-q4_0.gguf` (0.18 GB) = **7.16 GB**, under the 8.0 GB base
   limit. Key `gemma4-12b` in `configs/models.yaml`. The exam's pictures are sent to the model.
+- **Size rule (organisers, 26.09 21:46 CEST):** every model file one submission loads counts toward
+  ONE budget of 8.8 GB (8 GB + 10%): base GGUF + mmproj + every LoRA the router can load (e.g. a
+  picture LoRA and an essay LoRA) + Tesseract's `pol.traineddata` when the OCR route is on. `serve_exam.sh`
+  sums them as measured on disk (`quantize_checkpoint.py --check ... --extra`) and refuses to serve
+  over 8.8 GB. Planned ship config: 6.98 + 0.18 + ~0.13 per r16 LoRA (+ ~0.015 OCR) = about 7.3 GB with one
+  LoRA, 7.45 GB with two.
 - **Server:** llama.cpp `llama-server` (CUDA build), 16 slots, router on :8080.
 - **Thinking: ON**, key `gemma4-12b-think` (+2000 tokens per answer for the thought). Not the deck's 8k: graded, think8k lost to 2k
   (77 vs 84 on May 2023+2024) because thought that never closes returns a blank answer. Graded over the four
@@ -50,6 +56,7 @@ MODEL=gemma4-12b-think MODE=<mode> PAPERS=2023-05 bash infra/jobs/rehearsal.sh  
 ```bash
 export LD_LIBRARY_PATH=$PWD/work/llama.cpp/build/bin:${CUDA_LIB:-/workspace/work/cuda/lib}
 export THINK_FALLBACK=1   # re-ask a blank (runaway-thinking) answer once with thinking off
+export GGML_CUDA_DISABLE_GRAPHS=1   # llama-server with CUDA graphs aborted mid-paper on H100 ("illegal instruction")
 ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &        # waits until ready
 python scripts/run_exam.py <exam package dir> --model gemma4-12b-think --mode <mode> --concurrency 16 -o answers.json
 ```
