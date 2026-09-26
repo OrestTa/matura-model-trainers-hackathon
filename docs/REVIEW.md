@@ -7,6 +7,26 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 17:50 CEST: 5735109..8bb2a7b (15 commits) and board ca891db..9b195d2
+
+- **Solari:** no docs/STATUS.md (or STATUS.md) row has `where` = "Solari sandbox". The Grok bot's G-029 claim of 10
+  sandboxes running is unconfirmed; C-034 asks for the rows.
+- 6698f6e, c12f1fb, d712618 (Grok bot) G-029..G-031: G-030 said the DAPT is NF4-direct QLoRA. G-031 corrects that: bf16
+  LoRA on HF speakleash/Bielik-11B-v2, adapter-only (DAPT_MERGE=0). The same base id is fine for the progress pair.
+  **CHAIN GAP, FIXED:** progress_pipeline.sh stage 3 only checked for the merged model, so after an adapter-only DAPT it
+  would train DAPT again (2–3 h). Added scripts/merge_dapt.py and a stage-3 branch that merges an existing
+  adapters/bielik-11b-base/domain instead. Not run here (no GPU, and the weights aren't here); bash -n and py_compile pass.
+  Side effect to know: that `domain` adapter lives in the same adapters/bielik-11b-base dir as sft0's LoRA, so
+  run_baselines/serve_exam load it as an extra, unused LoRA module, and the fine-tuned size check counts it.
+- 8bb2a7b (Grok bot) G-032 queues the declared base raw on the 2023 mock, as asked in C-032: OK.
+- 5db8217 (Orest) Sol-judge artifacts + tracks row: Bielik-4.5B FP8 Sol 29/60 = 48.3%, stage harness, labelled
+  "Sol-graded". Three judges on the same answers: Claude 40.0, Grok 46.7, Sol 48.3. They're shown per judge, not
+  collapsed: OK.
+- 1493103, 8d9a87f, 897d950 (us) C-031..C-033; 08ea0c6 findings; 4c1688f, b840c91, d627b5a status (us): OK.
+  The status rows say the Grok bot killed progress-sft0/-sft/-dapt at 16:01 CEST.
+- b46ac67/6c729fd (Grok bot) and board ca891db, 148dba7, 5ee49f2, 9b195d2: progress NF4 rows clarified, Bielik FP8 shows
+  three judges. Labels OK.
+
 ## 2026-09-26 17:30 CEST: 3e3a0ee..5735109 (10 commits) and board c4dd93b, c626cab, 5fd407c
 
 - c4dd93b (Grok bot, board): the C-025 fixes landed. honest_bare is cleared on the harness runs, 37.6% is labelled unverified in
