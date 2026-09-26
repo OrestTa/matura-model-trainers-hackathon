@@ -48,6 +48,25 @@ class OpenAICompatBackend(Backend):
         # Merged into every request, e.g. {"chat_template_kwargs": {"enable_thinking": false}}
         # to switch off Qwen3's thinking mode.
         self.extra_body = extra_body or {}
+        self._lora_probed = adapter_mode == "llamacpp"
+
+    def _probe_llamacpp_loras(self) -> None:
+        """A llama-server started with --lora-init-without-apply (serve_exam.sh LORA_ROUTED=1) holds
+        several GGUF LoRAs at scale 0: switch to per-request `lora` with ids named after each adapter's
+        directory (adapters/<name>/adapter.gguf -> <name>). A server that applies its LoRA to every
+        request (scale > 0) is left alone, so single-adapter evals keep their adapter."""
+        self._lora_probed = True
+        try:
+            root = self.base_url[:-3] if self.base_url.endswith("/v1") else self.base_url
+            with urllib.request.urlopen(root + "/lora-adapters", timeout=10) as r:
+                loras = json.loads(r.read())
+        except Exception:  # noqa: BLE001 - vLLM or an older llama-server: nothing to probe
+            return
+        if loras and all(float(a.get("scale", 0)) == 0 for a in loras):
+            from pathlib import Path
+            self.adapter_mode = "llamacpp"
+            self.lora_ids = {Path(a["path"]).parent.name: a["id"] for a in loras}
+            log.info("llama.cpp routed LoRAs: %s", self.lora_ids)
 
     def _post(self, path: str, body: dict) -> dict:
         req = urllib.request.Request(
@@ -58,6 +77,8 @@ class OpenAICompatBackend(Backend):
             return json.loads(r.read())
 
     def request_body(self, messages, adapter, params: GenerationParams) -> dict:
+        if not self._lora_probed:
+            self._probe_llamacpp_loras()
         body = {"model": self.base_model, "messages": messages,
                 "max_tokens": params.max_tokens, "temperature": params.temperature,
                 "top_p": params.top_p, **self.extra_body}
@@ -110,6 +131,8 @@ class OpenAICompatBackend(Backend):
         return out["choices"][0]["message"].get("content") or ""
 
     def available_adapters(self) -> Optional[set[str]]:
+        if not self._lora_probed:
+            self._probe_llamacpp_loras()
         if self.adapter_mode == "llamacpp":
             return set(self.lora_ids)
         try:

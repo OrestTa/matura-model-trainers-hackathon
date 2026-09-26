@@ -68,7 +68,10 @@ if [ "$SERVER" = llamacpp ]; then
   # One adapter for all types (SINGLE_ADAPTER=1) is the supported case on llama.cpp.
   LORA=()
   for f in $(ls "$ADAPTERS"/*/adapter.gguf 2>/dev/null | xargs -r -n1 readlink -f | sort -u); do LORA+=(--lora "$f"); done
-  [ ${#LORA[@]} -gt 2 ] && echo "WARNING: several GGUF LoRAs would all apply at once; train with SINGLE_ADAPTER=1"
+  # LORA_ROUTED=1: load every LoRA at scale 0 and let the router switch one on per request (a picture
+  # LoRA for picture items, another for text); the backend finds them via /lora-adapters.
+  if [ "${LORA_ROUTED:-0}" = 1 ] && [ ${#LORA[@]} -gt 0 ]; then LORA+=(--lora-init-without-apply)
+  elif [ ${#LORA[@]} -gt 2 ]; then echo "WARNING: several GGUF LoRAs would all apply at once; set LORA_ROUTED=1 or train with SINGLE_ADAPTER=1"; fi
   echo "llama.cpp LoRA: ${LORA[*]:-none}"
   SLOTS="$(spec parallel)"; SLOTS="${SLOTS:-16}"; CTX="$(spec ctx_per_slot)"; CTX="${CTX:-8192}"  # long thinking needs longer slots
   MMPROJ=()   # vision projector: run_exam.py --model $MODEL then sends the exam's PNGs
