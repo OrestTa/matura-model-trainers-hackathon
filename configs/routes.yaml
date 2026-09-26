@@ -23,7 +23,7 @@ classifier:
 routes:
   closed_choice:   {adapter: closed_choice,   max_tokens: 16,   temperature: 0.0, votes: 5}
   true_false:      {adapter: true_false,      max_tokens: 48,   temperature: 0.0, votes: 5}
-  matching:        {adapter: matching,        max_tokens: 64,   temperature: 0.0, votes: 5}
+  matching:        {adapter: matching,        max_tokens: 64,   temperature: 0.0}   # free text: votes never agree
   chronology:      {adapter: chronology,      max_tokens: 32,   temperature: 0.0}
   source_analysis: {adapter: source_analysis, max_tokens: 256,  temperature: 0.0}
   short_open:      {adapter: short_open,      max_tokens: 192,  temperature: 0.0}

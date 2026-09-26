@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import collections
 import logging
+import re
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Optional
@@ -114,17 +116,35 @@ class Router:
               route: Route, category: Category) -> str:
         """Majority over the greedy answer plus sampled ones; ties go to the greedy answer."""
         params = GenerationParams(route.params.max_tokens, route.vote_temperature, 0.95)
-        answers = [greedy]
-        for _ in range(route.votes - 1):
+
+        def sample(_):
             try:
-                answers.append(postprocess(category, self.backend.chat(messages, adapter, params)))
+                return postprocess(category, self.backend.chat(messages, adapter, params))
             except Exception:  # noqa: BLE001 - a failed sample just doesn't vote
                 log.exception("vote sample failed")
-        counts = collections.Counter(a for a in answers if a)
+                return ""
+
+        # In parallel so vLLM batches them: sequential samples made closed items ~5x slower on stage.
+        with ThreadPoolExecutor(max_workers=route.votes - 1) as pool:
+            answers = [greedy, *pool.map(sample, range(route.votes - 1))]
+        if category is Category.TRUE_FALSE:
+            # Vote per statement: whole-string votes on 3-4 statements rarely reach a majority.
+            rows = [re.findall(r"\b([PF])\b", a) for a in answers]
+            n = len(rows[0])
+            if n and all(len(r) == n for r in rows if r):
+                marks = []
+                for i in range(n):
+                    c = collections.Counter(r[i] for r in rows if r)
+                    top = max(c.values())
+                    marks.append(rows[0][i] if c[rows[0][i]] == top else c.most_common(1)[0][0])
+                return "\n".join(f"{i}. {m}" for i, m in enumerate(marks, 1))
+        # "A, C" and "C, A" are the same answer.
+        key = (lambda a: ", ".join(sorted(a.split(", ")))) if category is Category.CLOSED_CHOICE else (lambda a: a)
+        counts = collections.Counter(key(a) for a in answers if a)
         if not counts:
             return greedy
         top = max(counts.values())
-        return greedy if counts.get(greedy) == top else next(a for a in answers if counts[a] == top)
+        return greedy if counts.get(key(greedy)) == top else next(a for a in answers if a and counts[key(a)] == top)
 
     def answer(self, question: str, context: str = "",
                category: Optional[Category] = None, mode: str = "adapters") -> RoutedAnswer:

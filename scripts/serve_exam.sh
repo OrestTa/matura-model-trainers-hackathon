@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 MODEL="${1:?usage: serve_exam.sh <model key from configs/models.yaml>}"
 CHECKPOINT="${CHECKPOINT:-work/checkpoints/$MODEL}"
 ADAPTERS="${ADAPTERS:-work/adapters/$MODEL}"
-export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 VLLM_NO_USAGE_STATS=1 DO_NOT_TRACK=1  # no stats.vllm.ai call
 
 python scripts/quantize_checkpoint.py --check "$CHECKPOINT"   # refuses a model over the limit
 [ -s data/kb/passages.jsonl ] && echo "RAG: $(wc -l < data/kb/passages.jsonl) passages" \

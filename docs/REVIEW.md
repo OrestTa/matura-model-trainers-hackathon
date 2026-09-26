@@ -7,6 +7,31 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 12:40 UTC: exam checkpoint and voting (5aadba0, 0765f2e, 8f94c91, router/plot/train changes to b3291ae)
+
+- 5aadba0 (bnb NF4 pre-quantized checkpoint + scripts/serve_exam.sh): OK on size. Estimated Bielik-11B NF4
+  ~6.7 GB, gemma3-12b ~8.3 GB (tight), both under 8.9. Serves the local path offline; bnb LoRA loads in vLLM
+  and module names match. Baselines use the same NF4 weights as shipped.
+- 0765f2e (majority voting on closed types): samples really vary (T=0.7); raw stays one call. OK after fixes.
+
+Fixed on main (this commit):
+- Vote samples ran one after another (~5x latency per closed item on stage); now in parallel so vLLM batches.
+- Matching answers are free text, so votes never agreed and 4 samples were wasted: votes removed from matching.
+- true_false voted on whole strings (rarely a majority with 3-4 statements): now per statement.
+  closed_choice counts "A, C" and "C, A" as the same answer.
+- serve_exam.sh: VLLM_NO_USAGE_STATS=1 DO_NOT_TRACK=1, otherwise vLLM calls stats.vllm.ai during the exam.
+
+Open (owner: whoever drives the exam harness):
+- serve_exam.sh ignores models.yaml: no `extra_body` (a Qwen3 model would think and blow the 16-token caps)
+  and always `--quantization bitsandbytes` (bf16-scored small models would be served 4-bit).
+- Voting also runs in routed/rag modes, so routed numbers before and after 0765f2e are not comparable and
+  summary.json doesn't record votes. The router-ablation job should note this.
+- gemma3-12b checkpoint lacks processor files; vLLM may fail to start offline. Run serve_exam.sh with the
+  network off once per candidate and time one full exam before Sunday.
+- QLoRA: adapters are trained on bf16 but served on NF4; only trust adapter scores from runs that served
+  work/checkpoints/<key>.
+- RoutedAnswer.raw shows the greedy text even when a sampled answer won the vote.
+
 ## 2026-09-26 12:25 UTC: trained-on papers kept out of the headline (2444ab1, 8e354ca, 4ea128b)
 
 - 2444ab1 turns the non-headline papers (formuła 2015 May 2015-2024, the 2022 demo, the Jan 2026 mock) into
