@@ -1,0 +1,29 @@
+{
+ "model": "Gemma 4 12B QAT q4_0, routed, thinking off (g4t1)",
+ "judge": "claude",
+ "papers": {
+  "2023-05": {
+   "total": 31.0,
+   "max": 60.0,
+   "pct": 51.7
+  },
+  "2024-05": {
+   "total": 34.0,
+   "max": 60.0,
+   "pct": 56.7
+  },
+  "2025-05": {
+   "total": 26.0,
+   "max": 60.0,
+   "pct": 43.3
+  },
+  "2026-05": {
+   "total": 37.0,
+   "max": 60.0,
+   "pct": 61.7
+  }
+ },
+ "total": 128.0,
+ "max": 240.0,
+ "pct": 53.3
+}
