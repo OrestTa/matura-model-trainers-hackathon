@@ -63,6 +63,8 @@ class OpenAICompatBackend(Backend):
                 loras = json.loads(r.read())
         except Exception:  # noqa: BLE001 - vLLM or an older llama-server: nothing to probe
             return
+        if not isinstance(loras, list) or not all(isinstance(a, dict) for a in loras):
+            return  # not a llama-server LoRA list (another server or a test stub)
         if loras and all(float(a.get("scale", 0)) == 0 for a in loras):
             from pathlib import Path
             self.adapter_mode = "llamacpp"

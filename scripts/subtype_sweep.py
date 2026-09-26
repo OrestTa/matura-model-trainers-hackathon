@@ -70,6 +70,8 @@ def main() -> int:
     ap.add_argument("--papers", default="dev", choices=["dev", "heldout", "all"])
     ap.add_argument("--subtypes", default=",".join(SUBTYPES))
     ap.add_argument("--only-papers", default="", help="comma list of paper ids (e.g. probny-2026-01,pokaz-2022-03)")
+    ap.add_argument("--all-essays", action="store_true",
+                    help="with --only-papers: also every essay item of the selected --papers (more essays to compare)")
     ap.add_argument("--per-subtype", type=int, default=0, help="smoke test: only the first N items of each subtype")
     ap.add_argument("--candidates", default="", help="comma list: only these candidate names")
     ap.add_argument("--raw", action="store_true", help="also the plain single-prompt baseline (mode raw)")
@@ -89,8 +91,6 @@ def main() -> int:
     elif args.papers == "heldout":
         rows = [r for r in rows if r.get("paper") in HEADLINE_PAPERS]
 
-    if args.only_papers:
-        rows = [r for r in rows if r.get("paper") in set(args.only_papers.split(","))]
     router = Router.from_config(args.routes)
     router.backend.base_url = args.base_url.rstrip("/")
     spec = yaml.safe_load((ROOT / "configs/models.yaml").read_text())["models"][args.model]
@@ -102,7 +102,10 @@ def main() -> int:
         imgs = item_images(r) if (router.vision or router.ocr) else ()
         cat = router.classifier.classify(r["question"], r.get("context", "")).category
         sub_of[r["id"]] = (subtype_of(cat, bool(r.get("images"))), imgs)
-    print("items per subtype:", dict(Counter(s for s, _ in sub_of.values())), file=sys.stderr)
+    if args.only_papers:
+        want = set(args.only_papers.split(","))
+        rows = [r for r in rows if r.get("paper") in want or (args.all_essays and sub_of[r["id"]][0] == "essay")]
+    print("items per subtype:", dict(Counter(sub_of[r["id"]][0] for r in rows)), file=sys.stderr)
 
     if args.per_subtype:
         seen = Counter()

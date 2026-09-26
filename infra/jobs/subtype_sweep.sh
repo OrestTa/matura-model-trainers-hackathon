@@ -5,7 +5,7 @@
 # (ghcr.io/ggml-org/llama.cpp:server-cuda, llama-server at /app/llama-server) or on any box
 # with LLAMA_SERVER set / buildable (infra/jobs/common.sh ensure_llama_server). Env:
 #   PAPERS=dev|heldout|all   SHARD=i/n   SLOTS=16   OUT=work/out/subtype-sweep
-#   RAW=" " (skip the raw baseline in this shard)
+#   RAW=" " or RAW=none (skip the raw baseline in this shard)
 #   SWEEP_ARGS="--subtypes open_image --candidates base,think"   (passed through)
 #   SMOKE=2   end-to-end smoke first: 2 items per subtype, every candidate; fails (exit 3) on any blank
 #             answer or llama-server restart, so a broken setup costs minutes, not a shard of H100 time.
@@ -16,6 +16,7 @@ OUT="${OUT:-work/out/subtype-sweep}"; mkdir -p "$OUT"
 exec > >(tee -a "$OUT/job.log") 2>&1
 step() { echo "== $(date -u +%H:%M:%S) $*"; }
 
+RAWFLAG="$RAWFLAG"; [ "$RAWFLAG" = none ] && RAWFLAG=" "
 step "deps"
 if ! command -v python3 >/dev/null || ! command -v tesseract >/dev/null; then
   export DEBIAN_FRONTEND=noninteractive
@@ -74,7 +75,7 @@ nvidia-smi --query-gpu=name,memory.used,memory.total --format=csv
 if [ -n "${SMOKE:-}" ]; then
   step "smoke: $SMOKE items per subtype"
   python3 scripts/subtype_sweep.py --base-url http://127.0.0.1:8000/v1 --papers "$PAPERS" --per-subtype "$SMOKE" \
-    --concurrency "$SLOTS" ${RAW:---raw} --out "$OUT/smoke" ${SWEEP_ARGS:-}
+    --concurrency "$SLOTS" $RAWFLAG --out "$OUT/smoke" ${SWEEP_ARGS:-}
   blanks=$(cat "$OUT"/smoke/*/*/answers.jsonl | python3 -c "import sys,json;print(sum(1 for l in sys.stdin if not json.loads(l).get('answer','').strip()))")
   restarts=$(grep -c "llama-server exited" "$OUT/job.log")
   step "smoke: $blanks blank answers, $restarts server restarts"
@@ -83,7 +84,7 @@ fi
 
 step "sweep papers=$PAPERS shard=$SHARD"
 python3 scripts/subtype_sweep.py --base-url http://127.0.0.1:8000/v1 --papers "$PAPERS" --shard "$SHARD" \
-  --concurrency "$SLOTS" ${RAW:---raw} --emit --out "$OUT" ${SWEEP_ARGS:-}
+  --concurrency "$SLOTS" $RAWFLAG --emit --out "$OUT" ${SWEEP_ARGS:-}
 rc=$?
 step "done (exit $rc): $OUT"
 exit $rc

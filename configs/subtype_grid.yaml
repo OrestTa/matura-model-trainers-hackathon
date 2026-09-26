@@ -52,3 +52,5 @@ essay:
   t2k: {think_tokens: 2000}
   rubric: {think_tokens: 16384, prompt_suffix: *essay_rubric, max_tokens: 2600}
   rubric_rag: {think_tokens: 16384, rag: true, prompt_suffix: *essay_rubric, max_tokens: 2600}
+  guard: {think_tokens: 16384, min_words: 350}          # length guard: continue an essay under 350 words
+  plan_guard: {think_tokens: 16384, prompt_suffix: *essay_plan, max_tokens: 2600, min_words: 350}

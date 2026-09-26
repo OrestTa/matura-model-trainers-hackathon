@@ -29,19 +29,25 @@ image = (
 app = modal.App("matura-subtype", image=image)
 
 
-@app.function(gpu="H100", volumes={VOL: volume}, timeout=3 * 3600,
+# Not H100: the prebuilt llama.cpp image's CUDA kernels abort on sm90 ("illegal instruction", 26 Sep).
+GPU = os.environ.get("SUBTYPE_GPU", "L40S")
+
+
+@app.function(gpu=GPU, volumes={VOL: volume}, timeout=3 * 3600,
               secrets=[modal.Secret.from_dict({"HF_TOKEN": os.environ.get("HF_TOKEN", "")})])
-def shard(i: int, n: int, papers: str, name: str, sweep_args: str) -> int:
+def shard(i: int, n: int, papers: str, name: str, sweep_args: str, extra_env: str = "") -> int:
     subprocess.run("rm -rf /repo && cp -r /src /repo", shell=True, check=True)
     assert Path("/repo/data/eval/matura_all.jsonl").exists(), "ship data/eval (copy from /mnt/project-files/data)"
     env = dict(os.environ, LLAMA_SERVER="/app/llama-server", HF_HOME=f"{VOL}/hf", PAPERS=papers,
-               SHARD=f"{i}/{n}", OUT=f"{VOL}/out/{name}/shard-{i}", SWEEP_ARGS=sweep_args)
+               SHARD=f"{i}/{n}", OUT=f"{VOL}/out/{name}/shard-{i}", SWEEP_ARGS=sweep_args,
+               **dict(kv.split("=", 1) for kv in extra_env.split() if "=" in kv))
     code = subprocess.run(["bash", "/repo/infra/jobs/subtype_sweep.sh"], env=env).returncode
     volume.commit()
     return code
 
 
 @app.local_entrypoint()
-def main(shards: int = 8, papers: str = "dev", name: str = "subtype-modal", sweep_args: str = ""):
-    codes = list(shard.starmap([(i, shards, papers, name, sweep_args) for i in range(shards)]))
+def main(shards: int = 8, papers: str = "dev", name: str = "subtype-modal", sweep_args: str = "", env: str = ""):
+    """env: space-separated KEY=VALUE for the job (MODEL=gemma4-12b-think8k SMOKE=1 SLOTS=8 RAW=' ')."""
+    codes = list(shard.starmap([(i, shards, papers, name, sweep_args, env) for i in range(shards)]))
     print("exit codes:", codes, f"-> modal volume get matura-jobs out/{name} results/subtype/")
