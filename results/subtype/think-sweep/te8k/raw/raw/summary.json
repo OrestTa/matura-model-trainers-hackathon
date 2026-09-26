@@ -1,0 +1,64 @@
+{
+  "n": 83,
+  "scored": 35,
+  "errors": 0,
+  "earned": 19.83,
+  "max": 42.0,
+  "pct": 47.2,
+  "pct_text_only": 51.1,
+  "pct_all_rows": 8.3,
+  "decision_acc": 77.8,
+  "unscored": 48,
+  "routing_accuracy": 78.3,
+  "latency_p50_s": 47.753,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 8,
+      "scored": 8,
+      "earned": 5.0,
+      "max": 8.0,
+      "pct": 62.5
+    },
+    "essay": {
+      "n": 12,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 3,
+      "scored": 3,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 7,
+      "scored": 3,
+      "earned": 1.0,
+      "max": 3.0,
+      "pct": 33.3
+    },
+    "source_analysis": {
+      "n": 50,
+      "scored": 18,
+      "earned": 10.833333333333332,
+      "max": 20.0,
+      "pct": 54.2
+    },
+    "true_false": {
+      "n": 3,
+      "scored": 3,
+      "earned": 3.0,
+      "max": 5.0,
+      "pct": 60.0
+    }
+  },
+  "warning": "no held-out paper in this set: every paper here is adapter training data",
+  "model": "gemma4-12b-think-te8k",
+  "mode": "raw/raw",
+  "papers": "dev",
+  "empty": 0
+}
