@@ -46,8 +46,11 @@ has 2 && [ ! -s "$OUT/progress-sft0/baselines/bielik-11b-base/adapters/summary.j
     bash infra/jobs/train.sh
 DAPT_DIR=$(python -c "import yaml; print(yaml.safe_load(open('configs/models.yaml'))['models']['bielik-11b-base-dapt']['hf_id'])")
 # A DAPT that already ran without merging (DAPT_MERGE=0, e.g. the Grok bot's C-033 run): merge its adapter.
-has 3 && [ ! -s "$DAPT_DIR/config.json" ] && [ -s "$WORK/adapters/bielik-11b-base/domain/adapter_config.json" ] &&
-  run merge-dapt python scripts/merge_dapt.py --model bielik-11b-base --work "$WORK" --merge-dir "$(dirname "$DAPT_DIR")"
+# DAPT_ADAPTER points at an adapter trained elsewhere (e.g. a QLoRA run under runs/<job_id>/); a
+# QLoRA-on-NF4 adapter merges into the bf16 base the same way.
+DAPT_ADAPTER=${DAPT_ADAPTER:-$WORK/adapters/bielik-11b-base/domain}
+has 3 && [ ! -s "$DAPT_DIR/config.json" ] && [ -s "$DAPT_ADAPTER/adapter_config.json" ] &&
+  run merge-dapt python scripts/merge_dapt.py --model bielik-11b-base --adapter "$DAPT_ADAPTER" --merge-dir "$(dirname "$DAPT_DIR")"
 has 3 && [ ! -s "$DAPT_DIR/config.json" ] &&
   run dapt env NAME=progress-dapt OUT="$OUT/progress-dapt" DAPT_MODEL=bielik-11b-base \
     DAPT_TOKENS="${DAPT_TOKENS:-10000000}" bash infra/jobs/dapt.sh
