@@ -3,6 +3,11 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 18:58 CEST · Untouched base Bielik-11B-v2 NF4 scores 12/60 = 20.0% on the May 2023 mock, Claude-graded (best progress)
+- Job `matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1`, raw, graded by "Grading open answers": closed 2/11, open 10/34, essay 0/15, text-only 5/28, text+table 7/30. Score: `results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json`. This is the "before" number for the improvement track.
+- About a third of answers run on past the answer (new chat turns, English Q&A, LaTeX); the essay is 234 words, so 0/15. Easy gains for the trained side: SFT ends answers with EOS, the essay route asks for 300+ words, and the trained model spec now sends stop strings `\n### Pytanie` / `\n### Odpowiedź` (configs/models.yaml, `bielik-11b-base-dapt` only; the raw base keeps none).
+- DAPT restarted at 18:01 CEST as `matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4` (QLoRA on the NF4 base; the 14:51 run crashed at 23/154 with nothing kept). ETA ~22:17 CEST, then `DAPT_ADAPTER=... STAGES="3 4 5 6 7" progress_pipeline.sh` (C-042).
+
 ## 2026-09-26 18:35 CEST · Gemma 4 12B QAT (7.16 GB) scores 41/60 = 68.3% on the May 2023 mock, Claude-graded (best score)
 
 Untouched Gemma 4 12B QAT GGUF + mmproj, raw mode, pictures sent (gemma4-vision run, 16:17 CEST), graded against the CKE key by the grading thread: **41/60 = 68.3%** (closed 8/11, open 24/34, essay 9/15). Score: `results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/claude_score.json`.

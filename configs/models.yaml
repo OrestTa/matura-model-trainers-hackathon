@@ -124,6 +124,9 @@ models:
     quantization: bitsandbytes
     disk_gb: 6.7
     chat_template: configs/chat_templates/plain_pl.jinja
+    # Harness only (the raw base keeps none): cut the run-on the base shows on a third of the
+    # May 2023 answers (a new "### Pytanie" turn after the answer).
+    extra_body: {stop: ["\n### Pytanie", "\n### Odpowiedź"]}
   qwen3-8b:
     deck_size_gb: not in deck
     ship_precision: 4bit
