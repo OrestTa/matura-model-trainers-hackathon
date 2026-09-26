@@ -27,19 +27,20 @@ else:
     print(snapshot_download(s["hf_id"]))
 PY
 
-step "serving $MODEL offline (serve_exam.sh)"
-mkdir -p work
-bash scripts/serve_exam.sh "$MODEL" > "$OUT/serve_exam.log" 2>&1 &
-SERVE=$!
 # llama-server can ignore SIGTERM, and serve_exam's router on :8080 outlives it: kill both hard,
 # or the next rehearsal's run_exam talks to a stale router.
 cleanup() {
-  kill $SERVE 2>/dev/null; pkill -f "matura_router serve" 2>/dev/null
+  [ -n "$SERVE" ] && kill $SERVE 2>/dev/null; pkill -f "matura_router serve" 2>/dev/null
   pkill -f "llama-server.*--port 8000" 2>/dev/null; pkill -f "vllm serve.*--port 8000" 2>/dev/null
   sleep 5; pkill -9 -f "llama-server.*--port 8000" 2>/dev/null; pkill -9 -f "matura_router serve" 2>/dev/null
 }
-cleanup   # leftovers from an earlier run
+SERVE=
+cleanup   # leftovers from an earlier run, BEFORE starting ours (after, it killed our own server)
 trap cleanup EXIT
+step "serving $MODEL offline (serve_exam.sh)"
+mkdir -p work "$OUT"
+bash scripts/serve_exam.sh "$MODEL" > "$OUT/serve_exam.log" 2>&1 &
+SERVE=$!
 for _ in $(seq 360); do
   curl -sf http://127.0.0.1:8000/v1/models >/dev/null && break
   kill -0 $SERVE 2>/dev/null || { cat "$OUT/serve_exam.log"; finish 1; }
