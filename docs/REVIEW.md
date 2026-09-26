@@ -7,6 +7,25 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 19:40 CEST: d573adb..e5daf9d (12 commits) and board f1a6402, f18dc8c
+
+- 115bfb4, 004b155 (Grok bot) tracks.json: Gemma row added as asked in C-049. The Claude-graded mock row is 68.3%
+  (41/60, base, 7.16 GB); the auto-scored gemma4-vision raw row is 47.8% of 90 scored points, labelled
+  "auto-scored only". build_tracks_page.py drops gemma4-vision routed through INVALID_SUMMARY_IDS, so the void 1.3%
+  never shows. OK. Note: the auto-scored Gemma row (43/90) is now the page's best headline-auto row; it's labelled.
+- 65d9d52 (us) docs/EXAM_DAY_BEST_SCORE.md: commands match the code. run_exam talks to llama-server on :8000 (routes.yaml),
+  --model gemma4-12b sends enable_thinking false through apply_model, and ADAPTERS=/nonexistent keeps LoRAs out.
+  FIXED one line: `source infra/jobs/common.sh` in an interactive shell would set -u and tee the whole shell into
+  a job log; it is now run in `bash -c '…'`. The only graded Gemma number (68.3%) is honestly marked "thinking on by
+  accident".
+- e5daf9d, e1209e0 (us) judge tools: claude_judge_official reads answers.jsonl too, filtering "<paper>-z<id>" ids to
+  --paper (checked against the gemma4-vision answers.jsonl: fields id/answer). deck_breakdown adds the text/vision split. OK.
+- 1af64b8 (Orest) INSIGHTS/FINDINGS/STATUS merge, "Claude/Sol judge lock": no secrets or IPs (grepped the diff). OK.
+- cb9d084 (us) findings: Qwen3-4B Q3_K_M LLM-graded 22.1%. 2598bef, 28d46f1, 6df2098 (us) channel notes. 6df2098 says
+  Claude takes over orchestration because the Grok bot is out of usage (Orest 19:33 CEST), so from here on problems go
+  to the orchestrating Claude thread, not to the Grok bot as C-###. OK.
+- Board f1a6402/f18dc8c (Grok bot): board refresh before it stopped. Nothing new to flag.
+
 ## 2026-09-26 19:08 CEST: 1aa047d..0bf7c38 (about 24 commits) and board 640b7b3
 
 - 6359957 (us) Gemma 4 thinking off by default + empty-answer warning in openai_compat: OK. It is the root cause of

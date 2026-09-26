@@ -35,7 +35,7 @@ the simpler mode (raw < routed < rag). Record it here and set `MODE` below.
 
 ```bash
 git pull origin main
-source infra/jobs/common.sh && ensure_llama_server          # CUDA llama-server in work/llama.cpp
+bash -c 'source infra/jobs/common.sh && ensure_llama_server'   # CUDA llama-server in work/llama.cpp (a subshell: common.sh sets -u and tees all output to a job log)
 python -c "from huggingface_hub import hf_hub_download as d; \
   [print(d('google/gemma-4-12B-it-qat-q4_0-gguf', f)) for f in \
   ('gemma-4-12b-it-qat-q4_0.gguf', 'mmproj-gemma-4-12b-it-qat-q4_0.gguf')]"
