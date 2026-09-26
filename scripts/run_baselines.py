@@ -102,7 +102,7 @@ def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
     slots = int(spec.get("parallel", 16))
     cmd = [os.environ.get("LLAMA_SERVER", "llama-server"), "-m", served_weights(key, spec),
            "--alias", "base", "--host", "127.0.0.1", "--port", str(port), "-ngl", "999",
-           "--parallel", str(slots), "-c", str(slots * int(vcfg.get("max_model_len", 8192))),
+           "--parallel", str(slots), "-c", str(slots * int(spec.get("ctx_per_slot") or vcfg.get("max_model_len", 8192))),
            "--jinja", "-fa", "on", "--no-webui"] + list(spec.get("llamacpp_args", []))
     loras, _ = llamacpp_loras(key, adapters_dir)
     for f in loras:  # loaded at scale 0; the router turns one on per request (adapters mode only)

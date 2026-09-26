@@ -63,11 +63,12 @@ if [ "$SERVER" = llamacpp ]; then
   for f in $(ls "$ADAPTERS"/*/adapter.gguf 2>/dev/null | xargs -r -n1 readlink -f | sort -u); do LORA+=(--lora "$f"); done
   [ ${#LORA[@]} -gt 2 ] && echo "WARNING: several GGUF LoRAs would all apply at once; train with SINGLE_ADAPTER=1"
   echo "llama.cpp LoRA: ${LORA[*]:-none}"
+  SLOTS="$(spec parallel)"; SLOTS="${SLOTS:-16}"; CTX="$(spec ctx_per_slot)"; CTX="${CTX:-8192}"  # long thinking needs longer slots
   MMPROJ=()   # vision projector: run_exam.py --model $MODEL then sends the exam's PNGs
   [ "$(spec vision)" = True ] && [ -n "$(spec mmproj_file)" ] && MMPROJ=(--mmproj "$(HF_HUB_OFFLINE=1 python -c \
     "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec mmproj_file)'))")")
   CUDA_VISIBLE_DEVICES="${GPU:-0}" "$LLAMA_SERVER" -m "$CHECKPOINT" --alias base --host 127.0.0.1 \
-    --port 8000 -ngl 999 --parallel 16 -c 131072 --jinja -fa on --no-webui "${MMPROJ[@]}" "${LORA[@]}" > work/exam-vllm.log 2>&1 &
+    --port 8000 -ngl 999 --parallel "$SLOTS" -c "$((SLOTS * CTX))" --jinja -fa on --no-webui "${MMPROJ[@]}" "${LORA[@]}" > work/exam-vllm.log 2>&1 &
 else
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
   ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &

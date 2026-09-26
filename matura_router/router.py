@@ -148,9 +148,10 @@ class Router:
             # routes.yaml, so without this the stage harness would drop the model's switch.
             self.backend.extra_body = {**self.backend.extra_body, **spec["extra_body"]}
         extra = int(spec.get("think_tokens") or 0)
-        if extra:
-            for r in self.routes.values():
-                r.params.max_tokens += extra
+        by_type = spec.get("think_tokens_by_type") or {}   # e.g. {essay: 16384}: the essay thinks longer
+        if extra or by_type:
+            for cat, r in self.routes.items():
+                r.params.max_tokens += int(by_type.get(getattr(cat, "value", cat), extra))
         return self
 
     def resolve_adapter(self, category: Category) -> Optional[str]:
