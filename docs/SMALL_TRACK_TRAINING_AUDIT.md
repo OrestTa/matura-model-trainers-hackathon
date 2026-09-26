@@ -120,3 +120,21 @@ SHA256 `3c337d1d0d3f8cafb27f617b97a9a0cf70a2067648cb3946311e2fe370c28978`.
 The converter uses an owned checkout of llama.cpp
 `694ec235484b3b0bf827ab7992a512d285f0e66b`. Launch is separately bounded to900seconds
 plus15seconds termination grace. No shared packages or other-agent jobs are changed.
+
+## Clean v3 training completed; evaluation pending
+
+Parent-approved shared-VM run `clean-v3-full-epoch` completed all138 updates:
+25closed text,7closed image,76open text,25open image,5essays. Each route used a fresh
+native base; no rows exceeded the3072-token limit. All five exported GGUF adapters
+were copied locally and verified against their recorded SHA256, byte counts and
+exact input route-file hashes. They total80,677,920bytes. With the972,797,408-byte
+Q4 base,313,604-byte aligned classifier and8,878,606-byte OCR models, aggregate
+weights are1,062,667,538bytes. This is not a measured accuracy improvement.
+
+Local adapters: `artifacts/small_track/bielik15-real-boundary-clean-v3/adapters/`.
+Manifest: `results/small_track/20260926-clean-v3-bielik15/manifests.json`.
+Remote copies: `/workspace/codex-small-track-clean-v3/output/clean-v3-full-epoch/`.
+The attempt to back up this version to the existing private Hugging Face repository
+was blocked by automatic approval review before execution: current-context payload
+and destination authorization was deemed missing. No new Hub backup is claimed;
+local and VM copies remain available. Parent is resolving the authorization record.
