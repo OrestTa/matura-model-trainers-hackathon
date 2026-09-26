@@ -3,6 +3,24 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## Merged bot learnings 2026-09-26 ~19:05 CEST
+
+- Canonical merged leaders and hard rules now live in [`../INSIGHTS.md`](../INSIGHTS.md).
+- Prize tabs should be named **Matura Best Score**, **Matura Best Progress**, and **Matura Mały ale wariat** - never "Track 1/2/3".
+- Size legality is based on the **quantized on-disk pack** (`du -sb`, decimal GB), not bf16 deck sizes.
+- Base cap stays **<=8.0 GB**; shipped post-FT pack stays **<=8.8 GB**.
+- LoRA and RAG do **not** count toward size.
+- Current Best Score / Mały floor leader is **Bielik-4.5 FP8-Dynamic** at about **4.90 GB**.
+- Current official-mock judge set for Bielik-4.5 FP8 is **Claude 40.0%**, **Grok 46.7%**, **Sol 48.3%**.
+- Current Best Progress base is **Bielik-11B-v2 NF4** at about **6.66 GB**; clean holdout pair is **25.5% -> 26.9% (+1.4)**.
+- The `p2a1` "cleaned" pack is still contaminated and is **diagnostic only**; do not board it without a fresh sanitize or re-infer under a new `job_id`.
+- Every 37/37 `answers.json` should fan out to **Grok + Claude + Sol**; never headline without Sol, and report bare vs optimised separately.
+- When quoting scores, include the **five CKE categories**: open-text, open-vision, closed-text, closed-vision, essay.
+- For Ania comparisons, keep **/55 text** and **/60 image** runs separate from our official mock `history-2023-mock-v1` **/60** gauge.
+- Never kill, stop, or park a process you did not start; use `cancel_requested` plus owner instead.
+- Protect forever: Forgehand dapt `matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4` and Nebius Progress `aijob-e00me2k8j1ge1vw19k`.
+- Keep public docs free of secrets, IPs, SSH keys, TEAM_KEY, tokens, and HF keys.
+
 ## 2026-09-26 19:15 CEST · Skip pictures? Keep them for best score, skip them for smallest (images-or-not thread)
 
 Orest asked whether to drop images and optimise a text-only model. We classified all 81 non-essay picture items on

@@ -16,6 +16,8 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 3. **Before any GPU work:** register the job here with `infra/jobs/status.py` and admit it with
    `python3 infra/jobs/gpu_admit.py <job> <need-gb>`.
 
+Leader summary and hard rules now live in [`../INSIGHTS.md`](../INSIGHTS.md); keep this file job-centric.
+
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
 | matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4 | DAPT Bielik-11B-v2 via QLoRA / bitsandbytes nf4 (DAPT_MERGE=0; live id supersedes 1451-d2fe; KEEP) | Forgehand L40S | running step 16/154 (~10%); ~82-98 s/it; ETA ~22:17 CEST (+/-30m); adapter tree empty at step 16 | 2026-09-26 16:01 | 2026-09-26 16:31 | /scratch/dapt-work-matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4/adapters | Grok bot |

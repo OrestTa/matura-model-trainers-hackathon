@@ -15,7 +15,7 @@
         "Measured packs: AWQ ~5.58 GB; speakleash Bielik-4.5 FP8 ~4.898 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
         "Bielik-11B bf16 remains banned on every track under the 8.0/8.8 pack caps; Bielik-11B-v2 NF4 stays live for Best Progress only.",
         "No secrets, keys, or private IPs in this public refresh.",
-        "Track 02: Bielik-11B-v2 NF4 routed harness 26.9% vs raw 25.5% (+1.4 pp)."
+        "Matura Best Progress: Bielik-11B-v2 NF4 routed harness 26.9% vs raw 25.5% (+1.4 pp)."
       ]
     },
     "claude": {
@@ -309,7 +309,7 @@
   "prize_tracks": [
     {
       "id": "best-matura-score",
-      "title": "Best matura score",
+      "title": "Matura Best Score",
       "goal": "Highest honest Sunday exam score under the 8.0 GB base / 8.8 GB after-FT caps.",
       "status": "RUNNING",
       "summary": "Gemma 4 12B QAT GGUF + mmproj now leads Claude-graded 60-pt results with 68.3% on the May 2023 CKE paper at 7.16 GB, but the standing Sunday gauge remains history-2023-mock-v1, where speakleash Bielik-4.5 FP8 is still the best verified pack at Claude 40.0% with parallel Grok/Sol reads of 46.7% / 48.3% on the same answers. Prior 37.6% AWQ figure is headline-auto only and demoted.",
@@ -347,7 +347,7 @@
     },
     {
       "id": "best-progress",
-      "title": "Best progress",
+      "title": "Matura Best Progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
       "status": "RUNNING",
       "summary": "Same-HF-base pair locked: Bielik-11B-v2 NF4 raw 25.5% → routed harness 26.9% (Δ +1.4 pp). Declared organisers base stays this NF4 pack for Best Progress only; progress-dapt next. Gauge is matura_all holdout (not yet history-2023-mock-v1). Proxy 3B CKE +1.6 still secondary.",
@@ -377,7 +377,7 @@
     },
     {
       "id": "maly-ale-wariat",
-      "title": "Mały ale wariat",
+      "title": "Matura Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
       "status": "RUNNING",
       "summary": "speakleash Bielik-4.5 FP8 (~4.898 GB) remains the Mały floor and primary contender on the standing gauge: 40.0% Claude on history-2023-mock-v1, with parallel Grok/Sol judges at 46.7% / 48.3% on the same answers. Gemma 4 12B QAT GGUF + mmproj reached 68.3% Claude on the May 2023 paper at 7.16 GB, well above 35% and under the cap, but it is larger than the Bielik floor and does not take the Mały lead. E2E 3B is 25.0% Grok. New Claude official-mock sub-2B probes failed: Qwen2.5-0.5B at 5.0% and Qwen2.5-1.5B at 6.7%, supporting C-027 (no more GPU on sub-2B; 3/2-bit 4B first).",
