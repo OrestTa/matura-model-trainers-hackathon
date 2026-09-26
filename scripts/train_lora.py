@@ -68,6 +68,10 @@ def main():
     cfg_kwargs["max_length" if "max_length" in params else "max_seq_length"] = args.max_len
     # transformers 5 dropped warmup_ratio; its warmup_steps takes a float < 1 as a ratio.
     cfg_kwargs["warmup_ratio" if "warmup_ratio" in params else "warmup_steps"] = 0.03
+    # TRL >= 1.x defaults to loss_type="chunked_nll", whose lm_head patch crashes on Gemma 4
+    # ("'functools.partial' object has no attribute '__func__'"); plain nll is the same math.
+    if "loss_type" in params:
+        cfg_kwargs["loss_type"] = "nll"
     if "completion_only_loss" in params:
         cfg_kwargs["completion_only_loss"] = True
 
