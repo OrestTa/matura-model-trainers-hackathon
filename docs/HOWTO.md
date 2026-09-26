@@ -1,35 +1,39 @@
 # How to use the harness
 
-The path from nothing to a trained, scored entry. All heavy work runs on EC2 with
-the AWS credits; your laptop only starts jobs and reads the charts.
+The path from nothing to a trained, scored entry. Heavy work runs on a rented GPU
+box (Nebius, Modal, Labqoat, anything Linux with NVIDIA GPUs); your laptop only
+reads the charts.
 
-## 0. One-time setup
+> 2026-09-26: the AWS account was suspended, so `infra/jobs/ec2_job.sh` is out of
+> use. The jobs below run directly on whatever GPU machine we get.
+
+## 0. On the GPU box
 
 ```bash
 git clone https://github.com/OrestTa/matura-model-trainers-hackathon && cd matura-model-trainers-hackathon
-pip install -e .[dev]              # router, eval, charts (no GPU needed)
-pip install awscli
-export AWS_PROFILE=matura          # the root key profile from the AWS thread
-infra/aws/setup.sh                 # once: GPU quotas, S3 bucket, budgets (see infra/aws/README.md)
+export HF_TOKEN=...   # optional: a Hugging Face read token, needed only for Gemma (gated)
 ```
 
-Optional: `export HF_TOKEN=...` (a Hugging Face read token) so Gemma, which is gated,
-can be downloaded. Without it Gemma fails and the other models still run.
+The jobs install vLLM and the training stack into `work/venv` on first run (or use
+them if the box already has them), and write everything to `work/out/`.
 
 ## 1. Baseline: how good is each model untouched?
 
 ```bash
-infra/jobs/ec2_job.sh baselines
+bash infra/jobs/baselines.sh
 ```
 
-This starts one g6e.48xlarge (8 GPUs), builds the eval set from the 2023–2026 CKE
-papers, scores every model in `configs/models.yaml`, and downloads the report to
-`runs/ec2/baselines-<time>/report/index.html`. The machine shuts itself down when
-the job ends. Expect roughly an hour, most of it downloading models.
+It builds the eval set from the 2023–2026 CKE papers, scores every model in
+`configs/models.yaml` (one per GPU, several at once), and writes the report to
+`work/out/report/index.html`. With 4+ GPUs the last two serve a judge model that
+grades open answers; with fewer, only the ~60 auto-scorable items count.
 
-To run a subset: `MODELS=bielik-11b,qwen3-8b infra/jobs/ec2_job.sh baselines`.
-Progress while it runs: `aws s3 cp s3://matura-hackathon-<account>/<name>/job.log -`.
-Check spend at any time with `infra/aws/status.sh`.
+- A subset: `MODELS=bielik-11b,qwen3-8b bash infra/jobs/baselines.sh`
+- No judge: `JUDGE_HF= bash infra/jobs/baselines.sh`
+- Copy the report home: `scp -r box:matura-model-trainers-hackathon/work/out/report .`
+
+Commit the numbers you want to keep (`work/out/baselines/*/*/summary.json` and the
+CSV) under `results/` and add a line to `docs/FINDINGS.md`.
 
 ## 2. Reading the charts
 
@@ -49,27 +53,28 @@ winner, but the chart decides.
 ## 3. Fine-tune: one adapter per question type
 
 ```bash
-TRAIN_MODELS=bielik-11b infra/jobs/ec2_job.sh train
+TRAIN_MODELS=bielik-11b bash infra/jobs/train.sh
 ```
 
-On one instance this:
+This:
 
-1. serves a large open teacher model (Qwen3-235B) and generates about 400
-   matura-style items per question type, in the exact answer format each adapter
-   must produce (`scripts/gen_synthetic.py`). Items too close to an eval question
-   are dropped, so the eval stays honest. The data is saved to S3 and reused on the
-   next run (`REGEN_DATA=1` regenerates it).
+1. serves a large open teacher model (Qwen3-235B on 8 GPUs, Qwen3-30B on fewer) and
+   generates about 400 matura-style items per question type, in the exact answer
+   format each adapter must produce (`scripts/gen_synthetic.py`). Items too close to
+   an eval question are dropped, so the eval stays honest. The data is kept in
+   `data/train/synthetic.jsonl` and reused next time (`REGEN_DATA=1` regenerates).
+   Any OpenAI-compatible API can be the teacher instead: run `gen_synthetic.py
+   --base-url ... --model ...` yourself first.
 2. splits the items per question type and trains one LoRA adapter per type, one per
-   GPU in parallel (`scripts/train_lora.py`).
+   GPU in parallel (`scripts/train_lora.py`), into `work/adapters/<model>/<type>/`.
 3. re-scores the model plain, routed, and with adapters, and draws the same charts,
    now with a green "Router + LoRA adapters" bar.
 
-Adapters land in `s3://…/<name>/adapters/<model>/<type>/`. Useful knobs:
-`PER_CATEGORY=800` for more data, `EPOCHS=3`, `TRAIN_MODELS=bielik-11b,qwen3-8b` to
-train two bases at once, `TYPE=p5.48xlarge` for H100s if the quota came through.
+Useful knobs: `PER_CATEGORY=800` for more data, `EPOCHS=3`,
+`TRAIN_MODELS=bielik-11b,qwen3-8b` to train two bases at once.
 
-To compare: open both reports. If an adapter makes its question type worse, set that
-type's `adapter: null` in `configs/routes.yaml` and it falls back to the base model.
+If an adapter makes its question type worse, set that type's `adapter: null` in
+`configs/routes.yaml` and it falls back to the base model.
 
 ## 4. Changing things
 

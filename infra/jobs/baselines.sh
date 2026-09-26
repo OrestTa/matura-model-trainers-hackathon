@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Runs on the GPU instance (started by infra/jobs/ec2_job.sh baselines). Env:
+# Scores every model in configs/models.yaml on the eval set and draws the charts.
+# Run on any GPU box: `bash infra/jobs/baselines.sh` (see infra/jobs/common.sh). Env:
 #   MODELS=all               keys from configs/models.yaml
 #   MODES=raw,routed         baseline modes
 #   HF_TOKEN                 needed for gated models (Gemma)

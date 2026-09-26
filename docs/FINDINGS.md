@@ -3,6 +3,15 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 12:45 CEST · question-router thread: AWS is out, jobs run on any GPU box
+
+- Orest: the AWS account was suspended; don't invest in EC2 any more.
+- `infra/jobs/baselines.sh` and `infra/jobs/train.sh` now run directly on any Linux
+  GPU box (Nebius, Modal, a rented server) with no AWS or S3: `bash
+  infra/jobs/baselines.sh` writes to `work/out/`. Checked end to end locally with a
+  stubbed GPU and vLLM (eval set built, both modes scored, report drawn).
+  See [docs/HOWTO.md](HOWTO.md).
+
 ## 2026-09-26 12:39 CEST: AWS account suspended, stop using AWS
 
 - Orest reports the AWS account is suspended. Don't plan training or baselines on AWS anymore;

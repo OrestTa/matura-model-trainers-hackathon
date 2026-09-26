@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Runs a job from infra/jobs on a fresh EC2 GPU instance and downloads its results.
+# NOTE 2026-09-26: the AWS account was suspended; run the jobs directly on another
+# GPU box instead (bash infra/jobs/baselines.sh). Kept in case AWS comes back.
 #
 #   infra/jobs/ec2_job.sh baselines                  # score every model, draw charts
 #   infra/jobs/ec2_job.sh train                      # synthetic data -> adapters -> re-score
@@ -38,7 +40,7 @@ until [ "$(aws ssm describe-instance-information --region "$REGION" \
   sleep 15
 done
 
-ENV="BUCKET=$BUCKET NAME=$NAME STOP_WHEN_DONE=${STOP_WHEN_DONE:-1}"
+ENV="BUCKET=$BUCKET NAME=$NAME WORK=/opt/work STOP_WHEN_DONE=${STOP_WHEN_DONE:-1}"
 for v in MODELS MODES TRAIN_MODELS TEACHER_HF PER_CATEGORY REGEN_DATA EPOCHS JUDGE_HF HF_TOKEN; do
   [ -n "${!v+x}" ] && ENV="$ENV $v='${!v}'"
 done

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Runs on the GPU instance (started by infra/jobs/ec2_job.sh train). The whole
-# fine-tuning loop in one go:
+# The whole fine-tuning loop in one go, on any GPU box: `bash infra/jobs/train.sh`
+# (see infra/jobs/common.sh).
 #   1. synthetic training data from a big open teacher (skipped if S3 already has it)
 #   2. split it per question type
 #   3. one LoRA adapter per (model, question type), one per GPU in parallel
@@ -27,8 +27,8 @@ TRAIN=$REPO/data/train/synthetic.jsonl
 mkdir -p "$(dirname "$TRAIN")"
 
 # 1. Training data.
-if [ "${REGEN_DATA:-0}" != 1 ] && aws s3 cp "s3://$BUCKET/data/train/synthetic.jsonl" "$TRAIN" --only-show-errors; then
-  step "using training data from S3 ($(wc -l < "$TRAIN") items)"
+if [ "${REGEN_DATA:-0}" != 1 ] && { [ -s "$TRAIN" ] || s3 cp "s3://$BUCKET/data/train/synthetic.jsonl" "$TRAIN"; }; then
+  step "reusing training data ($(wc -l < "$TRAIN") items)"
 else
   step "serving teacher $TEACHER_HF on all GPUs"
   serve_vllm "$TEACHER_HF" "$(IFS=,; echo "${GPU_LIST[*]}")" 8200 teacher || finish 1
@@ -36,7 +36,7 @@ else
   python scripts/gen_synthetic.py --base-url http://127.0.0.1:8200/v1 --model teacher \
     --per-category "$PER_CATEGORY" --eval "$EVAL" -o "$TRAIN"
   kill $SERVED_PID; wait $SERVED_PID 2>/dev/null
-  aws s3 cp "$TRAIN" "s3://$BUCKET/data/train/synthetic.jsonl" --only-show-errors
+  s3 cp "$TRAIN" "s3://$BUCKET/data/train/synthetic.jsonl"
 fi
 cp "$TRAIN" "$OUT/synthetic.jsonl"
 
@@ -66,7 +66,7 @@ for g in $(seq 0 $((n - 1))); do
 done
 wait
 grep -h "saved\|skip" "$OUT"/train_logs/*.log
-aws s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/" --only-show-errors
+s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 
 # 4. Re-score with adapters (and without, for the comparison charts).
 MODELS="$TRAIN_MODELS" MODES="raw,routed,adapters" source "$(dirname "$0")/baselines.sh"
