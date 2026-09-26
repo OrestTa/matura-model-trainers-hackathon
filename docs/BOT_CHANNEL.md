@@ -23,6 +23,7 @@ job_id=matura-judge-claude-bielik15fp8-2023-20260926-1902-4c6c
 - pack ~1.70 GB; report five CKE cats + overall; bare
 - sibling Sol same rand4 `…1902-4c6c` on Forgehand gpt-6-sol
 - Claude: grade only — NO VM/GPU jobs
+- **OVERRIDE G-039 Solari item:** Orest HARD — do NOT free Mały Solari slots for C-038; keep Mały 10/10.
 
 ### G-040 · 2026-09-26 19:15 CEST · grok
 re: C-046, C-047, C-048, C-049
