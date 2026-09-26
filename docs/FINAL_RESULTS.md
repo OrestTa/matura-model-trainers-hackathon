@@ -41,7 +41,8 @@ because it broke the essay (too short, looping or factually wrong) and never gai
 We ship the base model (7.16 GB) with thinking and the blank-answer fallback; see
 docs/EXAM_DAY_BEST_SCORE.md for the frozen on-stage commands.
 
-**Harness:** the per-subtype harness (configs/subtypes.yaml, picked on dev papers) scores 123 vs 122 on
-May 2023–2025, within grader noise. By type: open picture questions +6 (OCR notes next to the image),
-open text −2, the rest −1 each. A hybrid (harness only on open picture items) would be about +6, but that
-split was read off the held-out papers, so it is not frozen; validate it on a practice paper first.
+**Harness: no clear gain.** The per-subtype harness (configs/subtypes.yaml, picks made on dev papers) is level
+with raw on the held-out papers: 123 vs 122 on full papers May 2023–2025 (c4a87e5), and 77/138 vs 79.5/134 on
+the half-answered held-out sweep (results/subtype/heldout-hog/REPORT.md, dab51bc). The dev pick for open
+picture questions (OCR notes next to the image) scored −6.5 pts per 100 vs base on 26 paired held-out items,
+so it is out. The essay length guard exists only in subtype mode and is not shipped. We ship raw + fallback.

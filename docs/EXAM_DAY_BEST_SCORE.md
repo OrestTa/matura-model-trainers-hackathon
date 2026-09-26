@@ -54,9 +54,12 @@ Graded with pictures viewed and the full CKE essay criteria (7e6fe48), the base 
 | A01 | 0.1 epoch | 4 papers 131/240 | 163 | essays 7/60 (three under 300 words); short items below base on every paper |
 
 Every adapter broke the essay and none beat the base on short items, so the picture LoRA V1 and
-per-type routing (`LORA_ROUTED=1`, 7d705a3) stay unused. The per-subtype harness (`--mode subtype`,
-configs/subtypes.yaml: OCR notes on open picture items) won on dev papers only; its held-out result
-(123 vs raw 122 on May 2023–2025, c4a87e5) is within grader noise, so raw stays the frozen mode.
+per-type routing (`LORA_ROUTED=1`, 7d705a3) stay unused.
+
+The per-subtype harness (`--mode subtype`) gave **no clear gain** on the held-out papers: 123 vs raw 122 on
+May 2023–2025 (c4a87e5), 77/138 vs 79.5/134 on the half-answered sweep (dab51bc). Its dev pick for open
+picture questions (OCR notes) lost 6.5 pts per 100 on held-out, and its essay length guard only works in
+subtype mode. So the on-stage mode is `raw` with `THINK_FALLBACK=1`.
 
 ## Before going offline (the evening before)
 
