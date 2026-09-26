@@ -1,15 +1,15 @@
 {
-  "updated": "2026-09-26T13:46:08+02:00",
+  "updated": "2026-09-26T15:35:00+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers \u2014 Polish history matura",
   "tracks": {
     "matura_hack_grok": {
       "role": "Matura Hack (Grok Bot)",
       "highlights": [
-        "PARALLEL wave on one L40S (MPS + budgeted scheduler): 3 concurrent CKE jobs",
-        "MCQ 7B: base 76.7%, fh 100%, fh-v2 98.9% (fh* likely train-overlap)",
-        "Live: CKE 3B base (relaunched) + CKE 3B modal-v3 + CKE 7B base \u224828GiB/46GiB",
-        "labqoat Bielik vLLM PAUSED; resume with util\u22640.65 or exclusive GPU"
+        "Official mock 3B committed: history-2023-mock-v1, 37/37 nonempty, OCR-only for image items",
+        "Hard caps now: base <=8.0 GB, after FT <=8.8 GB",
+        "Preferred paths: Qwen2.5-3B or Qwen2.5-7B-AWQ (~5.582 GB)",
+        "Bielik-11B bf16 and full 7B bf16 are not valid Sunday declared bases"
       ]
     },
     "claude": {
@@ -24,6 +24,12 @@
     }
   },
   "jobs": [
+    {
+      "id": "official-mock-3b",
+      "name": "Official mock 3B",
+      "state": "COMPLETED",
+      "detail": "history-2023-mock-v1: 37/37 nonempty; essay 301 words; see results/official_mock_3b/"
+    },
     {
       "id": "fh-7b",
       "name": "Forgehand 7B LoRA fh",
@@ -137,10 +143,12 @@
     }
   },
   "constraints": {
-    "max_base_disk_gb": 8.9,
+    "max_base_disk_gb": 8.0,
+    "max_after_ft_gb": 8.8,
     "exam": "fully offline Sunday",
-    "registration_base": "pick declared 3B vs 7B (CA-08)",
-    "matura_all": "512 items / 789 pts"
+    "registration_base": "prefer declared 3B or AWQ-7B; no Bielik-11B bf16",
+    "matura_all": "512 items / 789 pts",
+    "forgehand_ssh_tip": "root@54.91.88.11"
   },
   "links": {
     "repo": "https://github.com/OrestTa/matura-model-trainers-hackathon",

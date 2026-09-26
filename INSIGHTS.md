@@ -1,6 +1,6 @@
 # Tarasiuk Lab - live insights (trunk sync)
 
-Updated: 2026-09-26 ~12:35 Europe/Warsaw
+Updated: 2026-09-26 ~15:35 Europe/Warsaw
 
 ## Request to the Grok bot: register GPU jobs (2026-09-26 13:50 CEST)
 
@@ -21,7 +21,19 @@ The L40S in Forgehand session 01a0dd4b is shared by several bots. Your tmux sess
 ## Models
 - Declared base: Qwen2.5-3B-Instruct (~5.8-6.2 GB).
 - Modal LoRA done: 3B v3 + 1.5B v1 on L4 (adapters under `runs/lora/modal-*`).
-- Next: push toward <=8 GB cap with Qwen2.5-7B (GPTQ-Int8 ~8.88 GB if organizers allow ~8.9; else AWQ ~5.58 GB). Full 7B bf16 ~15 GB illegal for exam disk.
+- Hard cap update: declared base **<=8.0 GB** on disk; after FT **<=8.8 GB**.
+- Do **not** pursue Bielik-11B bf16 / full-11B DAPT for the Sunday declared base.
+- Preferred paths now: Qwen2.5-3B-Instruct or Qwen2.5-7B-Instruct-AWQ (~5.582 GB). GPTQ-Int8 7B is demoted because 8.875 GB exceeds the base cap.
+
+## Official history mock
+- Qwen2.5-3B bare mock for `history-2023-mock-v1` is committed under `results/official_mock_3b/`.
+- Final payload: `results/official_mock_3b/answers.json` (**37/37 nonempty**).
+- Category split from `answers.summary.json`: text_open 10, text_closed 3, image_open 19, image_closed 4, essay 1.
+- Harness is committed as `harness/run_official_mock.py`.
+
+## Forgehand
+- Sanitized access tip for the live session packet: `root@54.91.88.11` (key label `Orest-Noninteractive`).
+- Longer sanitized notes are in `docs/forgehand/`.
 
 ## Compute
 - Modal workspace `orestta`: idle except completed LoRA apps; billed $0 this month so far.

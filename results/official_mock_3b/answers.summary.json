@@ -1,0 +1,92 @@
+{
+  "exam_id": "history-2023-mock-v1",
+  "model": "/workspace/hackathon/models/Qwen__Qwen2.5-3B-Instruct",
+  "dtype": "bf16",
+  "backend": "transformers-hf",
+  "n_items": 37,
+  "nonempty": 37,
+  "wall_s": 171.2,
+  "images_ocr_cache": 19,
+  "vision_pixels_fed": false,
+  "ocr_fallback": true,
+  "out": "/workspace/hackathon/runs/official_mock_3b/answers.json",
+  "categories": {
+    "text_open": {
+      "n": 10,
+      "nonempty": 10,
+      "ids": [
+        "2.1",
+        "6",
+        "11.1",
+        "12",
+        "16.1",
+        "16.2",
+        "22",
+        "23",
+        "25.1",
+        "25.2"
+      ]
+    },
+    "text_closed": {
+      "n": 3,
+      "nonempty": 3,
+      "ids": [
+        "2.2",
+        "10",
+        "11.2"
+      ]
+    },
+    "image_open": {
+      "n": 19,
+      "nonempty": 19,
+      "ids": [
+        "1",
+        "4.1",
+        "4.2",
+        "5.1",
+        "5.2",
+        "5.3",
+        "7",
+        "8",
+        "9.1",
+        "9.2",
+        "9.3",
+        "13.1",
+        "14.1",
+        "14.2",
+        "15",
+        "17",
+        "18",
+        "20",
+        "24"
+      ]
+    },
+    "image_closed": {
+      "n": 4,
+      "nonempty": 4,
+      "ids": [
+        "3",
+        "13.2",
+        "19",
+        "21"
+      ]
+    },
+    "essay": {
+      "n": 1,
+      "nonempty": 1,
+      "ids": [
+        "26"
+      ],
+      "words": 301
+    }
+  },
+  "overall": {
+    "n": 37,
+    "nonempty": 37
+  },
+  "essay_regen": {
+    "old_words": 214,
+    "new_words": 301,
+    "kept_words": 301
+  }
+}

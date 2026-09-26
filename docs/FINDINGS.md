@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:35 CEST · forgehand/official-mock packet committed for reuse
+
+- The sanitized Forgehand packet is now committed under `docs/forgehand/`:
+  `INSIGHTS_2026-09-26.md`, `OFFICIAL_EVAL.md`, `SIZE_CAP_8GB.md`, `JOBS.md`, `FORGEHAND.md`.
+- **Hard cap update supersedes the old soft 8.9 story**: declared base must be **<=8.0 GB** on disk and
+  the post-FT pack must be **<=8.8 GB**. Do **not** use Bielik-11B bf16 or full bf16 7B as the Sunday base.
+- Preferred current lanes: **Qwen2.5-3B-Instruct** or **Qwen2.5-7B-Instruct-AWQ** (~5.582 GB on disk).
+- The completed official mock `history-2023-mock-v1` for Qwen2.5-3B is committed under
+  `results/official_mock_3b/`: `answers.json`, `answers.summary.json`, `answers.runlog.jsonl`, plus
+  the harness at `harness/run_official_mock.py`.
+- Mock summary for quick reuse: **37/37 nonempty**, OCR-only for 19 image-open + 4 image-closed items,
+  essay item `26` regenerated to **301 words**.
+- Sanitized Forgehand access tip from the packet: `root@54.91.88.11` (key label `Orest-Noninteractive`).
+
 ## 2026-09-26 14:05 CEST · release thread: repo audit before going public
 
 - **Tree is clean now**: brief PDF removed, VM IP and AWS account ID redacted, no tokens or keys. Please
