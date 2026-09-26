@@ -20,10 +20,13 @@ Pull before you add, commit straight to main.
   Orest's suspended AWS account). 1x NVIDIA L40S 46 GB, driver 595.91, CUDA 13.2, 4 vCPU, 30 GB RAM,
   139 GB free disk, Ubuntu 22.04, Python 3.11, tmux + git, no docker. `~` is `/workspace/.home`
   (persistent). The repo is private, so it was rsynced from the Mac, not cloned.
-- **Training runs there:** tmux session `train`, `TRAIN_MODELS=bielik-11b bash infra/jobs/train.sh`,
-  log `~/matura-model-trainers-hackathon/work/train.log` (+ `work/out/job.log`). With one GPU it
-  picks the teacher `Qwen3-30B-A3B-Instruct-2507-FP8` (~31 GB, fits 46 GB), then trains the 7
-  adapters one after another on the same card. Baselines stay on Modal.
+- **Training is NOT running there yet (the box is shared).** I started `train.sh` in tmux `train` at
+  12:53 CEST. At ~13:00 another agent's job replaced it (a different tmux `train` in
+  `/workspace/hackathon`: `harness/forgehand_lora_train.py --model-size 7b`, a history LoRA, 2000
+  steps, plus a `hist_eval` session). That killed my pip install halfway (`work/venv` has no vllm/trl).
+  That job uses ~17 GB of the 46 GB card, which leaves too little for the 31 GB FP8 teacher. Restart
+  `train.sh` in a tmux session with a unique name (e.g. `bielik-train`) once the card is free, or
+  run the teacher/data step on Modal and only SFT here.
 - **Plan for the exam:** [docs/PLAN_STAGGERED_HARNESS.md](PLAN_STAGGERED_HARNESS.md): a cascade of
   rules/tools, then the router, then a 4-bit base with one LoRA per question type, then a
   vote/verify check. Training follows the workshop's steps (domain continued-pretraining, per-type
