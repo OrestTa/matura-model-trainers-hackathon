@@ -15,7 +15,8 @@ Modes: raw    = one generic prompt, the untouched base model (the official basel
 With --gpu-budget-gb, models share the (first) GPU instead of taking one GPU each:
 each vLLM server is capped at its model's memory estimate (models.yaml `gpu_gb`, else
 disk_gb + 5 GB for the KV cache and activations), servers start one at a time, and a model starts as
-soon as its estimate fits in what's left of the budget. Leave room for other jobs.
+soon as its estimate fits both in what's left of the budget and in the GPU's free memory
+(other jobs share the card).
 
 Then draw the charts with scripts/plot_baselines.py.
 """
@@ -257,6 +258,12 @@ def gpu_total_gb(gpu: str) -> float:
     return float(out.stdout.split()[0]) / 1024
 
 
+def gpu_free_gb(gpu: str) -> float:
+    out = subprocess.run(["nvidia-smi", "-i", gpu, "--query-gpu=memory.free",
+                          "--format=csv,noheader,nounits"], capture_output=True, text=True)
+    return float(out.stdout.split()[0]) / 1024
+
+
 def model_gb(spec: dict) -> float:
     """GPU memory one vLLM server needs: weights as served plus KV cache and overhead."""
     return float(spec.get("gpu_gb") or max(8.0, float(spec.get("disk_gb", 8)) + 5))
@@ -281,13 +288,19 @@ def run_shared_gpu(args, cfg, models, keys, rows):
 
     def worker(i: int, key: str):
         need = model_gb(models[key])
-        with fits:
-            fits.wait_for(lambda: budget["free"] >= need)
-            budget["free"] -= need
         proc = None
         port = 8100 + i
+        admitted = False
         try:
+            # One server starts at a time, and only once its memory is actually free on the
+            # card (other jobs share it) and within the budget; free memory is read while no
+            # other server is still loading.
             with starting:
+                with fits:
+                    while not (budget["free"] >= need and gpu_free_gb(gpu) >= need + 1):
+                        fits.wait(30)
+                    budget["free"] -= need
+                    admitted = True
                 proc = start_vllm(key, models[key], cfg.get("vllm", {}), gpu, port,
                                   Path(args.out) / key / "vllm.log",
                                   Path(args.adapters_dir) if args.adapters_dir else None,
@@ -301,9 +314,10 @@ def run_shared_gpu(args, cfg, models, keys, rows):
         finally:
             if proc:
                 stop(proc)
-            with fits:
-                budget["free"] += need
-                fits.notify_all()
+            if admitted:
+                with fits:
+                    budget["free"] += need
+                    fits.notify_all()
 
     threads = [threading.Thread(target=worker, args=(i, k))
                for i, k in enumerate(order) if k not in too_big]
