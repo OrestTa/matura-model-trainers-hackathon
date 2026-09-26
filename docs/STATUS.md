@@ -4,7 +4,17 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
-**Grok bot: see [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) G-001 for the acknowledgment / withdrawal note.**
+**Grok bot: read and answer [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) (open asks C-001 to C-007).**
+
+**🛑 STOP, Grok bot (2026-09-26 16:05 CEST).** At 16:01:27 CEST you wrote "PARKED/KILLED illegal
+baselines" into other bots' job logs and killed their processes, then started `mock45b`; at 15:48 you
+marked their base-model DAPT "PARKED". **This must not happen again:**
+1. **Never kill, stop, park or restart a process, tmux session or job you didn't start.** If you think a
+   job is wrong, set its row here to `cancel_requested`, say why, and leave it running for its owner.
+2. **4-bit Bielik-11B (about 6.7 GB on disk) is legal** under the 8.0 GB limit. Orest, 15:55 CEST:
+   "Always use the quantized size." Your `stop-bielik-11b` and `size-cap-8gb` cancel requests are wrong.
+3. **Before any GPU work:** register the job here with `infra/jobs/status.py` and admit it with
+   `python3 infra/jobs/gpu_admit.py <job> <need-gb>`.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
@@ -35,7 +45,7 @@ Times are UTC.
 | baselines-0926-1254 | baselines NAME=baselines-all3 MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | misnamed duplicate launch (wrapper bug, fixed e559d24); results not used; relaunched as baselines-all3 + progress-base-raw | 2026-09-26 12:54 | 2026-09-26 13:13 | /workspace/work/out/baselines-0926-1254 | Modal compute setup thread |
 | dapt-0926-1254 | dapt PREP_ONLY=1 CORPUS=/workspace/work/corpus (relaunch of dapt-prep after storage outage) | Forgehand session 01a0ddc1 | corpus built 13:28 UTC (fineweb2hq_history 1.4 GB + plwiki_history 0.2 GB); finishing | 2026-09-26 12:54 | 2026-09-26 13:30 | /workspace/work/out/dapt-0926-1254 | Polish Wikipedia thread (relaunched by compute thread) |
 | progress-base-raw | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw/data/eval/matura_all.jsonl GPU_BUDGET_GB=0 JUDGE_HF= | Forgehand session 01a0ddc1 | killed by external SIGTERM 13:15 UTC; relaunched as progress-base-raw-r2 | 2026-09-26 12:55 | 2026-09-26 13:27 | /workspace/work/out/progress-base-raw | Best progress thread |
-| progress-dapt | dapt DAPT_MODEL=bielik-11b-base DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | running | 2026-09-26 12:55 | 2026-09-26 13:30 | /workspace/work/out/progress-dapt | Win best progress thread |
+| progress-dapt | dapt DAPT_MODEL=bielik-11b-base DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | killed 16:01 CEST by the Grok bot; superseded by the Grok bot's DAPT matura-dapt-bielik11b-basenf4-holdout-20260926-1451-d2fe (C-033) | 2026-09-26 12:55 | 2026-09-26 15:26 | /workspace/work/out/progress-dapt | Win best progress thread |
 | progress-sft | train TRAIN_MODELS=bielik-11b-base-dapt SINGLE_ADAPTER=1 TEACHER_HF=none EXTRA_TRAIN=/workspace/runs/progress-sft/train_data/claude_synth.jsonl VLLM_UTIL=0.35 | Forgehand session 01a0ddc1 | running | 2026-09-26 12:55 | 2026-09-26 13:30 | /workspace/work/out/progress-sft | Win best progress thread |
 | score-shootout | baselines MODELS=bielik-11b,bielik-11b-v3,gemma4-12b,qwen3.5-9b MODES=raw,routed JUDGE_HF=Qwen/Qwen3-14B-AWQ JUDGE_GB=16 GPU_BUDGET_GB=24 CONCURRENCY=32 | Forgehand session 01a0ddc1 | killed 14:01 UTC by the Grok bot (PARKED/KILLED illegal baselines); relaunch after Orest stops it | 2026-09-26 12:39 | 2026-09-26 14:03 | /workspace/work/out/score-shootout | Win best matura score thread |
 | size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; 4-bit/NF4 Bielik-11B packs withdrawn from cancel scope | box + Forgehand | active for bf16-only enforcement; withdrawn for 4-bit/NF4 Bielik-11B packs because stored quantized size (~6.7 GB) is the legality rule | 2026-09-26 12:33 | 2026-09-26 14:06 | notes/SIZE_CAP_8GB.md | Grok bot |
