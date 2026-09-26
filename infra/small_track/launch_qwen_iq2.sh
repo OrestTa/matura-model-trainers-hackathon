@@ -4,6 +4,10 @@ ROOT=/scratch/codex-qwen35-iq2
 OUT=/workspace/codex-small-track/qwen35-iq2
 BINARY=/scratch/llama-build/bin/llama-server
 mkdir -p "$OUT"
+# Shared VM host RAM is independent of available GPU memory.
+awk '/^MemAvailable:/ {print $2}' /proc/meminfo > "$OUT/host-memavailable-before-kib.txt"
+HOST_AVAILABLE_KIB=$(cat "$OUT/host-memavailable-before-kib.txt")
+test "$HOST_AVAILABLE_KIB" -ge 6291456
 echo 'efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf  '"$BINARY" | sha256sum -c -
 nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits > "$OUT/free-vram-before.txt"
 test "$(head -1 "$OUT/free-vram-before.txt")" -gt 10000

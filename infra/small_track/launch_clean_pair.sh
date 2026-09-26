@@ -6,6 +6,10 @@ ADAPTERS=/workspace/codex-small-track-clean-v3/output/clean-v3-full-epoch
 MODEL=/scratch/codex-bielik-cap-2135/Bielik-1.5B-v3.0-Instruct-Q8_0.gguf
 BINARY=/scratch/llama-build/bin/llama-server
 mkdir -p "$OUT"
+# Shared VM host RAM is independent of available GPU memory.
+awk '/^MemAvailable:/ {print $2}' /proc/meminfo > "$OUT/host-memavailable-before-kib.txt"
+HOST_AVAILABLE_KIB=$(cat "$OUT/host-memavailable-before-kib.txt")
+test "$HOST_AVAILABLE_KIB" -ge 6291456
 echo '90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e  '"$MODEL" | sha256sum -c -
 echo 'efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf  '"$BINARY" | sha256sum -c -
 nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits > "$OUT/free-vram-before.txt"

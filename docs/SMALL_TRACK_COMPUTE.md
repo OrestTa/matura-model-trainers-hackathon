@@ -187,3 +187,18 @@ Q8fullpairedrun recovered successfully:37/37base and37/37trainedanswers, allnonb
   Owned server peak observed memory was 2,816 MiB. Completion/process exit checked
   at 22:08:47 UTC. The newer router and repaired training corpus make this a new
   combined candidate; compare against its matched baseline, not older runs.
+
+## 2026-09-26 22:25 UTC — IQ2 recovery access degraded
+
+- Qwen3.5-4B UD-IQ2_XXS plus unchanged F16 projector totals 2,192,640,864
+  bytes. The parent launched bounded offline inference at about 22:19 UTC.
+  Five-category generation smoke passed and 13 answers were recovered locally.
+- Subsequent SSH connections timed out during banner exchange. The Forgehand
+  read-only API still reported the shared session running at the same endpoint.
+  Inference completion, live RAM and later GPU allocation were not observable.
+  Host memory pressure is a hypothesis, not a verified cause. No shared VM or
+  Claude process was restarted, stopped or modified.
+- Future owned launch scripts now require `/proc/meminfo` MemAvailable >=6 GiB
+  in addition to the existing GPU-memory gate. This local change does not alter
+  the currently running experiment. Shared-host monitoring has one owner and
+  uses at least 60 seconds between retries.
