@@ -21,6 +21,7 @@ detached with nohup. Outputs go to /workspace/work/out/<job>-<time>/, the log to
 /workspace/work/<job>-<time>.log; the venv and adapters live in /workspace/work; Hugging Face
 downloads are cached in /team/hf so every session and workspace reuses them.
 WORKSPACE (default: the team workspace below) selects another workspace.
+WAIT_GPU=1 makes `run` wait until the GPU is free (the team may run only one GPU session).
 start, run, stop and a `log` that sees the job finish update docs/STATUS.md on main.
 """
 import base64, io, json, os, re, shlex, ssl, subprocess, sys, tarfile, time, uuid
@@ -110,7 +111,8 @@ class Jupyter:
         self.api("DELETE", f"/api/terminals/{name}")
         m = re.search(rf"__END_{mark}_(\d+)", out)
         text = re.sub(r"\x1b\[[0-9;?]*[A-Za-z]", "", out[: m.start()] if m else out)
-        text = text.split("stty -echo", 1)[-1].replace("\r", "").strip()
+        # Drop the echoed command (it can arrive before stty -echo takes effect).
+        text = text.replace("\r", "").split(f"echo __END_{mark}_$?", 1)[-1].strip()
         return text, (int(m.group(1)) if m else None)
 
 
@@ -159,18 +161,25 @@ def main():
         j = Jupyter(session)
         root, _ = j.sh("pwd")
         rel = os.path.relpath("/workspace", root) if root.startswith("/") else "/workspace"
+        rel = "" if rel == "." else rel + "/"  # Jupyter rejects "./" and hidden (dot) paths
         tar = code_tarball(["data/eval/matura.jsonl", "data/train/synthetic.jsonl"])
-        j.sh(f"mkdir -p {rel}/.upload")
-        j.put_file(f"{rel}/.upload/{name}.tar.gz", tar)
+        j.sh(f"mkdir -p {rel}work/upload")
+        j.put_file(f"{rel}work/upload/{name}.tar.gz", tar)
         env_s = " ".join(shlex.quote(e) for e in env)
+        # WAIT_GPU=1: the team has one GPU session, so queue behind whatever holds the card.
+        wait = ("while [ $(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | "
+                "sort -n | tail -1) -gt 2000 ]; do echo waiting for a free GPU; sleep 60; done"
+                if os.environ.get("WAIT_GPU") == "1" else "")
         # Fresh code dir per run; venv, adapters and HF cache are shared across runs.
-        run = (f"mkdir -p /workspace/runs/{name} /workspace/work /team/hf && "
-               f"tar xzf /workspace/.upload/{name}.tar.gz -C /workspace/runs/{name} && "
-               f"cd /workspace/runs/{name} && "
-               f"WORK=/workspace/work OUT=/workspace/work/out/{name} HF_HOME=/team/hf NAME={name} "
-               f"{env_s} nohup bash infra/jobs/{job}.sh > /workspace/work/{name}.log 2>&1 "
-               f"< /dev/null & "
-               f"echo started pid $!")
+        script = (f"set -e\nmkdir -p /workspace/runs/{name} /workspace/work /team/hf\n"
+                  f"tar xzf /workspace/work/upload/{name}.tar.gz -C /workspace/runs/{name}\n"
+                  f"cd /workspace/runs/{name}\n{wait}\n"
+                  f"export WORK=/workspace/work OUT=/workspace/work/out/{name} HF_HOME=/team/hf "
+                  f"NAME={name} {env_s}\nexec bash infra/jobs/{job}.sh\n")
+        j.put_file(f"{rel}work/upload/{name}.sh", script.encode())
+        # setsid detaches the job from the terminal, which is deleted right after.
+        run = (f"setsid nohup bash /workspace/work/upload/{name}.sh > /workspace/work/{name}.log "
+               f"2>&1 < /dev/null & sleep 3; echo started pid $!")
         out, _ = j.sh(run)
         print(out)
         print(f"job {name}: log with `fh_job.py log {session} {name}`")
@@ -190,12 +199,12 @@ def main():
         name = os.environ.get("NAME")
         j = Jupyter(session)
         src = f"/workspace/work/out/{name}" if name else "$(ls -td /workspace/work/out/*/ | head -1)"
-        out, code = j.sh(f"cd {src} && tar czf /workspace/.upload/fetch.tgz --exclude='*.safetensors' "
+        out, code = j.sh(f"cd {src} && tar czf /workspace/work/upload/fetch.tgz --exclude='*.safetensors' "
                          f"--exclude='vllm-*.log' . && pwd")
         if code:
             sys.exit(out)
         root, _ = j.sh("pwd")
-        data = j.get_file(os.path.relpath("/workspace/.upload/fetch.tgz", root))
+        data = j.get_file(os.path.relpath("/workspace/work/upload/fetch.tgz", root))
         os.makedirs(dest, exist_ok=True)
         with tarfile.open(fileobj=io.BytesIO(data)) as t:
             t.extractall(dest)
