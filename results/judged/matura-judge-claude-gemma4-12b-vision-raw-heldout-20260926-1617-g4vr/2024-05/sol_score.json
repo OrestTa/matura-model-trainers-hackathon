@@ -367,12 +367,12 @@
    "sol_points": 9.0,
    "points": 9.0,
    "raw": "9",
-   "picture_item": true,
-   "image_checked": false
+   "picture_item": false,
+   "image_checked": null
   }
  ],
- "text_total": 14.0,
- "text_max": 17.0,
+ "text_total": 23.0,
+ "text_max": 32.0,
  "picture_items_not_image_checked": [
   "1",
   "2",
@@ -397,7 +397,6 @@
   "23.1",
   "23.2",
   "24",
-  "25",
-  "26"
+  "25"
  ]
 }

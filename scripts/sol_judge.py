@@ -76,7 +76,7 @@ def grade(a):
             p = 0
         # Forgehand judges get text only (Orest 21:52 CEST): a picture item's grade is not image-checked;
         # the Claude grading thread owns those. Use text_total for Sol-vs-Claude comparisons.
-        pic = bool(r.get("needs_image"))  # the answer depends on a picture (source, map, photo)
+        pic = bool(r.get("needs_image")) and r.get("category") != "essay"  # answer depends on a picture; essays are graded on text
         items.append({"id": i, "max_points": float(r["points"]), "sol_points": float(p), "points": float(p),
                       "picture_item": pic, "image_checked": False if pic else None, "raw": raw})
         tot += p
