@@ -159,7 +159,7 @@ def test_keyed_answer_format():
     from matura_router.prompts import conform_keyed, keyed_format
 
     q = "Oceń prawdziwość.\n" + answer_format_text("1: P\n2: F\n3: P")
-    assert "P" not in q.split("składni")[-1].replace("P", "", 0) or "1: …" in q
+    assert "1: …" in q and "1: P" not in q     # the syntax example's values are blanked
     keys = keyed_format(q)
     assert keys == ["1", "2", "3"]
     assert conform_keyed("1. Prawda\n2. fałsz\n3) P", keys) == "1: P\n2: F\n3: P"
