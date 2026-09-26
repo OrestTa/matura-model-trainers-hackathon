@@ -7,7 +7,7 @@
 #   4. re-score raw / routed / adapters and draw the charts
 # Env:
 #   TRAIN_MODELS=bielik-11b   keys from configs/models.yaml to train adapters for
-#   TEACHER_HF    served on all GPUs for step 1 (default: Qwen3-235B on 8 GPUs,
+#   TEACHER_HF    served on all GPUs for step 1 (none = skip step 1; default: Qwen3-235B on 8 GPUs,
 #                 Qwen3-30B-A3B on fewer)
 #   PER_CATEGORY=400          synthetic items per question type
 #   REGEN_DATA=0              1 = regenerate data even if S3 has it
@@ -31,7 +31,9 @@ TRAIN=$REPO/data/train/synthetic.jsonl
 mkdir -p "$(dirname "$TRAIN")"
 
 # 1. Training data.
-if [ "${REGEN_DATA:-0}" != 1 ] && { [ -s "$TRAIN" ] || s3 cp "s3://$BUCKET/data/train/synthetic.jsonl" "$TRAIN"; }; then
+if [ "${TEACHER_HF:-}" = none ]; then  # train only on PAST_PAPERS + EXTRA_TRAIN
+  : > "$TRAIN"; step "no teacher: skipping synthetic data generation"
+elif [ "${REGEN_DATA:-0}" != 1 ] && { [ -s "$TRAIN" ] || s3 cp "s3://$BUCKET/data/train/synthetic.jsonl" "$TRAIN"; }; then
   step "reusing training data ($(wc -l < "$TRAIN") items)"
 else
   step "serving teacher $TEACHER_HF on all GPUs"
