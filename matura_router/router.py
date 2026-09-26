@@ -5,6 +5,7 @@ from __future__ import annotations
 import collections
 import logging
 import re
+import dataclasses
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
@@ -18,6 +19,7 @@ from .categories import Category
 from .classifier import Classifier, LLMClassifier, RuleClassifier
 from .prompts import build_messages, postprocess, strip_think
 from .rag import BM25Retriever, SQLiteRetriever, format_knowledge, load_retriever
+from .subtypes import DEFAULT_SUBTYPES, Profile, load_profiles, subtype_of
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +47,8 @@ class RoutedAnswer:
     method: str
     latency_s: float
     retrieved: tuple = ()
+    subtype: Optional[str] = None
+    profile: Optional[str] = None
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -66,6 +70,8 @@ class Router:
         # (matura_router/ocr.py, `backend.ocr: true`); never in raw mode.
         self.ocr = False
         self._available = backend.available_adapters()
+        # mode "subtype": per-subtype setups (configs/subtypes.yaml, matura_router/subtypes.py)
+        self.profiles: dict[str, Profile] = {}
 
     @classmethod
     def from_config(cls, path: str | Path = DEFAULT_CONFIG,
@@ -99,6 +105,11 @@ class Router:
             else:
                 log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)
         router = cls(backend, routes, classifier, retriever, rag)
+        sub = cfg.get("subtypes_path")
+        sub = Path(sub) if sub else DEFAULT_SUBTYPES
+        sub = sub if sub.is_absolute() else Path(path).resolve().parent.parent / sub
+        if sub.exists():
+            router.profiles = load_profiles(sub)
         router.vision = bool(cfg.get("backend", {}).get("vision", False))
         router.ocr = bool(cfg.get("backend", {}).get("ocr", False)) and not router.vision
         if router.ocr:
@@ -153,7 +164,7 @@ class Router:
     def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
               route: Route, category: Category) -> str:
         """Majority over the greedy answer plus sampled ones; ties go to the greedy answer."""
-        params = GenerationParams(route.params.max_tokens, route.vote_temperature, 0.95)
+        params = dataclasses.replace(route.params, temperature=route.vote_temperature, top_p=0.95)
 
         def sample(_):
             try:
@@ -184,18 +195,34 @@ class Router:
         top = max(counts.values())
         return greedy if counts.get(key(greedy)) == top else next(a for a in answers if a and counts[key(a)] == top)
 
+    def profile_route(self, route: Route, p: Profile) -> Route:
+        """The category's route with a subtype profile's overrides applied."""
+        max_tokens = (p.max_tokens or route.params.max_tokens) + (p.think_tokens if p.think else 0)
+        extra = {"chat_template_kwargs": {"enable_thinking": bool(p.think)}, **p.extra}
+        params = GenerationParams(max_tokens,
+                                  route.params.temperature if p.temperature is None else p.temperature,
+                                  route.params.top_p, extra)
+        return Route(p.adapter, params, route.votes if p.votes is None else p.votes, p.vote_temperature)
+
     def answer(self, question: str, context: str = "",
                category: Optional[Category] = None, mode: str = "adapters",
-               images: tuple = ()) -> RoutedAnswer:
+               images: tuple = (), profile: Optional[Profile] = None) -> RoutedAnswer:
         """mode: "adapters" (full harness: adapters + RAG), "rag" (per-type prompts + RAG,
-        base model), "routed" (per-type prompts, base model only) or "raw" (one generic
-        prompt, base model, no post-processing) for baselines."""
+        base model), "routed" (per-type prompts, base model only), "raw" (one generic
+        prompt, base model, no post-processing) for baselines, or "subtype" (per-type prompts
+        plus the setup configs/subtypes.yaml gives the item's subtype; `profile` forces one)."""
         t0 = time.perf_counter()
         if category is None:
             c = self.classifier.classify(question, context)
             category, confidence, method = c.category, c.confidence, c.method
         else:
             confidence, method = 1.0, "forced"
+
+        subtype = subtype_of(category, bool(images))
+        if mode == "subtype" and profile is None:
+            profile = self.profiles.get(subtype) or Profile(name="routed")
+        if mode != "subtype":
+            profile = None
 
         route = self.routes.get(category) or self.routes[Category.GENERAL]
         if mode == "raw":
@@ -205,10 +232,20 @@ class Router:
             g = self.routes[Category.GENERAL]
             cap = max(r.params.max_tokens for r in self.routes.values())
             route = Route(None, GenerationParams(cap, g.params.temperature, g.params.top_p))
-        adapter = self.resolve_adapter(category) if mode == "adapters" else None
+        if profile is not None:
+            route = self.profile_route(route, profile)
+        if mode == "adapters":
+            adapter = self.resolve_adapter(category)
+        elif profile is not None and profile.adapter:
+            adapter = profile.adapter
+            if self._available is not None and adapter not in self._available:
+                log.warning("adapter %r not loaded, using base model for %s", adapter, subtype)
+                adapter = None
+        else:
+            adapter = None
         prompt_cat = Category.GENERAL if mode == "raw" else category
-        knowledge, retrieved = self.knowledge(category, question, context) \
-            if mode in ("adapters", "rag") else ("", ())
+        use_rag = mode in ("adapters", "rag") or (profile is not None and profile.rag)
+        knowledge, retrieved = self.knowledge(category, question, context) if use_rag else ("", ())
         if images and self.ocr and mode != "raw":
             from .ocr import with_ocr
             context = with_ocr(context, images)
@@ -222,9 +259,16 @@ class Router:
             n = iter(range(1, 1000))
             context = re.sub(r"\[ilustracja – niedostępna w wersji tekstowej\]",
                              lambda _: f"[ilustracja {next(n)} – obraz dołączony do wiadomości]", context)
+            if profile is not None and profile.ocr:
+                from . import ocr
+                if ocr.available():
+                    notes = ocr.ocr_notes(images)
+                    context = f"{context}\n\n{notes}".strip() if notes else context
         full_context = f"{knowledge}\n\n{context}".strip() if knowledge else context
         messages = build_messages(prompt_cat, question, full_context, fill_template=mode != "raw",
                                   images=tuple(images) if self.vision else ())
+        if profile is not None and profile.prompt_suffix:
+            messages[0]["content"] += "\n" + profile.prompt_suffix.strip()
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:
@@ -241,4 +285,5 @@ class Router:
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,
-                            latency_s=round(time.perf_counter() - t0, 3), retrieved=retrieved)
+                            latency_s=round(time.perf_counter() - t0, 3), retrieved=retrieved,
+                            subtype=subtype, profile=profile.name if profile else None)

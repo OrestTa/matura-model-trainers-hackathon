@@ -1,0 +1,43 @@
+# Candidate setups per subtype for scripts/subtype_sweep.py. Each candidate runs only on the
+# items of its subtype; scripts/subtype_select.py picks the best per subtype on the dev papers.
+# `base` in every subtype = the routed setup (per-type prompt, thinking off): the reference.
+_suffixes:
+  facts: &facts "Podaj konkretne fakty: nazwy, nazwiska, daty. Odwołaj się wprost do treści źródła, jeśli jest."
+  look: &look "Najpierw dokładnie przyjrzyj się dołączonej ilustracji (napisy, symbole, daty, postacie), potem odpowiedz."
+  essay_plan: &essay_plan "Zanim zaczniesz, ułóż w myślach plan. Wypracowanie: wstęp z tezą, 3–4 akapity argumentacyjne z konkretnymi datami, postaciami i wydarzeniami z omawianego okresu, kontekst epoki, podsumowanie. 500–700 słów."
+
+closed_text:
+  base: {}
+  think: {think: true, votes: 1}
+  think_v3: {think: true, votes: 3}
+  rag: {rag: true}
+  novote: {votes: 1}
+
+closed_image:
+  base: {}
+  think: {think: true, votes: 1}
+  ocr: {ocr: true}
+  think_ocr: {think: true, ocr: true, votes: 1}
+  look: {prompt_suffix: *look}
+
+open_text:
+  base: {}
+  think: {think: true}
+  rag: {rag: true}
+  think_rag: {think: true, rag: true}
+  facts: {prompt_suffix: *facts, max_tokens: 384}
+
+open_image:
+  base: {}
+  think: {think: true}
+  ocr: {ocr: true}
+  think_ocr: {think: true, ocr: true}
+  look_ocr: {ocr: true, prompt_suffix: *look, max_tokens: 384}
+  rag_ocr: {rag: true, ocr: true}
+
+essay:
+  base: {}
+  think: {think: true, think_tokens: 3000}
+  plan: {prompt_suffix: *essay_plan, max_tokens: 2600}
+  rag_plan: {rag: true, prompt_suffix: *essay_plan, max_tokens: 2600}
+  think_plan: {think: true, think_tokens: 3000, prompt_suffix: *essay_plan, max_tokens: 2600}

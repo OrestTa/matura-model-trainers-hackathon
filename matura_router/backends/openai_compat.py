@@ -58,6 +58,8 @@ class OpenAICompatBackend(Backend):
         body = {"model": self.base_model, "messages": messages,
                 "max_tokens": params.max_tokens, "temperature": params.temperature,
                 "top_p": params.top_p, **self.extra_body}
+        for k, v in (params.extra or {}).items():  # per-request settings win over the backend's
+            body[k] = {**body[k], **v} if isinstance(v, dict) and isinstance(body.get(k), dict) else v
         if self.adapter_mode == "model_name":
             if adapter:
                 body["model"] = adapter

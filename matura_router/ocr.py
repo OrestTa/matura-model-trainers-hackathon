@@ -46,3 +46,14 @@ def with_ocr(context: str, images, lang: str = "pol") -> str:
     out = re.sub(re.escape(PLACEHOLDER), lambda m: next(it, m.group(0)), context)
     rest = list(it)
     return (out + ("\n" + "\n".join(rest) if rest else "")).strip()
+
+
+def ocr_notes(images, lang: str = "pol") -> str:
+    """For a vision model that also sees the pictures: their OCR text as numbered notes, so small
+    print (captions, posters, document scans) isn't lost to the image resize."""
+    notes = []
+    for i, img in enumerate(images, 1):
+        t = ocr(str(img), lang)
+        if t:
+            notes.append(f"[tekst odczytany z ilustracji {i} (OCR, może zawierać błędy):\n{t}\n]")
+    return "\n".join(notes)

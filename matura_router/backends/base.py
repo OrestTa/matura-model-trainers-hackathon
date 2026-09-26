@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 
@@ -10,6 +10,7 @@ class GenerationParams:
     max_tokens: int = 256
     temperature: float = 0.0
     top_p: float = 1.0
+    extra: dict = field(default_factory=dict)  # merged into the request body (e.g. per-request thinking)
 
 
 class Backend(ABC):
