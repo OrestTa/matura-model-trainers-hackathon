@@ -1,0 +1,271 @@
+{
+ "answers": "results/gemma4/matura-infer-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8/2023-05/answers.json",
+ "paper": "2023-05",
+ "judge": "forgehand gpt-6-sol",
+ "judge_kind": "sol",
+ "total": 41.0,
+ "max": 60.0,
+ "pct": 68.3,
+ "failed": [],
+ "items": [
+  {
+   "id": "1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "2.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "2.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "3",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "4.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "4.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "5.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "5.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "5.3",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "6",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "7",
+   "max_points": 2.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "8",
+   "max_points": 2.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "9.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "9.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "9.3",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "10",
+   "max_points": 2.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "11.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "11.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "12",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "13.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "13.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "empty"
+  },
+  {
+   "id": "14.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "14.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "15",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "16.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "16.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "17",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "18",
+   "max_points": 3.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "raw": "2"
+  },
+  {
+   "id": "19",
+   "max_points": 2.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "20",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "21",
+   "max_points": 2.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "22",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "23",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "24",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "raw": "0"
+  },
+  {
+   "id": "25.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "25.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "raw": "1"
+  },
+  {
+   "id": "26",
+   "max_points": 15.0,
+   "sol_points": 12.0,
+   "points": 12.0,
+   "raw": "12"
+  }
+ ]
+}
