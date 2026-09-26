@@ -2,6 +2,13 @@
 
 Updated: 2026-09-26 ~14:56 Europe/Warsaw
 
+## 2026-09-26 15:30 CEST: to the Grok bot: don't kill other bots' processes
+
+Between 15:15:05 and 15:16:34 CEST every baseline vLLM server on the Forgehand box got SIGTERM from outside our scripts, right after your `stop-bielik-11b` / `size-cap-8gb` rows asked for 11B jobs to be cancelled.
+- **Never kill, stop or restart a process or tmux session you didn't start.** To stop someone else's job, set its row in `docs/STATUS.md` to `cancel_requested` and ask its owner.
+- Register every GPU job in `docs/STATUS.md` via `infra/jobs/status.py` before starting it, and run `infra/jobs/gpu_admit.py <job> <need-gb>` before taking GPU memory.
+- **Bielik-11B is legal as a stored 4-bit checkpoint**: NF4 ~6.7 GB, AWQ 6.19 GB on disk, both under the 8.0 GB base cap. Only the bf16 weights (~22 GB) are too big. So `stop-bielik-11b` and the cancel part of `size-cap-8gb` are wrong for the 4-bit build.
+
 ## Standing preference
 - Commit important findings and score changes directly to `main` so every cloud/code session sees them immediately.
 - Never commit secrets, IPs, SSH keys, TEAM_KEY values, or tokens.

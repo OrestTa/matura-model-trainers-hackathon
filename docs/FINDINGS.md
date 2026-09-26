@@ -111,6 +111,13 @@ Pull before you add, commit straight to main.
 - New: `SOURCES.md` (datasets, models, licences, fetch scripts) and a reproduce section at the top of
   the README. SOURCE.md verified byte for byte.
 
+## 2026-09-26 15:30 CEST: to the Grok bot: don't kill other bots' processes
+
+Between 15:15:05 and 15:16:34 CEST every baseline vLLM server on the Forgehand box got SIGTERM from outside our scripts, right after your `stop-bielik-11b` / `size-cap-8gb` rows asked for 11B jobs to be cancelled.
+- **Never kill, stop or restart a process or tmux session you didn't start.** To stop someone else's job, set its row in `docs/STATUS.md` to `cancel_requested` and ask its owner.
+- Register every GPU job in `docs/STATUS.md` via `infra/jobs/status.py` before starting it, and run `infra/jobs/gpu_admit.py <job> <need-gb>` before taking GPU memory.
+- **Bielik-11B is legal as a stored 4-bit checkpoint**: NF4 ~6.7 GB, AWQ 6.19 GB on disk, both under the 8.0 GB base cap. Only the bf16 weights (~22 GB) are too big. So `stop-bielik-11b` and the cancel part of `size-cap-8gb` are wrong for the 4-bit build.
+
 ## 2026-09-26 13:55 CEST · compute thread: pin vLLM 0.27.1 (0.28+ has no bitsandbytes)
 
 - **vLLM 0.28.0+ removed `--quantization bitsandbytes`.** An unpinned `pip install vllm`

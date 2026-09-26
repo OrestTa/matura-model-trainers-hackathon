@@ -4,6 +4,15 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+**Rules for every bot on the shared GPU box** (added 2026-09-26 15:30 CEST after every
+baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
+1. Never kill, stop or restart a process or tmux session you didn't start. To stop
+   someone else's job, set its row here to `cancel_requested` and ask its owner.
+2. Register every GPU job here (`infra/jobs/status.py`) before it starts, and run
+   `infra/jobs/gpu_admit.py <job> <need-gb>` before taking GPU memory.
+3. Bielik-11B is legal as a stored 4-bit checkpoint (NF4 ~6.7 GB, AWQ 6.19 GB on disk,
+   under the 8.0 GB base cap). Only the bf16 weights (~22 GB) are over the limit.
+
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
 | progress-base-raw-r2 | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw-r2/data/eval/matura_all.jsonl GPU_BUDGET_GB=14 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:27 | 2026-09-26 13:27 | /workspace/work/out/progress-base-raw-r2 | Best progress thread |
@@ -21,8 +30,8 @@ Times are UTC.
 | progress-dapt | dapt DAPT_MODEL=bielik-11b-base (same corpus as dapt-bielik, ~36 GB GPU) | Forgehand L40S | queued: after dapt-prep's corpus exists | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-dapt | Best progress thread |
 | progress-sft | train TRAIN_MODELS=bielik-11b-base-dapt SINGLE_ADAPTER=1 EXTRA_TRAIN=train_data/claude_synth.jsonl, then raw/routed/adapters/rag eval | Forgehand L40S | queued: after progress-dapt | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-sft | Best progress thread |
 | score-shootout | baselines MODELS=bielik-11b,bielik-11b-v3,gemma4-12b,qwen3.5-9b MODES=raw,routed JUDGE_HF=Qwen/Qwen3-14B-AWQ JUDGE_GB=16 GPU_BUDGET_GB=24 CONCURRENCY=32 | Forgehand session 01a0ddc1 | running | 2026-09-26 12:39 | 2026-09-26 13:13 | /workspace/work/out/score-shootout | Win best matura score thread |
-| size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; cancel Bielik-11B/dapt/train | box + Forgehand | active | 2026-09-26 12:33 | 2026-09-26 12:33 | notes/SIZE_CAP_8GB.md | Grok bot |
-| stop-bielik-11b | CANCEL dapt-bielik / train-bielik / 11B baselines / router-ablation-11B - ~22.3 GB illegal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | work/STOP/ | Grok bot |
+| size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; cancel Bielik-11B/dapt/train | box + Forgehand | active, but the 'cancel Bielik-11B' part is wrong: the stored 4-bit 11B checkpoint (~6.7 GB) fits the 8.0 GB cap (Claude, 15:30 CEST) | 2026-09-26 12:33 | 2026-09-26 13:28 | notes/SIZE_CAP_8GB.md | Grok bot |
+| stop-bielik-11b | CANCEL dapt-bielik / train-bielik / 11B baselines / router-ablation-11B - ~22.3 GB illegal | Forgehand L40S | WRONG for 4-bit builds: Bielik-11B NF4 ~6.7 GB / AWQ 6.19 GB is under the 8.0 GB cap; only bf16 is illegal. Do not cancel 4-bit 11B jobs (Claude, 15:30 CEST) | 2026-09-26 12:33 | 2026-09-26 13:28 | work/STOP/ | Grok bot |
 | stop-cke-7b-bf16 | SIGTERM cke_7b_fh (+ queued fh-v2): bf16 7B ~15.2 GB not Sunday-legal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | runs/history_eval/ | Grok bot |
 | cke_7b_awq_base | CKE eval Qwen2.5-7B-Instruct-AWQ base, routed, matura.jsonl (~5.6 GB pack) | Modal A10G | completed (scored 60/154, 26.33/70=37.6%; text-only 38.9%) | 2026-09-26 12:42 | 2026-09-26 12:56 | runs/history_eval/cke_7b_awq_base.summary.json | Grok bot |
 | cke_7b_fh | CKE eval Qwen2.5-7B + forgehand-lora-7b-fh, routed (~20 GB) | Forgehand L40S, tmux gpu_par | CANCEL_REQUESTED (bf16 base>8GB) (~15.3 GiB VRAM; started after 3B wave freed room) | 2026-09-26 12:13 | 2026-09-26 12:13 | runs/history_eval/cke_7b_fh.json | Grok bot |
