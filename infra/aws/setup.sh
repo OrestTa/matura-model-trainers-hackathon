@@ -68,13 +68,13 @@ if ! aws budgets describe-budget --account-id "$ACCOUNT" --budget-name "$PROJECT
   aws budgets create-budget --account-id "$ACCOUNT" --budget "{
     \"BudgetName\":\"$PROJECT_TAG\",\"BudgetType\":\"COST\",\"TimeUnit\":\"MONTHLY\",
     \"BudgetLimit\":{\"Amount\":\"$BUDGET_USD\",\"Unit\":\"USD\"},
-    \"CostTypes\":{\"IncludeCredit\":false,\"IncludeRefund\":false}}" "${notif[@]}"
+    \"CostTypes\":{\"IncludeCredit\":false,\"IncludeRefund\":false}}" ${notif[@]+"${notif[@]}"}
 fi
 echo "== Card-charge alarm: cost after credits above \$$MAX_NET_USD"
 if ! aws budgets describe-budget --account-id "$ACCOUNT" --budget-name "${PROJECT_TAG}-net" >/dev/null 2>&1; then
   aws budgets create-budget --account-id "$ACCOUNT" --budget "{
     \"BudgetName\":\"${PROJECT_TAG}-net\",\"BudgetType\":\"COST\",\"TimeUnit\":\"MONTHLY\",
     \"BudgetLimit\":{\"Amount\":\"$MAX_NET_USD\",\"Unit\":\"USD\"},
-    \"CostTypes\":{\"IncludeCredit\":true,\"IncludeRefund\":true}}" "${notif[@]}"
+    \"CostTypes\":{\"IncludeCredit\":true,\"IncludeRefund\":true}}" ${notif[@]+"${notif[@]}"}
 fi
 echo "Done."

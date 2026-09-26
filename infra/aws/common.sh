@@ -65,15 +65,20 @@ list_instances() {
     aws ec2 describe-instances --region "$r" \
       --filters "Name=tag:Project,Values=${PROJECT_TAG}" "Name=instance-state-name,Values=pending,running" \
       --query 'Reservations[].Instances[].[InstanceId,InstanceType,LaunchTime,Tags[?Key==`Name`]|[0].Value]' \
-      --output text | sed "s/^/$r\t/"
+      --output text | awk -v r="$r" '{print r "\t" $0}'
   done
+}
+
+# Portable date helpers (macOS date has no -d).
+tomorrow_utc() {
+  python3 -c "import datetime as d; print((d.datetime.now(d.timezone.utc) + d.timedelta(days=1)).date())"
 }
 
 # Month-to-date cost after credits and refunds, i.e. what would hit the card.
 # Cost Explorer lags a few hours, so this catches trouble late but reliably.
 net_cost_mtd() {
   aws ce get-cost-and-usage --region us-east-1 \
-    --time-period Start="$(date -u +%Y-%m-01)",End="$(date -u -d tomorrow +%Y-%m-%d)" \
+    --time-period Start="$(date -u +%Y-%m-01)",End="$(tomorrow_utc)" \
     --granularity MONTHLY --metrics UnblendedCost \
     --query 'ResultsByTime[0].Total.UnblendedCost.Amount' --output text
 }
@@ -81,7 +86,7 @@ net_cost_mtd() {
 # Month-to-date cost before credits, i.e. how much credit has been used this month.
 gross_cost_mtd() {
   aws ce get-cost-and-usage --region us-east-1 \
-    --time-period Start="$(date -u +%Y-%m-01)",End="$(date -u -d tomorrow +%Y-%m-%d)" \
+    --time-period Start="$(date -u +%Y-%m-01)",End="$(tomorrow_utc)" \
     --granularity MONTHLY --metrics UnblendedCost \
     --filter '{"Not":{"Dimensions":{"Key":"RECORD_TYPE","Values":["Credit","Refund"]}}}' \
     --query 'ResultsByTime[0].Total.UnblendedCost.Amount' --output text
