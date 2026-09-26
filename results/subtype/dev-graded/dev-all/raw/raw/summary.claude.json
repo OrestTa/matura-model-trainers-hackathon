@@ -1,0 +1,66 @@
+{
+  "n": 65,
+  "scored": 65,
+  "errors": 0,
+  "earned": 61.33,
+  "max": 96.0,
+  "pct": 63.9,
+  "pct_text_only": 64.2,
+  "pct_all_rows": 63.9,
+  "decision_acc": 66.7,
+  "unscored": 0,
+  "routing_accuracy": 70.8,
+  "latency_p50_s": 56.469,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 9,
+      "scored": 9,
+      "earned": 5.0,
+      "max": 9.0,
+      "pct": 55.6
+    },
+    "essay": {
+      "n": 1,
+      "scored": 1,
+      "earned": 9.0,
+      "max": 15.0,
+      "pct": 60.0
+    },
+    "matching": {
+      "n": 1,
+      "scored": 1,
+      "earned": 0.0,
+      "max": 2.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 11,
+      "scored": 11,
+      "earned": 9.0,
+      "max": 13.0,
+      "pct": 69.2
+    },
+    "source_analysis": {
+      "n": 40,
+      "scored": 40,
+      "earned": 36.333333333333336,
+      "max": 52.0,
+      "pct": 69.9
+    },
+    "true_false": {
+      "n": 3,
+      "scored": 3,
+      "earned": 2.0,
+      "max": 5.0,
+      "pct": 40.0
+    }
+  },
+  "warning": "no held-out paper in this set: every paper here is adapter training data",
+  "model": "raw",
+  "mode": "raw",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 0,
+  "source": "/tmp/claude-0/-home-user-matura-model-trainers-hackathon/e9d0b5bb-1cdc-5ed4-8848-53dc598a7664/scratchpad/sweep/dev-all/raw/raw/answers.jsonl"
+}

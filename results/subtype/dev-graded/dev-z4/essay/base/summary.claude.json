@@ -1,0 +1,22 @@
+{
+  "n": 0,
+  "scored": 0,
+  "errors": 0,
+  "earned": 0,
+  "max": 0,
+  "pct": null,
+  "pct_text_only": null,
+  "pct_all_rows": null,
+  "decision_acc": null,
+  "unscored": 0,
+  "routing_accuracy": null,
+  "latency_p50_s": null,
+  "wall_s": 0.0,
+  "by_category": {},
+  "model": "essay",
+  "mode": "base",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 0,
+  "source": "/tmp/claude-0/-home-user-matura-model-trainers-hackathon/e9d0b5bb-1cdc-5ed4-8848-53dc598a7664/scratchpad/sweep/dev-z4/essay/base/answers.jsonl"
+}

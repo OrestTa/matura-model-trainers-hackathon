@@ -1,0 +1,38 @@
+{
+  "n": 8,
+  "scored": 8,
+  "errors": 0,
+  "earned": 9.0,
+  "max": 10.0,
+  "pct": 90.0,
+  "pct_text_only": 90.0,
+  "pct_all_rows": 90.0,
+  "decision_acc": null,
+  "unscored": 0,
+  "routing_accuracy": 87.5,
+  "latency_p50_s": 127.232,
+  "wall_s": 0.0,
+  "by_category": {
+    "short_open": {
+      "n": 1,
+      "scored": 1,
+      "earned": 2.0,
+      "max": 2.0,
+      "pct": 100.0
+    },
+    "source_analysis": {
+      "n": 7,
+      "scored": 7,
+      "earned": 7.0,
+      "max": 8.0,
+      "pct": 87.5
+    }
+  },
+  "warning": "no held-out paper in this set: every paper here is adapter training data",
+  "model": "open_text",
+  "mode": "facts",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 0,
+  "source": "/tmp/claude-0/-home-user-matura-model-trainers-hackathon/e9d0b5bb-1cdc-5ed4-8848-53dc598a7664/scratchpad/sweep/dev-z4/open_text/facts/answers.jsonl"
+}

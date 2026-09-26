@@ -78,23 +78,27 @@ def select(args):
             chosen[st] = {"name": "base"}
             continue
         n_items = len(cands["base"])
+        base_rows = cands["base"]
         res = {}
         for name, rows in cands.items():
             e, m, u = score(list(rows.values()))
-            res[name] = (e, m, u, len(rows))
-        be, bm, _, _ = res["base"]
-        best = "base"
-        for name, (e, m, u, n) in sorted(res.items(), key=lambda kv: -kv[1][0] / max(kv[1][1], 1)):
-            if name == "base" or u or n < n_items:
-                continue
-            if 100 * (e / m - be / bm) > args.margin and (best == "base" or e / m > res[best][0] / res[best][1]):
-                best = name
+            # paired with base on the items both answered and graded (shards crash, coverage is uneven)
+            common = [i for i in rows if i in base_rows and rows[i]["score"] is not None
+                      and base_rows[i]["score"] is not None]
+            ce = sum(rows[i]["score"] for i in common)
+            cb = sum(base_rows[i]["score"] for i in common)
+            cm = sum(rows[i]["points"] for i in common)
+            res[name] = (e, m, u, len(rows), 100 * (ce - cb) / cm if cm else 0.0, len(common))
+        best, best_d = "base", args.margin
+        for name, (e, m, u, n, d, nc) in res.items():
+            if name != "base" and nc >= args.min_paired and d > best_d:
+                best, best_d = name, d
         chosen[st] = {"name": best, **(grid.get(st, {}).get(best) or {})}
-        lines.append(f"## {st} ({n_items} dev items)")
-        for name, (e, m, u, n) in sorted(res.items(), key=lambda kv: -kv[1][0] / max(kv[1][1], 1)):
+        lines.append(f"## {st} ({n_items} base items)")
+        for name, (e, m, u, n, d, nc) in sorted(res.items(), key=lambda kv: -kv[1][4]):
             p50, mx = lat(list(cands[name].values()))
-            lines.append(f"- {name}{' **chosen**' if name == best else ''}: {fmt(e, m, u)}, {p50:.0f}s median / {mx:.0f}s max per answer"
-                         + (f", only {n}/{n_items} items" if n < n_items else ""))
+            lines.append(f"- {name}{' **chosen**' if name == best else ''}: {d:+.1f} pts vs base on {nc} paired items; "
+                         f"alone {fmt(e, m, u)} on {n} items; {p50:.0f}s median / {mx:.0f}s max per answer")
     report = "\n".join(lines)
     print(report)
     if args.write:
@@ -138,6 +142,7 @@ if __name__ == "__main__":
     ap.add_argument("runs", nargs="+")
     ap.add_argument("--grid", default=str(ROOT / "configs/subtype_grid.yaml"))
     ap.add_argument("--margin", type=float, default=1.0)
+    ap.add_argument("--min-paired", type=int, default=5, help="select: fewest items shared with base to trust a delta")
     ap.add_argument("--write", help="select: write the chosen setups here (e.g. configs/subtypes.yaml)")
     a = ap.parse_args()
     select(a) if a.cmd == "select" else table(a)
