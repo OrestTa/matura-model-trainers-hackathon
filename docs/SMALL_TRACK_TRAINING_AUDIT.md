@@ -138,3 +138,9 @@ The attempt to back up this version to the existing private Hugging Face reposit
 was blocked by automatic approval review before execution: current-context payload
 and destination authorization was deemed missing. No new Hub backup is claimed;
 local and VM copies remain available. Parent is resolving the authorization record.
+
+Parent subsequently established the existing recovery authorization and completed
+the private backup successfully: five adapters and aligned classifier verified at
+weights commit `7c015a205cf7b45f0d8dc507430133ea447b3d44`; documentation commit
+`8d0e2514f1aa3e8eea2e0bb00b8cc119cea8d551`. The earlier block is resolved.
+See `docs/SMALL_TRACK_RECOVERY.md`; no new upload was performed by this monitor.

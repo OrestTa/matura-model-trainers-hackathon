@@ -218,3 +218,33 @@ All five adapters from run `20260926-2115-bielik15-real-full-epoch` are independ
 Each route starts from a fresh native base; complete route counts25/43/76/138/4 sum to286rows, with zero length exclusions. Source dataset manifest SHA is `022b107ec04dfa7df392ab13869b2cce4eaf82b4b2a852687507e48f22b65bef`. All source JSONL hashes match the training manifests. The four essays are real official exemplars; the Charlemagne example remains excluded. No question/key data was uploaded.
 
 Five full-epoch GGUF deltas total80,678,080bytes (16,135,616each). With the shared BielikQ4 base, real-only classifier and OCR, total deployment is1,062,839,451bytes. This version is ungraded at backup time; do not infer improvement from completed training. The earlier pilot remains under its previous path and immutable commits. Download one version's five deltas, never combine or stack pilot/full-epoch copies. Local copies are `artifacts/small_track/bielik15-real-full-epoch/adapters/<route>/adapter-f16.gguf`.
+
+## Boundary-clean v3: completed private recovery
+
+The clean138-row run is backed up separately under
+`models/bielik15/adapters-real-boundary-clean-v3-20260926/<route>/adapter-f16.gguf`
+in private `orestta/matura-small-track-recovery`.
+Verified weights commit: `7c015a205cf7b45f0d8dc507430133ea447b3d44`.
+Documentation/manifest commit: `8d0e2514f1aa3e8eea2e0bb00b8cc119cea8d551`.
+All five adapter SHA256 values and sizes match the local training manifests;
+aggregate adapters80,677,920bytes. The aligned classifier is separately recoverable
+at `router/real-specialist-aligned-v1.json`:313,604bytes,
+SHA256 `7b3c6c17031d7374f9597581b43d5b3f2e5344a2f176b72e3717738d97e9f0cf`.
+Private status was verified after upload. No exam data, answer keys or secrets
+were uploaded. Prior pilot/full-epoch backups remain unchanged.
+
+Download only this adapter prefix and the aligned classifier, together with the
+previously backed-up shared Bielik base and OCR weights. Do not mix adapter versions.
+Use `revision="7c015a205cf7b45f0d8dc507430133ea447b3d44"` for those weights;
+use the documentation commit for the updated manifest. Supply Hugging Face
+authentication through a protected environment/token store, never source code.
+Q4 aggregate weights:1,062,667,538bytes. Q8 variant:1,789,438,226bytes;
+the new backup operation did not add a Q8 base copy.
+
+Local evidence: `artifacts/small_track/hf-recovery-clean-v3.json`.
+Local adapters: `artifacts/small_track/bielik15-real-boundary-clean-v3/adapters/`.
+Local training manifest: `results/small_track/20260926-clean-v3-bielik15/manifests.json`.
+Owned VM path: `/workspace/codex-small-track-clean-v3/output/clean-v3-full-epoch/`.
+Versioned package configs: `infra/small_track/configs/bielik15-q4-real-five-adapter-boundary-clean-v3.json`
+and correspondingQ8 config. Accuracy evaluation remains separate; backup completion
+is not a claim that this candidate meets35%.
