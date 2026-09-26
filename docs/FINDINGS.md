@@ -3,6 +3,21 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:10 CEST · best-score thread: fine-tuning Gemma 4 12B without losing the QAT file
+
+- **A LoRA can ride on Google's QAT q4_0 GGUF at serve time; no re-quantizing.** llama.cpp master
+  (checked 2026-09-26) converts Gemma 4 12B (`Gemma4UnifiedForConditionalGeneration`, conversion/gemma.py)
+  and `convert_lora_to_gguf.py` reuses those classes, so a PEFT LoRA converts to a GGUF LoRA that
+  `llama-server --lora` applies on top of `gemma-4-12b-it-qat-q4_0.gguf`. The mmproj is untouched.
+- **Train on the weights the q4_0 file came from:** `google/gemma-4-12B-it-qat-q4_0-unquantized`
+  (bf16, 23.9 GB, not gated) is the QAT model before packing, so a LoRA trained on it matches the
+  shipped base far better than one trained on plain `gemma-4-12B-it`.
+- Size: 7.16 GB base + a text-only LoRA (r=16 on all linear layers, bf16/f16 GGUF ≈ 0.1–0.2 GB) stays
+  under 8.8 GB.
+- Plan: train only if a trained run beats the untouched QAT file on the held-out papers (with pictures).
+  First measure the base (gemma4-vision, rehearsal-gemma4); training data would be past_papers.jsonl +
+  claude_synth.jsonl in the router's answer shapes.
+
 ## 2026-09-26 16:00 CEST · model-benchmark thread: model sizes now come from the organisers' deck
 
 - **Rule (Orest, 15:47 CEST): use the sizes in Ania's latest benchmark deck; don't compute our own.**
