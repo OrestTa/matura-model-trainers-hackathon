@@ -12,3 +12,18 @@ Arms were shuffled and labelled A–D per topic, so graders did not know which a
 | plan_guard | 67 | 14 |
 
 Files: claude_scores.json (label key, grades, totals), breakdown.json (per-criterion notes).
+
+## Batch 2: grid arms regraded blind together with essay-bo3 (6 arms × 12 essays, 6 graders)
+
+bo3raw = results/subtype/essay-bo3/raw/raw, bo3plan = results/subtype/essay-bo3/essay/plan (16k, ESSAY_BEST_OF=3, min 350, target 550 words).
+
+| Arm | Batch 1 /150 | Batch 2 /150 | Formula 2023 only /30 (batch 2) |
+|---|---|---|---|
+| base | 63 | 68 | 16 |
+| plan | 68 | 73 | 19 |
+| guard | 56 | 66 | 16 |
+| plan_guard | 67 | 75 | 19 |
+| bo3raw | - | 75 | 16 |
+| bo3plan | - | 77 | 19 |
+
+The same essays scored 5–10 higher in batch 2, so compare arms only within a batch. Base is lowest in both batches.
