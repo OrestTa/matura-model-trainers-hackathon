@@ -31,3 +31,20 @@ Any future Bielik augmentation must keep inferred descriptions separate from OCR
 and original input, label uncertainty, classify first, and apply only to image
 routes. Tiny-model captions can hallucinate; a successful smoke alone does not
 justify treating them as verified source facts or claiming improved exam accuracy.
+
+## Completed execution smoke; fidelity pending
+
+The parent-approved smoke completed all five images. Outputs are recovered at
+`results/small_track/20260927-smolvlm256m-visual-smoke/`; generation took15.09seconds
+total. Exact local weight bytes/hash and original image hashes passed, and the
+OS socket-denial probe succeeded. Three descriptions were terse/vague/refusal-like;
+two made detailed identification or translation claims. These are raw observations,
+not expert fidelity judgments. The loader emitted a pad_token_id128002/vocabulary
+31999 warning; generation completed, but this compatibility warning is preserved.
+
+`scripts/small_track/luna_visual_fidelity_qa.py` is prepared for a separate parent
+launch (`--execute`). Its dry run validates all five original image hashes. It uses
+own Codex gpt-6-luna, at most four concurrent calls, no automatic retries, original
+images plus generated descriptions only, and no questions or keys. Classification
+is faithful/unsupported/missing_details/unsafe_to_use. No description is integrated
+into Bielik input merely because inference returned nonempty text.
