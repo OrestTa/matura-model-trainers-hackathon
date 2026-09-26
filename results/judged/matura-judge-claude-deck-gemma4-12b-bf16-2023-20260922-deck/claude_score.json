@@ -2,13 +2,13 @@
  "answers": "results/judged/matura-judge-claude-deck-gemma4-12b-bf16-2023-20260922-deck/answers.json",
  "paper": "2023-05",
  "model": "Ania's deck run: gemma-4-12B-it bf16, page images, 8k/16k thinking (answers copied from her site, 22 Sep 2026)",
- "total": 42.0,
+ "total": 45.0,
  "max": 60.0,
- "pct": 70.0,
+ "pct": 75.0,
  "judge": "claude (master judge, all items vs CKE zasady oceniania)",
  "judge_kind": "claude",
  "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf",
- "note": "Judge-strictness check: deck answers re-graded blind by our Claude judge; deck_items.json holds her per-item scores",
+ "note": "Judge-strictness check: deck answers re-graded blind by our Claude judge; deck_items.json holds her per-item scores | essay re-graded with the full CKE essay criteria (20:10 CEST)",
  "items": [
   {
    "id": "1",
@@ -229,7 +229,7 @@
   {
    "id": "26",
    "max_points": 15.0,
-   "claude_points": 8.0,
+   "claude_points": 11.0,
    "auto_points": null
   }
  ]

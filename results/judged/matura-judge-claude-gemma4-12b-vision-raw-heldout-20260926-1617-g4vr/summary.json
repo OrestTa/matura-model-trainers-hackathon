@@ -10,25 +10,25 @@
    "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf"
   },
   "2024-05": {
-   "total": 43.0,
+   "total": 42.0,
    "max": 60.0,
-   "pct": 71.7,
+   "pct": 70.0,
    "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Historia/MHIP-R0-100-2405-zasady.pdf"
   },
   "2025-05": {
-   "total": 41.0,
+   "total": 39.0,
    "max": 60.0,
-   "pct": 68.3,
+   "pct": 65.0,
    "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf"
   },
   "2026-05": {
-   "total": 44.0,
+   "total": 41.0,
    "max": 60.0,
-   "pct": 73.3,
+   "pct": 68.3,
    "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-2605-zasady.pdf"
   }
  },
- "total": 169.0,
+ "total": 163.0,
  "max": 240.0,
- "pct": 70.4
+ "pct": 67.9
 }

@@ -2,13 +2,13 @@
  "answers": "results/gemma4/matura-infer-gemma4-12b-routed-heldout-20260926-2012-g4t1/2023-05/answers.json",
  "paper": "2023-05",
  "model": "Gemma 4 12B QAT q4_0, routed, thinking off (g4t1)",
- "total": 31.0,
+ "total": 30.0,
  "max": 60.0,
- "pct": 51.7,
+ "pct": 50.0,
  "judge": "claude (master judge, all items vs CKE zasady oceniania)",
  "judge_kind": "claude",
  "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf",
- "note": "Claude judge vs CKE zasady oceniania",
+ "note": "Claude judge vs CKE zasady oceniania | essay re-graded with the full CKE essay criteria (20:10 CEST)",
  "items": [
   {
    "id": "1",
@@ -229,7 +229,7 @@
   {
    "id": "26",
    "max_points": 15.0,
-   "claude_points": 10.0,
+   "claude_points": 9.0,
    "auto_points": null
   }
  ]

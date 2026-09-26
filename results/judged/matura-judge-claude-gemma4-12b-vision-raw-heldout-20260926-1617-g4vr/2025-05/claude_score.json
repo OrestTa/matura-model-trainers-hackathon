@@ -2,13 +2,13 @@
  "answers": "results/gemma4/gemma4-vision/raw/answers.jsonl",
  "paper": "2025-05",
  "model": "Gemma 4 12B QAT GGUF + mmproj (gemma4-vision, raw, thinking ON, 16:17 CEST run, 7.16 GB)",
- "total": 41.0,
+ "total": 39.0,
  "max": 60.0,
- "pct": 68.3,
+ "pct": 65.0,
  "judge": "claude (master judge, all items vs CKE zasady oceniania)",
  "judge_kind": "claude",
  "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf",
- "note": "results/gemma4/gemma4-vision/raw/answers.jsonl; thinking was on (pre-6359957), several answers empty; 2024-2026 graded by parallel Claude graders",
+ "note": "results/gemma4/gemma4-vision/raw/answers.jsonl; thinking was on (pre-6359957), several answers empty; 2024-2026 graded by parallel Claude graders | essay re-graded with the full CKE essay criteria (20:10 CEST); picture items re-graded with the page images open",
  "items": [
   {
    "id": "1.1",
@@ -181,7 +181,7 @@
   {
    "id": "18",
    "max_points": 3.0,
-   "claude_points": 3.0,
+   "claude_points": 2.0,
    "auto_points": null
   },
   {
@@ -235,7 +235,7 @@
   {
    "id": "25",
    "max_points": 15.0,
-   "claude_points": 5.0,
+   "claude_points": 4.0,
    "auto_points": null
   }
  ]

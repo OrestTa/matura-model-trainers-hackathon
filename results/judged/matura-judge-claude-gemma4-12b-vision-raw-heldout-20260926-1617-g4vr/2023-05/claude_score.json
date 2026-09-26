@@ -8,7 +8,7 @@
  "judge": "claude (master judge, all items vs CKE zasady oceniania)",
  "judge_kind": "claude",
  "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf",
- "note": "results/gemma4/gemma4-vision/raw/answers.jsonl; thinking was on (pre-6359957), several answers empty; 2024-2026 graded by parallel Claude graders",
+ "note": "results/gemma4/gemma4-vision/raw/answers.jsonl; thinking was on (pre-6359957), several answers empty; 2024-2026 graded by parallel Claude graders | essay re-graded with the full CKE essay criteria (20:10 CEST); picture items re-graded with the page images open",
  "items": [
   {
    "id": "1",
@@ -175,7 +175,7 @@
   {
    "id": "18",
    "max_points": 3.0,
-   "claude_points": 3.0,
+   "claude_points": 2.0,
    "auto_points": null
   },
   {
@@ -229,7 +229,7 @@
   {
    "id": "26",
    "max_points": 15.0,
-   "claude_points": 9.0,
+   "claude_points": 10.0,
    "auto_points": null
   }
  ]

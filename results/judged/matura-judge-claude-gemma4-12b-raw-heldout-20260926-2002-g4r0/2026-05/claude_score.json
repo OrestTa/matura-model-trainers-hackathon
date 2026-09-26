@@ -8,7 +8,7 @@
  "judge": "claude (master judge, all items vs CKE zasady oceniania)",
  "judge_kind": "claude",
  "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-2605-zasady.pdf",
- "note": "job matura-infer-gemma4-12b-raw-heldout-20260926-2002-g4r0; parallel Claude graders",
+ "note": "job matura-infer-gemma4-12b-raw-heldout-20260926-2002-g4r0; parallel Claude graders | essay re-graded with the full CKE essay criteria (20:10 CEST)",
  "items": [
   {
    "id": "1",
