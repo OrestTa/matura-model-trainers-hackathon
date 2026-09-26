@@ -1,0 +1,366 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q4_K_M",
+  "judge": "Own ChatGPT Codex gpt-6-luna only",
+  "protocol": "local-luna-official-v4-imagegroups",
+  "adapter_handshake": {
+    "passed": true,
+    "adapters": [
+      {
+        "id": 0,
+        "path": "/opt/codex-small-track/bielik-epoch-2115/adapters/closed_without_images/adapter-f16.gguf",
+        "scale": 0.0,
+        "task_name": "",
+        "prompt_prefix": "",
+        "sha256": "56524f6945a3bdd4350054fda1f09dcf090d73df70c9d6a21dbf6d2063218631",
+        "bytes": 16135616
+      },
+      {
+        "id": 1,
+        "path": "/opt/codex-small-track/bielik-epoch-2115/adapters/open_without_images/adapter-f16.gguf",
+        "scale": 0.0,
+        "task_name": "",
+        "prompt_prefix": "",
+        "sha256": "0f9a40d7077af3dc80eb38a367589990b190b1bb3a24d3794ca0e9edf8176645",
+        "bytes": 16135616
+      },
+      {
+        "id": 2,
+        "path": "/opt/codex-small-track/bielik-epoch-2115/adapters/closed_with_images/adapter-f16.gguf",
+        "scale": 0.0,
+        "task_name": "",
+        "prompt_prefix": "",
+        "sha256": "d4e947f5a0623a723062020162c13e4ae6e012f17adc2a56c3b4635e38fc1507",
+        "bytes": 16135616
+      },
+      {
+        "id": 3,
+        "path": "/opt/codex-small-track/bielik-epoch-2115/adapters/open_with_images/adapter-f16.gguf",
+        "scale": 0.0,
+        "task_name": "",
+        "prompt_prefix": "",
+        "sha256": "4e5490a7ec0762a7a7f9d744a883b30d4c27d32afe488d94a9c2880cdc636469",
+        "bytes": 16135616
+      },
+      {
+        "id": 4,
+        "path": "/opt/codex-small-track/bielik-epoch-2115/adapters/essay/adapter-f16.gguf",
+        "scale": 0.0,
+        "task_name": "",
+        "prompt_prefix": "",
+        "sha256": "174bafc0528fba9242b47079a847afe69570d8e919d9252e906ecefb8a0b1f3d",
+        "bytes": 16135616
+      }
+    ],
+    "exactpaths_and_remote_local_training_hashes": true
+  },
+  "runs": [
+    {
+      "label": "bielik15-full-q4-base",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2115-bielik15-q4-full-epoch-offline/paired-baseline",
+      "aggregate_bytes": 982161371,
+      "protocol": "local-luna-official-v4-imagegroups",
+      "primary_provisional_points": 12,
+      "validated_tasks": 34,
+      "raw_point_coverage_complete": true,
+      "settled_lower_points": 12,
+      "unresolved_upper_points": 15,
+      "exact_points": null,
+      "official_max_points": 60,
+      "uncertain_or_missing_ids": [
+        "4.1",
+        "14.1",
+        "14.2"
+      ],
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 57.142857142857146,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 36.36363636363637,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 17.391304347826086,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 7,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "4.1",
+            "14.1",
+            "14.2"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "failed_calls": [
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-base/calls/visual-14.1-14.2.state.json",
+          "error": "AssertionError"
+        },
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-base/calls/visual-4.1-4.2.state.json",
+          "error": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "14.1": {
+          "id": "14.1",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Kandydat nie podał nazwiska postaci; odpowiedź jest pusta.",
+          "rubric_reference": "0 pkt – za odpowiedź błędną albo za brak odpowiedzi.",
+          "viewed_images": []
+        },
+        "14.2": {
+          "id": "14.2",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Kandydat wskazał zabór rosyjski, podczas gdy prawidłowa odpowiedź to zabór austriacki (Galicja).",
+          "rubric_reference": "0 pkt – za odpowiedź błędną albo za brak odpowiedzi.",
+          "viewed_images": []
+        },
+        "4.1": {
+          "id": "4.1",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Nie podano wymaganej nazwy związku handlowego (Hanza); odpowiedź wymienia prawa lubeckie i magdeburskie.",
+          "rubric_reference": "0 pkt – odpowiedź błędna; 1 pkt za prawidłową nazwę.",
+          "viewed_images": []
+        },
+        "4.2": {
+          "id": "4.2",
+          "earned_points": 1,
+          "uncertain": false,
+          "rationale": "Prawidłowe rozstrzygnięcie „tak” uzasadniono informacjami z obu źródeł: źródło 1 opisuje regularny układ ulic i brak placu rynkowego, a na planie Elbląga widać regularne bloki ulic oraz szeroką ulicę oznaczoną „Stary Rynek”, bez centralnego placu. Dodatkowe określenie daty planu jako XVI-wiecznego nie zmienia poprawnego uzasadnienia.",
+          "rubric_reference": "1 pkt – za prawidłowe rozstrzygnięcie wraz z uzasadnieniem odwołującym się do obu źródeł.",
+          "viewed_images": [
+            "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/data/small_track/official_mock_v1/images/Z04-S2.png"
+          ]
+        }
+      },
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false,
+      "answer_sha256": "20be09daf21c23c1149845e42c7652a38209a10060a58645756447f28c81c152"
+    },
+    {
+      "label": "bielik15-full-q4-trained",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2115-bielik15-q4-full-epoch-offline",
+      "aggregate_bytes": 1062839451,
+      "protocol": "local-luna-official-v4-imagegroups",
+      "primary_provisional_points": 10,
+      "validated_tasks": 33,
+      "raw_point_coverage_complete": true,
+      "settled_lower_points": 9,
+      "unresolved_upper_points": 30,
+      "exact_points": null,
+      "official_max_points": 60,
+      "uncertain_or_missing_ids": [
+        "4.1",
+        "15",
+        "18",
+        "24",
+        "26"
+      ],
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 25.0,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 1,
+          "exact_points": 1,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 57.142857142857146,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 3,
+          "primary_provisional_percent": 27.272727272727273,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 3,
+          "exact_points": 3,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 8.695652173913043,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 7,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "4.1",
+            "15",
+            "18",
+            "24"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 15,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "26"
+          ]
+        }
+      ],
+      "failed_calls": [
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-trained/calls/visual-18.state.json",
+          "error": "AssertionError"
+        },
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-trained/calls/visual-15.state.json",
+          "error": "AssertionError"
+        },
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-trained/calls/visual-4.1-4.2.state.json",
+          "error": "AssertionError"
+        },
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-full-epoch-q4-grades-v4/bielik15-full-q4-trained/calls/visual-24.state.json",
+          "error": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "18": {
+          "id": "18",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Odpowiedź błędnie utożsamia worek z pieniędzmi z frankiem francuskim. Nie wyjaśnia wymowy rysunku ani nie interpretuje dwóch elementów graficznych i tytułu w kontekście roku 1917. Na załączonym rysunku widać worek oznaczony „ONE BILLION DOLLARS”, postać La Fayette’a oraz kobietę z napisem „FRANCE”; żaden z tych elementów nie wspiera podanej interpretacji o franku.",
+          "rubric_reference": "0 pkt — odpowiedź błędna albo brak odpowiedzi.",
+          "viewed_images": []
+        },
+        "15": {
+          "id": "15",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Kandydat nie podał nazwy stylu ani cechy obrazu; powtarzane „Przykładowe rozwiązania” nie spełnia żadnego z wymaganych elementów.",
+          "rubric_reference": "1 pkt wymaga prawidłowej nazwy stylu i jednej jego cechy; odpowiedź niepełna otrzymuje 0 pkt.",
+          "viewed_images": []
+        },
+        "4.1": {
+          "id": "4.1",
+          "earned_points": 1,
+          "uncertain": false,
+          "rationale": "Kandydat podaje prawidłowe nazwy: „Związek Hanzeatycki” i „Hanza”, zgodne z kluczem.",
+          "rubric_reference": "1 pkt za podanie prawidłowej nazwy.",
+          "viewed_images": []
+        },
+        "4.2": {
+          "id": "4.2",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Brak jednoznacznego rozstrzygnięcia i uzasadnienia odpowiadającego ocenie planu: kandydat podaje sprzeczne warianty „Tak” i „Nie” oraz błędnie twierdzi, że źródło 2 mówi o prawie magdeburskim. Plan przedstawia Elbląg, z szerokimi ulicami i bez centralnego prostokątnego rynku, co wspiera odpowiedź „Tak”, ale kandydat nie wiąże tych cech z wnioskiem spójnym z obu źródeł.",
+          "rubric_reference": "1 pkt wymaga prawidłowego rozstrzygnięcia i uzasadnienia odwołującego się do obu źródeł; za odpowiedź niepełną lub błędną 0 pkt.",
+          "viewed_images": [
+            "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/data/small_track/official_mock_v1/images/Z04-S2.png"
+          ]
+        },
+        "24": {
+          "id": "24",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Odpowiedź zawiera jedynie nagłówki przykładowych rozwiązań, bez rozstrzygnięcia ani uzasadnienia odwołującego się do źródeł. Nie spełnia warunków przyznania punktu.",
+          "rubric_reference": "0 pkt – za odpowiedź niepełną lub brak odpowiedzi.",
+          "viewed_images": []
+        }
+      },
+      "essay_repeats": {
+        "points": [
+          0,
+          1,
+          1
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": true,
+        "first_mark_retained": true
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false,
+      "answer_sha256": "9519f3509d55e7d578e4504aa72d78fe3b408882502a38cfa6e37a160057bd82"
+    }
+  ],
+  "trained_minus_matched_base": {
+    "primary_provisional_points": -2,
+    "conservative_interval_points": [
+      -6,
+      18
+    ],
+    "exact_points": null
+  },
+  "original_baseline_comparison": "Historical original Bielik1.5 baseline used different serving harness and local visual per-item protocol. Its difference from this matched base is not an adapter effect or controlled causal comparison.",
+  "ania_reference": "Bielik1.5 Ania15/55=27.27%,closed5/11,open9/29,essay1/15. Adapted inputs/55point subset differ; five-way unavailable; no comparable numerical delta.",
+  "interpretation": "Only saved Luna judgments aggregated. Image metadata failures remain unresolved; no assistant marks, no averaging or selecting highest essay repeat. Bounds are worst-case unresolved-point bounds, not confidence intervals.",
+  "cost": "Own Codex plan; monetary cost unknown. No Forgehand calls."
+}
