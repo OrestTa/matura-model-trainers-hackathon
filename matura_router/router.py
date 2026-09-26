@@ -164,16 +164,23 @@ class Router:
                 GenerationParams(max_tokens=8, temperature=0.0)))
         classifier = Classifier(RuleClassifier(ccfg.get("min_score", 1.0),
                                                ccfg.get("min_margin", 0.5)), llm)
-        rag = cfg.get("rag") or {}
+        rag = dict(cfg.get("rag") or {})
+        if os.environ.get("RAG_PATH"):  # e.g. RAG_PATH=data/kb/factsheets.jsonl,data/kb/passages.jsonl
+            rag["path"] = os.environ["RAG_PATH"]
         retriever = None
         if rag.get("path"):
-            kb = Path(rag["path"])
-            kb = kb if kb.is_absolute() else Path(path).resolve().parent.parent / kb
-            if kb.exists():
-                retriever = load_retriever(kb)
-                log.info("RAG: %d passages from %s", len(retriever.passages), kb)
-            else:
-                log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)
+            kbs = [Path(p) if Path(p).is_absolute() else Path(path).resolve().parent.parent / p
+                   for p in str(rag["path"]).split(",")]
+            found = [kb for kb in kbs if kb.exists()]
+            for kb in kbs:
+                if not kb.exists():
+                    log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); skipping it", kb)
+            if len(found) == 1:
+                retriever = load_retriever(found[0])
+            elif found:  # several .jsonl knowledge bases: one BM25 index over all their passages
+                retriever = BM25Retriever([p for kb in found for p in load_retriever(kb).passages])
+            if retriever is not None:
+                log.info("RAG: %d passages from %s", len(retriever.passages), ", ".join(map(str, found)))
         router = cls(backend, routes, classifier, retriever, rag)
         sub = cfg.get("subtypes_path")
         sub = Path(sub) if sub else DEFAULT_SUBTYPES
