@@ -7,6 +7,15 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 21:45 CEST: 78c115d..040fc56 (35 commits) and board 40ec224 (no change)
+
+Verdict: sound, no new flags.
+- Leak re-check against the fetched held-out papers: open_claude_synth (419) clean after 9ff1c3a (the one 10-gram hit, row 33 vs 2024-05-z7, is a Gall Anonim source on a different event); essay_claude_synth now 270 essays, none on a held-out essay thesis; claude_synth clean.
+- 7091f6a build_vision_train.py: excludes held-out ids, the headline papers and f15 papers from the same May days, plus a shingle overlap check. OK.
+- HF backups (d38c5d5, 74d462b, 89a00e0): repos created private=True; tokens from env / Modal secret claude-hf, none in the repo. Secrets grep over the diff clean. 040fc56/2cc2ea9 use the claude- prefix for the Modal secret (C-054 app/volume name still "matura-jobs").
+- 86d96fb judge_table: "total without 2023 z16.2" column (1-point item, so /239 is right). 70f9a9c drops an all-blank base-ev7 2026-05 run (dead server), and bc22d0f/7571d6b now fail such runs instead of scoring them 0. Good.
+- f350ef1 per-subtype selection on dev papers (not held-out); 690ba01 essay variant has no klucz text. OK.
+
 ## 2026-09-26 21:15 CEST: b862a4b..78c115d (57 commits) and board 40ec224 (no change)
 
 Verdict: sound; one leak fixed, one flag (C-055).
