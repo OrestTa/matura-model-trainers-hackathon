@@ -15,6 +15,7 @@ baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| baselines-all5 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all5/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:54 | 2026-09-26 13:54 | /workspace/work/out/baselines-all5 | Modal compute setup thread |
 | baselines-all4 | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all4/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:49 | 2026-09-26 13:49 | /workspace/work/out/baselines-all4 | Modal compute setup thread |
 | progress-base-raw-r3 | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw-r3/data/eval/matura_all.jsonl GPU_BUDGET_GB=14 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:47 | 2026-09-26 13:47 | /workspace/work/out/progress-base-raw-r3 | Best progress thread |
 | rehearsal-gemma4 | rehearsal MODEL=gemma4-12b MODE=routed | Forgehand session 01a0ddc1 | running | 2026-09-26 13:35 | 2026-09-26 13:35 | /workspace/work/out/rehearsal-gemma4 | Win best matura score thread |
