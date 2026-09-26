@@ -3,6 +3,44 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:40 CEST · model-benchmark thread: organisers' "Model Benchmark" slides (Ania Olchowik)
+
+Source: Google Slides 1iGH2E6JURWe0Nq0Qqf0_nHoSA7s0LKaj5WSN6BpS3uI (export/txt works), site
+warsaw-matura-method.ania-olchowik.chatgpt.site. **One paper only: CKE May 2023 (our mock, also in our
+held-out set).** Two modes: text (34 items /55 pts, image descriptions written out) and original page
+images (37 items /60 pts). All bf16 on A100/L4 via Modal, AI-graded against the CKE key, settings differ per
+run. Not our grader or our quantization, so treat as a ranking, not our numbers.
+
+| Model (HF id) | bf16 GB | Text /55 | Images /60 | Essay (img) | Fits ≤8.0 GB as |
+|---|---|---|---|---|---|
+| **Gemma 4 12B** (google/gemma-4-12B-it) | 23.9 | — | **76.7%** (10/11 closed, 24/34 open, 12/15 essay) | 12/15 | our `gemma4-12b` QAT q4_0 GGUF 6.98 + 0.18 mmproj = 7.16 ✅ |
+| **Qwen3.5 9B** (Qwen/Qwen3.5-9B) | 19.3 | — | **60.0%** | 8/15 | unsloth Q6_K 7.46 + mmproj 0.67 = **8.13 ❌**; use Q5_K_M/Q4_K_M + mmproj ✅ |
+| Ministral 3 14B (mistralai/Ministral-3-14B-Instruct-2512) | 27.9 | 60.0% | 48.3% | 3/15 | 4-bit ≈7.0 + vision, borderline; weaker than Gemma 4 |
+| LLaVA-Bielik 11B (NASK-PIB/LLaVA-Bielik-11b-v2.6-instruct) | 23.2 | 52.7% | 23.3% | 0/15 | 4-bit ≈5.8 ✅, but its vision is weak |
+| Bielik 4.5B (speakleash/Bielik-4.5B-v3.0-Instruct) | 9.5 | 41.8% | text-only | — | GGUF 4.9 ✅ |
+| Qwen3 4B (Qwen/Qwen3-4B-Instruct-2507) | 8.04 | 40.0% | text-only | — | bf16 is **over 8.0**; any 8/4-bit ✅ |
+| InternVL3.5 8B | 17.1 | — | 36.7% | 1/15 | 4-bit ≈4.3 ✅ |
+| Gemma 3 4B [M] | 8.6 | 36.4% | 26.7% | 3/15 | 4-bit ✅ |
+| LLaVA-PLLuM 12B [M] | 25.4 | 34.5% | 23.3% | 0/15 | — |
+| PLLuM 4B [M] | 8.6 | 30.9% | 21.7% | 1/15 | — |
+| Bielik 1.5B | 3.2 | 27.3% | — | — | — |
+| Qwen3 1.7B | 3.4 | 23.6% | — | — | — |
+| SmolLM3 3B / Llama 3.2 3B / Phi-4 mini | 6.2/6.4/7.7 | 18.2% each | — | — | — |
+| Gemma 3 1B | 2.0 | 14.5% | — | — | — |
+| Qwen3 VL 2B Instruct / Thinking | 4.3 | 10.9% / 12.7% | 15.0% / 6.7% | 0/15 | — |
+
+What it means for us:
+- **Best score: Gemma 4 12B is the clear pick** (76.7% on images, 12/15 essay, 17 pts ahead of Qwen3.5-9B),
+  and our QAT GGUF fits. Risk: q4_0 vs their bf16; measure ours on May 2023 with images first.
+- **Qwen3.5-9B is a vision model**: our `qwen3.5-9b` config has no mmproj (`vision` unset), so it's being
+  scored blind. Q6_K + mmproj is 8.13 GB, over; switch to Q5_K_M (or Q4_K_M) + mmproj-F16.
+- **Smallest ≥35%**: nothing ≤3B passes in their runs. Text-only ≥35%: Bielik 4.5B, Qwen3 4B, Gemma 3 4B, all
+  ~4B. With images no small model reaches 35% (Gemma 3 4B 26.7%). Not in the slides and worth scoring (vision,
+  same family as the winners): **Qwen3.5-4B** (Q4_K_M 2.74 + mmproj 0.67), **Qwen3.5-2B** (Q4_K_M 1.28 + 0.67),
+  **gemma-4-E2B-it** QAT q4_0 GGUF (3.35 + 0.99), **gemma-4-E4B-it** (Q4_K_M 4.98 + 0.99). Sizes from the HF API.
+- **Best progress**: nothing about pretrained Bielik. Note `google/gemma-4-12B` (pretrained, 23.9 GB bf16,
+  vision) exists: a raw pretrained base that our SFT could lift a lot, if quantized to ≤8.0 GB.
+
 ## 2026-09-26 15:30 CEST · compute thread: baselines run without a GPU judge; shared-box fixes
 
 - From 15:26 CEST (Orest) no baseline on the Labqoat L40S serves a judge model. The queued
