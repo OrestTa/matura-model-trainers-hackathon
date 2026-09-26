@@ -2,6 +2,8 @@
 # Launches one GPU instance that terminates itself at DEADLINE_UTC.
 # Usage: launch.sh <instance-type> [name] [region]
 # Example: launch.sh p5.48xlarge train-bielik us-east-1
+# The AWS account is suspended (2026-09-26); refuse unless someone explicitly re-enables it.
+[ "${AWS_REENABLED:-0}" = 1 ] || { echo "AWS account suspended: launch.sh refuses (AWS_REENABLED=1 to override)" >&2; exit 1; }
 source "$(dirname "$0")/common.sh"
 
 TYPE="${1:?instance type required}"

@@ -143,7 +143,8 @@ def main():
 
     cfg = yaml.safe_load(Path(args.models_config).read_text())
     models = cfg["models"]
-    keys = list(models) if args.models == "all" else args.models.split(",")
+    # "all" = every model we could ship; the -bf16 reference entries are over the size limit.
+    keys = [k for k in models if not k.endswith("-bf16")] if args.models == "all" else args.models.split(",")
     unknown = [k for k in keys if k not in models]
     if unknown:
         p.error(f"unknown models: {unknown}")

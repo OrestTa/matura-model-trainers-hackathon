@@ -7,6 +7,14 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 13:05 UTC: 60567a7 (public board) and Grok audit issue #6
+
+- 60567a7 (public-board/, published to the public repo OrestTa/tarasiuk-lab-matura-status): no secrets or
+  IPs. Stale: "matura_all 573 items / 860 pts" is now 512 / 789, and the 1.5B "53.3% -> 85.6%" MCQ line is on
+  the Grok bot's own training MCQs too but isn't marked contaminated. Anything on that board is public.
+- Issue #6 (Grok COMMIT_AUDIT) landed as notes/COMMIT_AUDIT_INSIGHTS.md with a status per item. Fixed from it:
+  `MODELS=all` no longer includes the 22 GB -bf16 entry, and infra/aws/launch.sh refuses while AWS is suspended.
+
 ## 2026-09-26 12:55 UTC: RAG, past-paper training data, dashboard, corpus (3003209, f03041d, 33ae7ed, a45b915, f108e8e, ac49a23, 979e452, 52af14a, 2fedc9a, 5d680d5, 2f354f5)
 
 Checked and fine: the held-out split holds on today's data (133 training items rebuilt identically, the closest
