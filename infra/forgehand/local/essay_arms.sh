@@ -5,4 +5,5 @@ export THINK_FALLBACK=1; cd /scratch/repo4
 C="python scripts/subtype_sweep.py --base-url http://127.0.0.1:8100/v1 --papers dev --only-papers none --all-essays --model gemma4-12b-think8k --concurrency 8"
 s=$(date +%s); $C --subtypes essay --candidates base,plan,guard,plan_guard --out results/subtype/essay-grid > /scratch/out/essay-grid.console 2>&1; log "END essay-grid rc=$? wall $(( $(date +%s)-s ))s"
 s=$(date +%s); ESSAY_TARGET_WORDS=550 ESSAY_MIN_WORDS=350 $C --candidates none --raw --out results/subtype/essay-len > /scratch/out/essay-len.console 2>&1; log "END essay-len rc=$? wall $(( $(date +%s)-s ))s"
-s=$(date +%s); ESSAY_BEST_OF=3 ESSAY_TARGET_WORDS=550 ESSAY_MIN_WORDS=350 $C --subtypes essay --candidates plan --raw --out results/subtype/essay-bo3 > /scratch/out/essay-bo3.console 2>&1; log "END essay-bo3 rc=$? wall $(( $(date +%s)-s ))s"
+# E3 (best-of-3) runs on Nebius. E4: raw think8k on the two practice papers (2k-vs-8k comparison).
+s=$(date +%s); python scripts/subtype_sweep.py --base-url http://127.0.0.1:8100/v1 --papers dev --only-papers probny-2026-01,pokaz-2022-03 --all-essays --candidates none --raw --model gemma4-12b-think8k --concurrency 8 --out results/subtype/practice-raw8k > /scratch/out/practice-raw8k.console 2>&1; log "END essay-e4 practice-raw8k rc=$? wall $(( $(date +%s)-s ))s"
