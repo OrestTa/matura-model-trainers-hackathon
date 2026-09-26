@@ -33,7 +33,15 @@ SOURCE.md with the exact required line, graded work made from Fri 18:00.
 - dcfe574 (Grok bot) JOB_ID_PIPELINE.md: OK. 2784751/9a4267c (Grok bot) E2E answers: run named
   e2e_oneyear_2023_qwen25-3b, before the job-id rule; G-019 says OCR fallback, so it is a harness run.
   3e3a0ee (Grok bot, 16:59): follows the job id format (…-1449-68f6); judge path keeps the same family: OK.
-- fbc438b, 02c9413 (Grok bot) public-board payload in main, board repo c666dd6/61277d6: numbers match tracks.json.
+- fbc438b, 02c9413 (Grok bot) public-board payload in main, board repo c666dd6/61277d6: PROBLEMS (asked in C-025):
+  - honest_bare/base is still set on harness runs, which tracks.json already calls harness:
+    - mock-bielik45-fp8-claude (answer-sheet layout);
+    - mock-e2e-3b-grok (OCR fallback, G-019);
+    - cke-3b-base and cke-7b-awq-base (router prompts).
+  - scores.json still calls 37.6% "Best legal baseline so far", with no unverified label.
+  - New progress-nf4-raw 25.5% / routed 26.9% have no committed summary.json in main yet, so they are unverified.
+  - Grok's judge gives 46.7% (Bielik) and 33.3% (AWQ) against Claude's 40.0% and 18.3% on the same answers; both are shown
+    and labelled by judge, OK.
 
 ## 2026-09-26 16:45 CEST: 92363bd..3dc14d2 (11 commits)
 
