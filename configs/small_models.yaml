@@ -33,6 +33,24 @@ models:
   qwen3.5-4b:   {hf_id: Qwen/Qwen3.5-4B,                     params_b: 4.7,  disk_gb: 9.3,  gpu_gb: 14, extra_body: {chat_template_kwargs: {enable_thinking: false}}, deck_size_gb: not in deck, ship_precision: bf16}
   gemma4-e2b:   {hf_id: google/gemma-4-E2B-it,               params_b: 5.1,  disk_gb: 10.3, gpu_gb: 16, deck_size_gb: not in deck, ship_precision: bf16}
 
+  # Quantization sweep (Orest 2026-09-26 15:55 CEST: the shipped quantized file's size counts).
+  # GGUF text-only (no mmproj) on llama-server; disk_gb = that file's size from the HF API.
+  qwen3-4b-q4_k_m: {hf_id: unsloth/Qwen3-4B-Instruct-2507-GGUF, gguf_file: Qwen3-4B-Instruct-2507-Q4_K_M.gguf, server: llamacpp, params_b: 4.0, disk_gb: 2.5, gpu_gb: 6, parallel: 8}
+  qwen3-4b-q3_k_m: {hf_id: unsloth/Qwen3-4B-Instruct-2507-GGUF, gguf_file: Qwen3-4B-Instruct-2507-Q3_K_M.gguf, server: llamacpp, params_b: 4.0, disk_gb: 2.08, gpu_gb: 6, parallel: 8}
+  qwen3-4b-iq3_xxs: {hf_id: unsloth/Qwen3-4B-Instruct-2507-GGUF, gguf_file: Qwen3-4B-Instruct-2507-UD-IQ3_XXS.gguf, server: llamacpp, params_b: 4.0, disk_gb: 1.67, gpu_gb: 6, parallel: 8}
+  qwen3-4b-iq2_m: {hf_id: unsloth/Qwen3-4B-Instruct-2507-GGUF, gguf_file: Qwen3-4B-Instruct-2507-UD-IQ2_M.gguf, server: llamacpp, params_b: 4.0, disk_gb: 1.53, gpu_gb: 6, parallel: 8}
+  qwen3.5-4b-q4_k_m: {hf_id: unsloth/Qwen3.5-4B-GGUF, gguf_file: Qwen3.5-4B-Q4_K_M.gguf, server: llamacpp, params_b: 4.7, disk_gb: 2.74, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-4b-q3_k_m: {hf_id: unsloth/Qwen3.5-4B-GGUF, gguf_file: Qwen3.5-4B-Q3_K_M.gguf, server: llamacpp, params_b: 4.7, disk_gb: 2.29, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-4b-iq3_xxs: {hf_id: unsloth/Qwen3.5-4B-GGUF, gguf_file: Qwen3.5-4B-UD-IQ3_XXS.gguf, server: llamacpp, params_b: 4.7, disk_gb: 1.95, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-4b-iq2_m: {hf_id: unsloth/Qwen3.5-4B-GGUF, gguf_file: Qwen3.5-4B-UD-IQ2_M.gguf, server: llamacpp, params_b: 4.7, disk_gb: 1.76, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-2b-q8_0: {hf_id: unsloth/Qwen3.5-2B-GGUF, gguf_file: Qwen3.5-2B-Q8_0.gguf, server: llamacpp, params_b: 2.3, disk_gb: 2.01, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-2b-q4_k_m: {hf_id: unsloth/Qwen3.5-2B-GGUF, gguf_file: Qwen3.5-2B-Q4_K_M.gguf, server: llamacpp, params_b: 2.3, disk_gb: 1.28, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  qwen3.5-2b-iq3_xxs: {hf_id: unsloth/Qwen3.5-2B-GGUF, gguf_file: Qwen3.5-2B-UD-IQ3_XXS.gguf, server: llamacpp, params_b: 2.3, disk_gb: 0.93, gpu_gb: 6, parallel: 8, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  gemma3-4b-q4_k_m: {hf_id: unsloth/gemma-3-4b-it-GGUF, gguf_file: gemma-3-4b-it-Q4_K_M.gguf, server: llamacpp, params_b: 4.3, disk_gb: 2.49, gpu_gb: 6, parallel: 8}
+  gemma3-4b-q3_k_m: {hf_id: unsloth/gemma-3-4b-it-GGUF, gguf_file: gemma-3-4b-it-Q3_K_M.gguf, server: llamacpp, params_b: 4.3, disk_gb: 2.1, gpu_gb: 6, parallel: 8}
+  bielik-4.5b-q8_0: {hf_id: speakleash/Bielik-4.5B-v3.0-Instruct-GGUF, gguf_file: Bielik-4.5B-v3.0-Instruct.Q8_0.gguf, server: llamacpp, params_b: 4.6, disk_gb: 5.06, gpu_gb: 6, parallel: 8}
+  bielik-1.5b-q8_0: {hf_id: speakleash/Bielik-1.5B-v3.0-Instruct-GGUF, gguf_file: Bielik-1.5B-v3.0-Instruct.Q8_0.gguf, server: llamacpp, params_b: 1.6, disk_gb: 1.7, gpu_gb: 6, parallel: 8}
+
 vllm:
   max_model_len: 8192
   gpu_memory_utilization: 0.90
