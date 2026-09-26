@@ -36,6 +36,9 @@ mirror, not a repo content requirement; this file is the canonical repo doc.
 | Applicable services shown | **EC2, SageMaker, VPC, Data Transfer** |
 | Exclusions shown | **None displayed** |
 
+Operational note: plan around AWS Activate credits expiring around
+**2026-09-30**.
+
 ## Exam constraints
 
 These constraints drive model and instance choices for the hackathon:
@@ -101,11 +104,18 @@ Aggressive Service Quotas increase requests are in flight to make that possible.
 
 | Region | Service / quota | Requested value | Request / case | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `us-east-1` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `TBD` | Pending | Request submitted |
-| `us-east-1` | EC2 Running On-Demand P | `1024 vCPUs` | `TBD` | Pending | Request submitted |
-| `us-west-2` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `179041346400081` | Case Opened | Request submitted |
-| `us-west-2` | EC2 Running On-Demand P | `1024 vCPUs` | `179041351000024` | Case Opened | Request submitted |
+| `us-east-1` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `179041353300510` | Pending/Case Opened | Request submitted |
+| `us-east-1` | EC2 Running On-Demand P | `1024 vCPUs` | `179041340000396` | Pending/Case Opened | Request submitted |
+| `us-west-2` | EC2 Running On-Demand G and VT | `1024 vCPUs` | `179041346400081` | Case Closed | Intentionally canceled to free a request slot |
+| `us-west-2` | EC2 Running On-Demand G and VT | `32 vCPUs` | `179041702400280` | Pending | Small ASAP ask |
+| `us-west-2` | EC2 Running On-Demand P | `1024 vCPUs` | `179041351000024` | Pending/Case Opened | Request submitted |
+| `eu-west-1` | EC2 Running On-Demand G and VT | `32 vCPUs` | `179041759900212` | Pending | Small ask |
+| `us-east-2` | EC2 Running On-Demand G and VT | `32 vCPUs` | `179041728600007` | Pending | Small ask |
 | `us-east-1` | SageMaker `ml.p5.48xlarge` training | `8` | `TBD` | Blocked | Quota-request limit hit while prior request is open |
+
+Region-scan note: Applied quota remained `0` for On-Demand / Spot G and VT
+plus P across 9 scanned regions. Additional small `G/VT 32` requests may still
+be filed in other regions; case IDs are not listed here until verified.
 
 ## Launch attempts (`us-east-1`)
 
