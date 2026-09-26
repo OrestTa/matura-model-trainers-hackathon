@@ -69,6 +69,7 @@ def main() -> int:
     ap.add_argument("--model", default="gemma4-12b-think8k", help="key in configs/models.yaml (vision, extra_body)")
     ap.add_argument("--papers", default="dev", choices=["dev", "heldout", "all"])
     ap.add_argument("--subtypes", default=",".join(SUBTYPES))
+    ap.add_argument("--only-papers", default="", help="comma list of paper ids (e.g. probny-2026-01,pokaz-2022-03)")
     ap.add_argument("--per-subtype", type=int, default=0, help="smoke test: only the first N items of each subtype")
     ap.add_argument("--candidates", default="", help="comma list: only these candidate names")
     ap.add_argument("--raw", action="store_true", help="also the plain single-prompt baseline (mode raw)")
@@ -88,6 +89,8 @@ def main() -> int:
     elif args.papers == "heldout":
         rows = [r for r in rows if r.get("paper") in HEADLINE_PAPERS]
 
+    if args.only_papers:
+        rows = [r for r in rows if r.get("paper") in set(args.only_papers.split(","))]
     router = Router.from_config(args.routes)
     router.backend.base_url = args.base_url.rstrip("/")
     spec = yaml.safe_load((ROOT / "configs/models.yaml").read_text())["models"][args.model]
