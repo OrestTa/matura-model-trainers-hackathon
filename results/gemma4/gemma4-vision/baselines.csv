@@ -1,0 +1,3 @@
+model,mode,pct,pct_text_only,disk_gb,quantization,scored,n,routing_accuracy,latency_p50_s,closed_choice,true_false,matching,source_analysis,short_open,essay
+gemma4-12b,raw,47.8,58.7,7.16,,78,154,85.7,48.475,61.5,83.3,0.0,37.5,40.0,
+gemma4-12b,routed,1.3,1.1,7.16,,113,154,85.7,31.687,0.0,0.0,0.0,0.8,14.3,
