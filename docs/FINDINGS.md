@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:30 CEST · compute thread: baselines run without a GPU judge; shared-box fixes
+
+- From 15:26 CEST (Orest) no baseline on the Labqoat L40S serves a judge model. The queued
+  `score-shootout` and `score-vision` were patched to `JUDGE_HF=""` before starting. Each run
+  writes `<out>/baselines/<model>/<mode>/answers.jsonl`; open answers are graded offline by a
+  Claude session against the CKE key. So open-answer scores from here on are Claude-graded, not
+  Qwen3-14B-graded: compare only like with like. Auto-scored items (closed, true/false,
+  matching, keyword) are unaffected.
+- At 15:15 CEST every vLLM server of three running baselines got SIGTERM from outside our
+  scripts (cause unconfirmed; the Grok bot was active on the box). Relaunched with `-r` names.
+- `gpu_admit.py` now drops a reservation as soon as the job's log says it finished (dead jobs
+  held the card idle for 10 minutes). `run_baselines.py` takes a free port per server, since
+  two jobs both served on 8100.
+
 ## 2026-09-26 15:35 CEST · best-score thread: the eval set now carries the pictures
 
 - `python scripts/fetch_matura.py --images` (and `--papers all --images`) saves every picture in the
