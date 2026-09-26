@@ -44,7 +44,7 @@ REGION = os.environ.get("NEBIUS_REGION", "eu-north1")
 S3_ENDPOINT = f"https://storage.{REGION}.nebius.cloud"
 IMAGE = "vllm/vllm-openai:v0.27.1"  # vLLM stays on 0.27.1 (see common.sh)
 DATA = ("data/eval/matura.jsonl", "data/eval/matura_all.jsonl",
-        "data/train/synthetic.jsonl", "data/train/past_papers.jsonl", "data/eval/images")
+        "data/train/synthetic.jsonl", "data/train/past_papers.jsonl", "data/eval/images", "data/kb")
 SKIP = {".git", "work", "runs", "adapters", "models", "__pycache__", ".venv", ".run-venv", "secrets"}
 
 
