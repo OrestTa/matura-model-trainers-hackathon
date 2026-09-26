@@ -62,6 +62,8 @@ print(len(a), "answers,", len(empty), "empty:", empty)
 EOF
 ```
 
-Empty answers mean the thought used up the token budget: re-run those items with a bigger
-`think_tokens`. The essay must name a topic number and have
+Empty answers mean the thought used up the token budget, or the backend call timed out: re-run
+those items with a bigger `think_tokens`. The router's backend timeout defaults to 1800 s (`BACKEND_TIMEOUT`,
+3965be8); at 8k thinking with 8 slots a single answer can take over 300 s, and the old 300 s limit
+blanked 4 of 37 May 2023 answers. Use main ≥ 3965be8 on stage. The essay must name a topic number and have
 ≥300 words.
