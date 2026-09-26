@@ -1,0 +1,1 @@
+{"id": "probny-2026-01-z14.2", "answer": "B", "raw": "B", "category": "closed_choice", "adapter": null, "confidence": 0.645, "method": "rules", "latency_s": 61.888, "retrieved": [], "subtype": "closed_text", "profile": "v3", "gold_category": "closed_choice", "needs_image": false, "paper": "probny-2026-01", "points": 1.0, "score": 1.0}

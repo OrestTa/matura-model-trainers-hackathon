@@ -1,0 +1,1 @@
+{"id": "f15-2020-05-z6.1", "answer": "", "raw": "", "category": null, "error": "<urlopen error [Errno 111] Connection refused>", "latency_s": 0.0, "gold_category": "true_false", "needs_image": true, "paper": "f15-2020-05", "points": 1.0, "subtype": "closed_image", "score": 0.0}
