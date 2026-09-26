@@ -95,7 +95,7 @@ class Router:
             route = self.routes[Category.GENERAL]
         adapter = self.resolve_adapter(category) if mode == "adapters" else None
         prompt_cat = Category.GENERAL if mode == "raw" else category
-        messages = build_messages(prompt_cat, question, context)
+        messages = build_messages(prompt_cat, question, context, fill_template=mode != "raw")
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:

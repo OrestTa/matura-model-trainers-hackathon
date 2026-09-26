@@ -70,8 +70,11 @@ FORMATS = {
                    "kolejność od najwcześniejszego, np. \"C, A, D, B\""),
     "source_analysis": ("zadanie do krótkiego tekstu źródłowego (pole context: 3–6 zdań, parafraza "
                         "prawdziwego źródła z epoki z podpisem), np. „Rozstrzygnij… Uzasadnij” albo "
-                        "„Wyjaśnij, do jakiego wydarzenia odnosi się źródło”",
-                        "zwięzła odpowiedź jak w kluczu CKE: rozstrzygnięcie i 1–2 zdania uzasadnienia z faktami"),
+                        "„Wyjaśnij, do jakiego wydarzenia odnosi się źródło”. Połowa zadań to „Rozstrzygnij, czy… "
+                        "Odpowiedź uzasadnij…”; takie polecenie kończy się liniami karty odpowiedzi "
+                        "\"Rozstrzygnięcie: …\\nUzasadnienie: …\"",
+                        "zwięzła odpowiedź jak w kluczu CKE; przy „Rozstrzygnij” dokładnie \"Rozstrzygnięcie: "
+                        "<krótko, np. Tak/Nie/A>\\nUzasadnienie: <1–2 zdania z faktem i odwołaniem do źródła>\""),
     "short_open": ("krótkie zadanie otwarte: podaj / wyjaśnij / wymień",
                    "1–2 zdania z dokładnymi nazwami, nazwiskami i datami"),
     "essay": ("temat wypracowania maturalnego (np. „Oceń…”, „Porównaj…”, „Scharakteryzuj…”)",

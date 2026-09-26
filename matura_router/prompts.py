@@ -26,10 +26,39 @@ SYSTEM_PROMPTS: dict[Category, str] = {
 }
 
 
-def build_messages(category: Category, question: str, context: str = "") -> list[dict]:
+# A fill-in line from the answer sheet: "Rozstrzygnięcie: …", "Fragment A – …", "• …".
+_TEMPLATE_LINE = re.compile(r"^\s*(?:[•\-–]|[^\s:–].{0,80}?\s*[:–])\s*(?:…|\.\.\.)\s*$")
+_CLOSED = {Category.CLOSED_CHOICE, Category.TRUE_FALSE, Category.MATCHING, Category.CHRONOLOGY}
+
+
+def answer_template(question: str) -> list[str]:
+    """The answer sheet's fill-in lines, in order (about half the CKE items have them)."""
+    return [ln.strip() for ln in question.splitlines() if _TEMPLATE_LINE.match(ln)]
+
+
+def template_instruction(question: str) -> str:
+    lines = answer_template(question)
+    if not lines:
+        return ""
+    text = ("\n\nOdpowiedz, wypełniając dokładnie ten szablon z karty odpowiedzi: zachowaj "
+            "etykiety i ich kolejność, a „…” zastąp swoją odpowiedzią. Bez dodatkowych komentarzy.\n"
+            + "\n".join(lines))
+    if any(ln.lower().startswith("rozstrzygnięcie") for ln in lines):
+        text += ("\nRozstrzygnięcie to krótka odpowiedź na pytanie z polecenia, jedną z podanych "
+                 "w nim możliwości (np. „Tak”, „Nie”, „A”, „Fragment 2.”). Uzasadnienie to 1–3 zdania "
+                 "z konkretnym faktem, odwołujące się do źródła i własnej wiedzy.")
+    return text
+
+
+def build_messages(category: Category, question: str, context: str = "",
+                   fill_template: bool = True) -> list[dict]:
+    """fill_template=False keeps the raw baseline free of harness help."""
     user = f"{context.strip()}\n\n{question.strip()}" if context.strip() else question.strip()
+    system = SYSTEM_PROMPTS[category]
+    if fill_template and category not in _CLOSED:
+        system += template_instruction(question)
     return [
-        {"role": "system", "content": SYSTEM_PROMPTS[category]},
+        {"role": "system", "content": system},
         {"role": "user", "content": user},
     ]
 
@@ -38,6 +67,40 @@ def strip_think(text: str) -> str:
     """Drop Qwen3-style <think>...</think> reasoning (also an unclosed one cut off by max_tokens)."""
     text = re.sub(r"<think>.*?(</think>|$)", "", text, flags=re.S)
     return text.strip()
+
+
+_VERDICT = re.compile(r"rozstrzygni[eę]cie\s*[:\-–]\s*(.+)", re.I)
+_FILLER = {"fragment", "źródło", "źródła", "zrodlo", "ilustracja", "odpowiedź", "odpowiedz"}
+
+
+def _tokens(s: str) -> list[str]:
+    return [t for t in re.findall(r"\w+", s.lower()) if t not in _FILLER]
+
+
+def extract_verdict(answer: str) -> str:
+    """The text after "Rozstrzygnięcie:", or the first line when the label is missing."""
+    m = _VERDICT.search(answer.replace("*", ""))
+    if m:
+        return m.group(1).strip()
+    first = answer.strip().splitlines()
+    return first[0].strip() if first else ""
+
+
+def verdict_matches(answer: str, decision: str) -> bool:
+    """Whether the answer's verdict agrees with the key's (CKE gives 0 pts otherwise)."""
+    gold, got = _tokens(decision), _tokens(extract_verdict(answer))
+    if not gold or not got:
+        return False
+    if gold[0] in ("tak", "nie") and len(gold) == 1:
+        yn = [t for t in got if t in ("tak", "nie")]
+        return (yn[0] if yn else ("nie" if "niezgodne" in got else "")) == gold[0]
+    # Short keys ("A", "3") need the exact token; words may differ by inflection.
+    def hit(g):
+        if len(g) <= 5:
+            return any(t == g or (len(g) > 2 and t.startswith(g)) or (len(t) >= 4 and g.startswith(t))
+                       for t in got)
+        return any(t[:len(g) - 2] == g[:len(g) - 2] for t in got)
+    return all(hit(g) for g in gold)
 
 
 def postprocess(category: Category, text: str) -> str:

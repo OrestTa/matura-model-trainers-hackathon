@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Callable, Optional
 
+from .prompts import verdict_matches
 from .router import Router
 from .scoring import score_row
 
@@ -47,6 +48,8 @@ def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
         out["needs_image"] = bool(row.get("needs_image"))
         out["points"] = float(row.get("points", 1))
         out["score"] = score_row(row, out["answer"], judge)
+        if row.get("decision"):
+            out["decision_ok"] = verdict_matches(out["answer"], row["decision"])
         return out
 
     t0 = time.perf_counter()
@@ -76,6 +79,7 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
     # the text-only score is the fairer measure of the model itself.
     text = [r for r in results if not r.get("needs_image") and r["score"] is not None]
     text_max = sum(r["points"] for r in text)
+    dec = [r for r in results if "decision_ok" in r]
     lat = [r["latency_s"] for r in results if r.get("latency_s")]
     return {
         "n": len(results),
@@ -87,6 +91,8 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
         "pct_text_only": round(100 * sum(r["score"] for r in text) / text_max, 1) if text_max else None,
         # Earned over the points of ALL rows (unscored count as 0): comparable with an exam score.
         "pct_all_rows": round(100 * earned / all_max, 1) if all_max else None,
+        # Judge-free signal on the "Rozstrzygnij" items: share of right verdicts.
+        "decision_acc": round(100 * sum(r["decision_ok"] for r in dec) / len(dec), 1) if dec else None,
         "unscored": sum(1 for r in results if r["score"] is None),
         "routing_accuracy": round(100 * sum(r["category"] == r["gold_category"] for r in labelled)
                                   / len(labelled), 1) if labelled else None,

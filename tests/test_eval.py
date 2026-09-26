@@ -71,3 +71,30 @@ def test_plot_report(tmp_path):
                     "--runs", str(tmp_path / "runs"), "--out", str(tmp_path / "report")], check=True)
     for f in ["overall.png", "by_category.png", "size_vs_score.png", "index.html", "baselines.csv"]:
         assert (tmp_path / "report" / f).stat().st_size > 0
+
+
+ROZ = ("Rozstrzygnij, czy źródło dotyczy epoki paleolitu czy neolitu. Odpowiedź uzasadnij.\n"
+       "Rozstrzygnięcie: …\nUzasadnienie: …")
+
+
+def test_answer_template_found_and_only_outside_raw():
+    from matura_router.categories import Category
+    from matura_router.prompts import answer_template, build_messages
+    assert answer_template(ROZ) == ["Rozstrzygnięcie: …", "Uzasadnienie: …"]
+    assert answer_template("Podaj datę bitwy pod Grunwaldem.") == []
+    assert "Rozstrzygnięcie: …" in build_messages(Category.SOURCE_ANALYSIS, ROZ)[0]["content"]
+    raw = build_messages(Category.GENERAL, ROZ, fill_template=False)[0]["content"]
+    assert "szablon" not in raw
+
+
+def test_verdict_gate():
+    from matura_router.prompts import verdict_matches
+    assert verdict_matches("**Rozstrzygnięcie:** neolit\nUzasadnienie: osady", "neolitu")
+    assert not verdict_matches("Rozstrzygnięcie: paleolitu", "neolitu")
+    assert verdict_matches("Rozstrzygnięcie: Nie, nie jest zgodne", "Nie")
+    assert not verdict_matches("Rozstrzygnięcie: Tak", "nie")
+    assert not verdict_matches("Rozstrzygnięcie: przeciwników", "przed")
+    row = {"category": "source_analysis", "points": 1, "question": ROZ, "gold": "Rozstrzygnięcie: neolitu",
+           "decision": "neolitu"}
+    assert score_row(row, "Rozstrzygnięcie: paleolitu", judge=lambda p: "1") == 0.0
+    assert score_row(row, "Rozstrzygnięcie: neolitu", judge=lambda p: "1") == 1.0

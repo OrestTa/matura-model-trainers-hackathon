@@ -20,6 +20,7 @@ import unicodedata
 from typing import Callable, Optional
 
 from .categories import Category
+from .prompts import verdict_matches
 
 CLOSED = {Category.CLOSED_CHOICE, Category.TRUE_FALSE, Category.MATCHING, Category.CHRONOLOGY}
 
@@ -117,6 +118,9 @@ def score_row(row: dict, answer: str,
         if parts is not None:
             return cke_points(*parts, points)
         return points * score_closed(cat, answer, gold)
+    # "Rozstrzygnij … uzasadnij": a wrong verdict earns 0 whatever the justification.
+    if row.get("decision") and not verdict_matches(answer, row["decision"]):
+        return 0.0
     if row.get("gold_keywords"):
         return points * score_keywords(answer, row["gold_keywords"])
     if judge and gold:
