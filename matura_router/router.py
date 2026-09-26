@@ -47,6 +47,30 @@ def essay_best_of() -> int:
     return int(os.environ.get("ESSAY_BEST_OF") or 1)
 
 
+def open_best_of() -> int:
+    """OPEN_BEST_OF=N: self-consistency on open short answers (N answers, the model picks the most complete)."""
+    return int(os.environ.get("OPEN_BEST_OF") or 1)
+
+
+def picture_describe() -> bool:
+    """PICTURE_DESCRIBE=1: before a picture question, ask the model to describe the attached pictures."""
+    return os.environ.get("PICTURE_DESCRIBE") == "1"
+
+
+OPEN_CATS = {Category.SHORT_OPEN, Category.SOURCE_ANALYSIS, Category.GENERAL}
+
+OPEN_PICK_TEXT = (
+    "Powyżej jest zadanie i {n} wersje odpowiedzi. Wybierz tę, która jest merytorycznie poprawna i "
+    "najpełniej wykonuje polecenie: podaje wszystko, o co pytano (każdy element polecenia), opiera się "
+    "na źródle, gdy polecenie tego wymaga, i nie zawiera błędów rzeczowych. Nie oceniaj długości. "
+    "Odpowiedz tylko jedną linią: \"Najlepsza: K\".")
+
+PICTURE_DESCRIBE_TEXT = (
+    "Zanim odpowiesz na polecenie, opisz dokładnie każdą dołączoną ilustrację: co przedstawia, "
+    "wszystkie widoczne napisy, podpisy, daty, nazwy, symbole, postaci i elementy mapy lub wykresu. "
+    "Nie odpowiadaj jeszcze na polecenie. Podaj tylko opis.")
+
+
 # Our own writing checklist for picking the best of several essays (no klucz / CKE criteria text).
 ESSAY_PICK_TEXT = (
     "Poniżej są {n} wersje wypracowania na ten sam temat. Oceń każdą od 0 do 10 pod względem: "
@@ -73,6 +97,13 @@ class Route:
     params: GenerationParams
     votes: int = 1                # >1: majority vote over this many answers (closed types)
     vote_temperature: float = 0.7
+
+
+def _with_text(content, extra: str):
+    """Append a text instruction to a message's content (plain string or VLM parts list)."""
+    if isinstance(content, str):
+        return f"{content}\n\n{extra}"
+    return [*content, {"type": "text", "text": extra}]
 
 
 @dataclass
@@ -262,6 +293,55 @@ class Router:
         log.info("essay best-of-%d scores %s -> version %d", len(cands), scores, best)
         return cands[best - 1]
 
+    def _best_open(self, answer: str, raw: str, messages, adapter, params):
+        """OPEN_BEST_OF=N: N-1 more sampled answers in parallel; the same model picks the most complete
+        correct one. Duplicates collapse; a failed pick keeps the greedy answer."""
+        n = open_best_of()
+        sp = dataclasses.replace(params, temperature=0.7, top_p=0.95)
+
+        def one(_):
+            try:
+                r = self.backend.chat(messages, adapter, sp)
+                return strip_think(r), r
+            except Exception:  # noqa: BLE001
+                log.exception("open sample failed")
+                return "", ""
+
+        with ThreadPoolExecutor(max_workers=n - 1) as pool:
+            cands = [(answer, raw), *pool.map(one, range(n - 1))]
+        seen, uniq = set(), []
+        for a, r in cands:
+            k = " ".join(a.split()).lower()
+            if a.strip() and k not in seen:
+                seen.add(k); uniq.append((a, r))
+        if len(uniq) <= 1:
+            return (uniq or [(answer, raw)])[0]
+        body = "\n\n".join(f"=== Wersja {i} ===\n{a}" for i, (a, _) in enumerate(uniq, 1))
+        judge = [*messages, {"role": "assistant", "content": body},
+                 {"role": "user", "content": OPEN_PICK_TEXT.format(n=len(uniq))}]
+        try:
+            verdict = strip_think(self.backend.chat(judge, None, dataclasses.replace(params, temperature=0.0)))
+        except Exception:  # noqa: BLE001
+            log.exception("open pick failed")
+            return uniq[0]
+        m = re.search(r"Najlepsza\s*:?\s*(\d+)", verdict) or re.search(r"(\d+)", verdict)
+        k = int(m.group(1)) if m else 1
+        log.info("open best-of-%d -> version %d", len(uniq), k)
+        return uniq[k - 1] if 1 <= k <= len(uniq) else uniq[0]
+
+    def _describe_pictures(self, messages, adapter, params) -> list:
+        """PICTURE_DESCRIBE=1: one extra turn where the model describes the pictures, then the question again."""
+        ask = [*messages[:-1], {"role": "user", "content": _with_text(messages[-1]["content"], PICTURE_DESCRIBE_TEXT)}]
+        try:
+            desc = strip_think(self.backend.chat(ask, adapter, params)).strip()
+        except Exception:  # noqa: BLE001
+            log.exception("picture description failed")
+            return messages
+        if not desc:
+            return messages
+        return [*ask, {"role": "assistant", "content": desc},
+                {"role": "user", "content": "Teraz, korzystając z tego opisu i ilustracji, wykonaj polecenie z zadania."}]
+
     def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
               route: Route, category: Category, keys: Optional[list] = None) -> str:
         """Majority over the greedy answer plus sampled ones; ties go to the greedy answer.
@@ -426,6 +506,8 @@ class Router:
             messages[0]["content"] += "\n" + profile.prompt_suffix.strip()
         if category == Category.ESSAY and essay_target():
             messages[0]["content"] += "\n" + ESSAY_TARGET_TEXT.format(essay_target())
+        if images and self.vision and picture_describe() and category != Category.ESSAY:
+            messages = self._describe_pictures(messages, adapter, route.params)
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:
@@ -444,6 +526,8 @@ class Router:
             answer, raw = self._lengthen_essay(answer, raw, messages, adapter, route.params)
         if category == Category.ESSAY and essay_best_of() > 1:
             answer, raw = self._best_essay(answer, raw, messages, adapter, route.params)
+        if category in OPEN_CATS and open_best_of() > 1 and answer.strip():
+            answer, raw = self._best_open(answer, raw, messages, adapter, route.params)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
             answer = self._vote(answer, messages, adapter, route, category, keys)
         return RoutedAnswer(answer=answer, raw=raw,
