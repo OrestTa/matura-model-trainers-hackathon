@@ -1,0 +1,190 @@
+{
+  "name": "bielik15-q4-real-five-adapter-full-epoch-aligned-router-v1",
+  "offline": true,
+  "temperature": 0,
+  "seed": 42,
+  "vote_samples": 1,
+  "artifacts": {
+    "model": {
+      "repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+      "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+      "filename": "Bielik-1.5B-v3.0-Instruct-Q4_K_M.gguf",
+      "bytes": 972797408,
+      "sha256": "ea9cc250a6c65718c290fd963d8e3237b924ccfc7632f20a6127bba5904a50d9",
+      "role": "weights"
+    },
+    "closed_without_images": {
+      "filename": "artifacts/small_track/bielik15-real-full-epoch/adapters/closed_without_images/adapter-f16.gguf",
+      "bytes": 16135616,
+      "sha256": "56524f6945a3bdd4350054fda1f09dcf090d73df70c9d6a21dbf6d2063218631",
+      "role": "adapter",
+      "server_lora_id": 0
+    },
+    "essay": {
+      "filename": "artifacts/small_track/bielik15-real-full-epoch/adapters/essay/adapter-f16.gguf",
+      "bytes": 16135616,
+      "sha256": "174bafc0528fba9242b47079a847afe69570d8e919d9252e906ecefb8a0b1f3d",
+      "role": "adapter",
+      "server_lora_id": 4
+    },
+    "open_without_images": {
+      "filename": "artifacts/small_track/bielik15-real-full-epoch/adapters/open_without_images/adapter-f16.gguf",
+      "bytes": 16135616,
+      "sha256": "0f9a40d7077af3dc80eb38a367589990b190b1bb3a24d3794ca0e9edf8176645",
+      "role": "adapter",
+      "server_lora_id": 1
+    },
+    "closed_with_images": {
+      "filename": "artifacts/small_track/bielik15-real-full-epoch/adapters/closed_with_images/adapter-f16.gguf",
+      "bytes": 16135616,
+      "sha256": "d4e947f5a0623a723062020162c13e4ae6e012f17adc2a56c3b4635e38fc1507",
+      "role": "adapter",
+      "server_lora_id": 2
+    },
+    "open_with_images": {
+      "filename": "artifacts/small_track/bielik15-real-full-epoch/adapters/open_with_images/adapter-f16.gguf",
+      "bytes": 16135616,
+      "sha256": "4e5490a7ec0762a7a7f9d744a883b30d4c27d32afe488d94a9c2880cdc636469",
+      "role": "adapter",
+      "server_lora_id": 3
+    }
+  },
+  "routes": {
+    "closed_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "closed_without_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "closed_without_images",
+      "adapter_model": "bielik15"
+    },
+    "closed_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "closed_with_images"
+      ],
+      "lora": [
+        {
+          "id": 2,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "closed_with_images",
+      "adapter_model": "bielik15"
+    },
+    "open_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "open_without_images"
+      ],
+      "lora": [
+        {
+          "id": 1,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "open_without_images",
+      "adapter_model": "bielik15"
+    },
+    "open_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "open_with_images"
+      ],
+      "lora": [
+        {
+          "id": 3,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "open_with_images",
+      "adapter_model": "bielik15"
+    },
+    "essay": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "essay"
+      ],
+      "lora": [
+        {
+          "id": 4,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "essay",
+      "adapter_model": "bielik15"
+    }
+  },
+  "status": "Frozen candidate-only router label-alignment ablation; held2026 weak-label agreement34/38; score unmeasured; no2023/24 tuning",
+  "auxiliary_artifacts": [
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/pol.traineddata",
+      "bytes": 4765518,
+      "sha256": "c4476cdbc0e33d898d32345122b7be1cbf85ace15f920f06c7714756e1ef79b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/eng.traineddata",
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "artifacts/small_track/router-real-specialist-aligned-v1.json",
+      "bytes": 313604,
+      "sha256": "7b3c6c17031d7374f9597581b43d5b3f2e5344a2f176b72e3717738d97e9f0cf",
+      "role": "router"
+    }
+  ]
+}
