@@ -16,6 +16,7 @@ subtypes:
     raw: true
   open_image:
     name: base
+    think_tokens: 2000   # same reasoning cap as the frozen raw run (gemma4-12b-think): only the prompt differs
   essay:
     # length guard (Orest 22:13): an essay under 350 words is continued (under 300 scores 0)
     name: raw_len
