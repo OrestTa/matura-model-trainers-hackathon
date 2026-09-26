@@ -10,6 +10,11 @@ cheap.
 
 **New here? Start with [docs/HOWTO.md](docs/HOWTO.md).**
 
+## Hackathon operations
+
+- Live AWS GPU infrastructure notes: [infra/aws/AWS_INFRA.md](infra/aws/AWS_INFRA.md)
+- AWS automation scripts: [infra/aws/README.md](infra/aws/README.md)
+
 ```
 question ──► classifier ──► route (adapter + prompt + decoding) ──► base model + LoRA ──► post-process ──► answer
                  │                                                        ▲
