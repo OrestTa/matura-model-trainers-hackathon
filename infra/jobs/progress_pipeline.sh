@@ -48,6 +48,13 @@ DAPT_DIR=$(python -c "import yaml; print(yaml.safe_load(open('configs/models.yam
 # A DAPT that already ran without merging (DAPT_MERGE=0, e.g. the Grok bot's C-033 run): merge its adapter.
 # DAPT_ADAPTER points at an adapter trained elsewhere (e.g. a QLoRA run under runs/<job_id>/); a
 # QLoRA-on-NF4 adapter merges into the bf16 base the same way.
+# An --out-dir given as DAPT_ADAPTER works too (train_dapt.py writes <out-dir>/<model>/domain). An explicit
+# DAPT_ADAPTER that holds no adapter stops the chain instead of starting a fresh multi-hour DAPT.
+if [ -n "${DAPT_ADAPTER:-}" ]; then
+  [ -s "$DAPT_ADAPTER/adapter_config.json" ] || DAPT_ADAPTER="$DAPT_ADAPTER/bielik-11b-base/domain"
+  has 3 && [ ! -s "$DAPT_DIR/config.json" ] && [ ! -s "$DAPT_ADAPTER/adapter_config.json" ] &&
+    { step "progress: no DAPT adapter under DAPT_ADAPTER ($DAPT_ADAPTER)"; finish 1; }
+fi
 DAPT_ADAPTER=${DAPT_ADAPTER:-$WORK/adapters/bielik-11b-base/domain}
 has 3 && [ ! -s "$DAPT_DIR/config.json" ] && [ -s "$DAPT_ADAPTER/adapter_config.json" ] &&
   run merge-dapt python scripts/merge_dapt.py --model bielik-11b-base --adapter "$DAPT_ADAPTER" --merge-dir "$(dirname "$DAPT_DIR")"
