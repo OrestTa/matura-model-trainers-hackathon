@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sqlite3
 import sys
 import time
@@ -52,7 +53,13 @@ def shard_names(repo: str, path: str) -> list[str]:
 PREFILTER = (r"\b(wojn|bitw|król|cesarz|powstani|traktat|sejm|szlacht|rozbior|zabor|okupacj|"
              r"rewolucj|dynasti|średniow|starożyt|konstytucj|hetman|piastow|jagiell|prl\b|sanacj|"
              r"legion|insurekcj|konfederacj|pańszczyzn|reformacj)")
-SKIP_URL = ("wikipedia.org", "wikiwand.com", "wiki2.org", "wikizero")
+SKIP_URL = ("wikipedia.org", "wikiwand.com", "wiki2.org", "wikizero",
+            # Exam papers and answer keys (paraphrased keys slip past the 8-word overlap check
+            # and would make the eval score look better than the model is).
+            "cke.gov.pl", "oke.", "arkusze.pl", "matur")
+# A page about the matura that also carries answers/keys: skip it whatever the site.
+EXAM_PAGE = re.compile(r"matur\w*.{0,300}(klucz|odpowied|rozwiązan|arkusz|zasady oceniania)|"
+                       r"(klucz|odpowied|rozwiązan|arkusz|zasady oceniania).{0,300}matur", re.I | re.S)
 
 _SH = None
 
@@ -87,7 +94,7 @@ def shard(args):
     cand = t.filter(pc.greater_equal(hits, min_hits))
     rows = []
     for text, url in zip(cand["text"].to_pylist(), cand["url"].to_pylist()):
-        if any(s in (url or "") for s in SKIP_URL):
+        if any(s in (url or "") for s in SKIP_URL) or EXAM_PAGE.search(text):
             continue
         pars = [p.strip() for p in text.split("\n") if p.strip() and not P.overlaps(p, _SH)]
         s = P.history_score("", pars)

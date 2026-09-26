@@ -7,6 +7,28 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 13:55 UTC: GPU sharing, vLLM pin, corpus, Grok board (e5e4deb..fe8a197, 19 commits)
+
+- 39f533f / 38df1bc (vLLM pinned to 0.27.1 in common.sh and serve_exam.sh because later releases dropped
+  load-time bitsandbytes): OK. Install is under a flock so jobs sharing the venv don't race. serve_exam.sh now
+  reads rag.path from routes.yaml. Not verified here that 0.28 really dropped bnb; the pin is harmless either way.
+- 44fe287 / c5652b1 / 88ed0b5 (gpu_admit.py, run_baselines --gpu-budget-gb): OK. One server starts at a time,
+  admitted only when both the budget and the card's real free memory fit; reservations expire after 10 min;
+  failures release the budget. vLLM gets util = need / total, i.e. its own cap. Minor: a job that dies before
+  allocating keeps its reservation for up to 10 min (harmless, just slower admission).
+- 44187cc (bielik-11b-dapt in models.yaml): OK; skipped by MODELS=all until the path exists. Reminder: the
+  DAPT-merged model is our own fine-tune, so the progress-track baseline stays the untouched Bielik-11B, and the
+  shipped DAPT checkpoint must be re-quantized (bf16 merge is ~22 GB).
+- e5e4deb (FineWeb2-HQ history slice for DAPT/RAG; RL sets from PolQA CC BY-SA, Global-MMLU Apache-2.0, and
+  Wikipedia-generated year/order questions): licences fine, only scripts committed, 8-word overlap filter
+  against question/context/gold. Fixed (this commit): the web slice now also skips exam/answer-key pages
+  (cke.gov.pl, oke.*, arkusze.pl, any URL with "matur", and pages mentioning the matura together with
+  klucz/odpowiedzi/rozwiązania/arkusz). Such pages paraphrase the keys, slip past an 8-word check, and DAPT on
+  them would inflate our eval score. Any fineweb shards built before this commit should be rebuilt.
+- Grok commits 2d66ab0 (public board) and INSIGHTS.md: no secrets or IPs. The board now marks the fh/fh-v2 7B
+  MCQ scores (100% / 98.9%) as contamination risk, which is right: they are on its own training MCQs.
+- Status-only commits (docs/STATUS.md): consistent with the jobs described.
+
 ## 2026-09-26 13:05 UTC: 60567a7 (public board) and Grok audit issue #6
 
 - 60567a7 (public-board/, published to the public repo OrestTa/tarasiuk-lab-matura-status): no secrets or
