@@ -4,7 +4,7 @@
 #   MODEL=qwen3-0.6b GGUF_REPO=unsloth/Qwen3-0.6B-GGUF GGUF_FILE=Qwen3-0.6B-Q8_0.gguf \
 #     bash infra/jobs/cpu_score.sh
 # MODEL is a configs/models.yaml key (for routing/prompt settings); MODES (default raw,routed),
-# EVAL (default data/eval/matura.jsonl), TEXT_ONLY=1, JUDGE_URL/JUDGE_MODEL pass through.
+# EVAL (default data/eval/matura.jsonl), MODELS_CONFIG (default configs/models.yaml), TEXT_ONLY=1, JUDGE_URL/JUDGE_MODEL pass through.
 # GGUF_PATH=/path/model.gguf skips the download. Outputs in $OUT; last line "done (exit N)".
 set -uo pipefail
 REPO="${REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
@@ -39,6 +39,6 @@ curl -sf localhost:8000/v1/models >/dev/null || { tail "$OUT/cpu_serve.log"; exi
 
 step "scoring $MODEL (${MODES:-raw,routed})"
 python scripts/run_baselines.py --models "$MODEL" --base-url http://localhost:8000/v1 \
-  --modes "${MODES:-raw,routed}" --eval "${EVAL:-$REPO/data/eval/matura.jsonl}" --out "$OUT" \
+  --modes "${MODES:-raw,routed}" --models-config "${MODELS_CONFIG:-$REPO/configs/models.yaml}" --eval "${EVAL:-$REPO/data/eval/matura.jsonl}" --out "$OUT" \
   --concurrency 1 ${TEXT_ONLY:+--text-only} \
   ${JUDGE_URL:+--judge-url "$JUDGE_URL" --judge-model "${JUDGE_MODEL:-judge}"}
