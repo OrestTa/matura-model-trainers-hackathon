@@ -19,7 +19,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
 | sd1-b | selfdistill SHARD=b SAMPLES=4 SLOTS=16 | Nebius gpu-h100-sxm 1gpu-16vcpu-200gb | done | 2026-09-26 20:45 | 2026-09-26 21:48 | s3://matura-jobs-claude/out/sd1-b | Nebius runner |
-| sd1-a | selfdistill SHARD=a SAMPLES=4 SLOTS=16 | Nebius gpu-h100-sxm 1gpu-16vcpu-200gb | done | 2026-09-26 20:45 | 2026-09-26 21:48 | s3://matura-jobs-claude/out/sd1-a | Nebius runner |
+| sd1-a | selfdistill SHARD=a SAMPLES=4 SLOTS=16 | Nebius gpu-h100-sxm 1gpu-16vcpu-200gb | done | 2026-09-26 20:45 | 2026-09-26 21:53 | s3://matura-jobs-claude/out/sd1-a | Nebius runner |
 | gemma-lora-A1 | LoRA A 1 epoch: OUT (May 2023 Sol 24/60 vs base 40; essay loops) |  | done | 2026-09-26 20:26 | 2026-09-26 20:26 |  |  |
 | practice-l40s | harness: raw vs selected subtype config on probny-2026-01 + pokaz-2022-03, --all-essays, gemma4-12b-think | Forgehand L40S :8000 | running | 2026-09-26 20:26 | 2026-09-26 20:26 | results/subtype/practice-l40s | GPU box thread |
 | SD1 | LoRA SD1: self-distilled thinking targets from real past papers (no held-out, no probny), --think --vision, LR 5e-5, 2 ep; then eval vs base+essay-guard | Forgehand L40S :8090 | running | 2026-09-26 20:26 | 2026-09-26 20:26 | /scratch/out/SD1 | GPU box thread |
