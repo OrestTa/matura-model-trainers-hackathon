@@ -18,9 +18,12 @@ from deck_breakdown import breakdown  # noqa: E402
 # earned points per category; image mode is /60, text mode /55 (tasks 7, 8, 15 dropped)
 DECK = {
     # gemma-4-12b-vision.html: bf16, original page images, up to 8,192 thinking tokens (16,384 essay)
-    "gemma-4-12b": {"mode": "images /60", "closed": 10, "open": 24, "essay": 12, "text28": 24, "text30": 26, "total": 46},
+    # no text-mode (/55) run of Gemma 4 12B in the deck
+    "gemma-4-12b": {"mode": "images /60", "closed": 10, "open": 24, "essay": 12, "text28": 24, "text30": 26, "total": 46,
+                    "text55": None},
     # bielik-4-5b page: text mode /55
-    "bielik-4.5b": {"mode": "text /55", "closed": 6, "open": 15, "essay": 2, "text28": 12, "text30": 14, "total": 23},
+    "bielik-4.5b": {"mode": "text /55", "closed": 6, "open": 15, "essay": 2, "text28": 12, "text30": 14, "total": 23,
+                    "text55": 23},
 }
 ROWS = [("closed", "Closed /11"), ("open", "Open /34"), ("essay", "Essay /15"),
         ("text28", "Text-only /28"), ("text30", "Text + table /30"), ("total", "Total /60")]
@@ -48,6 +51,16 @@ def main():
         for _, b in runs:
             e = b[key][0]
             cells.append(f"{e:g} ({e - deck[key]:+g})")
+        print("| " + " | ".join(cells) + " |")
+    if not text_mode:
+        # The deck's text mode is a separate run: pictures replaced by written descriptions, tasks 7, 8, 15
+        # dropped. Ours here is only the same 34 items cut out of the picture run, so it is not the same run.
+        d = deck.get("text55")
+        cells = ["Text mode /55 (ours: picture run minus 7, 8, 15)", "not in deck" if d is None else f"{d:g}"]
+        for label, _ in runs:
+            items = json.load(open(dict(r.split("=", 1) for r in a.runs)[label]))["items"]
+            e = breakdown(items, text_mode=True)["total"][0]
+            cells.append(f"{e:g}" if d is None else f"{e:g} ({e - d:+g})")
         print("| " + " | ".join(cells) + " |")
 
 
