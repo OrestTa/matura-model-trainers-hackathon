@@ -66,7 +66,7 @@ def main() -> int:
     ap.add_argument("--eval", default=str(ROOT / "data/eval/matura_all.jsonl"))
     ap.add_argument("--grid", default=str(ROOT / "configs/subtype_grid.yaml"))
     ap.add_argument("--routes", default=str(DEFAULT_CONFIG))
-    ap.add_argument("--model", default="gemma4-12b", help="key in configs/models.yaml (vision, extra_body)")
+    ap.add_argument("--model", default="gemma4-12b-think8k", help="key in configs/models.yaml (vision, extra_body)")
     ap.add_argument("--papers", default="dev", choices=["dev", "heldout", "all"])
     ap.add_argument("--subtypes", default=",".join(SUBTYPES))
     ap.add_argument("--candidates", default="", help="comma list: only these candidate names")

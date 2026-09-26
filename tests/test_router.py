@@ -123,3 +123,28 @@ def test_closed_answers_are_majority_voted():
     raw = _Scripted(["A"])
     Router.from_config(backend=raw).answer("x", category=Category.CLOSED_CHOICE, mode="raw")
     assert len(raw.calls) == 1
+
+
+def test_subtype_profiles_budget_and_thinking():
+    from matura_router.backends import EchoBackend
+    from matura_router.categories import Category
+    from matura_router.router import Router
+    from matura_router.subtypes import Profile, subtype_of
+
+    assert subtype_of("closed_choice", False) == "closed_text"
+    assert subtype_of("true_false", True) == "closed_image"
+    assert subtype_of("source_analysis", True) == "open_image"
+    assert subtype_of("short_open", False) == "open_text"
+    assert subtype_of("essay", True) == "essay"
+    r = Router.from_config(backend=EchoBackend())
+    r.apply_model({"think_tokens": 8192, "think_tokens_by_type": {"essay": 16384}})
+    essay = r.routes[Category.ESSAY]
+    # the profile sets the reasoning budget itself: not added on top of the model entry's
+    rt = r.profile_route(essay, Profile(think_tokens=16384), Category.ESSAY)
+    assert rt.params.max_tokens == essay.params.max_tokens
+    assert rt.params.extra["chat_template_kwargs"]["enable_thinking"] is True
+    off = r.profile_route(essay, Profile(think=False), Category.ESSAY)
+    assert off.params.max_tokens == essay.params.max_tokens - 16384
+    assert off.params.extra["chat_template_kwargs"]["enable_thinking"] is False
+    res = r.answer("Napisz wypracowanie na temat unii lubelskiej.", mode="subtype")
+    assert res.subtype == "essay" and res.profile

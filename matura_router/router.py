@@ -72,6 +72,7 @@ class Router:
         self._available = backend.available_adapters()
         # mode "subtype": per-subtype setups (configs/subtypes.yaml, matura_router/subtypes.py)
         self.profiles: dict[str, Profile] = {}
+        self.think_added: dict[Category, int] = {}  # apply_model's reasoning budget per route
 
     @classmethod
     def from_config(cls, path: str | Path = DEFAULT_CONFIG,
@@ -151,7 +152,9 @@ class Router:
         by_type = spec.get("think_tokens_by_type") or {}   # e.g. {essay: 16384}: the essay thinks longer
         if extra or by_type:
             for cat, r in self.routes.items():
-                r.params.max_tokens += int(by_type.get(getattr(cat, "value", cat), extra))
+                add = int(by_type.get(getattr(cat, "value", cat), extra))
+                r.params.max_tokens += add
+                self.think_added[cat] = self.think_added.get(cat, 0) + add
         return self
 
     def resolve_adapter(self, category: Category) -> Optional[str]:
@@ -196,9 +199,11 @@ class Router:
         top = max(counts.values())
         return greedy if counts.get(key(greedy)) == top else next(a for a in answers if a and counts[key(a)] == top)
 
-    def profile_route(self, route: Route, p: Profile) -> Route:
-        """The category's route with a subtype profile's overrides applied."""
-        max_tokens = (p.max_tokens or route.params.max_tokens) + (p.think_tokens if p.think else 0)
+    def profile_route(self, route: Route, p: Profile, category: Category) -> Route:
+        """The category's route with a subtype profile's overrides applied. The profile sets the
+        reasoning budget itself, so the model entry's think_tokens isn't added twice."""
+        answer_tokens = route.params.max_tokens - self.think_added.get(category, 0)
+        max_tokens = (p.max_tokens or answer_tokens) + (p.think_tokens if p.think else 0)
         extra = {"chat_template_kwargs": {"enable_thinking": bool(p.think)}, **p.extra}
         params = GenerationParams(max_tokens,
                                   route.params.temperature if p.temperature is None else p.temperature,
@@ -221,7 +226,7 @@ class Router:
 
         subtype = subtype_of(category, bool(images))
         if mode == "subtype" and profile is None:
-            profile = self.profiles.get(subtype) or Profile(name="routed")
+            profile = self.profiles.get(subtype) or Profile(name="default", think_tokens=16384 if subtype == "essay" else 8192)
         if mode != "subtype":
             profile = None
 
@@ -234,7 +239,7 @@ class Router:
             cap = max(r.params.max_tokens for r in self.routes.values())
             route = Route(None, GenerationParams(cap, g.params.temperature, g.params.top_p))
         if profile is not None:
-            route = self.profile_route(route, profile)
+            route = self.profile_route(route, profile, category)
         if mode == "adapters":
             adapter = self.resolve_adapter(category)
         elif profile is not None and profile.adapter:

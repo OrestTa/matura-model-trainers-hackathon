@@ -1,13 +1,14 @@
 # Per-subtype setups for `--mode subtype` (matura_router/subtypes.py). One base model
 # (Gemma 4 12B QAT + mmproj); a subtype only changes how it is asked. Keys:
-#   think (Gemma 4 thinking, +think_tokens), max_tokens, temperature, votes (closed types),
-#   rag (Wikipedia BM25), ocr (OCR text next to the images), prompt_suffix, adapter (LoRA name).
+#   think (Gemma 4 thinking, default on) + think_tokens (reasoning budget, default 8192), max_tokens
+#   (answer budget), temperature, votes (closed types), rag (Wikipedia BM25), ocr (OCR text next
+#   to the images), prompt_suffix, adapter (LoRA name).
 # Chosen per subtype on the dev papers (not the held-out May 2023-2026) by
 # scripts/subtype_select.py from the scripts/subtype_sweep.py grid (configs/subtype_grid.yaml).
-# Until then: the plain routed setup with thinking off.
+# Until then: per-type prompt, thinking on with the deck budgets (8,192; essay 16,384), no votes.
 subtypes:
-  closed_text:  {name: base}
-  closed_image: {name: base}
+  closed_text:  {name: base, votes: 1}
+  closed_image: {name: base, votes: 1}
   open_text:    {name: base}
   open_image:   {name: base}
-  essay:        {name: base}
+  essay:        {name: base, think_tokens: 16384}

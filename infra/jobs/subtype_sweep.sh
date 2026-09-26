@@ -4,11 +4,11 @@
 # Light on purpose: no vLLM venv. Runs in the llama.cpp CUDA server image
 # (ghcr.io/ggml-org/llama.cpp:server-cuda, llama-server at /app/llama-server) or on any box
 # with LLAMA_SERVER set / buildable (infra/jobs/common.sh ensure_llama_server). Env:
-#   PAPERS=dev|heldout|all   SHARD=i/n   SLOTS=24   OUT=work/out/subtype-sweep
+#   PAPERS=dev|heldout|all   SHARD=i/n   SLOTS=16   OUT=work/out/subtype-sweep
 #   SWEEP_ARGS="--subtypes open_image --candidates base,think"   (passed through)
 set -uo pipefail
 cd "$(dirname "$0")/../.."
-MODEL="${MODEL:-gemma4-12b}"; PAPERS="${PAPERS:-dev}"; SHARD="${SHARD:-0/1}"; SLOTS="${SLOTS:-24}"
+MODEL="${MODEL:-gemma4-12b-think8k}"; PAPERS="${PAPERS:-dev}"; SHARD="${SHARD:-0/1}"; SLOTS="${SLOTS:-16}"
 OUT="${OUT:-work/out/subtype-sweep}"; mkdir -p "$OUT"
 exec > >(tee -a "$OUT/job.log") 2>&1
 step() { echo "== $(date -u +%H:%M:%S) $*"; }
@@ -41,7 +41,7 @@ PY
 
 step "llama-server, $SLOTS slots"
 "$LLAMA_SERVER" -m "$GGUF" --mmproj "$MMPROJ" --alias base --host 127.0.0.1 --port 8000 -ngl 999 \
-  --parallel "$SLOTS" -c $((SLOTS * 12288)) --jinja -fa on -ctk q8_0 -ctv q8_0 --no-webui \
+  --parallel "$SLOTS" -c $((SLOTS * 24576)) --jinja -fa on -ctk q8_0 -ctv q8_0 --no-webui \
   > "$OUT/llama-server.log" 2>&1 &
 SRV=$!
 trap 'kill $SRV 2>/dev/null' EXIT
