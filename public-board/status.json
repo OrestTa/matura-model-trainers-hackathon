@@ -1,32 +1,124 @@
 {
-  "updated": "2026-09-26T15:25:26+02:00",
+  "updated": "2026-09-26T16:38:45+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
     "matura_hack_grok": {
       "role": "Matura Hack (Grok Bot)",
       "highlights": [
-        "Bare Qwen2.5-7B-Instruct-AWQ stays the best legal CKE lane: 37.6% full / 38.9% text-only.",
-        "Measured AWQ pack is about 5.582 GB, inside the 8.0 GB base and 8.8 GB after-FT caps.",
-        "AWQ + forgehand fh LoRA (offline) scored 29.8% full / 32.1% text-only and is demoted from the Sunday path.",
-        "No secrets, keys, or private IPs are carried in the public refresh payload."
+        "Official mock (history-2023-mock-v1, 60 pts) is the standing gauge; CKE headline-auto is proxy-only.",
+        "Claude-graded official mock (committed): Bielik-4.5B FP8 24/60 = 40.0%; Qwen2.5-7B AWQ 11/60 = 18.3%.",
+        "Parallel Grok cloud grades on the same packs: Bielik-4.5B FP8 28/60 = 46.7%; AWQ 20/60 = 33.3% (harness OCR+essay_regen); E2E Qwen2.5-3B 15/60 = 25.0%.",
+        "CKE headline-auto 37.6% for bare 7B AWQ is unverified auto-scored (70 pts) — not a graded official mock.",
+        "Measured packs: AWQ ~5.58 GB; Bielik-4.5B FP8 ~4.90 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
+        "No secrets, keys, or private IPs in this public refresh."
       ]
     },
     "claude": {
       "role": "Claude Opus on trunk",
       "highlights": [
-        "Best-score tab now anchors on the legal AWQ baseline rather than the illegal bf16 comparator.",
-        "The fh offline stage remains visible as a completed regression, not a promoted Sunday pack candidate.",
-        "3B line still reads: base 26.7%, history-v2 28.3%, modal-v3 17.1%.",
-        "Sunday quality path: declare bare 7B AWQ if registration can still move; otherwise keep the current 3B declaration honest."
+        "Commit audit: relabel 37.6% as headline-auto; prefer Claude-graded official-mock rows in tracks.json.",
+        "C-013: mark official_mock_awq7b as harness (ocr_fallback + essay_regen), not untouched base.",
+        "Progress base must stay pretrained Bielik-11B-v2 NF4 (~6.7 GB), not Instruct-AWQ v3.",
+        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs."
+      ]
+    },
+    "history_ext_multi_year": {
+      "role": "History Ext multi-year",
+      "highlights": [
+        "May 2024/2025/2026 packs converted locally (exam.json+images); pack-aware harness --pack-dir smoke-tested; official mock remains only gauge; packs not published (CKE copyright)."
       ]
     }
   },
   "stages": [
     {
+      "id": "mock-bielik45-fp8-claude",
+      "sort": 5,
+      "name": "Official mock Bielik-4.5B FP8 (Claude)",
+      "model": "Bielik-4.5B FP8",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 40.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Claude-graded 24/60 vs CKE key; ~4.90 GB on-disk FP8 pack. Current best verified official-mock score under caps.",
+      "source": "results/tracks.json#g-official-mock-bielik45-fp8-claude"
+    },
+    {
+      "id": "mock-bielik45-fp8-grok",
+      "sort": 6,
+      "name": "Official mock Bielik-4.5B FP8 (Grok)",
+      "model": "Bielik-4.5B FP8",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "base_stage_id": "mock-bielik45-fp8-claude",
+      "overall_pct": 46.7,
+      "text_open": 63.6,
+      "text_closed": 75.0,
+      "image_open": 47.8,
+      "image_closed": 42.9,
+      "essay": 26.7,
+      "note": "Parallel Grok cloud judge on same answers; higher than Claude 40.0% — treat as secondary until judges reconcile.",
+      "source": "results/judged/official_mock_bielik45_fp8/"
+    },
+    {
+      "id": "mock-awq7b-claude",
+      "sort": 15,
+      "name": "Official mock 7B AWQ (Claude)",
+      "model": "Qwen2.5 7B AWQ",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "overall_pct": 18.3,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Claude-graded 11/60. Answers used OCR fallback + essay_regen (not untouched base).",
+      "source": "results/tracks.json#g-official-mock-awq7b-claude"
+    },
+    {
+      "id": "mock-awq7b-grok",
+      "sort": 16,
+      "name": "Official mock 7B AWQ (Grok)",
+      "model": "Qwen2.5 7B AWQ",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "base_stage_id": "mock-awq7b-claude",
+      "overall_pct": 33.3,
+      "text_open": 54.5,
+      "text_closed": 25.0,
+      "image_open": 26.1,
+      "image_closed": 28.6,
+      "essay": 33.3,
+      "note": "Parallel Grok cloud judge 20/60 on same harness answers; receipt 06f2b35d… still awaiting official LLM grading.",
+      "source": "results/judged/official_mock_awq7b/"
+    },
+    {
+      "id": "mock-e2e-3b-grok",
+      "sort": 18,
+      "name": "E2E 2023 mock Qwen2.5-3B (Grok)",
+      "model": "Qwen2.5 3B",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 25.0,
+      "text_open": 27.3,
+      "text_closed": 50.0,
+      "image_open": 21.7,
+      "image_closed": 42.9,
+      "essay": 13.3,
+      "note": "Primary Grok cloud judge 15/60; five-category split published. Claude secondary judge waiting on committed answers under results/grok/.",
+      "source": "results/judged/e2e_oneyear_2023_qwen25-3b/"
+    },
+    {
       "id": "cke-3b-base",
-      "sort": 10,
-      "name": "3B base",
+      "sort": 30,
+      "name": "3B CKE headline-auto",
       "model": "Qwen2.5 3B",
       "stage": "base",
       "status": "COMPLETED",
@@ -37,13 +129,13 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Legal honest baseline; per-category public splits are not published yet.",
+      "note": "Proxy only (70 auto-scored CKE pts). Not the official-mock gauge.",
       "source": "notes/TRACK01_BEST_SCORE.md"
     },
     {
       "id": "cke-3b-history-v2",
-      "sort": 20,
-      "name": "3B history-v2",
+      "sort": 40,
+      "name": "3B history-v2 CKE headline-auto",
       "model": "Qwen2.5 3B",
       "stage": "history-v2",
       "status": "COMPLETED",
@@ -54,13 +146,13 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Small public CKE lift over the 3B base.",
+      "note": "Proxy-only +1.6 vs 3B auto base.",
       "source": "notes/TRACK01_BEST_SCORE.md"
     },
     {
       "id": "cke-3b-modal",
-      "sort": 30,
-      "name": "3B modal-v3",
+      "sort": 50,
+      "name": "3B modal-v3 CKE headline-auto",
       "model": "Qwen2.5 3B",
       "stage": "modal-v3",
       "status": "COMPLETED",
@@ -71,13 +163,13 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Completed legal tuned pass, but it regresses versus the 3B base.",
+      "note": "Proxy-only regression vs 3B auto base.",
       "source": "notes/TRACK01_BEST_SCORE.md"
     },
     {
       "id": "cke-7b-awq-base",
-      "sort": 40,
-      "name": "7B AWQ base",
+      "sort": 60,
+      "name": "7B AWQ CKE headline-auto",
       "model": "Qwen2.5 7B AWQ",
       "stage": "base",
       "status": "COMPLETED",
@@ -88,13 +180,13 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Best legal baseline so far; measured pack about 5.582 GB.",
-      "source": "notes/TRACK01_BEST_SCORE.md"
+      "note": "UNVERIFIED auto-scored 70-pt subset only. Official mock Claude grade is 18.3%. Do not treat as Sunday proof.",
+      "source": "results/tracks.json#g-7b-awq"
     },
     {
       "id": "cke-7b-awq-fh-offline",
-      "sort": 50,
-      "name": "7B AWQ + fh LoRA (offline)",
+      "sort": 70,
+      "name": "7B AWQ + fh LoRA CKE headline-auto",
       "model": "Qwen2.5 7B AWQ",
       "stage": "fh-offline",
       "status": "COMPLETED",
@@ -105,7 +197,7 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Legal run, but it regresses versus the bare AWQ base; demoted from the Sunday pack.",
+      "note": "Proxy-only; regresses vs AWQ auto base; demoted.",
       "source": "notes/TRACK01_BEST_SCORE.md"
     }
   ],
@@ -115,11 +207,13 @@
       "title": "Best matura score",
       "goal": "Highest honest Sunday exam score under the 8.0 GB base / 8.8 GB after-FT caps.",
       "status": "RUNNING",
-      "summary": "Bare 7B AWQ is the current legal leader at 37.6%; the AWQ + fh offline pass regressed to 29.8% and is shown as demoted rather than promoted.",
+      "summary": "Best verified official-mock score is Bielik-4.5B FP8 at 40.0% (Claude). Grok parallel 46.7% on same pack. Prior 37.6% AWQ figure is headline-auto only and demoted.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
+            "mock-bielik45-fp8-claude",
+            "mock-e2e-3b-grok",
             "cke-3b-base",
             "cke-7b-awq-base"
           ]
@@ -127,6 +221,9 @@
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-bielik45-fp8-grok",
+            "mock-awq7b-claude",
+            "mock-awq7b-grok",
             "cke-3b-history-v2"
           ]
         },
@@ -144,11 +241,12 @@
       "title": "Best progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
       "status": "RUNNING",
-      "summary": "3B history-v2 is the only public positive lift so far (+1.6); the AWQ + fh offline pass is -7.8 below its legal base and remains demoted.",
+      "summary": "Progress base locked to pretrained Bielik-11B-v2 NF4 (~6.66 GB ship.json), now admitting on Forgehand. Proxy-only 3B history-v2 remains +1.6 on CKE auto.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
+            "mock-e2e-3b-grok",
             "cke-3b-base",
             "cke-7b-awq-base"
           ]
@@ -172,27 +270,29 @@
       "id": "maly-ale-wariat",
       "title": "Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
-      "status": "BLOCKED",
-      "summary": "No ≤3B public run has cleared 35% yet; 7B AWQ at about 5.582 GB is still the current legal benchmark.",
+      "status": "RUNNING",
+      "summary": "Bielik-4.5B FP8 (~4.90 GB) cleared 40.0% Claude-graded official mock — first legal ≤8 GB pack past 35% on the gauge. E2E 3B is 25.0% Grok.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "cke-3b-base",
-            "cke-7b-awq-base"
+            "mock-bielik45-fp8-claude",
+            "mock-e2e-3b-grok",
+            "cke-3b-base"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
-            "cke-3b-history-v2"
+            "mock-bielik45-fp8-grok",
+            "mock-awq7b-claude"
           ]
         },
         {
           "title": "Best post-training / improvement stages",
           "stage_ids": [
-            "cke-3b-modal",
-            "cke-7b-awq-fh-offline"
+            "cke-3b-history-v2",
+            "cke-3b-modal"
           ]
         }
       ]
@@ -200,46 +300,58 @@
   ],
   "jobs": [
     {
-      "id": "cke-7b-awq-base",
-      "name": "CKE 7B AWQ base",
+      "id": "mock-bielik45-fp8",
+      "name": "Official mock Bielik-4.5B FP8",
       "state": "COMPLETED",
-      "detail": "37.6% full / 38.9% text-only; measured pack ~5.582 GB"
+      "detail": "Claude 40.0% / Grok 46.7%; ~4.90 GB FP8 pack"
+    },
+    {
+      "id": "mock-awq7b",
+      "name": "Official mock 7B AWQ harness",
+      "state": "COMPLETED",
+      "detail": "Claude 18.3% / Grok 33.3%; receipt awaiting_grading"
+    },
+    {
+      "id": "e2e-oneyear-2023-3b",
+      "name": "E2E 2023 mock Qwen2.5-3B",
+      "state": "COMPLETED",
+      "detail": "Grok primary 15/60=25.0% with five categories; Claude secondary needs committed answers"
+    },
+    {
+      "id": "cke-7b-awq-base",
+      "name": "CKE 7B AWQ headline-auto",
+      "state": "COMPLETED",
+      "detail": "37.6% auto-only / 38.9% text-only; NOT official-mock proof"
     },
     {
       "id": "cke-7b-awq-fh-offline",
-      "name": "CKE 7B AWQ + fh LoRA (offline)",
+      "name": "CKE 7B AWQ + fh LoRA headline-auto",
       "state": "COMPLETED",
-      "detail": "29.8% full / 32.1% text-only; regression vs bare AWQ, demoted"
+      "detail": "29.8% auto-only; demoted"
     },
     {
-      "id": "cke-3b-history-v2",
-      "name": "CKE 3B history-v2",
-      "state": "COMPLETED",
-      "detail": "28.3% / 31.3%; small lift vs 3B base"
+      "id": "progress-base-raw",
+      "name": "Progress base Bielik-11B-v2 NF4",
+      "state": "RUNNING",
+      "detail": "Legal ~6.66 GB ship.json admitting on L40S :8100"
     },
     {
-      "id": "cke-3b-base",
-      "name": "CKE 3B base",
-      "state": "COMPLETED",
-      "detail": "26.7% / 27.4%"
-    },
-    {
-      "id": "cke-3b-modal",
-      "name": "CKE 3B modal-v3",
-      "state": "COMPLETED",
-      "detail": "17.1% / 23.0%; regression vs base"
+      "id": "gemma4-vision",
+      "name": "Gemma-4-12B vision baselines",
+      "state": "RUNNING",
+      "detail": "llama.cpp :8101; ~7.16 GB disk"
     },
     {
       "id": "size-cap",
       "name": "Size cap hard 8.0/8.8",
       "state": "ACTIVE",
-      "detail": "Base <=8.0 GB; after FT <=8.8 GB; AWQ fits, fh offline still legal but not promoted"
+      "detail": "Quantized on-disk pack size is the rule; bf16-only oversize stays illegal"
     },
     {
       "id": "qwen-7b-bf16",
       "name": "Qwen 7B bf16 comparator",
       "state": "BLOCKED",
-      "detail": "37.1% / 40.1%; research-only because the base is over the Sunday cap"
+      "detail": "37.1% auto; research-only over Sunday cap"
     }
   ],
   "mcq": {
@@ -283,7 +395,8 @@
     "max_base_disk_gb": 8.0,
     "max_after_ft_gb": 8.8,
     "exam": "fully offline Sunday",
-    "registration_base": "registered 3B today; 7B AWQ only if registration can still be updated",
+    "gauge": "official mock history-2023-mock-v1 (60 pts); CKE headline-auto is proxy-only",
+    "registration_base": "registered 3B today; declare Sunday base only after Orest picks (Bielik-4.5 FP8 is strongest verified mock so far)",
     "matura_all": "512 items / 789 pts"
   },
   "links": {
@@ -295,6 +408,16 @@
   "parallel": {
     "gpu": "current Forgehand L40S shared session",
     "mps": true,
-    "scheduler": "scripts/gpu_parallel_jobs.sh"
+    "scheduler": "scripts/gpu_admit.py + docs/STATUS.md"
+  },
+  "audit": {
+    "size_cap_conflicts": [
+      "docs/STATUS.md tip still lists queued Bielik-11B bf16 DAPT/train/shootout rows; keep cancel_requested and do not re-admit bf16 bases.",
+      "Bielik-11B-v2 NF4 ~6.66 GB is legal; Instruct-AWQ v3 must not be filed as the progress base."
+    ],
+    "score_conflicts": [
+      "Grok vs Claude official-mock totals disagree on identical answers (AWQ 33.3 vs 18.3; Bielik 46.7 vs 40.0).",
+      "Board shows both; Claude rows marked verified in tracks.json; Grok primary for E2E 3B until Claude secondary lands."
+    ]
   }
 }
