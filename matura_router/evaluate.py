@@ -39,7 +39,11 @@ def evaluate(router: Router, rows: list[dict], mode: str = "adapters",
     def one(row):
         forced = Category(row["category"]) if use_gold_category and row.get("category") else None
         try:
-            res = router.answer(row["question"], row.get("context", ""), category=forced, mode=mode)
+            # Vision models get the item's PNGs (fetch_matura.py --images); the context already
+            # holds a placeholder per picture for text models.
+            images = tuple(row.get("images") or ()) if router.vision else ()
+            res = router.answer(row["question"], row.get("context", ""), category=forced, mode=mode,
+                                images=images)
             out = {"id": row["id"], **res.to_dict()}
         except Exception as e:  # noqa: BLE001 - one bad row shouldn't kill a baseline run
             out = {"id": row["id"], "answer": "", "raw": "", "category": None,

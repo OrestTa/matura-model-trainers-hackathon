@@ -109,6 +109,8 @@ def main() -> int:
     ap.add_argument("--config", default=str(DEFAULT_CONFIG))
     ap.add_argument("--mode", default="adapters", choices=["raw", "routed", "rag", "adapters"])
     ap.add_argument("--concurrency", type=int, default=8)
+    ap.add_argument("--model", help="key in configs/models.yaml: its `vision` flag overrides routes.yaml "
+                                    "(the model serve_exam.sh started)")
     ap.add_argument("--log", help="per-item log (jsonl); default <out>.log.jsonl")
     args = ap.parse_args()
 
@@ -121,6 +123,13 @@ def main() -> int:
     router = Router.from_config(args.config)
     if args.mode == "raw" and not bare_model_ok(router):
         return 1
+    if args.model:
+        import yaml
+        spec = yaml.safe_load((Path(__file__).resolve().parent.parent / "configs/models.yaml")
+                              .read_text())["models"][args.model]
+        if "vision" in spec:
+            router.vision = bool(spec["vision"])
+    print(f"vision: {router.vision}", file=sys.stderr)
 
     def one(item):
         t0 = time.perf_counter()

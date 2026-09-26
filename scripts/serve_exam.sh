@@ -52,8 +52,11 @@ if [ "$SERVER" = llamacpp ]; then
   # Same flags as run_baselines.py start_llamacpp: 16 slots of 8192 tokens. Adapters would be
   # GGUF LoRAs (--lora); none are trained for the GGUF bases yet.
   [ ${#LORA[@]} -gt 0 ] && echo "WARNING: PEFT adapters are ignored on llama.cpp"
+  MMPROJ=()   # vision projector: run_exam.py --model $MODEL then sends the exam's PNGs
+  [ "$(spec vision)" = True ] && [ -n "$(spec mmproj_file)" ] && MMPROJ=(--mmproj "$(HF_HUB_OFFLINE=1 python -c \
+    "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec mmproj_file)'))")")
   CUDA_VISIBLE_DEVICES="${GPU:-0}" "$LLAMA_SERVER" -m "$CHECKPOINT" --alias base --host 127.0.0.1 \
-    --port 8000 -ngl 999 --parallel 16 -c 131072 --jinja -fa on --no-webui > work/exam-vllm.log 2>&1 &
+    --port 8000 -ngl 999 --parallel 16 -c 131072 --jinja -fa on --no-webui "${MMPROJ[@]}" > work/exam-vllm.log 2>&1 &
 else
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
   ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
@@ -64,5 +67,5 @@ until curl -sf http://127.0.0.1:8000/v1/models >/dev/null; do
   kill -0 $VLLM 2>/dev/null || { echo "vLLM died, see work/exam-vllm.log"; exit 1; }
   sleep 5
 done
-echo "ready: python scripts/run_exam.py <package dir> -o answers.json (in another shell)"
+echo "ready: python scripts/run_exam.py <package dir> --model $MODEL -o answers.json (in another shell)"
 python -m matura_router serve --port "${ROUTER_PORT:-8080}"

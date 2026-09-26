@@ -128,7 +128,7 @@ def code_tarball(extra):
         for m in src.getmembers():
             out.addfile(m, src.extractfile(m) if m.isfile() else None)
         for rel in extra:
-            if os.path.isfile(os.path.join(REPO, rel)):
+            if os.path.exists(os.path.join(REPO, rel)):  # a file, or a dir such as data/eval/images
                 out.add(os.path.join(REPO, rel), arcname=rel)
     return buf.getvalue()
 
@@ -169,7 +169,7 @@ def main():
         rel = os.path.relpath("/workspace", root) if root.startswith("/") else "/workspace"
         rel = "" if rel == "." else rel + "/"  # Jupyter rejects "./" and hidden (dot) paths
         tar = code_tarball(["data/eval/matura.jsonl", "data/eval/matura_all.jsonl", "data/train/synthetic.jsonl",
-                               "data/train/past_papers.jsonl"])
+                               "data/train/past_papers.jsonl", "data/eval/images"])
         j.sh(f"mkdir -p {rel}work/upload")
         j.put_file(f"{rel}work/upload/{name}.tar.gz", tar)
         env_s = " ".join(shlex.quote(e) for e in env)

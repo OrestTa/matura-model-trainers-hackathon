@@ -99,6 +99,11 @@ PAPERS = {
 HEADLINE = [p for p, v in PAPERS.items() if v["formula"] == 2023 and v["kind"] == "main"]
 
 IMG = "[ilustracja – niedostępna w wersji tekstowej]"
+IMG_ID = re.compile(r"\[ilustracja – niedostępna w wersji tekstowej #(\d+)\]")  # pdf_lines' numbered marker
+
+
+def is_img(ln: str) -> bool:
+    return ln == IMG or bool(IMG_ID.fullmatch(ln))
 
 # ---------------------------------------------------------------- download / text
 
@@ -116,11 +121,13 @@ def download(url: str, dest: Path) -> Path:
     return dest
 
 
-def pdf_lines(path: Path, mark_images: bool) -> list[str]:
-    """Text lines in reading order, with IMG markers where large pictures sit."""
+def pdf_lines(path: Path, mark_images: bool, image_dir: Path | None = None) -> list[str]:
+    """Text lines in reading order, with IMG markers where large pictures sit. With image_dir,
+    each picture is also saved as <image_dir>/<pdf stem>-NNN.png and its marker carries #NNN."""
     import pymupdf
 
     out: list[str] = []
+    n = 0
     for page in pymupdf.open(path):
         h = page.rect.height
         imgs = []
@@ -129,8 +136,18 @@ def pdf_lines(path: Path, mark_images: bool) -> list[str]:
                 x0, y0, x1, y1 = info["bbox"]
                 # Skip logos, barcodes and the margin score boxes.
                 if (x1 - x0) * (y1 - y0) > 4000 and y0 < h * 0.93 and (x1 - x0) > 60:
-                    imgs.append(y0)
-        imgs.sort()
+                    imgs.append((y0, pymupdf.Rect(info["bbox"])))
+        imgs.sort(key=lambda t: t[0])
+        marks = []
+        for _, rect in imgs:
+            if image_dir is None:
+                marks.append(IMG)
+                continue
+            n += 1
+            image_dir.mkdir(parents=True, exist_ok=True)
+            page.get_pixmap(clip=rect & page.rect, dpi=150).save(str(image_dir / f"{path.stem}-{n:03d}.png"))
+            marks.append(f"[ilustracja – niedostępna w wersji tekstowej #{n:03d}]")
+        imgs = [y for y, _ in imgs]
         for block in page.get_text("dict")["blocks"]:
             if block["type"] != 0:
                 continue
@@ -140,9 +157,9 @@ def pdf_lines(path: Path, mark_images: bool) -> list[str]:
                 # Page headers/footers come first in content order; don't anchor pictures to them.
                 while imgs and imgs[0] <= y and h * 0.07 < y < h * 0.93:
                     imgs.pop(0)
-                    out.append(IMG)
+                    out.append(marks.pop(0))
                 out.append(text)
-        out.extend(IMG for _ in imgs)
+        out.extend(marks)
     return out
 
 
@@ -166,7 +183,7 @@ def clean(lines: list[str]) -> list[str]:
         ln = re.sub(r"\s{2,}", " ", ln).strip()
         if not ln or ln == "…" or JUNK_RE.search(ln):
             continue
-        if ln == IMG and out and out[-1] == IMG:
+        if ln == IMG and out and out[-1] == IMG:  # numbered markers stay: each is its own picture
             continue
         out.append(ln)
     return out
@@ -180,7 +197,7 @@ def join(lines: list[str]) -> str:
     """Re-flows lines the PDF wrapped mid-sentence; keeps list items and labels on their own lines."""
     out: list[str] = []
     for ln in lines:
-        if out and not BREAK_BEFORE.match(ln) and out[-1] != IMG and ln != IMG \
+        if out and not BREAK_BEFORE.match(ln) and not is_img(out[-1]) and not is_img(ln) \
                 and not re.search(r"[:.;!?…]$", out[-1]) and len(out[-1]) > 40:
             if out[-1].endswith("-") and ln.startswith("-"):   # CKE's "polsko-\n-krzyżackie"
                 out[-1] = out[-1] + ln[1:]
@@ -434,8 +451,24 @@ def short_keywords(solution: str) -> list[list[str]] | None:
     return [group] if group and all(len(a.split()) <= 6 for a in group) else None
 
 
-def build_row(paper: str, url: str, it: dict, key: dict | None) -> dict:
+def strip_ids(text: str, image_dir: Path | None, stem: str) -> tuple[str, list[str]]:
+    """Numbered markers -> the plain placeholder (consecutive ones merged, as before), plus the
+    PNG paths they stood for, relative to the repo root."""
+    paths = []
+    if image_dir is not None:
+        for num in IMG_ID.findall(text):
+            f = image_dir / f"{stem}-{num}.png"
+            paths.append(str(f.relative_to(ROOT)) if f.is_relative_to(ROOT) else str(f))
+    text = IMG_ID.sub(IMG, text)
+    text = re.sub(rf"({re.escape(IMG)})(\n{re.escape(IMG)})+", r"\1", text)
+    return text, paths
+
+
+def build_row(paper: str, url: str, it: dict, key: dict | None, image_dir: Path | None = None,
+              stem: str = "") -> dict:
     ctx, q = join(it["context"]), join(it["question"])
+    ctx, ctx_imgs = strip_ids(ctx, image_dir, stem)
+    q, q_imgs = strip_ids(q, image_dir, stem)
     full = ctx + "\n" + q
     solution = key["solution"] if key else ""
     cat = detect_category(q, ctx, it["points"], solution)
@@ -468,6 +501,8 @@ def build_row(paper: str, url: str, it: dict, key: dict | None) -> dict:
     m = re.search(r"Rozstrzygnięcie:\s*(.+)", solution)
     if m:
         row["decision"] = m[1].strip()
+    if ctx_imgs or q_imgs:
+        row["images"] = ctx_imgs + q_imgs   # PNGs of the pictures, for vision models (--images)
     row.update({
         "needs_image": bool(needs_image),
         "visuals": visuals,
@@ -488,18 +523,18 @@ def build_row(paper: str, url: str, it: dict, key: dict | None) -> dict:
 # ---------------------------------------------------------------- main
 
 
-def build(paper: str, raw: Path) -> list[dict]:
+def build(paper: str, raw: Path, image_dir: Path | None = None) -> list[dict]:
     urls = PAPERS[paper]
     ark = download(urls["arkusz"], raw / f"{paper}-arkusz.pdf")
     zas = download(urls["zasady"], raw / f"{paper}-zasady.pdf")
-    items = paper_items(clean(pdf_lines(ark, mark_images=True)))
+    items = paper_items(clean(pdf_lines(ark, mark_images=True, image_dir=image_dir)))
     keys = key_items(clean(pdf_lines(zas, mark_images=False)))
     # CKE sometimes numbers the essay differently in the key (2025: item 25, key 26).
     missing = [it for it in items if it["task"] not in keys]
     spare = [k for k in keys if k not in {it["task"] for it in items}]
     if len(missing) == 1 and len(spare) == 1 and keys[spare[0]]["points"] == missing[0]["points"]:
         keys[missing[0]["task"]] = keys.pop(spare[0])
-    rows = [build_row(paper, urls["arkusz"], it, keys.get(it["task"])) for it in items]
+    rows = [build_row(paper, urls["arkusz"], it, keys.get(it["task"]), image_dir, ark.stem) for it in items]
     total = sum(r["points"] for r in rows)
     missing = [it["task"] for it in items if it["task"] not in keys]
     extra = sorted(set(keys) - {it["task"] for it in items})
@@ -569,13 +604,16 @@ def main() -> None:
     ap.add_argument("--text-only", action="store_true", help="drop items that need an image")
     ap.add_argument("--keep-duplicates", action="store_true",
                     help="keep formuła 2015 items that repeat a formuła 2023 item (the 2023/2024 papers share tasks)")
+    ap.add_argument("--images", nargs="?", const=str(ROOT / "data/eval/images"),
+                    help="save the papers' pictures as PNGs here (default data/eval/images) and list them "
+                         "per item in `images`, for vision models; CKE content, so not committed")
     ap.add_argument("--report", help="also write the per-paper table (markdown) here")
     args = ap.parse_args()
 
     papers = SETS.get(args.papers) or [p.strip() for p in args.papers.split(",")]
     rows = []
     for p in papers:
-        rows += build(p, Path(args.raw_dir))
+        rows += build(p, Path(args.raw_dir), Path(args.images).resolve() if args.images else None)
     rows = mark_duplicates(rows)
     if not args.keep_duplicates:
         rows = [r for r in rows if "duplicate_of" not in r]

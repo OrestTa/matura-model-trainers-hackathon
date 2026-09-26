@@ -29,6 +29,7 @@ models:
   # checkpoint, 6.19 GB on disk (HF API, measured), not gated, loads natively in vLLM
   # (compressed-tensors, no --quantization flag). Leaves 2.6 GB for adapters under 8.8 GB.
   bielik-11b-v3:
+    vision: false
     hf_id: speakleash/Bielik-11B-v3.0-Instruct-awq
     train_hf_id: speakleash/Bielik-11B-v3.0-Instruct   # bf16, gated (auto-approve): needs HF_TOKEN
     params_b: 11.2
@@ -39,9 +40,11 @@ models:
   gemma4-12b:
     hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
     gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true      # the exam sends PNGs; eval rows carry them with fetch_matura.py --images
     server: llamacpp
     params_b: 12.0
-    disk_gb: 6.98
+    disk_gb: 7.16     # 6.98 model + 0.18 mmproj
     gpu_gb: 14
   # Qwen3.5 9B (Feb 2026) at Q6_K GGUF, 7.46 GB, on llama.cpp.
   qwen3.5-9b:

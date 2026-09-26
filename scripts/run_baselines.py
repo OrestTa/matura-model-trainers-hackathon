@@ -84,6 +84,9 @@ def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
            "--alias", "base", "--host", "127.0.0.1", "--port", str(port), "-ngl", "999",
            "--parallel", str(slots), "-c", str(slots * int(vcfg.get("max_model_len", 8192))),
            "--jinja", "-fa", "on", "--no-webui"] + list(spec.get("llamacpp_args", []))
+    if spec.get("vision") and spec.get("mmproj_file"):  # the vision projector, a second GGUF
+        from huggingface_hub import hf_hub_download
+        cmd += ["--mmproj", hf_hub_download(spec["hf_id"], spec["mmproj_file"])]
     env = {**os.environ, "CUDA_VISIBLE_DEVICES": gpu}
     log_path.parent.mkdir(parents=True, exist_ok=True)
     log(f"[{key}] GPU {gpu}: {' '.join(cmd)}")
@@ -120,6 +123,8 @@ def run_model(key: str, spec: dict, base_url: str, rows: list[dict], args) -> No
     backend = OpenAICompatBackend(base_url=base_url, base_model="base",
                                   extra_body=spec.get("extra_body"))
     router = Router.from_config(args.routes, backend=backend)
+    if "vision" in spec:  # models.yaml decides whether this model sees the pictures
+        router.vision = bool(spec["vision"])
     if "rag" in args.modes and router.retriever is None:
         sys.exit("mode rag needs the knowledge base in configs/routes.yaml (rag.path); "
                  "without it rag = routed and the comparison measures nothing")
