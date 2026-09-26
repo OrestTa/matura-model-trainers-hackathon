@@ -52,6 +52,8 @@ class Profile:
     rag: bool = False                  # Wikipedia BM25 passages before the task
     ocr: bool = False                  # vision model: add the pictures' OCR text next to the images
     prompt_suffix: str = ""            # appended to the category's system prompt
+    min_words: int = 0                 # essay length guard: an answer shorter than this is continued
+                                       # (CKE scores an essay under 300 words 0; base writes 296-369)
     extra: dict = field(default_factory=dict)  # merged into the request body
 
     @classmethod

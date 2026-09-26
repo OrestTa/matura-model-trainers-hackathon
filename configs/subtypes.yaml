@@ -14,4 +14,9 @@ subtypes:
     name: ocr
     ocr: true
   essay:
-    name: base
+    # Length guard (Orest, 22:13 CEST): aim at ~400 words; under 350 the model continues the essay
+    # (an essay under 300 words scores 0; the base wrote 296-369). Format-only wording, no klucz text.
+    name: base_len
+    think_tokens: 16384
+    min_words: 350
+    prompt_suffix: "Zacznij od numeru wybranego tematu (Temat nr X). Celuj w około 400 słów: wstęp z tezą, co najmniej trzy argumenty poparte faktami, datami i postaciami, kontrargument lub ocenę oraz zakończenie z wnioskiem. Pisz tylko na wybrany temat."

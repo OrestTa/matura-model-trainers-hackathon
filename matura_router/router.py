@@ -212,6 +212,30 @@ class Router:
         top = max(counts.values())
         return greedy if counts.get(key(greedy)) == top else next(a for a in answers if a and counts[key(a)] == top)
 
+    def _lengthen(self, answer: str, messages: list[dict], adapter: Optional[str], route: Route,
+                  category: Category, min_words: int, tries: int = 2) -> str:
+        """Essay length guard: while the answer is under min_words, ask the same model to continue
+        it (same topic, no repetition) and append the continuation. Format-only instruction."""
+        for _ in range(tries):
+            n = len(answer.split())
+            if n >= min_words:
+                break
+            more = [*messages, {"role": "assistant", "content": answer},
+                    {"role": "user", "content": (
+                        f"Twoja wypowiedź ma {n} słów, a musi mieć co najmniej {min_words}. Kontynuuj ją "
+                        "od miejsca, w którym się kończy: dopisz kolejne akapity argumentacji z konkretnymi "
+                        "faktami, datami i postaciami oraz zakończenie z wnioskiem. Nie powtarzaj tego, co "
+                        "już napisano, nie zaczynaj od nowa i nie dodawaj komentarzy. Podaj tylko dalszy tekst.")}]
+            try:
+                cont = postprocess(category, self.backend.chat(more, adapter, route.params), [])
+            except Exception:  # noqa: BLE001 - keep the answer we have
+                log.exception("essay continuation failed")
+                break
+            if not cont.strip():
+                break
+            answer = f"{answer.rstrip()}\n\n{cont.strip()}"
+        return answer
+
     def profile_route(self, route: Route, p: Profile, category: Category) -> Route:
         """The category's route with a subtype profile's overrides applied. The profile sets the
         reasoning budget itself, so the model entry's think_tokens isn't added twice."""
@@ -306,6 +330,8 @@ class Router:
 
         keys = keyed_format(question) if mode != "raw" else []
         answer = strip_think(raw) if mode == "raw" else postprocess(category, raw, keys)
+        if mode != "raw" and profile is not None and profile.min_words:
+            answer = self._lengthen(answer, messages, adapter, route, category, profile.min_words)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
             answer = self._vote(answer, messages, adapter, route, category, keys)
         return RoutedAnswer(answer=answer, raw=raw,

@@ -169,3 +169,26 @@ def test_keyed_answer_format():
     assert conform_keyed("nie wiem", keys) == "nie wiem"
     assert keyed_format("Podaj nazwę.\nTekst po polsku.") == []
     assert answer_format_text("A") == "Format odpowiedzi: tylko litera (litery) wybranej odpowiedzi."
+
+
+def test_essay_length_guard():
+    """A short essay is continued until it passes min_words; a long one is left alone."""
+    from matura_router.backends import EchoBackend
+    from matura_router.router import Router
+    from matura_router.subtypes import Profile
+
+    class Short(EchoBackend):
+        calls = 0
+
+        def chat(self, messages, adapter=None, params=None):
+            Short.calls += 1
+            return " ".join(["słowo"] * 200)
+
+    r = Router.from_config(backend=Short())
+    res = r.answer("Napisz wypracowanie na temat unii lubelskiej.", mode="subtype",
+                   profile=Profile(name="essay_len", min_words=350))
+    assert len(res.answer.split()) >= 350 and Short.calls == 2
+    Short.calls = 0
+    res = r.answer("Napisz wypracowanie na temat unii lubelskiej.", mode="subtype",
+                   profile=Profile(name="essay_len", min_words=150))
+    assert Short.calls == 1
