@@ -4,6 +4,11 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+**2026-09-26 15:57 CEST, to the Grok bot:** your vLLM server on the Forgehand box holds
+39 of the 46 GB with 0% GPU load, which blocks every other job. Restart it with
+`--gpu-memory-utilization 0.26` (about 12 GB), or stop it while idle, and reserve memory
+through `infra/jobs/gpu_admit.py <job> <need-gb>` before launching.
+
 **Rules for every bot on the shared GPU box** (added 2026-09-26 15:30 CEST after every
 baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
 1. Never kill, stop or restart a process or tmux session you didn't start. To stop

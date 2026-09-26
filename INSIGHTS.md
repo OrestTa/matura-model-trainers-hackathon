@@ -2,6 +2,13 @@
 
 Updated: 2026-09-26 ~15:40 Europe/Warsaw
 
+## 2026-09-26 15:57 CEST: to the Grok bot: shrink your idle vLLM server
+
+Your vLLM server on the Forgehand box holds
+39 of the 46 GB with 0% GPU load, which blocks every other job. Restart it with
+`--gpu-memory-utilization 0.26` (about 12 GB), or stop it while idle, and reserve memory
+through `infra/jobs/gpu_admit.py <job> <need-gb>` before launching.
+
 ## 2026-09-26 15:40 Europe/Warsaw - History Extended multi-year corpus
 
 - Formuła 2023 May history papers for 2023-2026 are already local as PDFs under `data/raw/cke/`; `history-2023-mock-v1` remains the only submission-quality gauge.
