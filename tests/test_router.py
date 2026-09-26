@@ -192,3 +192,23 @@ def test_essay_length_guard():
     res = r.answer("Napisz wypracowanie na temat unii lubelskiej.", mode="subtype",
                    profile=Profile(name="essay_len", min_words=150))
     assert Short.calls == 1
+
+
+def test_raw_passthrough_profile_sends_the_raw_request():
+    """A `raw: true` subtype sends exactly the request --mode raw sends (dry diff of request bodies)."""
+    from matura_router.backends import EchoBackend
+    from matura_router.router import Router
+    from matura_router.subtypes import Profile
+
+    seen = []
+
+    class Rec(EchoBackend):
+        def chat(self, messages, adapter=None, params=None):
+            seen.append((messages, adapter, params))
+            return "Odpowiedź."
+
+    r = Router.from_config(backend=Rec())
+    q = "Wyjaśnij, dlaczego doszło do unii lubelskiej."
+    r.answer(q, "Źródło.", mode="raw")
+    r.answer(q, "Źródło.", mode="subtype", profile=Profile(name="raw", raw=True))
+    assert seen[0] == seen[1]

@@ -310,6 +310,11 @@ class Router:
             profile = self.profiles.get(subtype) or Profile(name="default", think_tokens=16384 if subtype == "essay" else 8192)
         if mode != "subtype":
             profile = None
+        guard = profile.min_words if profile is not None else 0
+        name = profile.name if profile is not None else None
+        if profile is not None and profile.raw:
+            # passthrough: exactly the request --mode raw sends (the frozen baseline), plus the length guard
+            mode, profile = "raw", None
 
         route = self.routes.get(category) or self.routes[Category.GENERAL]
         if mode == "raw":
@@ -376,8 +381,8 @@ class Router:
 
         keys = keyed_format(question) if mode != "raw" else []
         answer = strip_think(raw) if mode == "raw" else postprocess(category, raw, keys)
-        if mode != "raw" and profile is not None and profile.min_words:
-            answer = self._lengthen(answer, messages, adapter, route, category, profile.min_words)
+        if guard:
+            answer = self._lengthen(answer, messages, adapter, route, category, guard)
         if category == Category.ESSAY and essay_min_words():
             answer, raw = self._lengthen_essay(answer, raw, messages, adapter, route.params)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
@@ -386,4 +391,4 @@ class Router:
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,
                             latency_s=round(time.perf_counter() - t0, 3), retrieved=retrieved,
-                            subtype=subtype, profile=profile.name if profile else None)
+                            subtype=subtype, profile=name)

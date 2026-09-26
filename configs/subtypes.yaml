@@ -2,22 +2,22 @@
 # papers (not the held-out May 2023-2026) by scripts/subtype_select.py from the
 # configs/subtype_grid.yaml sweep in sweep dev-all, sweep dev-z4, sweep dev-w2, margin 1.0 pts.
 subtypes:
+  # Frozen 26 Sep 22:25 CEST. Raw passthrough (the exact --mode raw request) everywhere except open
+  # picture questions: on held-out the routed prompt beat raw there (36/53 vs 30/54, subtype-hog) and the
+  # 2023-25 full grading (+6), while OCR notes on top lost (-6.5/100 on 26 paired items).
   closed_text:
-    name: base
-    votes: 1
+    name: raw
+    raw: true
   closed_image:
-    name: base
-    votes: 1
+    name: raw
+    raw: true
   open_text:
-    name: base
+    name: raw
+    raw: true
   open_image:
-    # Dev picked OCR notes (+5.6 on 14 paired items) but the held-out sweep (subtype-hog, 26 Sep) had it
-    # at -6.5 on 26 paired items: noise on dev, so plain think stays.
     name: base
   essay:
-    # Length guard (Orest, 22:13 CEST): aim at ~400 words; under 350 the model continues the essay
-    # (an essay under 300 words scores 0; the base wrote 296-369). Format-only wording, no klucz text.
-    name: base_len
-    think_tokens: 16384
+    # length guard (Orest 22:13): an essay under 350 words is continued (under 300 scores 0)
+    name: raw_len
+    raw: true
     min_words: 350
-    prompt_suffix: "Zacznij od numeru wybranego tematu (Temat nr X). Celuj w około 400 słów: wstęp z tezą, co najmniej trzy argumenty poparte faktami, datami i postaciami, kontrargument lub ocenę oraz zakończenie z wnioskiem. Pisz tylko na wybrany temat."
