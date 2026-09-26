@@ -15,280 +15,389 @@
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "3.1",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "3.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "4",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "5.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "5.2",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "6",
    "max_points": 2.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "7",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "8.1",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "8.2",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "9",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "10",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "11.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "11.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "12.1",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "12.2",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "12.3",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "13",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "14.1",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "14.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "15.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "15.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "16.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "16.2",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "17.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "17.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "18",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "19.1",
    "max_points": 2.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "19.2",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "20.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "20.2",
    "max_points": 2.0,
    "sol_points": 2.0,
    "points": 2.0,
-   "raw": "2"
+   "raw": "2",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "21",
    "max_points": 1.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "400 Client Error: Bad Request for url: <url>"
+   "raw": "400 Client Error: Bad Request for url: <url>",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "22.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "22.2",
    "max_points": 2.0,
    "sol_points": 2.0,
    "points": 2.0,
-   "raw": "2"
+   "raw": "2",
+   "picture_item": false,
+   "image_checked": null
   },
   {
    "id": "23.1",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "23.2",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "24",
    "max_points": 1.0,
    "sol_points": 1.0,
    "points": 1.0,
-   "raw": "1"
+   "raw": "1",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "25",
    "max_points": 3.0,
    "sol_points": 0.0,
    "points": 0.0,
-   "raw": "0"
+   "raw": "0",
+   "picture_item": true,
+   "image_checked": false
   },
   {
    "id": "26",
    "max_points": 15.0,
    "sol_points": 5.0,
    "points": 5.0,
-   "raw": "5"
+   "raw": "5",
+   "picture_item": true,
+   "image_checked": false
   }
+ ],
+ "text_total": 10.0,
+ "text_max": 17.0,
+ "picture_items_not_image_checked": [
+  "1",
+  "2",
+  "4",
+  "5.1",
+  "6",
+  "8.2",
+  "9",
+  "10",
+  "11.1",
+  "12.1",
+  "12.3",
+  "13",
+  "14.1",
+  "14.2",
+  "16.1",
+  "17.1",
+  "18",
+  "19.1",
+  "19.2",
+  "21",
+  "23.1",
+  "23.2",
+  "24",
+  "25",
+  "26"
  ]
 }
