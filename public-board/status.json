@@ -1,26 +1,25 @@
 {
-  "updated": "2026-09-26T13:18:10.447428+02:00",
+  "updated": "2026-09-26T13:46:08+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers \u2014 Polish history matura",
   "tracks": {
     "matura_hack_grok": {
       "role": "Matura Hack (Grok Bot)",
       "highlights": [
-        "Forgehand 7B LoRA fh + fh-v2 COMPLETED on L40S",
-        "History MCQ: 1.5B 53.3%\u219285.6% modal; 3B 56.7%\u219275.6% history-v2 / 94.4% modal-v3 (train-set contaminated)",
-        "CKE headline eval 154/240 running on L40S",
-        "Honest bare geo practice ~4/15 (filed 14/15 was harness)",
-        "Adversarial COMMIT_AUDIT filed as issue #6"
+        "PARALLEL wave on one L40S (MPS + budgeted scheduler): 3 concurrent CKE jobs",
+        "MCQ 7B: base 76.7%, fh 100%, fh-v2 98.9% (fh* likely train-overlap)",
+        "Live: CKE 3B base (relaunched) + CKE 3B modal-v3 + CKE 7B base \u224828GiB/46GiB",
+        "labqoat Bielik vLLM PAUSED; resume with util\u22640.65 or exclusive GPU"
       ]
     },
     "claude": {
       "role": "Claude Opus on trunk",
       "highlights": [
-        "matura_router + fetch_matura; matura_all 573 items / 860 pts",
-        "Organizers OK with 8.9 GB base weights (LoRA excluded)",
-        "quantize_checkpoint.py NF4 + serve_exam.sh offline harness",
-        "Completion-only SFT, leak filter, staggered expert harness plan",
-        "STATUS job board + FINDINGS on main"
+        "gpu_admit.py \u2014 share L40S by free GB (not exclusive card)",
+        "dapt-prep CPU: plwiki/Wikisource/Wolne Lektury \u2192 Bielik-11B DAPT",
+        "Queue: labqoat-baselines \u2192 train-bielik \u2192 router-ablation",
+        "matura_all = 512 items / 789 pts (dup EHIP dropped); headline May 23\u201326",
+        "MODELS=all skips -bf16; AWS needs AWS_REENABLED=1"
       ]
     }
   },
@@ -33,25 +32,59 @@
     {
       "id": "fh-7b-v2",
       "name": "Forgehand 7B LoRA fh-v2",
+      "state": "COMPLETED"
+    },
+    {
+      "id": "mcq-7b-base",
+      "name": "MCQ 7B base",
       "state": "COMPLETED",
-      "detail": "2000 steps, mean_loss\u22480.067"
+      "detail": "69/90 = 76.7%"
     },
     {
-      "id": "hist-eval",
-      "name": "History/CKE eval queue",
+      "id": "mcq-7b-fh",
+      "name": "MCQ 7B fh",
+      "state": "COMPLETED",
+      "detail": "90/90 = 100% (contam risk)"
+    },
+    {
+      "id": "mcq-7b-fh-v2",
+      "name": "MCQ 7B fh-v2",
+      "state": "COMPLETED",
+      "detail": "89/90 = 98.9% (contam risk)"
+    },
+    {
+      "id": "cke-3b-base",
+      "name": "CKE 3B base",
       "state": "RUNNING",
-      "detail": "cke_1.5b_base on L40S"
+      "detail": "relaunched after PGID kill; ~6.4GiB"
     },
     {
-      "id": "aws",
-      "name": "AWS GPU burn",
-      "state": "PARKED"
+      "id": "cke-3b-modal",
+      "name": "CKE 3B modal-v3",
+      "state": "RUNNING",
+      "detail": "~6.6GiB parallel"
+    },
+    {
+      "id": "cke-7b-base",
+      "name": "CKE 7B base",
+      "state": "RUNNING",
+      "detail": "~15.2GiB parallel"
+    },
+    {
+      "id": "gpu-parallel",
+      "name": "gpu_parallel_jobs scheduler",
+      "state": "RUNNING",
+      "detail": "MPS + reserved budgets"
+    },
+    {
+      "id": "labqoat",
+      "name": "labqoat Bielik vLLM",
+      "state": "PAUSED"
     },
     {
       "id": "specialists",
       "name": "Specialist LoRAs",
-      "state": "BLOCKED",
-      "detail": "need per-format datasets"
+      "state": "BLOCKED"
     }
   ],
   "mcq": {
@@ -70,26 +103,63 @@
     "3b_history_v2": {
       "pct": 75.6,
       "n": "68/90",
-      "note": "contaminated"
+      "note": "contaminated \u2014 not matura"
     },
     "3b_modal_v3": {
       "pct": 94.4,
       "n": "85/90",
-      "note": "contaminated"
+      "note": "contaminated \u2014 not matura"
+    },
+    "7b_base": {
+      "pct": 76.7,
+      "n": "69/90",
+      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
+    },
+    "7b_fh": {
+      "pct": 100.0,
+      "n": "90/90",
+      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
+    },
+    "7b_fh_v2": {
+      "pct": 98.9,
+      "n": "89/90",
+      "note": "COMPLETED \u2014 same 90-MCQ train set; not matura proof"
     },
     "7b_family": {
-      "pct": null,
-      "note": "queued on L40S"
+      "base_pct": 76.7,
+      "base_n": "69/90",
+      "fh_pct": 100.0,
+      "fh_n": "90/90",
+      "fh_note": "train-overlap risk",
+      "fh_v2_pct": 98.9,
+      "fh_v2_n": "89/90",
+      "fh_v2_note": "train-overlap risk"
     }
   },
   "constraints": {
     "max_base_disk_gb": 8.9,
     "exam": "fully offline Sunday",
-    "registration_base": "Qwen2.5-3B-Instruct"
+    "registration_base": "pick declared 3B vs 7B (CA-08)",
+    "matura_all": "512 items / 789 pts"
   },
   "links": {
     "repo": "https://github.com/OrestTa/matura-model-trainers-hackathon",
     "audit_issue": "https://github.com/OrestTa/matura-model-trainers-hackathon/issues/6",
-    "leaderboard": "https://warsawmodeltrainers.dev/matura.html"
+    "leaderboard": "https://warsawmodeltrainers.dev/matura.html",
+    "public_board": "https://orestta.github.io/tarasiuk-lab-matura-status/"
+  },
+  "parallel": {
+    "gpu": "Forgehand L40S 46068 MiB single session",
+    "mps": true,
+    "scheduler": "scripts/gpu_parallel_jobs.sh",
+    "reserve_mib": 4096,
+    "live_slots": [
+      "cke_3b_base~6.4GiB",
+      "cke_3b_modal_v3~6.6GiB",
+      "cke_7b_base~15.2GiB"
+    ],
+    "used_mib_approx": 28255,
+    "sandbox_3080": "unreachable on e35e7288",
+    "mcq_7b_done": true
   }
 }
