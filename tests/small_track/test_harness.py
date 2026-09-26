@@ -54,3 +54,17 @@ class HarnessTests(unittest.TestCase):
     def test_router_and_ocr_bytes_counted(self):
         config=self.config();config['auxiliary_artifacts']=[{'sha256':'e'*64,'bytes':7,'role':'router'},{'sha256':'f'*64,'bytes':11,'role':'ocr'}]
         self.assertEqual(harness.validate_config(config)['sum_unique_artifact_bytes'],152)
+
+    def test_aggregate_cap_includes_auxiliary_weights(self):
+        config=self.config()
+        config['artifacts']['base']['bytes']=8_800_000_000-34
+        self.assertEqual(harness.validate_config(config)['sum_unique_artifact_bytes'],8_800_000_000)
+        config['auxiliary_artifacts']=[{'sha256':'e'*64,'bytes':1,'role':'router'}]
+        with self.assertRaisesRegex(ValueError,'8.8 GB'):
+            harness.validate_config(config)
+
+    def test_auxiliary_hash_cannot_hide_larger_weight(self):
+        config=self.config()
+        config['auxiliary_artifacts']=[{'sha256':'a'*64,'bytes':1,'role':'router'}]
+        with self.assertRaisesRegex(ValueError,'Inconsistent bytes'):
+            harness.validate_config(config)

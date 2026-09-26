@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bounded, resumable candidate-only inference against our own model server.
 
-Never sends grading keys. Metadata/hash fields make results auditable by Astra.
+Never sends grading keys. Metadata/hash fields make results auditable by the configured evaluator.
 Uses stdlib only, so the same runner works on every GPU provider.
 """
 from __future__ import annotations
@@ -59,6 +59,8 @@ def answer(row, args, config_hash):
     payload = {"model": args.model, "messages": prompt, "temperature": getattr(args,"temperature",0), "seed":getattr(args,"seed",42),
                "max_tokens": args.essay_tokens if essay else args.max_tokens,
                "chat_template_kwargs": {"enable_thinking": False}}
+    if getattr(args,"lora",None) is not None:
+        payload["lora"] = args.lora
     out = {"id": row["id"], "paper_id": row.get("paper", row.get("paper_id")),
            "task_id": row.get("task", row["id"]), "model": args.model,
            "config_sha256": config_hash, "input_sha256": sha(row),

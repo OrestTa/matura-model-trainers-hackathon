@@ -2,12 +2,51 @@
 
 ## Active smallest-model experiment (user instructions, 2026-09-26)
 
+- Latest training-data instruction: stop synthetic fine-tuning. Collect the
+  latest approximately 20 real history Matura main-session papers (target
+  2007–2026) with official solution keys and original images, recording provenance
+  and missing coverage honestly. All new Bielik specialist and classifier training
+  uses real-exam data only; no synthetic papers or generated answer targets.
+  Exclude evaluated 2023/2024 papers and preserve reserved 2015/2016 holdouts.
+  Official keys may supply training targets but never candidate inference input.
+  Keep prior synthetic-trained artifacts historical and outside the new candidate.
+  Prefer downloaded official essay exemplars to generated essays. The user allows
+  Astra synthesis as a fallback for insufficient essay data, not as a judge;
+  keep any such targets separately labeled and exclude evaluation prompts.
+  OCR is route-specific: classify first and apply OCR only to closed-with-images
+  and open-with-images routes, never text-only or essay routes.
+  The user explicitly approved the pending bounded real-data Bielik training
+  launch after the heartbeat-only approval rejection; execute under normal
+  approval controls, fresh credit checks and the stated one-L4/600s bound.
+  The user subsequently authorized using the reported remaining $10 Nebius
+  credits and explicitly running our jobs alongside Claude on the shared GPU VM.
+  Verify current balance and free GPU memory; isolate paths, ports and processes,
+  bound our memory/time allocation, and never kill or modify Claude's workloads.
+  This authorizes continuing the remaining image-specialist jobs under normal
+  approval controls. Investigate Solari only if a configured provider is found.
+  Latest user instruction is to use the verified remainder of Nebius credit,
+  then the shared GPU VM, and continue until completion. This supersedes the
+  original delivery-time stopping rule. Preserve bounded jobs, no cash top-ups,
+  and Claude's running workloads; do not stop merely because the old deadline passed.
+
+- Latest optimization target: Bielik-1.5B-v3.0-Instruct Q4_K_M, 972,797,408
+  bytes, improved from a below-threshold baseline. Build five genuinely trained
+  question-type specialists plus one learned classifier; use actual offline OCR
+  for closed-image and open-image routes. Prefer shared-base adapters if native
+  training/export compatibility is verified; count all deployed bytes. Prompt
+  variants alone are not five trained models. Retain the passing Qwen vision
+  baseline as reference. New specialist work supersedes the earlier 20:00
+  exploratory cutoff. Always report model name, quantization and total GB.
+
 - User clarified that wrap-up means achieve the result, not stop jobs. Resume
   bounded useful inference, training and Forgehand judging toward the smallest
   model scoring at least 35% on a complete official paper. Conserve remaining
   credits by reusing valid completed artifacts and prioritizing promising runs.
-  Latest user instruction: Forgehand `gpt-6-luna` is the primary judge going forward.
-  This supersedes earlier Sol-only instructions. No Astra judging or
+  Latest user instruction: use `gpt-6-luna` through the user's own ChatGPT Codex
+  plan for ALL new grading, with original images where relevant. This supersedes
+  Forgehand-only and hybrid grading instructions. No new Forgehand judging calls.
+  The user explicitly authorizes transmitting frozen answers, official rubrics
+  and original images to their own Codex Luna for evaluation. No Astra judging or
   assistant adjudication. Historical judgments retain their original provenance.
   The completed blinded Luna/Sol pilot showed essay variability. Predeclare
   consistent essay repeat checks; retain the first mark and flag disagreement,
@@ -19,8 +58,13 @@
   images; append locally derived OCR separately with provenance. No current
   answer key, rubric or judge feedback in candidate prompts, retrieval or routing.
   Previous official keys may supervise training, with evaluated papers excluded.
+- Organizer clarification relayed by the user: the smallest-model track uses
+  the same exam as everyone else, including images. Prepare local OCR alongside
+  genuine visual inference; OCR cannot replace understanding maps, portraits or
+  diagrams. Evaluate the OCR addition against the unchanged direct-vision baseline
+  before claiming an improvement. Include OCR weights in the aggregate size.
 - Inference must be offline: package OCR, router and answering weights locally.
-  External Forgehand calls are post-inference evaluation only. Train the router
+  External judge calls are post-inference evaluation only. Train the router
   on candidate features and training labels; do not use answer quality or test
   keys to route an evaluation question. Report weak-label agreement honestly.
 - Implement three distinct seeded samples and strict two-of-three lexical voting.
@@ -32,10 +76,15 @@
   User subsequently explicitly authorized pushing our own branch from this
   isolated worktree. Push only `codex/small-model-offline-harness`; no fetch,
   main-branch push, force push or modifications to Claude's original worktree.
-- The largest deployed model determines the user's size objective. Keep answering
-  and vision specialists in a similar size tier; tiny routing/OCR models are fine.
-  The proposed 8B fallback is cancelled. Report maximum individual model size
-  primarily and total packaged weight bytes separately, including visual projectors.
+- Organizer clarification relayed by the user: all models in the SAME submission
+  share a TOTAL weight limit of 8 GB + 10% margin (8,800,000,000 bytes, using
+  conservative decimal GB). This supersedes the previous maximum-model rule.
+  Minimize total unique deployed weight bytes: answering models, vision weights,
+  required projectors, OCR and learned routers. Distinct quantizations count
+  separately; a genuinely shared identical weight file counts once. Repeated
+  inference/voting with the same weights does not add another copy to the total.
+  Report aggregate size primarily and reject oversized bundles before launch.
+  The proposed 8B fallback remains cancelled.
 - User authorizes model recovery copies to their Hugging Face account with their
   supplied key. Default to private repositories; preserve license, upstream pinned
   revision and checksums. Verify identity/access and successful upload before
@@ -64,7 +113,7 @@
   Claude is independently using the original checkout. Do not edit its files.
 - The user authorizes autonomous cloud inference, generating 100 new synthetic
   exams, and supervised fine-tuning near-threshold small models. Use agents
-  heavily; Forgehand gpt-6-luna is the evaluator. Providers' verified credits fund bounded
+  heavily; the user's own Codex gpt-6-luna is the evaluator. Providers' verified credits fund bounded
   useful runs; do not top up or allow unbounded cash spillover.
 - Collect official history main-session papers and keys for 2017–2026. They are
   development/synthesis sources. Additional 2015–2016 papers are excluded from
@@ -75,13 +124,18 @@
   shipped weight bytes and maximum individual-model bytes for specialist setups.
 - Never send rubric/answer-key rows to candidate inference. Synthetic training
   inputs and supervised answers must remain distinct; use assistant-only loss.
-- Grade real exam submissions with primary Forgehand `gpt-6-luna` against the official CKE answer
+- Grade real exam submissions with the user's own Codex `gpt-6-luna` against the official CKE answer
   key and scoring rubric. Preserve uncertain marks as unresolved. Synthetic
   teacher/reviewer quality checks are not official exam grades.
-- Use the existing authorized Forgehand team API credential, with frozen answers
-  and official keys/rubrics. Do not send prior marks to the judge. Do not average
+- Use frozen answers and official keys/rubrics, plus original images for visual
+  tasks. Do not send prior marks to the judge. Do not average
   historical judges or relabel old results. Image-dependent uncertainty remains
-  unresolved if the gateway cannot accept the required images; no Astra fallback.
+  unresolved when the judge cannot inspect required evidence; no Astra fallback.
+- The user now authorizes the Forgehand GPU VM as a fallback if compute credits
+  run out elsewhere or a provider has problems. This supersedes the earlier ban
+  on using it. Check Claude's active workload and available GPU memory first;
+  isolate our paths, processes and ports. Do not stop, replace or alter Claude's
+  jobs or shared artifacts. Queue work if concurrent execution cannot fit safely.
 - Every score report includes all five route breakdowns, base versus optimized
   scores and delta (or not measured), and the matching Ania slide reference.
   Do not imply a controlled comparison when inputs or denominators differ.
@@ -123,9 +177,10 @@
   coverage and denominator for scores used in model selection.
 - Training-set accuracy and partial grading do not establish a full-exam pass.
   Use held-out papers and paired bare/harness/adapter comparisons.
-- The PDF says each base model's weights as run must fit within 8 GB on disk;
-  LoRA and the RAG knowledge base are excluded. Measure serialized artifacts.
-  Repo notes mention an 8.9 GB concession; preserve this unresolved discrepancy.
+- Historical PDF wording and repo notes about 8.9 GB are superseded by the user's
+  organizer update above: aggregate all models in one submission within 8.8 GB.
+  Measure serialized artifacts; conservatively include deployed learned weights
+  unless an explicit organizer exemption is confirmed.
 - Freeze untouched baseline configurations. For multiple inference models, the
   PDF defines the progress baseline as the best individual bare model.
 - During exam answering, use own offline weights and local knowledge/tools only.

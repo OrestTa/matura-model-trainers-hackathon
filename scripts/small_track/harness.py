@@ -12,6 +12,7 @@ import classifier
 from official_format import validate_exam
 
 LABELS = {'closed_without_images', 'closed_with_images', 'open_without_images', 'open_with_images', 'essay'}
+MAX_SUBMISSION_WEIGHT_BYTES = 8_800_000_000
 
 
 def artifact_summary(config):
@@ -33,10 +34,16 @@ def artifact_summary(config):
         model_totals[route.get('base_model', route['model'])].update({h:a for h,a in components.items() if a.get('role') != 'adapter'})
     for artifact in config.get('auxiliary_artifacts',[]):
         if len(artifact.get('sha256',''))!=64 or not isinstance(artifact.get('bytes'),int) or artifact['bytes']<=0:raise ValueError('Auxiliary artifact must be measured')
+        if artifact['sha256'] in unique and unique[artifact['sha256']]['bytes'] != artifact['bytes']:
+            raise ValueError('Inconsistent bytes for identical artifact hash')
         unique[artifact['sha256']]=artifact
     complete = all(route.get('artifacts') for route in config['routes'].values())
+    total = sum(a['bytes'] for a in unique.values())
+    if total > MAX_SUBMISSION_WEIGHT_BYTES:
+        raise ValueError('Combined deployed weights exceed the 8.8 GB submission limit')
     return {'measurement_complete': complete,
-            'sum_unique_artifact_bytes': sum(a['bytes'] for a in unique.values()) if complete else None,
+            'sum_unique_artifact_bytes': total if complete else None,
+            'submission_weight_limit_bytes': MAX_SUBMISSION_WEIGHT_BYTES,
             'sum_unique_weights_and_vision_bytes': sum(a['bytes'] for a in unique.values() if a.get('role') != 'adapter') if complete else None,
             'max_individual_model_bytes': max((sum(a['bytes'] for a in m.values()) for m in model_totals.values()), default=0) if complete else None,
             'note': 'Vision components included; adapters reported in total artifacts. Unmeasured configurations cannot establish smallest-model eligibility.'}
@@ -67,7 +74,7 @@ def run_row(row, config, config_hash, image_root):
         image_root=image_root, timeout=route.get('timeout', 180),
         max_tokens=route.get('max_tokens', 768), essay_tokens=route.get('essay_tokens', 2400),
         system_prompt=route.get('system_prompt'), user_suffix=route.get('user_suffix'),
-        temperature=config.get('temperature',0), seed=config.get('seed',42), offline=config.get('offline',False))
+        temperature=config.get('temperature',0), seed=config.get('seed',42), offline=config.get('offline',False), lora=route.get('lora'))
     vote_count=config.get('vote_samples',1)
     if vote_count not in (1,3):raise ValueError('vote_samples must be1or3')
     samples=[]
@@ -130,6 +137,7 @@ def main():
     if args.offline:config['offline']=True
     sizes = validate_config(config)
     rows = load_rows(args.input)
+    original_contexts={r['id']:r.get('context','') for r in rows}
     if args.ocr:
         import subprocess,sys
         derived=Path(args.output).with_suffix('.ocr-input.jsonl');raw=derived.with_suffix('.original.jsonl')
@@ -144,6 +152,12 @@ def main():
         for row in rows:row.update(train_router.predict(row,router_model))
         config['trained_router_sha256']=hashlib.sha256(Path(args.router_model).read_bytes()).hexdigest()
         config.setdefault('auxiliary_artifacts',[]).append({'sha256':config['trained_router_sha256'],'bytes':Path(args.router_model).stat().st_size,'role':'router'})
+    if args.ocr:
+        for row in rows:
+            if row['subtype'] not in {'closed_with_images','open_with_images'}:
+                row['context']=original_contexts[row['id']];row.pop('ocr_refs',None)
+        config['ocr_applied_ids']=[r['id'] for r in rows if r['subtype'] in {'closed_with_images','open_with_images'}]
+        config['ocr_policy']='Only learned/rule classified closed_with_images and open_with_images receive OCR'
     if len({r['id'] for r in rows}) != len(rows):
         ap.error('duplicate task IDs')
     for row in rows:

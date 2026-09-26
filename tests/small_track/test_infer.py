@@ -46,3 +46,17 @@ def test_offline_disables_proxy_and_redirect(monkeypatch):
     module.answer({'id':'x','question':'Q','points':1},args,'hash')
     assert captured[0].proxies=={}
     with pytest.raises(ValueError):captured[1].redirect_request(None,None,302,'redirect',{},'https://external.invalid')
+
+
+def test_explicit_lora_selection_reaches_own_server(monkeypatch):
+    import io, json
+    from types import SimpleNamespace
+    captured=[]
+    def open_request(req, timeout):
+        captured.append(json.loads(req.data))
+        return io.BytesIO(json.dumps({'choices':[{'message':{'content':'A'}}]}).encode())
+    monkeypatch.setattr(module.urllib.request,'urlopen',open_request)
+    args=SimpleNamespace(model='owned',mode='bare',images=False,image_root='.',offline=False,base_url='http://127.0.0.1:8080/v1',essay_tokens=10,max_tokens=10,timeout=1,lora=[{'id':2,'scale':1.0}])
+    result=module.answer({'id':'x','question':'Q','points':1},args,'hash')
+    assert captured[0]['lora']==[{'id':2,'scale':1.0}]
+    assert result['answer']=='A'
