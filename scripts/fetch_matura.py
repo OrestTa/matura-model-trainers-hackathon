@@ -163,7 +163,7 @@ _EXTRA = {
                     "arkusz": f"{A15}/2008/hist_pr.pdf",
                     "zasady": f"{A15}/2008/hist_pr_rozw.pdf"},
     # 2009 key is one PDF for both levels: poziom podstawowy pp. 1-18, poziom rozszerzony from p. 19.
-    "f05-2009-05": {"formula": 2005, "kind": "main",
+    "f05-2009-05": {"formula": 2005, "kind": "main", "key_from_page": 19,
                     "arkusz": f"{A15}/2009/historia_pr.pdf",
                     "zasady": f"{A15}/2009/KLUCZE/historia.pdf"},
     "f05-2010-05": {"formula": 2005, "kind": "main",
@@ -633,6 +633,434 @@ def build_row(paper: str, url: str, it: dict, key: dict | None, image_dir: Path 
     return row
 
 
+# ---------------------------------------------------------------- formuła 2005 ("stara matura")
+# Task headers read "Zadanie 5. (2 pkt)". In the source-analysis part the sources ("Źródło A", ...) are
+# printed once, and each task names the ones it uses in a line just above its header ("na podstawie
+# źródeł B i C"). The answer keys come in three layouts: a table with a task-number column (2005-2006
+# Arkusz II and the 2005/2006 mocks), the paper itself with the answers printed in blue (May 2006-2008),
+# and "Zadanie 5. (0–2)" sections much like formuła 2015 (2009 onward).
+
+HEADER05 = re.compile(r"^Zadanie\.? ?(\d+)(?:\.(\d+))?\.?\s*(?:\((\d+)\s*pkt\.?\s*\)|\(0\s*[–-]\s*(\d+)\))?\s*(.*)$")
+JUNK05 = re.compile(r"^(Poziom rozszerzony|Arkusz I+|ARKUSZ I+|ARKUSZ ODPOWIEDZI|Wypełnia egzaminator!?|.*egzaminator!.*|"
+                    r"(Klucz punktowania|Kryteria oceniania) odpowiedzi( [–-] poziom rozszerzony)?|Historia [–-] poziom rozszerzony|"
+                    r"\d+\.[A-F]\.?|Uzyskana liczba pkt|Egzamin maturalny|Nr zad\.?|Punkty|Wypełnia sprawdzający|"
+                    r"(\d+ )?Materiał pomocniczy do doskonalenia nauczycieli.*|Historia [–-] grudzień 2005 r\.)$")
+SRC05 = re.compile(r"^(?:Źródło|ŹRÓDŁO) ([A-ZĄĆĘŁŃÓŚŹŻ])(?:[.:]?\s|[.:]?$)")
+INTRO05 = re.compile(r"^[Nn]a podstawie (?!:)(?!.*\d{4})"
+                     r"(?=.*(źród|ilustracj|tekst|map|tabel|wykres|schemat|fotografi|rysun|plakat|karykatur|wiedzy))")
+SECTION05 = re.compile(r"^(CZĘŚĆ|Część) [IV]+\b|^ZADANI[EA] [A-ZĄĆĘŁŃÓŚŹŻ]{3,}|^(I|II|III|IV|V|VI)\. [A-ZĄĆĘŁŃÓŚŹŻ ]{4,}|"
+                       r"^TEST SPRAWDZAJĄCY|^W STANDARDACH WYMAGAŃ|^OD ROZBIORÓW|^\(\d+ punktów\)$|^Temat( arkusza)?:|^TEMAT:")
+CITE05 = re.compile(r"^(\[w:\]|\[za:\]|Źródła?: |Na podstawie: |Za: |Opracowano na podstawie|Oprac\. na podstawie)", re.I)
+INSTR05 = re.compile(r"^(?:[A-F]\.\s*|[a-f]\)\s*)?(?:" + INSTR.pattern[2:-1] + r"|Podkreśl|Przeanalizuj|Przeczytaj|Odpowiedz|"
+                     r"Zaproponuj|Zinterpretuj|Zidentyfikuj|Uzasadnij|Wyjaśnij|Sformułuj|Zakreśl|Oceń|Rozważ|Otocz|Połącz)")
+
+
+def clean05(lines: list[str]) -> list[str]:
+    """clean() plus the old papers' page furniture: running heads, answer-box labels, page numbers."""
+    lines = [re.sub(r"^[\uf000-\uf0ff\x83]\s*", "• ", ln.replace("\u00a0", " ").strip()) for ln in lines]
+    lines = [ln for ln in clean(lines) if not JUNK05.match(ln) and ln != "•"]
+    out: list[str] = []
+    for i, ln in enumerate(lines):
+        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        prv = out[-1] if out else ""
+        if re.fullmatch(r"\d{1,2}", ln):   # page number: next to a header, intro, answer blank or running text
+            if HEADER05.match(nxt) or INTRO05.match(nxt) or SECTION05.match(nxt) or SRC05.match(nxt) or PART05.match(nxt) \
+                    or prv.endswith("…") or HEADER05.match(prv) \
+                    or (len(prv) > 15 and len(nxt) > 15 and re.search(r"[a-ząćęłńóśźż]{3}", prv + nxt)):
+                continue
+        # justified lines the PDF broke into one word per line: "Uporządkuj / chronologicznie / wydarzenia"
+        if out and " " not in ln and re.match(r"[a-ząćęłńóśźż]", ln) and not is_img(prv) \
+                and not re.search(r"[.:;!?…]$", prv) and (" " not in prv or " " not in nxt) \
+                and re.match(r"[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż„(]", prv) and not HEADER05.match(prv):
+            out[-1] = prv + " " + ln
+            continue
+        out.append(ln)
+    return out
+
+
+def _letters(intro: str) -> list[str]:
+    return re.findall(r"(?<!\w)([A-ZĄĆĘŁŃÓŚŹŻ])(?!\w)", intro.split("podstawie", 1)[-1])
+
+
+def split_question05(lines: list[str]) -> tuple[list[str], list[str]]:
+    """Sources, then the instruction: the first instruction line after the last source citation.
+    Tasks that put the instruction before the source keep the whole block as the question."""
+    def instr(ln: str) -> bool:   # "Na podstawie źródeł wykonaj polecenie." leads in to the sources
+        return bool(INSTR05.match(ln)) and not re.search(r"wykonaj polecen", ln)
+
+    last = max((i for i, ln in enumerate(lines) if CITE05.match(ln)), default=-1)
+    for i in range(last + 1, len(lines)):
+        if instr(lines[i]):
+            return lines[:i], lines[i:]
+    if last >= 0:
+        return [], lines
+    for i, ln in enumerate(lines):
+        if instr(ln):
+            return lines[:i], lines[i:]
+    return [], lines
+
+
+def paper_items05(lines: list[str]) -> list[dict]:
+    n = len(lines)
+    hdr = [bool(HEADER05.match(ln)) for ln in lines]
+    intro = {i for i in range(n - 1) if INTRO05.match(lines[i]) and hdr[i + 1]}
+    wanted = {c for i in intro for c in _letters(lines[i])}
+    # Shared sources: each "Źródło X" that some intro line names runs to the next source, intro, header or section.
+    sources: dict[str, list[tuple[int, int, list[str]]]] = {}
+    drop, section = set(), 0
+    sec_at = [0] * n
+    for i, ln in enumerate(lines):
+        if SECTION05.match(ln):
+            section += 1
+        sec_at[i] = section
+    for i, ln in enumerate(lines):
+        m = SRC05.match(ln)
+        if not m or m[1] not in wanted or i in drop:
+            continue
+        j = i + 1
+        while j < n and not (hdr[j] or j in intro or SRC05.match(lines[j]) or SECTION05.match(lines[j])):
+            j += 1
+        sources.setdefault(m[1], []).append((i, sec_at[i], lines[i:j]))
+        drop.update(range(i, j))
+
+    def sources_for(intro_line: str, at: int) -> list[str]:
+        out = []
+        letters = [c for c in dict.fromkeys(_letters(intro_line)) if c in sources]
+        if not letters and re.search(r"źródeł|źródła\b", intro_line):   # "na podstawie źródeł oraz wiedzy"
+            before = [s for spans in sources.values() for s in spans if s[0] < at]
+            if before:
+                sec = max(before)[1]
+                return [ln for s in sorted(before) if s[1] == sec for ln in s[2]]
+        for c in letters:
+            spans = [s for s in sources[c] if s[0] < at] or sources[c]
+            out += spans[-1][2]
+        return out
+
+    tasks, cur, after_section = [], None, False
+    for i, ln in enumerate(lines):
+        # a section title and its wrapped all-caps second line ("WŁADZY MONARSZEJ")
+        if SECTION05.match(ln) or after_section and not re.search(r"[a-ząćęłńóśźż]", ln) and re.search(r"[A-Z]{2}", ln):
+            after_section, cur = True, None   # what follows a section title is the next part's preamble
+            continue
+        after_section = False
+        if i in drop or i in intro:
+            continue
+        m = HEADER05.match(ln)
+        if m:
+            pts = m[3] or m[4]
+            intro_line = lines[i - 1] if i - 1 in intro else ""
+            cur = {"num": int(m[1]), "sub": int(m[2]) if m[2] else None, "points": int(pts) if pts else None,
+                   "lines": [m[5].strip()] if m[5].strip() else [], "intro": intro_line,
+                   "sources": sources_for(intro_line, i) if intro_line else [], "at": i}
+            tasks.append(cur)
+        elif cur is not None:
+            cur["lines"].append(ln)
+
+    # A task without its own intro line uses the sources its text names ("w źródle A"), or else the
+    # previous task's: the intro above a run of tasks covers all of them.
+    for prev, t in zip([None] + tasks, tasks):
+        if t["intro"] or t["points"] is None or t["points"] >= 10:
+            continue
+        text = " ".join(t["lines"])
+        named = [c for m in re.finditer(r"źród\w*((?:\s*(?:,|i|oraz)?\s*[A-ZĄĆĘŁŃÓŚŹŻ](?!\w))+)", text)
+                 for c in _letters("podstawie" + m[1]) if c in sources]
+        if named:
+            t["sources"] = sources_for("podstawie " + ", ".join(dict.fromkeys(named)), t["at"])
+        elif prev is not None and prev["sources"] and prev["points"] is not None:
+            t["sources"] = list(prev["sources"])
+    items, shared, shared_num, group_intro = [], [], None, ""
+    for t in tasks:
+        if t["points"] is None:          # "Zadanie 5." group header: shared sources
+            shared, shared_num, group_intro = t["sources"] + list(t["lines"]), t["num"], t["intro"]
+            continue
+        lead, q = split_question05(t["lines"]) if t["points"] < 10 else ([], t["lines"])
+        if t["sub"] is not None and shared_num == t["num"]:
+            ctx = t["sources"] + shared + lead
+            intro_line = t["intro"] or group_intro
+        else:
+            shared, shared_num, group_intro = [], None, ""
+            ctx, intro_line = t["sources"] + lead, t["intro"]
+        if intro_line:
+            q = [intro_line[0].upper() + intro_line[1:].rstrip(" .:") + ":"] + q
+        qid = f"{t['num']}.{t['sub']}" if t["sub"] else f"{t['num']}"
+        items.append({"task": qid, "points": t["points"], "context": ctx, "question": q})
+    return items
+
+
+def _key_lines05(path: Path, first_page: int = 1) -> list[tuple[str, str]]:
+    """(line text, its blue part) in reading order, from first_page on."""
+    import pymupdf
+
+    out = []
+    doc = pymupdf.open(path)
+    for page in doc.pages(first_page - 1):
+        for block in page.get_text("dict")["blocks"]:
+            if block["type"] != 0:
+                continue
+            for line in block["lines"]:
+                sp = line["spans"]
+                out.append(("".join(s["text"] for s in sp), "".join(s["text"] for s in sp if s["color"] == 0x0000FF)))
+    return out
+
+
+def _key(points: int | None, solution: list[str], rubric: list[str]) -> dict:
+    return {"points": points, "solution": join(solution), "rubric": join(rubric)}
+
+
+SOL05 = re.compile(r"^((?:Poprawn|Prawidłow|Przykład|Możliw|Wzorcow)\w*(?: [\wąćęłńóśźż]+){0,6}|Odpowiedź|Rozwiązanie)"
+                   r"\s*(?::\s*(.*))?$")
+STOP05 = re.compile(r"^(Przykład\w* (błędn|niepoprawn|niepełn|odpowiedzi błędn)|Błędn\w* odpowied|Obszar standardów|"
+                    r"Opis wymagań|Korzystanie z informacji|Tworzenie informacji|Wiadomości i rozumienie|"
+                    r"Schemat punktowania|Zasady oceniania|Wymagani[ea] (ogóln|szczegół))")
+SCORE05 = re.compile(r"^(\d+\s*(p\.|pkt\.?|punkt\w*|p)\s*[–-]|Zdający otrzymuje|Uwaga)")
+PART05 = re.compile(r"^([A-F])\.\s*(?:\(0\s*[–-]\s*\d+\))?\s*$")
+
+
+def key_text05(raw: list[str]) -> dict[str, dict]:
+    """Keys laid out as "Zadanie 5. (0–2)" sections (2009 onward). 2009 puts the "0–2" on its own line."""
+    raw = [ln.replace("\u00a0", " ").strip() for ln in raw]
+    for i, ln in enumerate(raw):
+        m = HEADER05.match(ln)
+        if m and not (m[3] or m[4]):
+            pts, parts = [], 0
+            for j in range(i + 1, min(i + 80, len(raw))):
+                if HEADER05.match(raw[j]):
+                    break
+                parts += bool(PART05.match(raw[j]))
+                if (p := re.fullmatch(r"0\s*[–-]\s*(\d+)", raw[j])):
+                    pts.append(int(p[1]))
+            if pts:   # "Zadanie 8." with parts A. (0–1) and B. (0–1) is worth 2
+                total = sum(pts) if parts else pts[0]
+                raw[i] = f"Zadanie {m[1]}{'.' + m[2] if m[2] else ''}. (0–{total}) {m[5]}".strip()
+    blocks = []
+    for ln in clean05(raw):
+        m = HEADER05.match(ln)
+        if m:
+            pts = m[3] or m[4]
+            if not pts and blocks and blocks[-1]["num"] == int(m[1]):   # the essay criteria run on
+                continue
+            blocks.append({"num": int(m[1]), "sub": m[2], "points": int(pts) if pts else None, "body": []})
+        elif blocks:
+            blocks[-1]["body"].append(ln)
+    keys = {}
+    for b in blocks:
+        if b["points"] is None:
+            continue
+        qid = f"{b['num']}.{b['sub']}" if b["sub"] else f"{b['num']}"
+        if b["points"] >= 10:
+            keys["essay"] = _key(b["points"], [], b["body"])
+            continue
+        parts, rubric, state, label = [], [], "pre", ""
+        body = b["body"]
+        for i, ln in enumerate(body):
+            if (m := PART05.match(ln)):
+                nxt = body[i + 1] if i + 1 < len(body) else ""
+                if state == "sol" and (not nxt or SCORE05.match(nxt)):
+                    parts[-1][1].append(ln)          # "Poprawna odpowiedź / B." is the answer itself
+                elif state == "sol" and not parts[-1][1]:
+                    parts[-1] = (m[1], [])           # "Przykłady poprawnych odpowiedzi: / A. / • ..."
+                    label = m[1]
+                elif state == "sol":
+                    label = m[1]
+                    parts.append((label, []))
+                else:
+                    label, state = m[1], "pre"
+                continue
+            if STOP05.match(ln):
+                state = "stop"
+                continue
+            if SCORE05.match(ln):
+                state = "rub"
+                rubric.append((f"{label}. " if label else "") + ln)
+                continue
+            m = SOL05.match(ln)
+            if m and not (parts and parts[-1][0] == label and state == "sol"):
+                state = "sol"
+                parts.append((label, []))
+                if m[2]:
+                    parts[-1][1].append(m[2])
+                continue
+            if state == "sol":
+                parts[-1][1].append(ln)
+            elif state == "rub":
+                rubric.append(ln)
+        rubric = [re.sub(r"\s*Część [IV]+$", "", r) for r in rubric]
+        if not any(ls for _, ls in parts):   # 2010: the answer is only in the scoring line, "1 p. – za ... (zdanie nr 1)"
+            top = [r for r in rubric if re.match(rf"^{b['points']}\s*p", r) and "(" in r]
+            if len(top) == 1:
+                parts = [("", [re.sub(r"^\d+\s*p\.?\s*[–-]\s*(za\s+)?", "", top[0])])]
+        sol = []
+        for lab, ls in parts:
+            if ls:
+                sol += [(f"{lab}. " if lab and not ls[0].startswith(f"{lab}.") else "") + ls[0]] + ls[1:]
+        keys[qid] = _key(b["points"], sol, rubric)
+        # a few headers misprint the maximum ("Zadanie 18. (0–2)" over "1 p. – za prawidłową odpowiedź")
+        keys[qid]["rubric_max"] = max((int(x[1]) for r in rubric if (x := re.match(r"^(?:[A-F]\. )?(\d+)\s*p", r))),
+                                      default=None)
+    return keys
+
+
+def key_blue05(raw: list[tuple[str, str]]) -> dict[str, dict]:
+    """Keys that are the paper with the answers filled in blue (May 2006-2008)."""
+    blocks, cur, label = [], None, ""
+    for text, blue in raw:
+        text, blue = re.sub(r"\s+", " ", text).strip(), re.sub(r"\s+", " ", blue).strip()
+        m = HEADER05.match(text)
+        if m and not blue:
+            pts = m[3] or m[4]
+            cur = {"num": int(m[1]), "sub": m[2], "points": int(pts) if pts else None, "lines": []}
+            blocks.append(cur)
+            label = ""
+            continue
+        if cur is None:
+            continue
+        if not blue:
+            if (lm := re.match(r"^([A-F])\.\s+\S", text)):
+                label = lm[1]
+            continue
+        black = text.replace(blue, "", 1).strip() if blue in text else ""
+        if black and len(black) <= 25:
+            cur["lines"].append(text)           # "A. 3", "Tytuł mapy: ..."
+        else:
+            cur["lines"].append((f"{label}. " if label else "") + blue)
+        label = ""
+    keys = {}
+    for b in blocks:
+        if b["points"] is None or not b["lines"]:
+            continue
+        lines = clean05(b["lines"])
+        if b["points"] >= 10:
+            prev = keys["essay"]["rubric"] + "\n" if "essay" in keys else "Przykładowe realizacje tematów (CKE):\n"
+            keys["essay"] = {"points": b["points"], "solution": "", "rubric": prev + join(lines)}
+        else:
+            keys[f"{b['num']}.{b['sub']}" if b["sub"] else f"{b['num']}"] = _key(b["points"], lines, [])
+    return keys
+
+
+def _cell_lines(cell: str) -> list[str]:
+    out: list[str] = []
+    for ln in cell.split("\n"):
+        ln = re.sub(r"^[\uf000-\uf0ff\x83]\s*", "• ", ln.strip())
+        if out and re.search(r"\w-$", out[-1]) and re.match(r"[a-ząćęłńóśźż]", ln):
+            out[-1] = out[-1][:-1] + ln                       # "lud-\nności"
+        elif ln:
+            out.append(ln)
+    return out
+
+
+def key_table05(path: Path) -> dict[str, dict]:
+    """Keys laid out as a table: task number | [part] | model answer | partial points | task points."""
+    import pymupdf
+
+    keys, cur, last_page = {}, None, None
+    doc = pymupdf.open(path)
+    for pno, page in enumerate(doc):
+        for tab in page.find_tables().tables:
+            if tab.col_count < 4:
+                continue
+            part_col = tab.col_count >= 5
+            for row in tab.extract():
+                cells = [(c or "").strip() for c in row]
+                ans = cells[2 if part_col else 1]
+                num = re.fullmatch(r"(\d+)\.?", cells[0])
+                if cells[0] and not num or not ans:
+                    continue
+                if num:
+                    pts = re.search(r"\d+", cells[-1])
+                    cur = {"points": int(pts[0]) if pts else None, "sol": [], "rub": []}
+                    keys[num[1]] = cur
+                    last_page = pno
+                elif cur is None:
+                    continue
+                lines = _cell_lines(ans)
+                part = cells[1] if part_col else ""
+                if re.fullmatch(r"[A-F]\.?", part):
+                    lines[0] = f"{part.rstrip('.')}. {lines[0]}"
+                cur["sol"] += lines
+                partial = " ".join(_cell_lines(cells[-2]))
+                if partial and not re.fullmatch(r"\d+ (pkt|punkt\w*)", partial):
+                    cur["rub"].append(partial)
+    keys = {k: _key(v["points"], v["sol"], v["rub"]) for k, v in keys.items()}
+    if last_page is not None:   # the essay criteria follow the table
+        essay = [ln for page in list(doc)[last_page + 1:] for ln in page.get_text().split("\n")]
+        essay = clean05(essay)
+        if essay:
+            keys["essay"] = _key(20, [], essay)
+    return keys
+
+
+def key_items05(path: Path, first_page: int = 1) -> dict[str, dict]:
+    raw = _key_lines05(path, first_page)
+    blue = sum(len(b) for _, b in raw)
+    if blue > 0.2 * sum(len(t) for t, _ in raw):
+        return key_blue05(raw)
+    text = [t for t, _ in raw]
+    if sum(bool(re.match(r"Zadanie \d+(\.\d+)?\.\s*(\(|$)", re.sub(r"\s+", " ", t).strip())) for t in text) >= 3:
+        return key_text05(text)
+    return key_table05(path)
+
+
+def split_subitems05(it: dict, keys: dict[str, dict]) -> list[dict]:
+    """2015-2020 papers print sub-questions "2.1. ...", "2.2. ..." inside one "Zadanie 2. (3 pkt)",
+    while the key scores them separately. Split when the key's parts add up to the task's points."""
+    num = it["task"]
+    subs = sorted((k for k in keys if k.startswith(num + ".")), key=lambda k: int(k.split(".")[1]))
+    if num in keys or not subs or sum(keys[k]["points"] for k in subs) != it["points"]:
+        return [it]
+    lines = it["context"] + it["question"]
+    marks = []
+    for k in subs:
+        i = next((i for i, ln in enumerate(lines) if ln.startswith(k + ". ")), None)
+        if i is None or (marks and i <= marks[-1]):
+            return [it]
+        marks.append(i)
+    out, shared = [], lines[:marks[0]]
+    for j, (k, i) in enumerate(zip(subs, marks)):
+        block = lines[i: marks[j + 1] if j + 1 < len(marks) else None]
+        block[0] = block[0][len(k) + 2:]
+        q, extra = trailing_sources(block)
+        out.append({"task": k, "points": keys[k]["points"], "context": list(shared), "question": q})
+        shared = shared + extra
+    return out
+
+
+def build05(paper: str, urls: dict, ark: Path, zas: Path, image_dir: Path | None) -> list[dict]:
+    """formuła 2005: only items whose key is found and agrees on the points are kept."""
+    items = paper_items05(clean05(pdf_lines(ark, mark_images=True, image_dir=image_dir)))
+    keys = key_items05(zas, urls.get("key_from_page", 1))
+    essay = keys.pop("essay", None)
+    if essay:
+        for it in items:
+            if it["points"] >= 10:
+                keys[it["task"]] = essay
+    items = [sub for it in items for sub in split_subitems05(it, keys)]
+    # a misnumbered key (2019: item 8 scored as "Zadanie 8.2."): pair when it is the only one either way
+    missing = [it for it in items if it["task"] not in keys]
+    spare = [k for k in keys if k not in {it["task"] for it in items}]
+    if len(missing) == 1 and len(spare) == 1 and keys[spare[0]]["points"] == missing[0]["points"]:
+        keys[missing[0]["task"]] = keys.pop(spare[0])
+    rows, unpaired = [], []
+    for it in items:
+        k = keys.get(it["task"])
+        if k is not None and k["points"] != it["points"] and k.get("rubric_max") == it["points"]:
+            k = dict(k, points=it["points"])
+        if k is None:
+            unpaired.append(f"{it['task']} (no key)")
+        elif k["points"] != it["points"]:
+            unpaired.append(f"{it['task']} (key {k['points']} pkt, paper {it['points']} pkt)")
+        elif not k["rubric"] if it["points"] >= 10 else not k["solution"]:
+            unpaired.append(f"{it['task']} (no answer in the key)")
+        elif not it["question"]:
+            unpaired.append(f"{it['task']} (no question text)")
+        else:
+            rows.append(build_row(paper, urls["arkusz"], it, k, image_dir, ark.stem))
+    extra = sorted(set(keys) - {it["task"] for it in items}, key=lambda s: [int(x) for x in s.split(".")])
+    print(f"{paper}: {len(rows)} items, {sum(r['points'] for r in rows)} points"
+          + (f", skipped {unpaired}" if unpaired else "")
+          + (f", keys without item {extra}" if extra else ""), file=sys.stderr)
+    return rows
+
+
 # ---------------------------------------------------------------- main
 
 
@@ -640,6 +1068,8 @@ def build(paper: str, raw: Path, image_dir: Path | None = None) -> list[dict]:
     urls = PAPERS[paper]
     ark = download(urls["arkusz"], raw / f"{paper}-arkusz.pdf")
     zas = download(urls["zasady"], raw / f"{paper}-zasady.pdf")
+    if urls["formula"] == 2005:
+        return build05(paper, urls, ark, zas, image_dir)
     items = paper_items(clean(pdf_lines(ark, mark_images=True, image_dir=image_dir)))
     keys = key_items(clean(pdf_lines(zas, mark_images=False)))
     # CKE sometimes numbers the essay differently in the key (2025: item 25, key 26).

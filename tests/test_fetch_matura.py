@@ -50,3 +50,28 @@ def test_train_answers_use_the_first_model_answer():
     assert bt.answer_for(row) == "Rozstrzygnięcie: Nie\nUzasadnienie: Pierwszy powód."
     assert bt.answer_for({"category": "true_false", "gold": "P, F", "question": ""}) == "1. P\n2. F"
     assert bt.clean_open("[Ignacy] Łukasiewicz / Łukasiewicz Ignacy") == "Łukasiewicz"
+
+
+def test_formula2005_shared_sources_follow_the_intro_line():
+    lines = ["CZĘŚĆ II", "Źródło A", "Tekst źródła A.", "Źródło B", "Tekst źródła B.",
+             "na podstawie źródeł A i B", "Zadanie 16. (1 pkt)", "Wyjaśnij, o co chodzi.",
+             "Zadanie17. (2 pkt)", "Podaj dwa powody.",
+             "na podstawie źródła B", "Zadanie 18. (1 pkt)", "Podaj nazwę."]
+    items = fm.paper_items05(lines)
+    assert [(i["task"], i["points"]) for i in items] == [("16", 1), ("17", 2), ("18", 1)]
+    assert items[0]["context"] == ["Źródło A", "Tekst źródła A.", "Źródło B", "Tekst źródła B."]
+    assert items[0]["question"] == ["Na podstawie źródeł A i B:", "Wyjaśnij, o co chodzi."]
+    assert items[1]["context"] == items[0]["context"]          # covered by the intro above task 16
+    assert items[2]["context"] == ["Źródło B", "Tekst źródła B."]
+
+
+def test_formula2005_text_key_parts_and_points_line():
+    key = fm.key_text05(["Zadanie 8.", "A.", "Korzystanie z informacji", "0–1",
+                         "Zdający otrzymuje 1 punkt za podanie nazwy wojny.", "Poprawna odpowiedź:",
+                         "wojna trzydziestoletnia", "B.", "Korzystanie z informacji", "0–1",
+                         "Zdający otrzymuje 1 punkt za podanie nazwy kraju.", "Poprawna odpowiedź:", "Czechy",
+                         "Zadanie 9. (0–1)", "Schemat punktowania", "1 p. – za poprawną odpowiedź.",
+                         "Poprawna odpowiedź", "B."])
+    assert key["8"]["points"] == 2
+    assert key["8"]["solution"] == "A. wojna trzydziestoletnia\nB. Czechy"
+    assert key["9"]["solution"] == "B."

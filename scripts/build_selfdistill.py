@@ -59,10 +59,11 @@ def stems(s: str) -> set[str]:
 
 
 def match(r: dict, answer: str, min_recall: float) -> float:
-    gold = str(r.get("gold") or "")
-    if r["category"] in CLOSED:
-        k = closed_key(gold)
-        return 1.0 if k and closed_key(answer)[-len(k):] == k else 0.0
+    gold = str(r.get("gold") or r.get("reference") or "")
+    k = closed_key(gold) if r["category"] in CLOSED and r.get("gold") else []
+    if k:
+        return 1.0 if closed_key(answer)[-len(k):] == k else 0.0
+    # closed items whose key is not a plain letter / P-F list ("reference") are matched like open ones
     if r.get("decision") and not verdict_matches(answer, r["decision"]):
         return 0.0
     g = stems(re.sub(r"(?im)^.*(przykładow|rozstrzygnięcie).*$", "", gold)) or stems(gold)
@@ -80,7 +81,7 @@ JUDGE = ("Jesteś egzaminatorem matury z historii. Oceń odpowiedź ucznia wedł
 
 def judge_ok(url: str, r: dict, ans: str) -> bool:
     """Open items: the base model (thinking off) checks the answer against the CKE key and rubric."""
-    msg = JUDGE.format(q=r["question"][:3000], gold=str(r.get("gold") or "")[:2000],
+    msg = JUDGE.format(q=r["question"][:3000], gold=str(r.get("gold") or r.get("reference") or "")[:2000],
                        rubric=str(r.get("rubric") or "")[:1500], ans=ans[:2000])
     body = {"messages": [{"role": "user", "content": msg}], "max_tokens": 4, "temperature": 0.0,
             "chat_template_kwargs": {"enable_thinking": False}}
@@ -169,7 +170,7 @@ def main():
                 if best:
                     break
                 m = [dict(x) for x in msgs]
-                hint = HINT.format(str(r.get("gold") or "").strip()[:600])
+                hint = HINT.format(str(r.get("gold") or r.get("reference") or "").strip()[:600])
                 c = m[1]["content"]
                 m[1]["content"] = c + hint if isinstance(c, str) else [{**c[0], "text": c[0]["text"] + hint}, *c[1:]]
                 hinted = True
@@ -181,7 +182,7 @@ def main():
             if not thought or not ans or (hinted and re.search(r"wskazówk|klucz", thought + ans, re.I)):
                 continue
             s = match(r, ans, a.min_recall)
-            if s and r["category"] not in CLOSED and not a.no_judge:
+            if s and not (r["category"] in CLOSED and r.get("gold")) and not a.no_judge:
                 try:
                     s = 1.0 if judge_ok(a.url, r, ans) else 0.0
                 except Exception as e:  # noqa: BLE001

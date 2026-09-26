@@ -18,7 +18,7 @@ Points: formuła 2023 papers are worth 60 each, formuła 2015 papers 50 each. "P
 | **SD1 training** | 2022 demo + May 2015–2024 (formuła 2015) | 11 | 309 non-essay candidates → 292 after the overlap filter | – | 151 | 2015 + 2023 |
 | **Excluded (contamination)** | items whose sources overlap a held-out item | – | 23 (17 in training papers, 6 in the dev paper) | – | – | – |
 | **SD2 extra** (parsed, not yet trained) | CKE mocks 2014–2024 + 2013 demo | 6 | 192 → 172 after the overlap filter | 319 | 95 | 2015 + 2023 |
-| **SD2 extra** (parser being written) | formuła 2005 ("stara matura"), May 2005–2020, June 2012, Jan 2006, 2 mocks | 20 | not parsed yet | – | – | 2005 |
+| **SD2 extra** | formuła 2005 ("stara matura"), May 2005–2020, June 2012, Jan 2006, 2 mocks | 20 | 488 (20 essays) → 485 after the overlap filter | 1,000 | 157 | 2005 |
 | **Dropped** | Grok synthetic `train_data/history_ext_synth.jsonl` | – | 3,956 rows | – | – | synthetic |
 | **Not used any more** | Claude synthetic `train_data/claude_synth.jsonl`, `open_claude_synth.jsonl`, `essay_claude_synth.jsonl` | – | 952 + 419 + 270 | – | – | synthetic |
 
@@ -101,7 +101,7 @@ In `scripts/fetch_matura.py` `PAPERS`, set `extra`. Every URL was checked (HTTP 
 | f15-probny-2014-12 | 2015 | CKE mock | 24 | 50 | 23 |
 | f15-probny-2020-04 | 2015 | CKE mock | 33 | 49 | 28 |
 | f15-probny-2021-03 | 2015 | CKE mock | 38 | 50 | 37 |
-| f05-* (20 papers) | 2005 | May 2005–2020, June 2012, Jan 2006, mocks Dec 2005 / Nov 2006 | parser in progress | | |
+| f05-* (20 papers) | 2005 | May 2005–2020, June 2012, Jan 2006, mocks Dec 2005 / Nov 2006 | 488 | 1,000 | 485 |
 
 ## Dropped / no longer used
 
@@ -112,3 +112,9 @@ In `scripts/fetch_matura.py` `PAPERS`, set `extra`. Every URL was checked (HTTP 
   synthetic items). They were used by the earlier LoRAs, and SD1 no longer uses them.
 - `data/train/past_papers.jsonl` (133 text-only past-paper items with CKE keys, `scripts/build_train_from_papers.py`).
   SD1 supersedes it by using the same papers, pictures included.
+
+SD2 build list (non-essay, overlap-filtered, 6 extra + 20 formuła 2005 papers): `results/sd2_new_ids.txt`.
+Formuła 2005 parsing (`build05` in `scripts/fetch_matura.py`): 3 key layouts (table; answers printed in the
+paper; "Zadanie N. (0–k)" sections); an item is kept only if its key exists and the points match. For essays of
+2006-05/2007/2008 the gold is CKE's sample essay (no rubric in the key); 30 closed rows have `reference` (a key
+that is not a plain letter) and are matched like open items.
