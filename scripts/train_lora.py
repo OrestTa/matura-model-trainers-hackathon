@@ -60,6 +60,14 @@ def main():
     from trl import SFTConfig, SFTTrainer
 
     ds = load_dataset("json", data_files=str(data))["train"].shuffle(seed=0)
+    # <data-dir>/exclude_sources.txt: item ids (the rows' "source") to drop, e.g. past-paper items whose sources
+    # overlap the held-out May 2023-2026 papers (build_selfdistill.py --held-out check).
+    excl = Path(args.data_dir) / "exclude_sources.txt"
+    if excl.exists() and "source" in ds.column_names:
+        drop = {l.strip() for l in excl.read_text().splitlines() if l.strip()}
+        before = len(ds)
+        ds = ds.filter(lambda r: r["source"] not in drop)
+        print(f"excluded {before - len(ds)} rows listed in {excl}")
     # Prompt/completion split so the loss covers only the answer; with a plain "messages"
     # column TRL trains on the system prompt and question too (~98% of tokens on closed types).
     if args.vision:

@@ -49,6 +49,11 @@ def closed_key(s: str) -> list[str]:
     return re.findall(r"\b([A-H]|P|F|prawda|fałsz)\b", s.replace("*", ""))
 
 
+def shingles(s: str, n: int = 8) -> set[str]:
+    w = re.findall(r"\w+", s.lower())
+    return {" ".join(w[i:i + n]) for i in range(max(0, len(w) - n + 1))}
+
+
 def stems(s: str) -> set[str]:
     return {w[:5] for w in re.findall(r"\w+", s.lower()) if len(w) >= 5}
 
@@ -110,6 +115,8 @@ def main():
     p.add_argument("--url", default="http://127.0.0.1:8080")
     p.add_argument("--source", default=str(ROOT / "data/eval/matura_all.jsonl"))
     p.add_argument("--image-root", default=str(ROOT), help="row image paths are relative to this")
+    p.add_argument("--held-out", default=str(ROOT / "data/eval/matura.jsonl"),
+                   help="held-out eval set: items overlapping it are skipped ('' = no check)")
     p.add_argument("--dev-papers", nargs="*", default=["probny-2026-01"],
                    help="kept out of training for checkpoint selection")
     p.add_argument("--no-vision", action="store_true", help="text-only server: skip picture items")
@@ -126,10 +133,17 @@ def main():
     p.add_argument("--limit", type=int, default=0, help="first N items only (smoke run)")
     a = p.parse_args()
 
+    # Past papers reuse sources: drop items whose question + sources share >10% of 8-word runs with a held-out item.
+    held = [json.loads(l) for l in open(a.held_out, encoding="utf-8")] if a.held_out else []
+    H = set().union(*(shingles(r["question"] + " " + r.get("context", "")) for r in held)) if held else set()
     rows = []
     for line in open(a.source, encoding="utf-8"):
         r = json.loads(line)
         if r["paper"] in HELD_OUT or r["paper"] in a.dev_papers or r["category"] == "essay":
+            continue
+        sh = shingles(r["question"] + " " + r.get("context", ""))
+        if H and sh and len(sh & H) / len(sh) > 0.1:
+            print(f"skip {r['id']}: overlaps a held-out item", file=sys.stderr)
             continue
         imgs = [str(Path(a.image_root) / i) for i in (r.get("images") or [])]
         if imgs and (a.no_vision or not all(Path(i).exists() for i in imgs)):

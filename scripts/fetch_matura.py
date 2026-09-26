@@ -96,6 +96,119 @@ PAPERS = {
                     "arkusz": f"{B15}/2024/Historia/EHIP-R0-100-A-2405-arkusz.pdf",
                     "zasady": f"{B15}/2024/Historia/EHIP-R0-100-2405-zasady.pdf"},
 }
+# More official CKE history papers with keys (found 26 Sep 2026 by crawling cke.gov.pl; every URL checked
+# HTTP 200 + %PDF): formuła 2023 December mocks, formuła 2015 demo/mocks, formuła 2005 ("stara matura")
+# May 2005-2020, June 2012, January 2006 and mocks. CKE publishes no June/August extended history papers
+# for formuła 2015/2023. Training data only (set "extra"); never the held-out May 2023-2026 papers.
+CKE = "https://cke.gov.pl/images"
+B15 = f"{CKE}/_EGZAMIN_MATURALNY_OD_2015"
+A15 = f"{B15}/Arkusze_egzaminacyjne"
+M23 = f"{CKE}/_EGZAMIN_MATURALNY_OD_2023/materialy_dodatkowe"
+ST = f"{CKE}/stories"
+
+_EXTRA = {
+    # ---------------------------------------------------------------- formula 2023: mocks
+    # Diagnostic ("arkusze diagnostyczne") sets CKE ran for the new formula, December 2022 and December 2024.
+    "probny-2022-12": {"formula": 2023, "kind": "mock",
+                       "arkusz": f"{M23}/diagnostyczne_12/historia/MHIP-R0-100-2212.pdf",
+                       "zasady": f"{M23}/diagnostyczne_12/historia/MHIP-R0-100-200-300-400-660-700-Q00-Z00-2212-zasady.pdf"},
+    # Listed under formula 2023 "arkusze diagnostyczne grudzien 2024", but the files sit in the _OD_2015/Probny/2024 folder.
+    "probny-2024-12": {"formula": 2023, "kind": "mock",
+                       "arkusz": f"{B15}/Probny/2024/Historia/MHIP-R0-100-A-2412-arkusz.pdf",
+                       "zasady": f"{B15}/Probny/2024/Historia/MHIP-R0-100-200-300-400-660-Q00-2412-zasady.pdf"},
+
+    # ---------------------------------------------------------------- formula 2015: mocks / demo
+    # "Przykladowy zestaw zadan" published December 2013 ahead of the 2015 exam (demo, A1 = standard version).
+    "f15-pokaz-2013-12": {"formula": 2015, "kind": "demo",
+                          "arkusz": f"{B15}/Przykladowe_arkusze/2015/historia_PR/historia_PR_A1.pdf",
+                          "zasady": f"{B15}/Przykladowe_arkusze/2015/historia_PR/historia_model_PR_A1_A2_A3_A4_A7.pdf"},
+    # Proba (probny) exam held 18 Dec 2014; cover says "przykladowy arkusz egzaminacyjny". A1 = standard version.
+    "f15-probny-2014-12": {"formula": 2015, "kind": "mock",
+                           "arkusz": f"{B15}/egzamin_probny_2015/historia_pr/A1Historia_PR_arkusz.pdf",
+                           "zasady": f"{B15}/egzamin_probny_2015/historia_pr/A1A2A3A4A7Historia_PR_model_odpowiedzi.pdf"},
+    # Online proba exam, April 2020 (1P = standard version).
+    "f15-probny-2020-04": {"formula": 2015, "kind": "mock",
+                           "arkusz": f"{B15}/Probny/2020/MHI-R1_1P.pdf",
+                           "zasady": f"{B15}/Probny/2020/MHI-R1-zasady.pdf"},
+    # Proba exam, March 2021 (EHIP, the 2021-2024 formula-2015 variant).
+    "f15-probny-2021-03": {"formula": 2015, "kind": "mock",
+                           "arkusz": f"{B15}/Probny/2021/EHIP-R0-100-2103.pdf",
+                           "zasady": f"{B15}/Probny/2021/EHIP-R0-100-2103-zasady.pdf"},
+
+    # ---------------------------------------------------------------- formula 2005 ("stara matura")
+    # 2005-2006: the extended level was Arkusz I (shared with basic) + Arkusz II. Only Arkusz II is
+    # extended-only, so these entries point at Arkusz II and its model answers.
+    "f05-2005-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{ST}/Matura2005/hist_a2.pdf",
+                    "zasady": f"{ST}/Matura_odp_2005/hist_a2_model.pdf"},
+    # Diagnostic set of December 2005 ("material diagnostyczny"), Arkusz II.
+    "f05-probny-2005-12": {"formula": 2005, "kind": "mock",
+                           "arkusz": f"{ST}/arkusze05grudzien/mh_a2.pdf",
+                           "zasady": f"{ST}/arkusze05grudzien/mh_model_a2.pdf"},
+    # Winter session, January 2006 (code MHI-R1A1P-061): a real exam session, not a mock. Arkusz II.
+    "f05-2006-01": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{ST}/Arkusz2006styczen/historia_a2.pdf",
+                    "zasady": f"{ST}/Arkusz2006styczen/hist_mod_a2.pdf"},
+    "f05-2006-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{ST}/Matura2006/a2_hist.pdf",
+                    "zasady": f"{ST}/Matura2006/a2_hist_rozw.pdf"},
+    # Proba matura, November 2006 (poziom rozszerzony).
+    "f05-probny-2006-11": {"formula": 2005, "kind": "mock",
+                           "arkusz": f"{ST}/06_mp/hist_pr.pdf",
+                           "zasady": f"{ST}/06_mp/hist_oc_pr.pdf"},
+    "f05-2007-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{ST}/mat2_07/his_pr.pdf",
+                    "zasady": f"{ST}/mat2_07/his_pr_rozw.pdf"},
+    "f05-2008-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2008/hist_pr.pdf",
+                    "zasady": f"{A15}/2008/hist_pr_rozw.pdf"},
+    # 2009 key is one PDF for both levels: poziom podstawowy pp. 1-18, poziom rozszerzony from p. 19.
+    "f05-2009-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2009/historia_pr.pdf",
+                    "zasady": f"{A15}/2009/KLUCZE/historia.pdf"},
+    "f05-2010-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2010/Historia/historia_pr.pdf",
+                    "zasady": f"{A15}/2010/Historia/historia_klucz_pr.pdf"},
+    "f05-2011-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2011/R/historia_pr.pdf",
+                    "zasady": f"{A15}/2011/kryteria/historia_model_pr.pdf"},
+    "f05-2012-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2012/maj/hist/historia_pr.pdf",
+                    "zasady": f"{A15}/2012/maj/klucze/historia_pr_klucz.pdf"},
+    "f05-2012-06": {"formula": 2005, "kind": "june",
+                    "arkusz": f"{A15}/2012/czerwiec/historia/historia_pr.pdf",
+                    "zasady": f"{A15}/2012/czerwiec/klucze/historia_06_pr_klucz.pdf"},
+    "f05-2013-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2013/historia_PR.pdf",
+                    "zasady": f"{A15}/2013/Kryteria-Oceniania/historia_model_PR.pdf"},
+    "f05-2014-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2014/historia_PR_A1.pdf",
+                    "zasady": f"{A15}/2014/odpowiedzi/Historia_PR.pdf"},
+    # 2015-2020: formula 2005 was still sat by pre-2015 graduates ("formula_do_2014" folders). These are
+    # different papers from the formula-2015 ones with the same code (e.g. MHI-R1_1P-162), per the
+    # separate formula_do_2014 paths and "-S" (stara) vs "-N" (nowa) answer keys.
+    "f05-2015-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2015/formula_do_2014/MHI-R1_1P-152.pdf",
+                    "zasady": f"{A15}/2015/formula_do_2014/odpowiedzi/MHI-R1-S.pdf"},
+    "f05-2016-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2016/formula_do_2014/MHI-R1_1P-162.pdf",
+                    "zasady": f"{A15}/2016/formula_do_2014/zasady_oceniania/MHI-R1-S.pdf"},
+    "f05-2017-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2017/formula_do_2014/historia/MHI-R1_1P-172.pdf",
+                    "zasady": f"{A15}/2017/formula_do_2014/zasady_oceniania/MHI-R1-S.pdf"},
+    "f05-2018-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2018/formula_do_2014/historia/MHI-R1_1P-182.pdf",
+                    "zasady": f"{A15}/2018/formula_do_2014/Zasady_ocenienia/MHI-R1_1P-182_zasady_oceniania.pdf"},
+    "f05-2019-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2019/formula_do_2014/historia/MHI-R1_1P-192.pdf",
+                    "zasady": f"{A15}/2019/formula_do_2014/Zasady_ocenienia/MHI-R1_1P-192_model.pdf"},
+    "f05-2020-05": {"formula": 2005, "kind": "main",
+                    "arkusz": f"{A15}/2020/formula_do_2014/historia/MHI-R1_1R-202s.pdf",
+                    "zasady": f"{A15}/2020/formula_do_2014/Zasady_oceniania/MHI-PR-202s_zasady.pdf"},
+}
+
+PAPERS.update(_EXTRA)
+
 HEADLINE = [p for p, v in PAPERS.items() if v["formula"] == 2023 and v["kind"] == "main"]
 
 IMG = "[ilustracja – niedostępna w wersji tekstowej]"
@@ -549,6 +662,7 @@ SETS = {
     "formula2023": [p for p, v in PAPERS.items() if v["formula"] == 2023],  # + demo and mock papers
     "formula2015": [p for p, v in PAPERS.items() if v["formula"] == 2015],
     "all": list(PAPERS),
+    "extra": list(_EXTRA),
 }
 AUTO_TYPES = {"closed_choice", "true_false", "chronology", "matching"}
 
