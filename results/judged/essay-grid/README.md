@@ -27,3 +27,14 @@ bo3raw = results/subtype/essay-bo3/raw/raw, bo3plan = results/subtype/essay-bo3/
 | bo3plan | - | 77 | 19 |
 
 The same essays scored 5–10 higher in batch 2, so compare arms only within a batch. Base is lowest in both batches.
+
+## Batch 3: essay-ragplan (fact sheets + Wikipedia RAG, with plan) against base, plan, bo3plan (4 graders, blind)
+
+| Arm | Batch 3 /150 | Formula 2023 only /30 |
+|---|---|---|
+| base | 61 | 15 |
+| plan | 66 | 15 |
+| bo3plan | 69 | 16 |
+| ragplan | 74 | 20 |
+
+ragplan beats base on 8 of 12 topics, ties 1 and loses 3. On both formula-2023 papers ragplan picked a different topic from the other arms (probny: topic 3 totalitarian systems, 12/15; pokaz: topic 2).
