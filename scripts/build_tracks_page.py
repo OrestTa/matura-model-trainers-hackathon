@@ -74,12 +74,16 @@ def load_summaries() -> list[dict]:
             continue
         mode = s.get("mode", "raw")
         run = f.parent.parent.name
+        judged = bool(s.get("judge"))
+        # With a judge the score is over all 240 points: rows the judge left unscored count as 0
+        # (`pct` alone divides by the scored rows only and would overstate the result).
+        pct = s.get("pct_all_rows") if judged and s.get("pct_all_rows") is not None else s["pct"]
         rows.append({
             "id": f"{run}/{s['model']}/{mode}", "run": run, "model": s["model"],
             "stage": MODE_STAGE.get(mode, "harness"), "mode": mode,
             "method": MODE_METHOD.get(mode, mode),
-            "eval": eval_kind(str(s.get("eval", "")), bool(s.get("judge"))),
-            "pct": s["pct"], "pct_text_only": s.get("pct_text_only"),
+            "eval": eval_kind(str(s.get("eval", "")), judged),
+            "pct": pct, "pct_text_only": s.get("pct_text_only"),
             "earned": s.get("earned"), "max": s.get("max"), "disk_gb": s.get("disk_gb"),
             "by": "Claude threads", "verified": True,
             "date": datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),

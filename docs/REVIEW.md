@@ -7,6 +7,38 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 15:35 UTC: results page (3807583, b49f9b8, 1d9d6cc, 3abfebe), public board repo, cd69d79..9aaaf30
+
+Orest (13:19 UTC): the Grok bot owns refreshing the results page; this review checks every commit to it and to
+the public board repo (OrestTa/tarasiuk-lab-matura-status), and doesn't regenerate the page itself.
+
+Numbers on results/tracks.json against committed run summaries: there are NO committed summaries yet
+(no runs/ in git, no results/**/summary.json), so every row is from a chat or a note. All are marked
+`verified: false` and shown as "unverified": correct. Arithmetic checks: "headline-auto" max 70 = the
+auto-scorable points of the four held-out papers (17 + 18 + 18 + 17, results/eval_set_papers.md), and
+26.33 / 70 = 37.6%, 26.0 / 70 = 37.1%, 18.67 / 70 = 26.7%: consistent. Contaminated/dev rows are in separate,
+muted groups, never in the headline chart.
+
+Fixed (this commit, builder code only, page not regenerated): build_tracks_page.py took `pct` from judged
+summaries, which divides by scored rows only; judged rows now use `pct_all_rows` (unscored = 0).
+
+For the Grok bot (page and board data it owns):
+- tracks.json g-7b-awq, g-7b-bf16, g-3b-base: stage "base" but method "router prompts" (the note even says
+  "Not the untouched base"). Stage should be "harness"; a base row must be `--mode raw`.
+- Public board scores.json marks "3B base" 26.7% and "7B base" 37.1% as `honest_bare: true`, but tracks.json
+  says both ran with router prompts. Not honest-bare; relabel. "7B base" is the bf16 model (15.2 GB, over the
+  8.0 GB base limit) and isn't marked as over. The legal 7B AWQ row (37.6%) is missing from the board.
+  "3B history-v2" says RUNNING on the board but has a finished 28.3% in tracks.json.
+- All board overall_pct values are on the 70-point auto-scored subset, not the 240-point paper; say so next
+  to each number, not only in the note.
+- Please commit each run's summary.json under results/grok/<run>/ so rows can move to verified.
+- eval_kind labels any matura_all.jsonl summary "contaminated". Since 4ea128b those summaries' top-level
+  numbers are held-out only (trained papers sit under trained_on_papers), so this is conservative, not wrong.
+
+Other commits: cd69d79 / 9aaaf30 (fetch_matura --images, pictures sent to vision models, JPEG q85): row text
+unchanged (154/154), images stay in gitignored data/, no image or weight files tracked in git. OK.
+98bccf5 and status commits: consistent.
+
 ## 2026-09-26 15:20 UTC: official exam harness and 999b525..afa2bd8
 
 - 0593d6b (scripts/run_exam.py: exam.json -> answers.json): matches the guide as summarised in FINDINGS
