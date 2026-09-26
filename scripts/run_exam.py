@@ -187,6 +187,11 @@ def main() -> int:
     print(f"{len(out['answers'])} answers ({blank} blank) -> {args.out}; log {log}")
     for p in problems:
         print("PROBLEM:", p, file=sys.stderr)
+    # The file is still written (on stage a partial answer sheet beats none), but a run with more
+    # than 10% blank after the re-ask means a dead or crashing server: fail loudly.
+    if blank > 0.1 * len(out["answers"]):
+        print(f"FAILED: {blank}/{len(out['answers'])} blank after the re-ask (server down?)", file=sys.stderr)
+        return 2
     return 1 if problems else 0
 
 
