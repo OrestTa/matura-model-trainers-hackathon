@@ -3,7 +3,7 @@
 #   1. (CPU) Polish Wikipedia + Wikisource + Wolne Lektury -> offline RAG index
 #      ($CORPUS/rag/plwiki.sqlite) and history slices ($CORPUS/dapt/*.jsonl). Skipped when
 #      they already exist. About 1 h on 4 vCPUs; needs ~20 GB disk. No GPU used.
-#   2. (GPU) waits until the GPU is free, then one LoRA pass of next-token loss over the
+#   2. (GPU) waits until DAPT_GPU_GB of GPU memory is free, then one LoRA pass of next-token loss over the
 #      best DAPT_TOKENS tokens -> $WORK/adapters/<model>/domain, merged model in
 #      $WORK/models/<model>-dapt for the per-type SFT to start from.
 # Env:
@@ -11,6 +11,8 @@
 #   DAPT_TOKENS=20000000    token budget (~2-3 h for Bielik-11B on one L40S)
 #   PREP_ONLY=1             only step 1 (safe while another job holds the GPU)
 #   CORPUS=$WORK/corpus     where the corpora and index live (persistent across runs)
+#   DAPT_GPU_GB=36          GPU memory to wait for before training (card shared by memory)
+#   DAPT_ARGS=              extra train_dapt.py flags, e.g. "--batch 2 --grad-accum 16" (~27 GB)
 #   DAPT_MERGE=1            also write the merged model (22 GB for Bielik-11B)
 #   FINEWEB=fineweb2hq      also filter the Polish web for history text (scripts/corpus/fineweb.py;
 #                           180 GB streamed shard by shard, ~2 GB kept); FINEWEB= to skip,
@@ -49,12 +51,12 @@ cp "$CORPUS/rag/plwiki.meta.json" "$OUT/" 2>/dev/null
 wc -l "$CORPUS"/dapt/*.jsonl "$CORPUS"/rl/*.jsonl
 [ "${PREP_ONLY:-0}" = 1 ] && finish 0
 
-until [ "$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | sort -n | tail -1)" -lt 2000 ]; do
-  step "waiting for a free GPU"; sleep 60
-done
+# The card is shared by memory (infra/jobs/gpu_admit.py): bf16 LoRA on Bielik-11B peaks ~32 GB.
+step "waiting for ${DAPT_GPU_GB:-36} GB of GPU memory"
+python3 infra/jobs/gpu_admit.py "$NAME-train" "${DAPT_GPU_GB:-36}" || finish 1
 step "DAPT $MODEL on $TOKENS tokens"
 python scripts/train_dapt.py --model "$MODEL" --data "$CORPUS"/dapt/*.jsonl \
   --out-dir "$WORK/adapters" --max-tokens "$TOKENS" --merge-dir "$WORK/models" \
-  $([ "${DAPT_MERGE:-1}" = 1 ] && echo --merge) || finish 1
+  $([ "${DAPT_MERGE:-1}" = 1 ] && echo --merge) ${DAPT_ARGS:-} || finish 1
 cp "$WORK/adapters/$MODEL/domain/train_meta.json" "$OUT/dapt_meta.json"
 finish 0
