@@ -1,5 +1,16 @@
 # Small-track compute — 2026-09-26
 
+## Serving integrity correction — 20:53 UTC
+
+The three-adapter Bielik pilot's server log warns that repeated `--lora` arguments
+use only the last value. Its request adapter IDs therefore do not establish that
+all three intended specialists were actually served. Preserve its answers and
+grades as diagnostic evidence; withdraw specialist-specific improvement claims.
+The trained adapter files themselves are unaffected. The corrected launcher uses
+one comma-separated adapter argument and fails before inference unless the live
+`/lora-adapters` response matches every declared adapter ID and path. A new full
+run with this verification is required before reporting specialist performance.
+
 Live verified Modal orestta Starter credits: USD25.58, no live apps before this wave. Forgehand rst USD13.67 of USD200 compute allowance, but GPU concurrency1/1 occupied; no existing process changed. Forgehand teacher credit USD49.539 available, reserved0; separate from compute.
 
 Own checkout: /Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon. No fetch/push.
@@ -81,3 +92,41 @@ Total unique model+router+OCR artifact bytes2,889,929,522. Allownedworkersauto-s
 19:35UTC: Passingvision compressionQ3 and cross-paperQ4validation launched inparallel. Q3run20260926-193419-qwen35-4b-vision-q3-offline-b0 appap-SAOIkQ7zGt9lDnB6lhMoRE,exact2023canonical37sameprompt/PNG/seed. Q4run20260926-193505-qwen35-4b-vision-2024-05-offline-b0 appap-eEXdydpsGUSJ529faJInUX,2024full40tasks60points,originalfull-pagePNGrepresentation(max2pages/task,3159textchars),notidentical2023cropformat. Bothmax1L4percall900s,networkblocked,CPUpreloaded,per-itemdurablecommit. NativeQwenTEXTSFTpilotdeferrednotcompleted.
 
 19:38UTC: Bothvalidationjobscompleteandstopped:Q3same2023paper37/37zeroerrors;Q4full2024paper40/40zeroerrors149.14seconds. Solgradingqueued. Q3/Q4all37requesthashesidentical, quantizationonlychanged; pair_input_audit.json recordsproof. SmallerweightSHAmeasuredandartifactmanifestupdated. No additionalGPUallocationwhilegrading.
+
+## 2026-09-26 19:52 UTC — Q3 vision plus OCR ablation
+
+Fresh Modal credits $9.99 at approximately 19:50 UTC. Five other containers were individually verified as one H100 each; the new owned full run uses one L4, within the shared ten-GPU cap.
+
+Five-category smoke `20260926-195050-qwen35-4b-vision-q3-smoke-ocr-offline-b0` completed: five nonempty answers, no errors, 29.67 seconds, network-denial probe passed. Smoke is not a full-paper score. Full paired run app `ap-222RjV49o5kKscxFoWErRh` is active with 900-second timeout and per-answer volume commits.
+
+The original 37 question/source/image fields and context prefixes were checked unchanged. Existing locally generated OCR is appended; no router, majority vote or prompt changes. Aggregate deployed weights are 2,974,690,670 bytes including Q3 answering weights, shared vision projector and both Tesseract language weights. Current primary Luna grades have not yet established the target; historical Sol marks retain their provenance.
+
+Full Q3 OCR run `20260926-195215-qwen35-4b-vision-q3-ocr-offline-b0` completed in 109.97 seconds: all 37 answers nonempty, zero errors, organizer JSON validated. Answers, manifest and logs persisted both on Modal volume and locally; paired input audit saved. App stopped and zero owned GPU containers verified at approximately 19:55 UTC. Luna evaluation requested; no OCR benefit claimed before paired marks arrive.
+
+## 2026-09-26 20:13 UTC — native specialist compatibility
+
+Native Qwen3.5-4B revision `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a` loaded with Transformers 5.17.0, PEFT 0.21.0, Torch 2.8.0, Pillow 12.3.0 and torchvision 0.23.0. An initial missing vision dependency failed before training; the fixed retry completed two finite assistant-only updates, losses 0.595 and 0.375. These are smoke losses, not evaluation evidence.
+
+Run `20260926-201020-qwen35-route-adapter-smoke` converted a rank-8 language-MLP-only adapter using upstream llama.cpp revision `694ec235484b3b0bf827ab7992a512d285f0e66b`: 18,101,920 bytes, SHA256 `53d3e768746f99b8309ffa6e54bc1893dfdc31bb139f140fbb9087583082473d`. The adapter loaded on the existing Q3_K_M model plus projector in an offline L4 worker and produced a coherent final-answer sanity response. Hybrid-attention LoRA targets remain untested; the successful smoke deliberately uses only language MLP gate/up/down projections.
+
+Five route pilots are implemented but await completed actual OCR for the synthetic image inputs. Native Transformers uses slower reference hybrid kernels; the bounded pilots do not claim optimized training throughput. Fresh Modal credits $4.46; five other H100s verified and no owned GPUs after smoke completion.
+
+## 2026-09-26 20:24 UTC — Bielik priority and real-only training
+
+User redirected specialists to Bielik1.5 and forbade further synthetic fine-tuning. The completed Qwen pilot `20260926-201539-qwen35-five-route-pilot` contains five separately trained eight-step adapters (90,509,600 total bytes), preserved as historical experiments; no combined Qwen inference was launched.
+
+Official native Bielik access returned authenticated403 for weights/config/tokenizer. Public Apache-2.0 mirror `cpral/Bielik-1.5B-v3.0-Instruct-ungated`, revision `a3a660b10fdba3a7b03c3349567e54d8875f9ac9`, exposes matching config/tokenizer/model LFS pointer Git blob IDs. Downloaded native weights are 3,193,073,112 bytes, SHA256 `3c337d1d0d3f8cafb27f617b97a9a0cf70a2067648cb3946311e2fe370c28978`. This is a native checkpoint, not the failed GGUF import.
+
+Generation-only offline preflight `20260926-202110-bielik15-native-preflight` completed three coherent Polish responses and verified tokenizer EOS4 `<|im_end|>` against model EOS[4,2]. Results persisted locally and on `matura-small-independent`; native cache is `hf_cache/models--cpral--Bielik-1.5B-v3.0-Instruct-ungated/snapshots/a3a660b10fdba3a7b03c3349567e54d8875f9ac9/`. No Bielik training has occurred.
+
+Real-only adapter worker prepared with explicit synthetic:false/year exclusions2023/2024 and assistant-only official-answer targets. Essay rubrics are not accepted as essay responses. Fresh Modal balance $1.37 near20:22UTC; any pilot uses oneL4 capped600s and requires ready real data.
+
+## 2026-09-26 20:40 UTC — approved real-only Bielik pilot completed
+
+After explicit user approval, app `ap-YB23jdghilmUhEze7gVeDf` trained and exported three actual native Bielik adapters: closed text16steps, open text16steps, essay5steps on five official CKE exemplar essays. Run `20260926-202923-bielik15-real-route-adapters` contains 48,407,904 bytes of GGUF adapters. The dataset was snapshotted before a later conservative Charlemagne exemplar exclusion; this pilot must not establish independent2024essay generalization. No synthetic targets were used.
+
+Paired original-Q4 runtime validation completed in app `ap-v22R1hOJb1IUlVLXWF4Ar4`, run `20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0`. The legacy filename says five, but the manifest explicitly contains only three trained adapters; both image routes fall back to base weights. All adapters loaded, five-category smoke passed, then37paired answers completed in198.08seconds. Adapted answers37nonblank; paired zero-adapter baseline has one blank at14.1, preserved for evaluation. Both official exports validate. Local Luna evaluation requested.
+
+Aggregate deployable artifacts are 1,030,569,275 bytes: Q4base972,797,408 +3adapters48,407,904 +OCR8,878,606 +real-onlyclassifier485,357. OCR applies only to the23predicted image-route tasks, never essay/text routes. Local GGUF backups under `artifacts/small_track/bielik15-real-adapters/` were verified against each trained SHA256. Portable config `infra/small_track/configs/bielik15-q4-real-three-adapter-pilot.json` includes exact hashes and per-request LoRA IDs.
+
+Two real image-route training datasets are now ready, but automatic approval review rejected the extra paid image-route launch as outside the earlier text-pilot approval/read-only heartbeat. It was not launched or retried. Latest observed Modal credit $0.83; the other agent had one L40S.

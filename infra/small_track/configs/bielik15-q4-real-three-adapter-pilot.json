@@ -1,0 +1,160 @@
+{
+  "name": "bielik15-q4-real-three-adapter-pilot",
+  "offline": true,
+  "temperature": 0,
+  "seed": 42,
+  "vote_samples": 1,
+  "artifacts": {
+    "model": {
+      "repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+      "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+      "filename": "Bielik-1.5B-v3.0-Instruct-Q4_K_M.gguf",
+      "bytes": 972797408,
+      "sha256": "ea9cc250a6c65718c290fd963d8e3237b924ccfc7632f20a6127bba5904a50d9",
+      "role": "weights"
+    },
+    "closed_without_images": {
+      "filename": "artifacts/small_track/bielik15-real-adapters/closed_without_images/adapter-f16.gguf",
+      "bytes": 16135968,
+      "sha256": "ba3a3249822e8978303f9da15ce53d58db31b9399af991b133feba6d62a8c704",
+      "role": "adapter",
+      "server_lora_id": 0
+    },
+    "essay": {
+      "filename": "artifacts/small_track/bielik15-real-adapters/essay/adapter-f16.gguf",
+      "bytes": 16135968,
+      "sha256": "2bc1c7e47c31fbb021be763dfac328cb8d21d04213c6e5209593590cc9d79915",
+      "role": "adapter",
+      "server_lora_id": 1
+    },
+    "open_without_images": {
+      "filename": "artifacts/small_track/bielik15-real-adapters/open_without_images/adapter-f16.gguf",
+      "bytes": 16135968,
+      "sha256": "f9cab931dcea3e03c2aa66f23475c1dd79da4432e3bd0f970c5c52d12983a77d",
+      "role": "adapter",
+      "server_lora_id": 2
+    }
+  },
+  "routes": {
+    "closed_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "closed_without_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "closed_without_images",
+      "adapter_model": "bielik15"
+    },
+    "closed_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model"
+      ],
+      "lora": []
+    },
+    "open_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "open_without_images"
+      ],
+      "lora": [
+        {
+          "id": 2,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "open_without_images",
+      "adapter_model": "bielik15"
+    },
+    "open_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model"
+      ],
+      "lora": []
+    },
+    "essay": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "essay"
+      ],
+      "lora": [
+        {
+          "id": 1,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "essay",
+      "adapter_model": "bielik15"
+    }
+  },
+  "status": "Three trained specialists; image routes use base. Quality evaluation pending.",
+  "auxiliary_artifacts": [
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/pol.traineddata",
+      "bytes": 4765518,
+      "sha256": "c4476cdbc0e33d898d32345122b7be1cbf85ace15f920f06c7714756e1ef79b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/eng.traineddata",
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "artifacts/small_track/router-real-2026-0926.json",
+      "bytes": 485357,
+      "sha256": "f2a63e81376f1da0a7324323b997c972151a4f7e1af002c108b7a8fd53f66312",
+      "role": "router"
+    }
+  ]
+}
