@@ -1,0 +1,37 @@
+{
+  "n": 21,
+  "scored": 18,
+  "errors": 0,
+  "earned": 14.5,
+  "max": 20.0,
+  "pct": 72.5,
+  "pct_text_only": 72.5,
+  "pct_all_rows": 63.0,
+  "decision_acc": 66.7,
+  "unscored": 3,
+  "routing_accuracy": 76.2,
+  "latency_p50_s": 55.538,
+  "wall_s": 0.0,
+  "by_category": {
+    "short_open": {
+      "n": 5,
+      "scored": 4,
+      "earned": 3.0,
+      "max": 4.0,
+      "pct": 75.0
+    },
+    "source_analysis": {
+      "n": 16,
+      "scored": 14,
+      "earned": 11.5,
+      "max": 16.0,
+      "pct": 71.9
+    }
+  },
+  "model": "open_text",
+  "mode": "t2k",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 3,
+  "source": "/tmp/claude-0/-home-user-matura-model-trainers-hackathon/e9d0b5bb-1cdc-5ed4-8848-53dc598a7664/scratchpad/sweep/hog2/open_text/t2k/answers.jsonl"
+}

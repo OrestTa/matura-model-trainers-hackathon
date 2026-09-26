@@ -1,0 +1,65 @@
+{
+  "n": 86,
+  "scored": 74,
+  "errors": 0,
+  "earned": 80.5,
+  "max": 116.0,
+  "pct": 69.4,
+  "pct_text_only": 84.7,
+  "pct_all_rows": 59.6,
+  "decision_acc": 81.8,
+  "unscored": 12,
+  "routing_accuracy": 83.7,
+  "latency_p50_s": 50.049,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 8,
+      "scored": 8,
+      "earned": 7.0,
+      "max": 9.0,
+      "pct": 77.8
+    },
+    "essay": {
+      "n": 2,
+      "scored": 2,
+      "earned": 16.0,
+      "max": 30.0,
+      "pct": 53.3
+    },
+    "matching": {
+      "n": 2,
+      "scored": 2,
+      "earned": 0.0,
+      "max": 3.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 9,
+      "scored": 8,
+      "earned": 6.0,
+      "max": 8.0,
+      "pct": 75.0
+    },
+    "source_analysis": {
+      "n": 58,
+      "scored": 47,
+      "earned": 44.5,
+      "max": 55.0,
+      "pct": 80.9
+    },
+    "true_false": {
+      "n": 7,
+      "scored": 7,
+      "earned": 7.0,
+      "max": 11.0,
+      "pct": 63.6
+    }
+  },
+  "model": "raw",
+  "mode": "raw",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 12,
+  "source": "/tmp/claude-0/-home-user-matura-model-trainers-hackathon/e9d0b5bb-1cdc-5ed4-8848-53dc598a7664/scratchpad/sweep/hog2/raw/raw/answers.jsonl"
+}

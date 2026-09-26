@@ -11,8 +11,9 @@ subtypes:
   open_text:
     name: base
   open_image:
-    name: ocr
-    ocr: true
+    # Dev picked OCR notes (+5.6 on 14 paired items) but the held-out sweep (subtype-hog, 26 Sep) had it
+    # at -6.5 on 26 paired items: noise on dev, so plain think stays.
+    name: base
   essay:
     # Length guard (Orest, 22:13 CEST): aim at ~400 words; under 350 the model continues the essay
     # (an essay under 300 words scores 0; the base wrote 296-369). Format-only wording, no klucz text.
