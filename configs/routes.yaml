@@ -27,3 +27,11 @@ routes:
   short_open:      {adapter: short_open,      max_tokens: 192,  temperature: 0.0}
   essay:           {adapter: essay,           max_tokens: 1500, temperature: 0.3}
   general:         {adapter: null,            max_tokens: 512,  temperature: 0.0}
+
+# Offline retrieval (modes "rag" and "adapters"): BM25 over a local knowledge base
+# built by scripts/build_kb.py. Missing file = no RAG. `categories` limits it to
+# some question types (omit for all).
+rag:
+  path: data/kb/passages.jsonl
+  k: 4
+  max_chars: 3000

@@ -12,6 +12,8 @@ ADAPTERS="${ADAPTERS:-work/adapters/$MODEL}"
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 
 python scripts/quantize_checkpoint.py --check "$CHECKPOINT"   # refuses a model over the limit
+[ -s data/kb/passages.jsonl ] && echo "RAG: $(wc -l < data/kb/passages.jsonl) passages" \
+  || echo "WARNING: no RAG knowledge base (python scripts/build_kb.py, before going offline)"
 
 LORA=()
 for d in "$ADAPTERS"/*/; do

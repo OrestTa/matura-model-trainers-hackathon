@@ -64,6 +64,20 @@ From then on `run_baselines.py` serves that checkpoint instead of the HF weights
 (`served` in each summary.json says which), so the scores are for exactly the
 weights we submit. Rerun the baseline for that model once the checkpoint exists.
 
+## 2c. Offline knowledge base (RAG)
+
+The exam allows a local knowledge base, and it doesn't count toward the size limit.
+On a box with internet, build one from Polish Wikipedia (CC BY-SA):
+
+```bash
+python scripts/build_kb.py            # -> data/kb/passages.jsonl (~150 topics x 12 articles)
+MODES=raw,routed,rag bash infra/jobs/baselines.sh    # "rag" = router prompts + retrieval
+```
+
+The router retrieves the 4 best passages (BM25, `matura_router/rag.py`) and puts them
+before the question in the "rag" and "adapters" modes; raw and routed never see them.
+Settings are under `rag:` in `configs/routes.yaml`. Copy `data/kb/` to the exam box.
+
 ## 3. Fine-tune: one adapter per question type
 
 ```bash
@@ -111,7 +125,8 @@ python -m matura_router run exam.jsonl -o answers.jsonl   # or answer a file dir
 ```
 
 `serve_exam.sh` is the exact on-stage harness: it refuses a checkpoint over the
-limit, loads every trained adapter from `work/adapters/<model>/`, and runs offline.
+limit, loads every trained adapter from `work/adapters/<model>/`, uses the knowledge
+base in `data/kb/` if present, and runs offline.
 
 Submit results for both the base model (`--modes raw`) and the trained harness,
 since the progress prize compares them.

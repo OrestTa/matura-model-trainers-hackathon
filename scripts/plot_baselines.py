@@ -26,9 +26,9 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Validated reference palette (dataviz skill): categorical slots 1-2, blue ramp.
 SURFACE, INK, INK_2, INK_3, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#8a8984", "#e6e5e1"
-MODE_COLORS = {"raw": "#2a78d6", "routed": "#eb6834", "adapters": "#1baf7a"}
+MODE_COLORS = {"raw": "#2a78d6", "routed": "#eb6834", "rag": "#8a5cd6", "adapters": "#1baf7a"}
 MODE_LABELS = {"raw": "Base model, plain prompt", "routed": "Base model + router prompts",
-               "adapters": "Router + LoRA adapters"}
+               "rag": "Router prompts + RAG", "adapters": "Router + RAG + LoRA adapters"}
 BLUES = LinearSegmentedColormap.from_list(
     "blues", ["#cde2fb", "#86b6ef", "#3987e5", "#256abf", "#184f95", "#0d366b"])
 SMALL_MODEL_BAR, SIZE_LIMIT_GB = 35.0, 8.9

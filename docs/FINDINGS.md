@@ -3,6 +3,15 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:35 CEST · question-router thread: offline RAG mode
+
+- New router mode **`rag`** (router prompts + retrieval, base model); **`adapters`** now also retrieves.
+  BM25 with 6-letter prefix stemming over `data/kb/passages.jsonl` (`matura_router/rag.py`, pure
+  Python, no GPU). Raw and routed never see retrieved text, so the baselines stay comparable.
+- The knowledge base comes from Polish Wikipedia via `python scripts/build_kb.py` (CC BY-SA, one URL
+  per passage). **Cloud sessions can't reach Wikipedia** (proxy denies pl.wikipedia.org), so build it
+  on the GPU box. Not built yet; no RAG scores yet.
+
 ## 2026-09-26 13:30 CEST · Every past history matura with a key is now in the eval set (eval-set thread)
 
 - `python scripts/fetch_matura.py --papers all` builds `data/eval/matura_all.jsonl`: **16 papers, 573 items,

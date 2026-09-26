@@ -14,6 +14,7 @@ from .backends import Backend, GenerationParams, make_backend
 from .categories import Category
 from .classifier import Classifier, LLMClassifier, RuleClassifier
 from .prompts import build_messages, postprocess, strip_think
+from .rag import BM25Retriever, format_knowledge
 
 log = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ class RoutedAnswer:
     confidence: float
     method: str
     latency_s: float
+    retrieved: tuple = ()
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -42,10 +44,13 @@ class RoutedAnswer:
 
 class Router:
     def __init__(self, backend: Backend, routes: dict[Category, Route],
-                 classifier: Optional[Classifier] = None):
+                 classifier: Optional[Classifier] = None,
+                 retriever: Optional[BM25Retriever] = None, rag: Optional[dict] = None):
         self.backend = backend
         self.routes = routes
         self.classifier = classifier or Classifier()
+        self.retriever = retriever
+        self.rag = rag or {}
         self._available = backend.available_adapters()
 
     @classmethod
@@ -68,7 +73,27 @@ class Router:
                 GenerationParams(max_tokens=8, temperature=0.0)))
         classifier = Classifier(RuleClassifier(ccfg.get("min_score", 1.0),
                                                ccfg.get("min_margin", 0.5)), llm)
-        return cls(backend, routes, classifier)
+        rag = cfg.get("rag") or {}
+        retriever = None
+        if rag.get("path"):
+            kb = Path(rag["path"])
+            kb = kb if kb.is_absolute() else Path(path).resolve().parent.parent / kb
+            if kb.exists():
+                retriever = BM25Retriever.load(kb)
+                log.info("RAG: %d passages from %s", len(retriever.passages), kb)
+            else:
+                log.warning("RAG knowledge base %s not built yet (scripts/build_kb.py); running without", kb)
+        return cls(backend, routes, classifier, retriever, rag)
+
+    def knowledge(self, category: Category, question: str, context: str) -> tuple[str, tuple]:
+        """Retrieved passages for this question, or ("", ()) when RAG is off for it."""
+        cats = self.rag.get("categories")
+        if self.retriever is None or (cats and category.value not in cats):
+            return "", ()
+        # The command carries the topic; a long source would drown it, so only its start counts.
+        hits = self.retriever.search(f"{question}\n{context[:400]}", k=int(self.rag.get("k", 4)))
+        text = format_knowledge(hits, int(self.rag.get("max_chars", 3000)))
+        return text, tuple(p.title for p in hits)
 
     def resolve_adapter(self, category: Category) -> Optional[str]:
         route = self.routes.get(category) or self.routes[Category.GENERAL]
@@ -80,8 +105,9 @@ class Router:
 
     def answer(self, question: str, context: str = "",
                category: Optional[Category] = None, mode: str = "adapters") -> RoutedAnswer:
-        """mode: "adapters" (full harness), "routed" (per-type prompts, base model only)
-        or "raw" (one generic prompt, base model, no post-processing) for baselines."""
+        """mode: "adapters" (full harness: adapters + RAG), "rag" (per-type prompts + RAG,
+        base model), "routed" (per-type prompts, base model only) or "raw" (one generic
+        prompt, base model, no post-processing) for baselines."""
         t0 = time.perf_counter()
         if category is None:
             c = self.classifier.classify(question, context)
@@ -95,7 +121,10 @@ class Router:
             route = self.routes[Category.GENERAL]
         adapter = self.resolve_adapter(category) if mode == "adapters" else None
         prompt_cat = Category.GENERAL if mode == "raw" else category
-        messages = build_messages(prompt_cat, question, context, fill_template=mode != "raw")
+        knowledge, retrieved = self.knowledge(category, question, context) \
+            if mode in ("adapters", "rag") else ("", ())
+        full_context = f"{knowledge}\n\n{context}".strip() if knowledge else context
+        messages = build_messages(prompt_cat, question, full_context, fill_template=mode != "raw")
         try:
             raw = self.backend.chat(messages, adapter, route.params)
         except Exception:
@@ -110,4 +139,4 @@ class Router:
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,
-                            latency_s=round(time.perf_counter() - t0, 3))
+                            latency_s=round(time.perf_counter() - t0, 3), retrieved=retrieved)
