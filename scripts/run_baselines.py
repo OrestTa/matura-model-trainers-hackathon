@@ -154,15 +154,8 @@ def main():
     models = cfg["models"]
     # "all" = every model we could ship; the -bf16 reference entries are over the size limit.
     # Local checkpoints (hf_id is a path, e.g. the DAPT-merged model) join "all" only once they exist.
-<<<<<<< Updated upstream
     limit = float(cfg.get("ship_limit_gb", 8.0))
     keys = ([k for k in models if not k.endswith("-bf16") and float(models[k].get("disk_gb", 0)) <= limit
-=======
-    # Models whose shipped form is over the base size limit can't be submitted, so skip them too.
-    base_limit = float(cfg.get("base_limit_gb", 8.0))
-    keys = ([k for k in models if not k.endswith("-bf16")
-             and float(models[k].get("disk_gb") or 0) <= base_limit
->>>>>>> Stashed changes
              and not (models[k]["hf_id"].startswith("/") and not Path(models[k]["hf_id"]).exists())]
             if args.models == "all" else args.models.split(","))
     unknown = [k for k in keys if k not in models]

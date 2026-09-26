@@ -59,7 +59,7 @@ the chosen one as a 4-bit checkpoint on a GPU box:
 
 ```bash
 python scripts/quantize_checkpoint.py bielik-11b    # -> work/checkpoints/bielik-11b, fails if over 8.0 GB
-python scripts/quantize_checkpoint.py --check work/checkpoints/bielik-11b --adapters work/adapters/bielik-11b
+python scripts/quantize_checkpoint.py --check work/checkpoints/bielik-11b --adapters work/adapters/bielik-11b  # + adapters <= 8.8
 ```
 
 Estimated 4-bit sizes: Bielik-11B 6.7 GB (leaves ~2.1 GB for adapters; 7 adapters at

@@ -5,11 +5,7 @@
     # writes adapters/bielik-11b/essay/     (what run_baselines --adapters-dir and vLLM load)
 
 Needs `pip install -e .[train]` and a GPU. Trains in bf16 on the full-precision base;
-<<<<<<< Updated upstream
-at inference the adapter sits on the 4-bit base that fits under the 8.0 GB base limit, and adapters
-=======
 at inference the adapter sits on the 4-bit base that fits under the 8.0 GB base limit (base + adapters must stay under 8.8 GB), and adapters
->>>>>>> Stashed changes
 don't count toward the limit. infra/jobs/train.sh runs one of these per GPU.
 """
 
