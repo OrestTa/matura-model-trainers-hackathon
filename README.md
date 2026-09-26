@@ -8,6 +8,11 @@ fine-tuned for just that type. All adapters sit on **one shared base model**, so
 only the base counts toward the 8 GB limit, and switching adapters per question is
 cheap.
 
+## Hackathon operations
+
+- Live AWS GPU infrastructure notes: [infra/aws/AWS_INFRA.md](infra/aws/AWS_INFRA.md)
+- AWS automation scripts: [infra/aws/README.md](infra/aws/README.md)
+
 ```
 question ──► classifier ──► route (adapter + prompt + decoding) ──► base model + LoRA ──► post-process ──► answer
                  │                                                        ▲
