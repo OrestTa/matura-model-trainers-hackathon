@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| subtype-z-1 | subtype sweep dev SHARD=1/6 THINK_FALLBACK=1 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/subtype-z-1 | Per-subtype harness thread |
 | subtype-z-0 | subtype sweep dev SHARD=0/6 THINK_FALLBACK=1 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/subtype-z-0 | Per-subtype harness thread |
 | base-ev6-2026-05 | base gemma4-12b-think (2k) + THINK_FALLBACK, 2026-05 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/base-ev6-2026-05 | Venues thread |
 | base-ev6-2025-05 | base gemma4-12b-think (2k) + THINK_FALLBACK, 2025-05 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/base-ev6-2025-05 | Venues thread |
