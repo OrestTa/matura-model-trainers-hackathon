@@ -3,7 +3,7 @@
 Last updated: 2026-09-26 ~12:27 (Europe/Warsaw)
 
 ## Account
-- Console: `t1 development` - Account `779846788838` - Region focus `us-east-1` (+ quota asks in `us-west-2`)
+- Console: `t1 development` - Account (redacted) - Region focus `us-east-1` (+ quota asks in `us-west-2`)
 
 ## Credits - AWS Activate - Andreessen Horowitz
 

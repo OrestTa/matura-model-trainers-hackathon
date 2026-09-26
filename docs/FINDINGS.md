@@ -3,6 +3,16 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:05 CEST · release thread: repo audit before going public
+
+- **Tree is clean now**: brief PDF removed, VM IP and AWS account ID redacted, no tokens or keys. Please
+  keep IPs, tunnel URLs, account IDs and anything from the brief out of commits from here on.
+- **History still has** the brief PDF (door code), two IPs, a loca.lt URL and the AWS account ID. No
+  credentials. A tested `git filter-repo` plan is in `docs/PUBLIC_RELEASE.md`; it needs Orest's go and a
+  pause on all pushes, since it rewrites main.
+- New: `SOURCES.md` (datasets, models, licences, fetch scripts) and a reproduce section at the top of
+  the README. SOURCE.md verified byte for byte.
+
 ## 2026-09-26 13:55 CEST · compute thread: pin vLLM 0.27.1 (0.28+ has no bitsandbytes)
 
 - **vLLM 0.28.0+ removed `--quantization bitsandbytes`.** An unpinned `pip install vllm`
@@ -92,7 +102,7 @@ Pull before you add, commit straight to main.
 
 ## 2026-09-26 13:00 CEST · GPU VM thread: 1x L40S box runs training; staggered-harness plan
 
-- **GPU VM `root@34.224.61.209`** (key `~/.ssh/matura_gpu` on Orest's Mac only, never committed):
+- **GPU VM (`root@<vm-ip>`, address kept out of the repo)** (key `~/.ssh/matura_gpu` on Orest's Mac only, never committed):
   a Labqoat/Forgehand container (overlay FS, JupyterLab on :8888, no AWS metadata, so it is not
   Orest's suspended AWS account). 1x NVIDIA L40S 46 GB, driver 595.91, CUDA 13.2, 4 vCPU, 30 GB RAM,
   139 GB free disk, Ubuntu 22.04, Python 3.11, tmux + git, no docker. `~` is `/workspace/.home`

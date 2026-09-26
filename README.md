@@ -1,6 +1,6 @@
 # Matura model trainers: question router
 
-Our entry for the Warsaw Model Trainers hackathon: a small local model (≤ 8 GB)
+Our entry for the Warsaw Model Trainers hackathon: a small local model (≤ 8.9 GB base weights on disk)
 sitting the Polish history matura.
 
 The harness classifies each exam question by type and sends it to a LoRA adapter
@@ -8,22 +8,58 @@ fine-tuned for just that type. All adapters sit on **one shared base model**, so
 only the base counts toward the 8 GB limit, and switching adapters per question is
 cheap.
 
-## Live status dashboard
+Made during the Warsaw Model Trainers hackathon, Kolektyw3, 25–27.09.2026 (see
+[SOURCE.md](SOURCE.md)). Data and model sources: [SOURCES.md](SOURCES.md). Nothing
+copyrighted is committed; every dataset is fetched by a script.
 
-Public no-auth share link: https://orestta.github.io/tarasiuk-lab-matura-status/
+## Reproduce
 
-- Public publishing repo: `OrestTa/tarasiuk-lab-matura-status`
-- Public board source in this repo: [`public-board/`](public-board/)
-- Public board data to edit: [`public-board/status.json`](public-board/status.json)
-- Collaborator notes: [`public-board/README.md`](public-board/README.md)
-- Existing collaborator dashboard: [`dashboard/`](dashboard/)
+Tested on Linux with one 48 GB GPU (NVIDIA L40S), Python 3.11, CUDA 12+.
 
-**New here? Start with [docs/HOWTO.md](docs/HOWTO.md).**
+```bash
+git clone https://github.com/OrestTa/matura-model-trainers-hackathon && cd matura-model-trainers-hackathon
+python -m venv .venv && . .venv/bin/activate
+pip install -e .[dev,data,peft,train,eval] vllm==0.27.1    # vLLM pin: bitsandbytes 4-bit checkpoints
+python -m pytest -q                              # router, scoring, fetch, RAG, training tests
 
-## Hackathon operations
+# 1. Eval set from the official CKE papers (not committed)
+python scripts/fetch_matura.py                   # data/eval/matura.jsonl, May 2023-2026
 
-- Live AWS GPU infrastructure notes: [infra/aws/AWS_INFRA.md](infra/aws/AWS_INFRA.md)
-- AWS automation scripts: [infra/aws/README.md](infra/aws/README.md)
+# 2. Pre-quantize the base model under the 8.9 GB limit
+python scripts/quantize_checkpoint.py bielik-11b     # -> work/checkpoints/bielik-11b
+
+# 3. Baseline: untouched base model (the "base" result)
+python scripts/run_baselines.py --models bielik-11b --modes raw
+
+# 4. Train: synthetic data (open teacher, served locally) + past papers -> one LoRA adapter per question type
+python scripts/fetch_matura.py --papers all -o data/eval/matura_all.jsonl
+python scripts/build_train_from_papers.py      # data/train/past_papers.jsonl, headline papers excluded
+TRAIN_MODELS=bielik-11b bash infra/jobs/train.sh
+
+# 5. Trained model (the "trained" result), then the exact on-stage harness
+python scripts/run_baselines.py --models bielik-11b --modes raw,routed,adapters --adapters-dir work/adapters
+bash scripts/serve_exam.sh bielik-11b            # vLLM + adapters + router on :8080, fully offline
+```
+
+Run `python <script> --help` for every option; [docs/HOWTO.md](docs/HOWTO.md) walks
+through each step. The optional RAG knowledge base is built with `scripts/build_kb.py`
+(or the Wikipedia index from `scripts/corpus/plwiki.py`) and its path is set in
+`configs/routes.yaml` (`rag.path`).
+
+### On stage
+
+`scripts/serve_exam.sh` is the exact harness we run for the exam. It refuses a checkpoint
+over the size limit, sets every Hugging Face and vLLM switch to offline, serves the
+4-bit base model with its adapters, and puts the router in front as an OpenAI-style
+endpoint on `:8080`. No closed API or web access is used while answering.
+
+### Results
+
+Base (untouched) and trained scores are committed under [`results/`](results/) as they
+come in; job progress is in [docs/STATUS.md](docs/STATUS.md) and findings in
+[docs/FINDINGS.md](docs/FINDINGS.md).
+
+## How it works
 
 ```
 question ──► classifier ──► route (adapter + prompt + decoding) ──► base model + LoRA ──► post-process ──► answer
@@ -121,7 +157,7 @@ vLLM on its own GPU and scores it on the eval set in two modes:
 three charts: score per model (raw vs routed, with the 35% line), a model × question
 type heatmap, and shipped size vs score with the 8 GB limit.
 
-On EC2 (all compute-heavy work runs there, on credits):
+On EC2 (used early in the event; the AWS account was later suspended, so the final runs used a Labqoat L40S VM with the same `infra/jobs/*.sh` scripts):
 
 ```bash
 infra/jobs/ec2_job.sh baselines                               # all models, 1x g6e.48xlarge

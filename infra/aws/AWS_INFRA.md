@@ -16,7 +16,7 @@ mirror, not a repo content requirement; this file is the canonical repo doc.
 | Field | Value |
 | --- | --- |
 | Console identity | `t1 development` |
-| Account ID | `779846788838` |
+| Account ID | (redacted) |
 | Region | `us-east-1` |
 
 ### Credits
