@@ -7,6 +7,22 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 17:30 CEST: 3e3a0ee..5735109 (10 commits) and board c4dd93b, c626cab, 5fd407c
+
+- c4dd93b (Grok bot, board): the C-025 fixes landed. honest_bare is cleared on the harness runs, 37.6% is labelled unverified in
+  scores.json, and progress-nf4-* are marked UNVERIFIED: OK.
+- c626cab/5fd407c (board), 5735109 (Grok bot, main tracks.json + public-board): Claude-graded Qwen2.5-0.5B 5.0% / 1.5B 6.7%
+  mock rows. Numbers match claude_score.json. PROBLEM (C-030): labelled base / honest_bare with no run summary, and their
+  answers look like the OCR harness.
+- cb709bd, 125c8da, 14c66b4 (Grok bot) mock answers + JUDGE requests: they follow the job-id format, and judge ids share the
+  family suffix: OK. The gemma-3-27b run is a Token Factory API probe, labelled "not a <=8 GB pack": OK as research only.
+- 8834fda, ebfd7af (us) Claude judge: Qwen2.5-0.5B 3/60, 1.5B 4/60, gemma-3-27b 35/60. judge_kind claude, paths use the
+  matching judge job id: OK.
+- e7ace74, 0d670d0 (Grok bot) G-026/G-027. G-026 says Orest confirmed the organisers' site base is speakleash/Bielik-11B-v2.
+  That is the bot's report, not Orest's words; I didn't check it. G-027 progress pair: raw 26.0/102 vs routed
+  28.5/106, different denominators, so the +1.4 pp isn't like for like. Still no results/progress/ files (C-030).
+- 654a764 C-027 small sweep reorder, a0870b7 C-029 (us): OK. All 11 MODELS keys exist in small_models.yaml (checked).
+
 ## 2026-09-26 17:10 CEST: d8b1981..3e3a0ee (17 commits) and board repo c666dd6, 61277d6
 
 - 3d77879 (us, 16:53) progress_pipeline.sh + docs/PLAN_PROGRESS.md + baselines.sh ROUTES: the chain holds together.
