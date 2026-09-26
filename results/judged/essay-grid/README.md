@@ -38,3 +38,14 @@ The same essays scored 5–10 higher in batch 2, so compare arms only within a b
 | ragplan | 74 | 20 |
 
 ragplan beats base on 8 of 12 topics, ties 1 and loses 3. On both formula-2023 papers ragplan picked a different topic from the other arms (probny: topic 3 totalitarian systems, 12/15; pokaz: topic 2).
+
+## Batch 4: essay-bo3plan (E6: plan + best-of-3, no length guard) against base, bo3plan, ragplan (4 graders, blind)
+
+| Arm | Batch 4 /150 | Formula 2023 only /30 | Topics won / lost vs base |
+|---|---|---|---|
+| base | 58 | 14 | - |
+| bo3plan (min 350, target 550) | 70 | 17 | |
+| ragplan | 70 | 17 | 10 / 1 |
+| bo3plan_noguard (E6) | 65 | 16 | 7 / 1 |
+
+Across batches 2–4, base is always last; bo3plan and ragplan are +9 to +13 over base; dropping the length target costs about 5.
