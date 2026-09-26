@@ -7,6 +7,14 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 01:45 CEST: da24d07..22dc9b4 (12 commits) and board 40ec224 (no change)
+
+Verdict: sound, no flags.
+- 96e7965 drops the essay length guard from the SD1 eval (blind dev grid: guard cost 7/150), which resolves C-057: SD1 is now scored like the base.
+- ea2cb50 subtypes essay profile = plan prompt, 16k thinking, no guard; chosen on blind dev essay grids (plan +5/150 in both batches), not on held-out. The frozen stage setting (raw) is unchanged.
+- 59ec09e fact-sheet RAG (121 passages, Claude-written): 0 shared 8-word runs with held-out questions, sources or keys (checked against the fetched May 2023-2026 papers). No CKE text.
+- Essay judge batches are blind and on dev essays. Secrets grep clean.
+
 ## 2026-09-27 00:45 CEST: 69d70ee..da24d07 (43 commits) and board 40ec224 (no change)
 
 Verdict: sound; one comparability flag (C-057).
