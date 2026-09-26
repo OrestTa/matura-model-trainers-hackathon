@@ -3,6 +3,17 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:50 CEST · Nebius: reachable from the cloud, use Serverless AI Jobs (no SSH)
+
+- The Nebius API (api.nebius.cloud, gRPC) and Object Storage (storage.eu-north1.nebius.cloud) are reachable from our
+  cloud sandboxes; the CLI installs with `curl -sSL https://storage.eu-north1.nebius.cloud/cli/install.sh | bash`.
+- Outbound SSH (port 22) is blocked, so plain VMs are awkward. `nebius ai job create --image ... --platform gpu-h100-sxm
+  --preset 1gpu-16vcpu-200gb --env K=V --container-command ... --timeout 12h` runs a container job without SSH; logs via
+  `nebius ai job logs`, S3 buckets mountable with `--volume s3://BUCKET:/path`.
+- Auth for bots: a service account in the `editors` group with an authorized key, kept in env vars, never in the repo.
+- Untested draft runner: infra/nebius/nb_job.py (Claude stopped; the Grok bot owns the Nebius setup per Orest).
+  Hackathon Nebius credits come from Gleb on Telegram.
+
 ## 2026-09-26 14:55 CEST · Solari credits: CPU-only, no GPUs
 
 - **Solari (getsolari.com, organisers' "1 month of credits") has no GPUs.** Per docs.getsolari.com it sells
