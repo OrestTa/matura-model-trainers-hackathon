@@ -112,11 +112,17 @@ def shard(args):
 
 def merge(out_dir: Path, dst: Path):
     """All shard files -> one file, best first."""
-    rows = []
+    rows, skipped = [], 0
     for f in sorted(out_dir.glob("*.jsonl")):
         for line in open(f, encoding="utf-8"):
             r = json.loads(line)
+            # Re-apply the skip rules so shards built by an older version get cleaned too.
+            if any(s in (r.get("url") or "") for s in SKIP_URL) or EXAM_PAGE.search(r["text"]):
+                skipped += 1
+                continue
             rows.append((r["score"], line))
+    if skipped:
+        print(f"merge: dropped {skipped} exam/answer-key or wiki-mirror docs", flush=True)
     rows.sort(key=lambda x: -x[0])
     dst.parent.mkdir(parents=True, exist_ok=True)
     with open(dst, "w", encoding="utf-8") as f:
@@ -160,6 +166,7 @@ def main():
     ap.add_argument("--eval", default=os.environ.get("EVAL", str(ROOT / "data/eval/matura.jsonl")))
     ap.add_argument("--min-score", type=float, default=10.0)
     ap.add_argument("--min-hits", type=int, default=8)
+    ap.add_argument("--merge-only", action="store_true", help="re-merge existing shard files")
     ap.add_argument("--rag", action="store_true", help="also add docs to the RAG index")
     ap.add_argument("--rag-min-score", type=float, default=15.0)
     ap.add_argument("--db", default=str(ROOT / "data/rag/plwiki.sqlite"))
@@ -174,7 +181,8 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     Path(a.tmp).mkdir(parents=True, exist_ok=True)
     P.eval_shingles(Path(a.eval))  # fail early without the eval set
-    jobs = [(base, n, str(out_dir), a.tmp, a.min_score, a.min_hits) for n in names]
+    jobs = [] if a.merge_only else [(base, n, str(out_dir), a.tmp, a.min_score, a.min_hits)
+                                    for n in names]
     docs = words = 0
     with ProcessPoolExecutor(a.workers, initializer=_init, initargs=(a.eval,)) as ex:
         for name, msg, d, w in ex.map(shard, jobs):

@@ -49,6 +49,10 @@ if [ ! -s "$CORPUS/rl/wiki_order.jsonl" ]; then
 fi
 cp "$CORPUS/rag/plwiki.meta.json" "$OUT/" 2>/dev/null
 wc -l "$CORPUS"/dapt/*.jsonl "$CORPUS"/rl/*.jsonl
+# Re-merge so shards built by an older fineweb.py get today's skip rules (exam/answer-key pages).
+[ -n "$FINEWEB" ] && [ -d "$CORPUS/src/fineweb/$FINEWEB" ] &&
+  python scripts/corpus/fineweb.py --dataset "$FINEWEB" --merge-only --eval "$EVAL" \
+    --out "$CORPUS/src/fineweb" --dapt-dir "$CORPUS/dapt"
 [ "${PREP_ONLY:-0}" = 1 ] && finish 0
 
 # The card is shared by memory (infra/jobs/gpu_admit.py): bf16 LoRA on Bielik-11B peaks ~32 GB.
