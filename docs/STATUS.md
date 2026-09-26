@@ -1,9 +1,9 @@
 # Job status
 
-Live table of GPU jobs, one row per job, newest first. Written by
-`infra/jobs/status.py` (the job wrappers call it); pull before reading.
-Times are UTC.
+One row per job, updated on every state change with `scripts/job_status.py`.
+Newest update first. Pull before reading; results and learnings go in
+[FINDINGS.md](FINDINGS.md).
 
-| job | what | where | state | started | updated | out | owner |
-|---|---|---|---|---|---|---|---|
-| labqoat-baselines | baselines, all models in configs/models.yaml | Labqoat Forgehand workspace 01a0dd4b | waiting: Forgehand sign-in from Orest | 2026-09-26 10:58 | 2026-09-26 10:58 | /workspace/work/out/<name> | Modal compute setup thread |
+| Job | State | Where | Owner | Updated (UTC) | Notes |
+|---|---|---|---|---|---|
+| train-bielik-l40s | running | Labqoat L40S VM (tmux train) | GPU VM thread | 2026-09-26 10:58 | TRAIN_MODELS=bielik-11b infra/jobs/train.sh; state as logged in FINDINGS 13:00 CEST, owner to confirm |
