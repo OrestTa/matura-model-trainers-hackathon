@@ -7,6 +7,15 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 12:10 UTC: b914f5c, fcdb505
+
+- b914f5c (FINDINGS: one Forgehand GPU session per team): OK.
+- fcdb505 (answer-sheet template in prompts, verdict check for "Rozstrzygnij" items): OK, tests pass (31).
+  Raw mode stays template-free, so the bare baseline is untouched; training uses the same build_messages, so
+  train and inference prompts match. Checked verdict_matches on Tak/Nie, "Fragment 2." vs "2", "niezgodne".
+  Minor: "Rozstrzygnięcie: Tak, ale nie w pełni" counts as Tak (first yes/no wins), which is what CKE does.
+  Note: adapters trained before this commit saw prompts without the template line; retrain after it.
+
 ## 2026-09-26 12:00 UTC: size limit correction
 
 Orest: the organisers accept 8.9 GB, applied to the base model before fine-tuning. Re-checked the size finding
