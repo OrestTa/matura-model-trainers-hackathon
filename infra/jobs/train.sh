@@ -126,6 +126,9 @@ s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 # Keep the adapters with the run output too (Nebius/Forgehand runners sync only $OUT).
 mkdir -p "$OUT/adapters" && cp -rL "$WORK"/adapters/. "$OUT/adapters/"
 
+# SKIP_SCORE=1: stop here; the adapters are in $OUT and infra/jobs/eval_adapter.sh scores them per paper.
+[ "${SKIP_SCORE:-0}" = 1 ] && { step "adapters in $OUT/adapters, scoring skipped (SKIP_SCORE=1)"; finish 0; }
+
 # 4. Re-score with adapters (and without, for the comparison charts).
 # SCORE_MODELS scores other keys that share the trained weights (e.g. gemma4-12b-think = the same
 # Gemma with thinking on): they reuse the first trained model's adapters.
