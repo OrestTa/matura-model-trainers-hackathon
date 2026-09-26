@@ -10,6 +10,8 @@ Categories (warsaw-matura-method.ania-olchowik.chatgpt.site, per-model pages; sl
   Text30  = Text28 + task 10's data table                               (14 items, 30 pts)
 Text28/Text30 are subsets of the total, not extra points. Total is /60 with images; the deck's text mode
 drops tasks 7, 8 and 15 (5 pts) and is /55, so the script prints both.
+Also prints the text/vision split (docs/FINDINGS.md, 1af64b8): open-text, open-vision, closed-text,
+closed-vision, essay, where "vision" = the eval row's needs_image flag (data/eval/matura_all.jsonl).
 Reads `items[]` with `id`, `max_points` and `claude_points` (or `points`).
 """
 
@@ -17,6 +19,10 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
+
+EVALS = [Path(__file__).resolve().parent.parent / "data/eval/matura_all.jsonl",
+         Path("/mnt/project-files/data/eval/matura_all.jsonl")]
 
 CLOSED = {"2.2", "3", "10", "11.2", "13.2", "19", "21"}
 TEXT_GROUPS = {"2", "6", "11", "12", "16", "22", "23", "25", "26"}
@@ -46,6 +52,24 @@ def breakdown(items: list[dict], text_mode: bool = False) -> dict:
     return out
 
 
+def needs_image(paper: str = "2023-05") -> dict[str, bool]:
+    for p in EVALS:
+        if p.exists():
+            rows = (json.loads(l) for l in open(p, encoding="utf-8") if l.strip())
+            return {r["id"].split("-z", 1)[1]: bool(r.get("needs_image")) for r in rows if r.get("paper") == paper}
+    return {}
+
+
+def split(items: list[dict], img: dict[str, bool]) -> dict:
+    out = {c: [0.0, 0.0] for c in ["open-text", "open-vision", "closed-text", "closed-vision", "essay"]}
+    for it in items:
+        kind = categories(it["id"])[0]
+        c = "essay" if kind == "essay" else f"{kind}-{'vision' if img.get(it['id']) else 'text'}"
+        out[c][0] += float(it.get("claude_points", it.get("points")) or 0)
+        out[c][1] += float(it["max_points"])
+    return out
+
+
 def fmt(b: dict) -> str:
     return "  ".join(f"{c} {e:g}/{m:g} ({100 * e / m:.1f}%)" for c, (e, m) in b.items() if m)
 
@@ -56,6 +80,9 @@ def main() -> None:
         print(path)
         print("  all items (/60):     ", fmt(breakdown(items)))
         print("  deck text mode (/55):", fmt(breakdown(items, text_mode=True)))
+        img = needs_image()
+        if img:
+            print("  text/vision split:   ", fmt(split(items, img)))
 
 
 if __name__ == "__main__":
