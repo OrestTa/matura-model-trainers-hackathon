@@ -129,13 +129,14 @@ def main() -> None:
 
     held = [json.loads(l) for l in open(args.eval, encoding="utf-8")]
     held_ids = {r["id"] for r in held}
+    from fetch_matura import HEADLINE  # the held-out papers, whatever filters built --eval
     held_parts = [(r["id"], sh) for r in held for f in ("question", "context")
                   if len(sh := shingles(r.get(f) or "")) >= 3]
 
     stats, kept = Counter(), []
     for line in open(args.source, encoding="utf-8"):
         r = json.loads(line)
-        if r["id"] in held_ids:
+        if r["id"] in held_ids or r.get("paper") in HEADLINE:
             continue
         if r["category"] == "essay":
             stats["skip: essay"] += 1

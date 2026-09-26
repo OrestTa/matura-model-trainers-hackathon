@@ -30,8 +30,21 @@ po pod przez przy się są ta tak te tego tej to tu tym w we z za ze że źród�
 podaj wyjaśnij rozstrzygnij uzasadnij odpowiedź odpowiedzi wymień określ oceń""".split())
 
 
+# Common Polish case endings, longest first. Cutting to 6 letters alone leaves short words
+# inflected ("unii" vs "unia", "wojny" vs "wojna", "królów" vs "król") and they never matched.
+_ENDINGS = sorted("""ami ach owi ów om em ie ii ią ię ę ą y i a u e o""".split(), key=len, reverse=True)
+
+
+def stem(w: str) -> str:
+    for e in _ENDINGS:
+        if w.endswith(e) and len(w) - len(e) >= 3:
+            w = w[:-len(e)]
+            break
+    return w[:6]
+
+
 def terms(text: str) -> list[str]:
-    return [w[:6] for w in re.findall(r"\w+", text.lower())
+    return [stem(w) for w in re.findall(r"\w+", text.lower())
             if len(w) > 2 and w not in _STOP and not w.isdigit()] + re.findall(r"\b\d{3,4}\b", text)
 
 
@@ -82,7 +95,7 @@ class SQLiteRetriever:
 
     def __init__(self, path: str | Path, table: str = "passages"):
         import sqlite3
-        self.db = sqlite3.connect(f"file:{path}?mode=ro", uri=True, check_same_thread=False)
+        self.db = sqlite3.connect(Path(path).resolve().as_uri() + "?mode=ro", uri=True, check_same_thread=False)
         names = {r[0] for r in self.db.execute("SELECT name FROM sqlite_master")}
         # scripts/corpus/plwiki.py: prefixes are indexed as whole tokens, text lives in `passage`.
         self.prefixed = {"fts", "passage"} <= names and table not in names
@@ -97,7 +110,8 @@ class SQLiteRetriever:
         if not words:
             return []
         if self.prefixed:
-            match = " OR ".join(f'"{w}"' for w in words)
+            # Prefix match: the index holds 6-letter prefixes, the query holds stems (maybe shorter).
+            match = " OR ".join(f'"{w}"*' for w in words)
             rows = self.db.execute(
                 "SELECT p.id, p.title, p.text, bm25(fts, 2.0, 1.0) AS s FROM fts "
                 "JOIN passage p ON p.id = fts.rowid WHERE fts MATCH ? ORDER BY s LIMIT ?",
@@ -130,5 +144,6 @@ def format_knowledge(passages: list[Passage], max_chars: int = 3000) -> str:
         used += len(chunk)
     if not out:
         return ""
+    # Close the block explicitly so the model doesn't take the encyclopedia for the task's source.
     return ("Wiedza pomocnicza (fragmenty encyklopedii, mogą być nieistotne dla zadania):\n"
-            + "\n\n".join(out))
+            + "\n\n".join(out) + "\n\nKoniec wiedzy pomocniczej. Treść zadania i źródła:")

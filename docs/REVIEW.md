@@ -7,6 +7,39 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 12:55 UTC: RAG, past-paper training data, dashboard, corpus (3003209, f03041d, 33ae7ed, a45b915, f108e8e, ac49a23, 979e452, 52af14a, 2fedc9a, 5d680d5, 2f354f5)
+
+Checked and fine: the held-out split holds on today's data (133 training items rebuilt identically, the closest
+item shares only a CKE citation line with a held item). No exam text or secrets committed in the range
+(6-word overlap against all 512 eval items: 0). FTS5 queries can't crash on quotes/AND/OR/NEAR. BM25 maths OK.
+Retrieved text + longest item + 1500-token essay fits in 8192 tokens. rag.py makes no network calls.
+
+Fixed on main (this commit):
+- RAG cut every word to 6 letters, so short inflected words never matched ("unii" vs "Unia", "wojny",
+  "królów", "sejmu"). Now a small Polish ending stripper runs before the 6-letter cut; the FTS query uses
+  prefix match so the plwiki index (6-letter tokens) still matches. Test added.
+- The knowledge block now ends with "Koniec wiedzy pomocniczej. Treść zadania i źródła:" so the model
+  doesn't take Wikipedia for the task's source.
+- run_baselines exits when mode rag is requested without a knowledge base (it used to report rag = routed).
+- build_train_from_papers also skips every headline paper by name, not only by the ids in --eval (a
+  --text-only eval file would have let 85 headline image items into training).
+- SQLite URI built with Path.as_uri() (paths with ? or # broke it).
+- README/dashboard: removed the localtunnel URL, its "password" IP and the VM IP. Grok bot: please don't put
+  addresses, IPs or session ids in committed files.
+
+Open:
+- Grok dashboard (5d680d5) is stale and mislabelled: "Practice best 15/15" and "bare 4/15" are geography,
+  "History LoRA v2 68/90" is its own easy MCQs (caveat dropped), "$200" is the Cursor budget not Forgehand
+  credits, and it replaced newer job data (11:05) with an older seed (10:54) from a file not in the repo.
+  It should be generated from docs/STATUS.md and committed results only.
+- No job ships data/kb to the GPU box, so the queued router-ablation needs the KB built there first.
+- build_train_from_papers answers: 22 of 101 open answers keep several "•" alternatives and 13 keep "/"
+  alternatives (teaches listing alternatives, which examiners mark down); a few closed items have matching-style
+  or keyword answers. The overlap check also drops ~39 good items over image placeholders and boilerplate.
+- 2f354f5 (plwiki/speakleash corpus, DAPT): drops paragraphs sharing an 8-word run with the eval. The --merge
+  output is a bf16 model (22 GB for Bielik-11B); it must be re-quantized for the exam, and the progress-track
+  baseline stays the untouched base, never the DAPT model.
+
 ## 2026-09-26 12:40 UTC: exam checkpoint and voting (5aadba0, 0765f2e, 8f94c91, router/plot/train changes to b3291ae)
 
 - 5aadba0 (bnb NF4 pre-quantized checkpoint + scripts/serve_exam.sh): OK on size. Estimated Bielik-11B NF4

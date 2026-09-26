@@ -21,7 +21,9 @@ def test_bm25_finds_the_right_passage_with_inflected_words():
     assert r.search("Kto zwyciężył Krzyżaków w 1410?", k=1)[0].title == "Bitwa pod Grunwaldem"
     assert r.search("zupełnie nieznane słowa xyz", k=2) == []
     assert "[Unia lubelska]" in format_knowledge(r.search("unia lubelska", k=1))
-    assert len(format_knowledge(PASSAGES, max_chars=100)) < 200
+    assert len(format_knowledge(PASSAGES, max_chars=100)) < 260
+    # Short inflected words match too ("unii" / "Unia"), not only 6-letter prefixes.
+    assert r.search("unii", k=1)[0].title == "Unia lubelska"
 
 
 def test_router_adds_knowledge_only_in_rag_modes(tmp_path):

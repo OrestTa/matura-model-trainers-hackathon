@@ -3,7 +3,7 @@
     "title": "Matura model trainers",
     "updatedAt": "2026-09-26 10:54 UTC",
     "repo": "OrestTa/matura-model-trainers-hackathon",
-    "publicUrl": "https://forty-masks-tap.loca.lt/"
+    "publicUrl": ""
   },
   "highlights": [
     {
@@ -54,7 +54,7 @@
         }
       ],
       "notes": [
-        "Host: 34.224.61.209 with 4 CPU and 30 GB RAM in the uploaded seed.",
+        "Host: the L40S VM, 4 CPU and 30 GB RAM in the uploaded seed.",
         "Adapter output path: /workspace/hackathon/runs/lora/forgehand-lora-7b-fh/.",
         "The captured log tail ends with TRAIN_EXIT:0, so the run completed successfully."
       ],
