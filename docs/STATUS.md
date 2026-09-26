@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| base-ev6-2025-05 | base gemma4-12b-think (2k) + THINK_FALLBACK, 2025-05 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/base-ev6-2025-05 | Venues thread |
 | base-ev6-2024-05 | base gemma4-12b-think (2k) + THINK_FALLBACK, 2024-05 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/base-ev6-2024-05 | Venues thread |
 | base-ev6-2023-05 | base gemma4-12b-think (2k) + THINK_FALLBACK, 2023-05 | Nebius H100 | running | 2026-09-26 19:06 | 2026-09-26 19:06 | s3://matura-jobs-claude/out/base-ev6-2023-05 | Venues thread |
 | gemma-lora-S4m | train TRAIN_MODELS=gemma4-12b TEACHER_HF=none JUDGE_HF= SCORE_MODELS=gemma4-12b-think SCORE_MODES=adapters THINK_FALLBACK=1 SINGLE_ADAPTER=1 RANK=32 LR=2e-4 EPOCHS=0.15 PAST_PAPERS=0 EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl /repo/train_data/open_claude_synth.jsonl' | Modal H100 | running | 2026-09-26 19:04 | 2026-09-26 19:04 | modal volume matura-jobs:out/gemma-lora-S4m | Modal wrapper |
