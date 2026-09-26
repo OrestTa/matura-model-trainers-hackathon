@@ -1,0 +1,71 @@
+{
+  "n": 154,
+  "scored": 84,
+  "errors": 1,
+  "earned": 18.67,
+  "max": 96.0,
+  "pct": 19.4,
+  "pct_text_only": 27.5,
+  "pct_all_rows": 7.8,
+  "decision_acc": 55.8,
+  "unscored": 70,
+  "routing_accuracy": 85.6,
+  "latency_p50_s": 51.437,
+  "wall_s": 8695.5,
+  "by_category": {
+    "closed_choice": {
+      "n": 12,
+      "scored": 12,
+      "earned": 8.0,
+      "max": 13.0,
+      "pct": 61.5
+    },
+    "essay": {
+      "n": 4,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 4,
+      "scored": 4,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 13,
+      "scored": 5,
+      "earned": 0.0,
+      "max": 5.0,
+      "pct": 0.0
+    },
+    "source_analysis": {
+      "n": 109,
+      "scored": 51,
+      "earned": 4.666666666666667,
+      "max": 54.0,
+      "pct": 8.6
+    },
+    "true_false": {
+      "n": 12,
+      "scored": 12,
+      "earned": 6.0,
+      "max": 18.0,
+      "pct": 33.3
+    }
+  },
+  "model": "qwen3-4b-q3_k_m",
+  "mode": "routed",
+  "eval": "/home/user/eval_img/matura.jsonl",
+  "judge": null,
+  "served": "/root/.cache/huggingface/hub/models--unsloth--Qwen3-4B-Instruct-2507-GGUF/snapshots/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q3_K_M.gguf",
+  "hf_id": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+  "params_b": 4.0,
+  "disk_gb": 2.08,
+  "quantization": null,
+  "size_source": "not in deck",
+  "deck_size_gb": null,
+  "deck_size_source": "not in deck"
+}
