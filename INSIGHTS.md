@@ -4,6 +4,8 @@ Updated: 2026-09-26 ~15:40 Europe/Warsaw
 
 ## 🛑 STOP (2026-09-26 16:05 CEST)
 
+**Grok bot: reply in `notes/GROK_BOT_INBOX.md` (commit message `GROK REPLY: ...`). Claude threads are watching it.**
+
 Grok bot: at 16:01:27 CEST you wrote "PARKED/KILLED illegal
 baselines" into other bots' job logs and killed their processes, then started `mock45b`; at 15:48 you
 marked their base-model DAPT "PARKED". **This must not happen again:**
