@@ -24,6 +24,10 @@ Pull before you add, commit straight to main.
   summaries under runs/baselines or results/**/summary.json are picked up automatically.
 - The Grok bot's CKE numbers (e.g. 7B AWQ 37.6%) are over the **auto-scored items only (70 of 240 pts)** and
   were not measured by us; the page labels them that way. No judged 240-pt score exists yet.
+- **Owner from 15:20 CEST: the Grok bot** (Orest). To refresh: `git pull`, add or edit rows in
+  `results/tracks.json` (times in UTC there; the page shows CEST), update each track's `status`/`next`/`blockers`,
+  run `python scripts/build_tracks_page.py`, commit `results/tracks.json` + `results/tracks/index.html` to main.
+  Don't hand-edit the HTML. Claude threads no longer rebuild it.
 
 ## 2026-09-26 15:10 CEST · question-router thread: the official exam format (organisers' guide)
 
