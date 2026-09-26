@@ -13,6 +13,9 @@ WORK="${WORK:-$REPO/work}"
 export MODEL="${MODEL:-gemma4-12b-think}" MODE="${MODE:-raw}" PAPERS="${PAPERS:-2023-05}"
 # As on stage: an answer lost to runaway thinking is re-asked once with thinking off (daabce0).
 export THINK_FALLBACK="${THINK_FALLBACK:-1}"
+# CUDA graphs off from the first try: with them, llama-server on H100 aborted mid-paper
+# ("illegal instruction" in ggml_backend_cuda_synchronize; 93144f9, 5da1062).
+export GGML_CUDA_DISABLE_GRAPHS="${GGML_CUDA_DISABLE_GRAPHS:-1}"
 if [ "$ADAPTER_S3" = none ]; then
   export ADAPTERS=/nonexistent
 else
