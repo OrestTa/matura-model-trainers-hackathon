@@ -1,0 +1,6 @@
+
+2023-05-z2.1   same-position words: base HF~GGUF 0.34  LoRA HF~GGUF 0.18 | LoRA changes HF 0.94, GGUF 1.00
+2023-05-z2.2   same-position words: base HF~GGUF 1.00  LoRA HF~GGUF 1.00 | LoRA changes HF 1.00, GGUF 1.00
+2023-05-z4.1   same-position words: base HF~GGUF 1.00  LoRA HF~GGUF 1.00 | LoRA changes HF 0.67, GGUF 0.67
+2023-05-z5.2   same-position words: base HF~GGUF 0.00  LoRA HF~GGUF 0.83 | LoRA changes HF 1.00, GGUF 0.89
+2023-05-z6     same-position words: base HF~GGUF 0.10  LoRA HF~GGUF 0.18 | LoRA changes HF 0.97, GGUF 0.97

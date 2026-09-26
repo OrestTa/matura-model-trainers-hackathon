@@ -1,0 +1,12 @@
+2023-05-z2.1   base reasoning   1587 chars  answer   44 words  tokens 528  stop
+2023-05-z2.1   LoRA reasoning    788 chars  answer    0 words  tokens 217  stop
+2023-05-z2.2   base reasoning   1932 chars  answer   42 words  tokens 615  stop
+2023-05-z2.2   LoRA reasoning   1020 chars  answer    4 words  tokens 312  stop
+2023-05-z4.1   base reasoning   1090 chars  answer    4 words  tokens 305  stop
+2023-05-z4.1   LoRA reasoning    685 chars  answer    3 words  tokens 207  stop
+2023-05-z5.2   base reasoning   2625 chars  answer   47 words  tokens 788  stop
+2023-05-z5.2   LoRA reasoning   1662 chars  answer   51 words  tokens 557  stop
+2023-05-z6     base reasoning   2406 chars  answer   59 words  tokens 729  stop
+2023-05-z6     LoRA reasoning   2056 chars  answer   46 words  tokens 632  stop
+2023-05-z26    base reasoning   3756 chars  answer  326 words  tokens 1740  stop
+2023-05-z26    LoRA reasoning   3935 chars  answer 2202 words  tokens 6000  length
