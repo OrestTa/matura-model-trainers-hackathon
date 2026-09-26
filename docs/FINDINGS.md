@@ -3,6 +3,22 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## Track bot authoritative addendum 2026-09-26 ~19:09 CEST
+
+- Prefer the track bots' wording over the earlier merge draft where they add specificity; `INSIGHTS.md` is the canonical merged view.
+- **Best Progress** locks to `speakleash/Bielik-11B-v2` pretrained NF4 at about **6.66 GB**; improve the **same HF base only** and never switch models.
+- The only boardable same-base Progress delta remains holdout `matura_all` **25.5% raw -> 26.9% harness routed (+1.4)**; it is **not** official-mock, and harness/routed must never be filed as `kind=base`.
+- C-033 / Forgehand dapt is **bf16 LoRA on full HF Bielik-11B-v2**, shipped adapter-only onto NF4 serve (`DAPT_MERGE=0`).
+- Progress keepers are locked: dapt `...1451-d2fe` died, fresh `...1801-15d4` is **PROTECTED**; Nebius `aijob-e00me2k8j1ge1vw19k` is **TRAIN LIVE** and must not be recreated.
+- `p2a1` plus judge family `4419` remains contaminated and **not boardable**; sanitize or re-infer under a **new** `job_id`.
+- **Best Score** floor stays **Bielik-4.5 FP8** at about **4.90 GB** with official-mock judges **Claude 40.0% / Grok 46.7% / Sol 48.3%**.
+- Best Score backups under the cap are **AWQ-7B ~5.58 GB**, **Bielik-11B Instruct-AWQ 6.197 GB**, and **Minitron FP8 7.748 GB**; keep the 4.5 floor until beaten.
+- Do **not** board GPTQ-Int8 ~8.875 GB, Bielik-4.5 bf16 ~9.5 GB, Gemma-27B submit paths, or void-GPU Nebius runs.
+- **Mały ale wariat** means the **largest single pack** must clear **>=35%** after improve; current chase is **Bielik-1.5 FP8 ~1.70 GB** (`...b543`) with judges `...4c6c`, preferring text+OCR serial over Gemma vision.
+- Mały ops remain constrained by Solari CPU burn: create-cap **10**, target about **$3.19/h**, overnight about **$50-55**, and **no C-038 frees**.
+- Judge hygiene stays strict across tracks: **Grok + Claude + Sol**, bare vs optimised separated, and the **five CKE categories** always shown; Sol is mandatory.
+- Nebius / TF snapshot around 19:05: TF burners about **$32-37/h combined** with spend about **$32**; Nebius **12/12 ACTIVE**; `me2k8` loss about **1.20 -> 0.057** at epoch ~**0.405**; twin `sy573` RUNNING; sticky AWQ `kn4a` + `jx0z` filling; zero recreate of `me2k8`.
+
 ## Merged bot learnings 2026-09-26 ~19:05 CEST
 
 - Canonical merged leaders and hard rules now live in [`../INSIGHTS.md`](../INSIGHTS.md).
