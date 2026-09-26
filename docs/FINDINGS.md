@@ -3,6 +3,22 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:11 CEST · best-score thread: official mock Bielik 4.5B FP8 submission is committed
+
+- Committed `results/official_mock_bielik45_fp8/answers.json` and
+  `results/official_mock_bielik45_fp8/answers.summary.json`: bare
+  `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic` on Forgehand L40S for
+  `history-2023-mock-v1`. This is **format-complete only, not an official grade**.
+- All **37/37** answers are nonempty; every category is filled (`text_open` 10, `text_closed` 3,
+  `image_open` 19, `image_closed` 4, `essay` 1). Essay item `26` is about **398-418** words,
+  so it clears the **300-word** minimum.
+- Run metadata: concurrent vLLM OpenAI backend (**concurrency 8**), on-disk size
+  **4,897,647,585 bytes** (~**4.90 GB**, under the **8.0 GB** base cap), `wall_s` about
+  **114.7**, throughput about **19.35 items/min**, mean per-item latency about **13.8 s**,
+  **0** recorded errors.
+- The prior bare AWQ 7B official mock artifact is still on open PR **#10** at
+  `results/official_mock_awq7b/`; keep both artifact directories when merging the mock runs.
+
 ## 2026-09-26 15:35 CEST · best-score thread: the eval set now carries the pictures
 
 - `python scripts/fetch_matura.py --images` (and `--papers all --images`) saves every picture in the

@@ -1,6 +1,6 @@
 # Track 01 - best legal CKE score
 
-Updated: 2026-09-26 14:56 Europe/Warsaw
+Updated: 2026-09-26 16:11 Europe/Warsaw
 
 ## Hard caps
 
@@ -20,6 +20,21 @@ Updated: 2026-09-26 14:56 Europe/Warsaw
   - CKE full: 29.8%
   - CKE text-only: 32.1%
   - Status: regresses versus the bare AWQ base; do not promote as the Sunday pack
+
+## Official mock artifacts
+
+- Committed here now: `results/official_mock_bielik45_fp8/`
+  - Model: bare `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic`
+  - Exam: `history-2023-mock-v1`
+  - Status: **format-complete only, not officially graded**
+  - Completeness: **37/37** nonempty, all categories filled, essay `26` about **398-418** words
+  - Runtime: concurrent vLLM OpenAI backend on Forgehand L40S (`concurrency 8`), `wall_s` about
+    **114.7**, throughput about **19.35 items/min**, mean per-item latency about **13.8 s**
+  - Size: **4,897,647,585** bytes (~**4.898 GB**) on disk, so under the **8.0 GB** base cap
+- Prior AWQ comparator: open PR **#10** adds `results/official_mock_awq7b/`
+  - Bare `Qwen/Qwen2.5-7B-Instruct-AWQ`
+  - Also format-complete only, not an official grade
+  - Keep both official-mock artifact directories once the branches merge
 
 ## Comparison table
 

@@ -1,0 +1,55 @@
+{
+  "exam_id": "history-2023-mock-v1",
+  "model": "speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic",
+  "dtype": "fp8-dynamic",
+  "backend": "vLLM OpenAI concurrent",
+  "hardware": "Forgehand L40S",
+  "mode": "raw",
+  "concurrency": 8,
+  "n_items": 37,
+  "nonempty": 37,
+  "errors": 0,
+  "wall_s": 114.7,
+  "items_per_min": 19.35,
+  "latency_mean_s": 13.8,
+  "base_disk_bytes": 4897647585,
+  "base_disk_gb": 4.898,
+  "base_size_limit_gb": 8.0,
+  "base_size_limit_ok": true,
+  "format_complete_only": true,
+  "official_grade": null,
+  "out": "results/official_mock_bielik45_fp8/answers.json",
+  "categories": {
+    "text_open": {
+      "n": 10,
+      "nonempty": 10
+    },
+    "text_closed": {
+      "n": 3,
+      "nonempty": 3
+    },
+    "image_open": {
+      "n": 19,
+      "nonempty": 19
+    },
+    "image_closed": {
+      "n": 4,
+      "nonempty": 4
+    },
+    "essay": {
+      "n": 1,
+      "nonempty": 1,
+      "id": "26",
+      "approx_words": "398-418",
+      "meets_min_words": true
+    }
+  },
+  "overall": {
+    "n": 37,
+    "nonempty": 37
+  },
+  "notes": [
+    "Bare official mock submission artifact.",
+    "Format-complete only; not officially graded by the organisers."
+  ]
+}

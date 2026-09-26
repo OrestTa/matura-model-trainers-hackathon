@@ -41,6 +41,16 @@ Board ownership: Matura Hack / Grok Bot refreshes https://orestta.github.io/tara
 ## Track 01 update
 
 - Best legal committed CKE result remains the bare `Qwen/Qwen2.5-7B-Instruct-AWQ` base at **37.6% full / 38.9% text-only** with an approximately **5.582 GB** pack on disk.
+- Official mock completeness artifacts are now committed under `results/official_mock_bielik45_fp8/`:
+  bare `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic` answered `history-2023-mock-v1`
+  **format-completely** (**37/37 nonempty**) with essay `26` at about **398-418** words and no
+  recorded errors.
+- This Bielik mock record is **not an official grade**. Run metadata: concurrent vLLM OpenAI
+  backend on Forgehand L40S (`concurrency 8`), size about **4.898 GB** on disk, `wall_s` about
+  **114.7**, throughput about **19.35 items/min**, mean per-item latency about **13.8 s**.
+- Prior bare AWQ 7B official mock artifacts remain on open PR **#10** at
+  `results/official_mock_awq7b/`; keep that comparator alongside the Bielik FP8 bundle when the
+  mock-artifact branches merge.
 - Latest legal tuned check, **AWQ + `forgehand-lora-7b-fh` (offline)**, scored **29.8% full / 32.1% text-only** and regresses versus the bare AWQ base.
 - Keep the bare AWQ base as the preferred Sunday quality path; do not promote the fh adapter pack from this result.
 - Canonical note: `notes/TRACK01_BEST_SCORE.md`.
