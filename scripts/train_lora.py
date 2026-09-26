@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import inspect
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -111,4 +112,8 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    # On Modal (transformers 5.17) the process hung after the save, so train.sh never reached the
+    # GGUF step: leave without waiting for stray non-daemon threads.
+    sys.stdout.flush(); sys.stderr.flush()
+    os._exit(code or 0)
