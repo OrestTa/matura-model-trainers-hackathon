@@ -6,7 +6,8 @@ _suffixes:
   facts: &facts "Podaj konkretne fakty: nazwy, nazwiska, daty. Odwołaj się wprost do treści źródła, jeśli jest."
   look: &look "Najpierw dokładnie przyjrzyj się dołączonej ilustracji (napisy, symbole, daty, postacie), potem odpowiedz."
   describe: &describe "W myślach najpierw opisz dokładnie każdą ilustrację: co przedstawia, napisy, symbole, daty, postacie, epokę. Dopiero potem odpowiedz na polecenie; w odpowiedzi podaj tylko to, czego wymaga polecenie."
-  essay_rubric: &essay_rubric "Egzaminator CKE ocenia wypracowanie według kryteriów: (A) jasno sformułowane stanowisko (teza) odnoszące się do tematu; (B) uzasadnienie stanowiska – argumenty dotyczące wszystkich elementów wymienionych w temacie (np. trzech władców, trzech aspektów, trzech wydarzeń), każdy z konkretnymi faktami, datami, postaciami; (C) poprawność rzeczowa – żadnych błędów faktograficznych, lepiej pominąć niepewny fakt niż go podać; (D) szerszy kontekst i związki przyczynowo-skutkowe; (E) wniosek potwierdzający tezę, spójna struktura. Zacznij od linii „Temat nr X”, potem wypracowanie (500–700 słów)."
+  # Our own writing instructions (general essay craft), not text from any CKE key or scoring rules.
+  essay_rubric: &essay_rubric "Dobre wypracowanie: (1) jasna teza odnosząca się do tematu; (2) argumenty dotyczące wszystkich elementów wymienionych w temacie (np. trzech władców, trzech aspektów, trzech wydarzeń), każdy z konkretnymi faktami, datami, postaciami; (3) tylko pewne fakty – lepiej pominąć niepewny szczegół niż podać błędny; (4) szerszy kontekst epoki i związki przyczynowo-skutkowe; (5) wniosek potwierdzający tezę, spójna struktura. Zacznij od linii „Temat nr X”, potem wypracowanie (500–700 słów)."
   essay_plan: &essay_plan "Zanim zaczniesz, ułóż w myślach plan. Wypracowanie: wstęp z tezą, 3–4 akapity argumentacyjne z konkretnymi datami, postaciami i wydarzeniami z omawianego okresu, kontekst epoki, podsumowanie. 500–700 słów."
 
 closed_text:
