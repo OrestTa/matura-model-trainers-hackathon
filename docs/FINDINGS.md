@@ -3,6 +3,25 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 20:05 CEST · venues thread: Grok bot's Nebius SFT (me2k8) and its training data
+
+- **Where:** Orest's Nebius tenant amber-centipede (o@tarasiuk.me, balance $135.59 at 19:47), project
+  project-e00r07hbpr00483g1ant9w, eu-north1. `aijob-e00me2k8j1ge1vw19k` =
+  `matura-sft-bielik11b-nf4-hist-ext-20260926-1728-n7k2`, RUNNING on 1x H100 since 16:11Z, 8 h timeout (00:11Z).
+  LoRA r16 on speakleash/Bielik-11B-v2 bf16, 2 epochs, lr 2e-4 (script `scripts/sft_bielik11b_hist_ext.sh` in the bucket).
+  At 17:55Z: epoch 1.2, loss ~0.005, token accuracy ~0.999, so it finishes around 19:00Z.
+- **Risk:** the script writes the adapter to `OUT=/workspace/out/<job>` (container disk), not to the `/data` bucket mount.
+  Unless the injected run.sh overrides OUT (not visible via the API), the adapter is lost when the job ends.
+- **Data:** bucket `matura-nf4-sft-20260926` (`train.jsonl` = `data/history_ext_synth/train.jsonl`, identical):
+  9,284 synthetic rows from 250 synthetic exams in the 2023 format (meta source=synthetic), no duplicates.
+  Categories: source_analysis 2532, short_open 2174, closed_choice 2078, true_false 1164, matching 1086, essay 250.
+- **Held-out overlap (154 May 2023-2026 items, rare 6/8-gram shingles over question+context+gold+rubric):** clean apart
+  from essay boilerplate and **one near-copy**: synth row 37 (history-synth-0001 z26) essay topic 1 paraphrases May 2023
+  z26 topic 1 ("...XI-XII wieku dominowały tendencje centralizacyjne" vs "decentralizacyjne"). The very low loss is
+  from templated synthetic text, not from exam leakage.
+- Also RUNNING there at 17:55Z (all 1x H100, Grok bot): sy573 (twin of me2k8), bielik11b-sticky c/d, bielik11b-agg s1,
+  h100-soak f2. That's 6 H100s on the $135 balance; asked Orest whether to cancel.
+
 ## 2026-09-26 19:50 CEST · venues thread: our own Nebius, Token Factory and HF keys work; Solari and Tavily don't yet
 
 - Orest's env vars are named `nebius`, `tokenfactory`, `HF`, `solari` (not the `NEBIUS_*`/`SOLARI_API_KEY` names in
