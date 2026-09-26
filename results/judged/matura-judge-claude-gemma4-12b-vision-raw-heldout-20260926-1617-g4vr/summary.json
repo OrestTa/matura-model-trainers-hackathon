@@ -1,0 +1,34 @@
+{
+ "answers": "results/gemma4/gemma4-vision/raw/answers.jsonl",
+ "model": "Gemma 4 12B QAT GGUF + mmproj (gemma4-vision, raw, thinking ON, 16:17 CEST run, 7.16 GB)",
+ "judge": "claude",
+ "papers": {
+  "2023-05": {
+   "total": 41.0,
+   "max": 60.0,
+   "pct": 68.3,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf"
+  },
+  "2024-05": {
+   "total": 43.0,
+   "max": 60.0,
+   "pct": 71.7,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2024/Historia/MHIP-R0-100-2405-zasady.pdf"
+  },
+  "2025-05": {
+   "total": 41.0,
+   "max": 60.0,
+   "pct": 68.3,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2025/zasady_oceniania/MHIP-R0-100-2505-zasady.pdf"
+  },
+  "2026-05": {
+   "total": 44.0,
+   "max": 60.0,
+   "pct": 73.3,
+   "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2026/Historia/MHIP-R0-100-2605-zasady.pdf"
+  }
+ },
+ "total": 169.0,
+ "max": 240.0,
+ "pct": 70.4
+}
