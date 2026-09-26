@@ -1,0 +1,14 @@
+{
+  "job_id": "matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1",
+  "exam_id": "history-2023-mock-v1",
+  "model": "/workspace/runs/gemma4-vision/work/checkpoints/bielik-11b-base",
+  "kind": "raw",
+  "quant": "bitsandbytes-nf4",
+  "n": 37,
+  "nonempty": 37,
+  "wall_s": 344.3,
+  "out": "/workspace/hackathon/runs/matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/answers.json",
+  "grok": "/workspace/hackathon/results/grok/matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/answers.json",
+  "cleaned": "/workspace/hackathon/runs/matura-infer-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/answers.cleaned.json",
+  "note": "v4 unicode-safe resume; never blank-overwrite; provisional merge"
+}
