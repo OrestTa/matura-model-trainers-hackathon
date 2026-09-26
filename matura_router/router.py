@@ -43,6 +43,19 @@ def essay_target() -> int:
     return int(os.environ.get("ESSAY_TARGET_WORDS") or 0)
 
 
+def essay_best_of() -> int:
+    return int(os.environ.get("ESSAY_BEST_OF") or 1)
+
+
+# Our own writing checklist for picking the best of several essays (no klucz / CKE criteria text).
+ESSAY_PICK_TEXT = (
+    "Poniżej są {n} wersje wypracowania na ten sam temat. Oceń każdą od 0 do 10 pod względem: "
+    "czy odpowiada dokładnie na polecenie tematu i ma jasne stanowisko; czy argumenty opierają się na "
+    "konkretnych, prawdziwych faktach, datach i postaciach z właściwego okresu; czy nie ma błędów "
+    "rzeczowych ani powtórzeń; czy ma przemyślaną kompozycję (wstęp, rozwinięcie, zakończenie z wnioskiem). "
+    "Każdy błąd rzeczowy obniża ocenę. Odpowiedz tylko liniami w formacie \"Wersja K: X\", po jednej na wersję.")
+
+
 def essay_words(text: str) -> int:
     """Words in the essay body: header lines ("WYPRACOWANIE", "na temat nr 1", "Temat nr 2", ...) not counted."""
     body = [ln for ln in text.replace("*", "").splitlines() if not _ESSAY_HEADER.match(ln.strip())]
@@ -210,6 +223,44 @@ class Router:
             if essay_words(a) > n:
                 best, best_raw, n = a, r, essay_words(a)
         return best, best_raw
+
+    def _best_essay(self, answer: str, raw: str, messages, adapter, params):
+        """ESSAY_BEST_OF=N: write N-1 more essays (sampled, in parallel), keep those with >= 300 body words,
+        and let the same model score them against our own writing checklist; the top score wins, ties go
+        to the first (greedy) essay. Every call failing leaves the greedy essay."""
+        n = essay_best_of()
+        sp = dataclasses.replace(params, temperature=0.8, top_p=0.95)
+
+        def one(_):
+            try:
+                r = self.backend.chat(messages, adapter, sp)
+                a = strip_think(r)
+                if essay_min_words():
+                    a, r = self._lengthen_essay(a, r, messages, adapter, params)
+                return a, r
+            except Exception:  # noqa: BLE001
+                log.exception("essay sample failed")
+                return "", ""
+
+        with ThreadPoolExecutor(max_workers=n - 1) as pool:
+            cands = [(answer, raw), *pool.map(one, range(n - 1))]
+        cands = [c for c in cands if essay_words(c[0]) >= 300] or [(answer, raw)]
+        if len(cands) == 1:
+            return cands[0]
+        body = "\n\n".join(f"=== Wersja {i} ===\n{a}" for i, (a, _) in enumerate(cands, 1))
+        topic = messages[-1]["content"]
+        topic = topic if isinstance(topic, str) else " ".join(p.get("text", "") for p in topic if isinstance(p, dict))
+        judge = [{"role": "user", "content": f"{topic}\n\n{body}\n\n{ESSAY_PICK_TEXT.format(n=len(cands))}"}]
+        try:
+            jp = dataclasses.replace(params, temperature=0.0)
+            verdict = strip_think(self.backend.chat(judge, None, jp))
+        except Exception:  # noqa: BLE001
+            log.exception("essay pick failed")
+            return cands[0]
+        scores = {int(k): float(v) for k, v in re.findall(r"Wersja\s*(\d+)\s*:\s*(\d+(?:[.,]\d+)?)", verdict.replace(",", "."))}
+        best = max(range(1, len(cands) + 1), key=lambda i: (scores.get(i, -1), -i))
+        log.info("essay best-of-%d scores %s -> version %d", len(cands), scores, best)
+        return cands[best - 1]
 
     def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
               route: Route, category: Category, keys: Optional[list] = None) -> str:
@@ -391,6 +442,8 @@ class Router:
             answer = self._lengthen(answer, messages, adapter, route, category, guard)
         if category == Category.ESSAY and essay_min_words():
             answer, raw = self._lengthen_essay(answer, raw, messages, adapter, route.params)
+        if category == Category.ESSAY and essay_best_of() > 1:
+            answer, raw = self._best_essay(answer, raw, messages, adapter, route.params)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
             answer = self._vote(answer, messages, adapter, route, category, keys)
         return RoutedAnswer(answer=answer, raw=raw,
