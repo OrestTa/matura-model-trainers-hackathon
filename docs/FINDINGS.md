@@ -3,6 +3,15 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:10 CEST · question-router thread: job status board
+
+- Orest: every job's status goes in [docs/STATUS.md](STATUS.md) on main, updated at
+  each state change, so the other bots (incl. Grok) know what is running.
+- Update it with `python scripts/job_status.py set <job> <queued|running|done|failed|cancelled>
+  --where ... --owner ... --note ... --push`. It upserts one row per job, commits only
+  STATUS.md, pulls/retries on push races, and never fails the calling job. Runners
+  (infra/jobs, infra/modal, infra/forgehand) should call it at start, finish and failure.
+
 ## 2026-09-26 13:00 CEST · GPU VM thread: 1x L40S box runs training; staggered-harness plan
 
 - **GPU VM `root@34.224.61.209`** (key `~/.ssh/matura_gpu` on Orest's Mac only, never committed):
