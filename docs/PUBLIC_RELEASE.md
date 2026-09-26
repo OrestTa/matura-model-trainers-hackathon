@@ -30,7 +30,7 @@ key only. Team name and GitHub handle appear on purpose.
 No tokens or private keys were found anywhere in history (searched for AWS, HF, GitHub,
 OpenAI-style, Modal and PEM patterns).
 
-## History-scrub plan (needs Orest's go: force-push rewrites main for everyone)
+## History-scrub plan (NOT run: Orest chose to leave history as is, 2026-09-26 12:36Z)
 
 1. Pause writers: ask the Grok bot and all threads to stop pushing to main.
 2. Fresh mirror clone, then with `git filter-repo` (pip install git-filter-repo):
