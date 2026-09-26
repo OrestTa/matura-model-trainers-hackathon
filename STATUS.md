@@ -4,6 +4,8 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+Board ownership: Matura Hack / Grok Bot refreshes https://orestta.github.io/tarasiuk-lab-matura-status/ (three prize tabs + five public CKE columns). Claude must not refresh that board; Claude adversarially reviews every commit here and in OrestTa/tarasiuk-lab-matura-status.
+
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
 | baselines-0926-1254 | baselines NAME=baselines-all3 MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/baselines-0926-1254 | Modal compute setup thread |
