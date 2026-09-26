@@ -19,7 +19,7 @@ import argparse
 import html
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -35,6 +35,18 @@ STAGE_LABEL = {"base": "Base", "harness": "Base + harness", "trained": "Trained"
 MODE_STAGE = {"raw": "base", "routed": "harness", "rag": "harness", "adapters": "trained"}
 MODE_METHOD = {"raw": "plain prompt (untouched)", "routed": "router prompts",
                "rag": "router prompts + RAG", "adapters": "router + RAG + LoRA"}
+
+CEST = timezone(timedelta(hours=2), "CEST")  # the whole hackathon is in summer time
+
+
+def cest(stamp) -> str:
+    """'YYYY-MM-DD HH:MM[ UTC]' in UTC -> the same in CEST; anything else is returned as is."""
+    m = re.fullmatch(r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2})(?: UTC)?", str(stamp or "").strip())
+    if not m:
+        return "" if stamp is None else str(stamp)
+    t = datetime.strptime(m.group(1), "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+    return t.astimezone(CEST).strftime("%Y-%m-%d %H:%M CEST")
+
 
 esc = lambda v: html.escape("" if v is None else str(v))  # noqa: E731
 
@@ -130,7 +142,7 @@ def result_cells(r: dict) -> str:
             f"<td class='l'>{esc(STAGE_LABEL.get(r.get('stage'), r.get('stage')))}</td>"
             f"<td class='n'><b>{r['pct']:.1f}%</b></td><td class='n'>{txt}</td><td class='n'>{pts}</td>"
             f"<td class='n'>{gb}{size_flag}</td>"
-            f"<td class='l'>{src}<div class='sub'>{esc(r.get('by'))} · {esc(r.get('date'))}</div></td>"
+            f"<td class='l'>{src}<div class='sub'>{esc(r.get('by'))} · {esc(cest(r.get('date')))}</div></td>"
             f"<td class='l note'>{esc(r.get('note'))}</td>")
 
 
@@ -241,9 +253,9 @@ def jobs_table(jobs: list[dict]) -> str:
         f"<tr><td class='l'><b>{esc(j.get('job'))}</b><div class='sub'>{esc(j.get('owner'))}</div></td>"
         f"<td class='l'>{pill(job_state(j.get('state', '')), job_state(j.get('state', '')))}"
         f"<div class='sub'>{esc(j.get('state'))}</div></td>"
-        f"<td class='l mono'>{esc(j.get('updated'))}</td></tr>" for j in jobs)
+        f"<td class='l mono'>{esc(cest(j.get('updated')))}</td></tr>" for j in jobs)
     return ("<div class='scroll'><table><tr><th class='l'>Job</th><th class='l'>State</th>"
-            f"<th class='l'>Updated (UTC)</th></tr>{rows}</table></div>")
+            f"<th class='l'>Updated</th></tr>{rows}</table></div>")
 
 
 def stat(label: str, value: str, sub: str, tone: str = "") -> str:
@@ -455,7 +467,7 @@ def build(data: dict, rows: list[dict], jobs: list[dict]) -> str:
         ("Unverified", "Measured by the Grok bot in its own runs; the raw outputs are not in this repo."),
         ("Size", "Weights on disk. Base at most 8.0 GB, trained model (base + adapters) at most 8.8 GB."),
     ])
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(CEST).strftime("%Y-%m-%d %H:%M CEST")
     return f"""<title>Matura Prize Tracks</title>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -465,7 +477,7 @@ def build(data: dict, rows: list[dict], jobs: list[dict]) -> str:
 <header><h1>Matura prize tracks</h1>
 <p>Tarasiuk Lab at Warsaw Model Trainers: every score, baseline and job for the three prizes. Headline numbers come
 from the held-out May 2023–2026 historia papers; older papers are marked as contaminated.</p>
-<div class="meta">Built {now} · data updated {esc(data.get('updated'))} · {len(rows)} results · exam starts 2026-09-27 11:00 CEST</div></header>
+<div class="meta">Built {now} · data updated {esc(cest(data.get('updated')))} · {len(rows)} results · exam starts 2026-09-27 11:00 CEST</div></header>
 <nav role="tablist">{''.join(nav)}</nav>
 {''.join(secs)}
 <div class="key"><h3>How to read the numbers</h3><dl>{key}</dl>

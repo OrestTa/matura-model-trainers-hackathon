@@ -1,6 +1,6 @@
 {
-  "_readme": "Source for the three-track results page. Add a row to `results` whenever a score lands, then run `python scripts/build_tracks_page.py` (writes results/tracks/index.html). Scores from runs/baselines/*/*/summary.json and results/**/summary.json are picked up automatically. eval: headline = held-out May 2023-2026 papers with a judge (240 pts); headline-auto = same papers, auto-scorable items only, no judge; contaminated = older papers (matura_all.jsonl), also used for training; dev = not the matura (MCQ sets, practice geography). No IPs, tokens or account IDs here.",
-  "updated": "2026-09-26 13:25 UTC",
+  "_readme": "Times (updated, date) are UTC in this file; the page shows them in CEST. Source for the three-track results page. Add a row to `results` whenever a score lands, then run `python scripts/build_tracks_page.py` (writes results/tracks/index.html). Scores from runs/baselines/*/*/summary.json and results/**/summary.json are picked up automatically. eval: headline = held-out May 2023-2026 papers with a judge (240 pts); headline-auto = same papers, auto-scorable items only, no judge; contaminated = older papers (matura_all.jsonl), also used for training; dev = not the matura (MCQ sets, practice geography). No IPs, tokens or account IDs here.",
+  "updated": "2026-09-26 13:19 UTC",
   "tracks": [
     {
       "id": "score",
