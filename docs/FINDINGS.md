@@ -3,6 +3,18 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:55 CEST · compute thread: pin vLLM 0.27.1 (0.28+ has no bitsandbytes)
+
+- **vLLM 0.28.0+ removed `--quantization bitsandbytes`.** An unpinned `pip install vllm`
+  now gets 0.30.0, and every 4-bit model in configs/models.yaml fails at startup with
+  "Unknown quantization method: bitsandbytes" (seen on the Labqoat box). 0.27.1 is the last
+  release with it (checked vllm's quantization registry at each tag). `infra/jobs/common.sh`
+  and the Modal image now pin `vllm==0.27.1`; `scripts/serve_exam.sh` needs the same on
+  exam day.
+- One L40S can now hold several jobs: `run_baselines.py --gpu-budget-gb` runs models side by
+  side, and `infra/jobs/gpu_admit.py` (fh_job.py `GPU_GB=<n>`) admits a job when its memory
+  fits.
+
 ## 2026-09-26 14:05 CEST · matura_all.jsonl no longer double-counts the 2023/2024 papers (eval-set thread)
 
 - The old-format (EHIP) 2023 and 2024 papers are almost the same exam as the new-format (MHIP) ones:

@@ -21,14 +21,25 @@ s3() { [ -n "$BUCKET" ] && aws s3 "$@" --only-show-errors; }
 step() { echo "== $(date -u +%H:%M:%S) $*"; }
 
 step "setting up"
-if command -v vllm >/dev/null && python3 -c "import trl, peft, matplotlib" 2>/dev/null; then
+# vLLM 0.28 dropped load-time bitsandbytes quantization, which every 4-bit model here
+# relies on (configs/models.yaml, scripts/quantize_checkpoint.py): stay on 0.27.1.
+VLLM_PIN="${VLLM_PIN:-0.27.1}"
+vllm_version() { "$1" -c "import vllm; print(vllm.__version__)" 2>/dev/null; }
+if [ "$(vllm_version python3)" = "$VLLM_PIN" ] && python3 -c "import trl, peft, matplotlib" 2>/dev/null; then
   :  # the box already has the stack (e.g. a prepared image)
-elif [ ! -x $WORK/venv/bin/vllm ]; then
-  python3 -m venv $WORK/venv
-  $WORK/venv/bin/pip install -q --upgrade pip
-  # vllm pins a compatible torch; the training stack goes on top of it.
-  $WORK/venv/bin/pip install -q vllm bitsandbytes hf_transfer pyyaml matplotlib pymupdf \
-    trl peft datasets accelerate
+else
+  # Jobs on one box share this venv; the lock keeps two from installing at once.
+  mkdir -p "$WORK"
+  (
+    flock 9
+    if [ "$(vllm_version $WORK/venv/bin/python)" != "$VLLM_PIN" ]; then
+      [ -x $WORK/venv/bin/python ] || python3 -m venv $WORK/venv
+      $WORK/venv/bin/pip install -q --upgrade pip
+      # vllm pins a compatible torch; the training stack goes on top of it.
+      $WORK/venv/bin/pip install -q "vllm==$VLLM_PIN" bitsandbytes hf_transfer pyyaml matplotlib \
+        pymupdf trl peft datasets accelerate
+    fi
+  ) 9>"$WORK/venv.lock"
 fi
 [ -f $WORK/venv/bin/activate ] && source $WORK/venv/bin/activate
 pip install -q -e "$REPO"
