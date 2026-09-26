@@ -65,5 +65,9 @@ EOF
 Empty answers mean the thought used up the token budget, or the backend call timed out: re-run
 those items with a bigger `think_tokens`. The router's backend timeout defaults to 1800 s (`BACKEND_TIMEOUT`,
 3965be8); at 8k thinking with 8 slots a single answer can take over 300 s, and the old 300 s limit
-blanked 4 of 37 May 2023 answers. Use main ≥ 3965be8 on stage. The essay must name a topic number and have
+blanked 4 of 37 May 2023 answers. Use main ≥ 3965be8 on stage.
+Even at 1800 s, the 8k-thinking run g4k8 still left 4 of 37 May 2023 answers empty (runaway thinking),
+scoring 38/60. On stage, `export THINK_FALLBACK=1` before serve_exam.sh: an empty or timed-out
+answer is then asked once more with thinking off (matura_router/backends/openai_compat.py). It is off
+by default so graded runs stay comparable. The essay must name a topic number and have
 ≥300 words.

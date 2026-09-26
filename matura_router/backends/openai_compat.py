@@ -75,7 +75,14 @@ class OpenAICompatBackend(Backend):
         return body
 
     def chat(self, messages, adapter, params: GenerationParams) -> str:
-        out = self._post("/chat/completions", self.request_body(messages, adapter, params))
+        body = self.request_body(messages, adapter, params)
+        try:
+            out = self._post("/chat/completions", body)
+        except OSError as e:  # socket timeout / connection error (urllib raises URLError, an OSError)
+            if not self._fallback(body):
+                raise
+            log.warning("request failed (%s); retrying once with thinking off", e)
+            return self._no_think(body)
         choice = out["choices"][0]
         content = choice["message"].get("content") or ""
         if not content.strip() and choice["message"].get("reasoning_content"):
@@ -83,7 +90,24 @@ class OpenAICompatBackend(Backend):
             log.warning("empty answer: max_tokens=%d went to reasoning (finish_reason=%s); "
                         "turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens",
                         params.max_tokens, choice.get("finish_reason"))
+            if self._fallback(body):
+                log.warning("retrying once with thinking off (THINK_FALLBACK=1)")
+                return self._no_think(body)
         return content
+
+    @staticmethod
+    def _fallback(body: dict) -> bool:
+        # THINK_FALLBACK=1: an answer lost to runaway thinking (empty content or a timeout) is asked
+        # again once with thinking off, so it scores something instead of 0. Off by default so
+        # graded comparisons stay like-for-like; on for the exam (docs/EXAM_DAY_BEST_SCORE.md).
+        kw = body.get("chat_template_kwargs") or {}
+        return os.environ.get("THINK_FALLBACK") == "1" and kw.get("enable_thinking", True) is not False
+
+    def _no_think(self, body: dict) -> str:
+        body = {**body, "chat_template_kwargs": {**(body.get("chat_template_kwargs") or {}),
+                                                 "enable_thinking": False}}
+        out = self._post("/chat/completions", body)
+        return out["choices"][0]["message"].get("content") or ""
 
     def available_adapters(self) -> Optional[set[str]]:
         if self.adapter_mode == "llamacpp":
