@@ -18,7 +18,10 @@ subtypes:
     name: raw
     raw: true
   essay:
-    # length guard (Orest 22:13): an essay under 350 words is continued (under 300 scores 0)
-    name: raw_len
-    raw: true
-    min_words: 350
+    # Blind essay grid on the 12 dev essays (results/judged/essay-grid/README.md, 85a5e51): the plan
+    # prompt beat the raw essay by +5/150 in both grading batches; the 350-word length guard lost (-7 and -2).
+    # With ESSAY_BEST_OF=3 in the env (3 essays, keep the best one over 300 words) it was +9/150.
+    name: plan
+    think_tokens: 16384
+    max_tokens: 2600
+    prompt_suffix: "Zanim zaczniesz, ułóż w myślach plan. Wypracowanie: wstęp z tezą, 3–4 akapity argumentacyjne z konkretnymi datami, postaciami i wydarzeniami z omawianego okresu, kontekst epoki, podsumowanie. 500–700 słów."
