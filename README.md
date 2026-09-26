@@ -10,19 +10,13 @@ cheap.
 
 ## Live status dashboard
 
-Live public URL (current deploy): https://forty-masks-tap.loca.lt/
+Public no-auth share link: https://orestta.github.io/tarasiuk-lab-matura-status/
 
-Note: the first browser visit may show a localtunnel safety page; enter the host IP
-`54.184.235.255` once to continue.
-
-GitHub Pages is checked for but unsupported on this repository's current plan, so the
-committed dashboard ships as a static folder and the live URL above is the fallback
-public deploy from this run.
-
-- Site source: [`dashboard/`](dashboard/)
-- Bot-editable data: [`dashboard/status.json`](dashboard/status.json)
-- Refresh flow: update `dashboard/status.json`, commit and push to `main`, then
-  redeploy `dashboard/` to your preferred public static host
+- Public publishing repo: `OrestTa/tarasiuk-lab-matura-status`
+- Public board source in this repo: [`public-board/`](public-board/)
+- Public board data to edit: [`public-board/status.json`](public-board/status.json)
+- Collaborator notes: [`public-board/README.md`](public-board/README.md)
+- Existing collaborator dashboard: [`dashboard/`](dashboard/)
 
 **New here? Start with [docs/HOWTO.md](docs/HOWTO.md).**
 

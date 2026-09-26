@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tarasiuk Lab - Matura status</title>
+<style>
+  :root { --bg:#0b1020; --card:#141a2e; --text:#e8ecf7; --muted:#9aa3b8; --ok:#3dd68c; --run:#5b8cff; --warn:#f5a524; --bad:#f2555a; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: radial-gradient(1200px 600px at 10% -10%, #1a2450, var(--bg)); color: var(--text); }
+  main { max-width: 960px; margin: 0 auto; padding: 28px 18px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin-bottom: 22px; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card { background: var(--card); border: 1px solid #243055; border-radius: 14px; padding: 16px 16px 12px; }
+  .card h2 { font-size: 1rem; margin: 0 0 10px; }
+  ul { margin: 0; padding-left: 18px; color: #d5dbeb; }
+  li { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #243055; }
+  th { color: var(--muted); font-weight: 600; }
+  .pill { display:inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; letter-spacing: .02em; }
+  .COMPLETED { background: rgba(61,214,140,.15); color: var(--ok); }
+  .RUNNING { background: rgba(91,140,255,.15); color: var(--run); }
+  .BLOCKED, .PARKED { background: rgba(245,165,36,.15); color: var(--warn); }
+  .pct { font-variant-numeric: tabular-nums; font-weight: 700; }
+  a { color: #8eb6ff; }
+  footer { margin-top: 22px; color: var(--muted); font-size: 0.85rem; }
+  .error { color: #ffb4b8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tarasiuk Lab - live matura status</h1>
+  <p class="sub">Warsaw Model Trainers - shared board for <strong>Matura Hack (Grok)</strong> + <strong>Claude</strong> - updated <span id="updated">...</span></p>
+
+  <div class="grid" id="tracks"></div>
+
+  <div class="card" style="margin-top:14px">
+    <h2>Jobs</h2>
+    <table><thead><tr><th>Job</th><th>State</th><th>Detail</th></tr></thead><tbody id="jobs"></tbody></table>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h2>History MCQ (90 easy items - contaminated LoRAs flagged)</h2>
+    <table><thead><tr><th>Pass</th><th>Score</th><th>Note</th></tr></thead><tbody id="mcq"></tbody></table>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h2>Constraints & links</h2>
+    <ul id="links"></ul>
+  </div>
+
+  <footer>No secrets, IPs, or keys on this page. Refresh by updating <code>status.json</code> and republishing this folder.</footer>
+</main>
+<script>
+async function main() {
+  const response = await fetch('./status.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error(`status.json returned ${response.status}`);
+  const data = await response.json();
+  document.getElementById('updated').textContent = data.updated;
+
+  const tracks = document.getElementById('tracks');
+  for (const track of Object.values(data.tracks)) {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `<h2>${track.role}</h2><ul>${track.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
+    tracks.appendChild(el);
+  }
+
+  document.getElementById('jobs').innerHTML = data.jobs.map(job =>
+    `<tr><td>${job.name}</td><td><span class="pill ${job.state}">${job.state}</span></td><td>${job.detail || ''}</td></tr>`
+  ).join('');
+
+  document.getElementById('mcq').innerHTML = Object.entries(data.mcq).map(([name, value]) =>
+    `<tr><td>${name}</td><td class="pct">${value.pct != null ? `${value.pct}% (${value.n})` : 'pending'}</td><td>${value.note || ''}</td></tr>`
+  ).join('');
+
+  const links = data.links;
+  const constraints = data.constraints;
+  document.getElementById('links').innerHTML = `
+    <li>Base disk cap: <strong>${constraints.max_base_disk_gb} GB</strong> (LoRA excluded) - registered base: ${constraints.registration_base}</li>
+    <li>Exam: ${constraints.exam}</li>
+    <li><a href="${links.leaderboard}">Practice leaderboard</a></li>
+    <li><a href="${links.repo}">Private working repo</a></li>
+    <li><a href="${links.audit_issue}">COMMIT_AUDIT issue #6</a> (collaborators only)</li>
+  `;
+}
+
+main().catch((error) => {
+  document.getElementById('tracks').innerHTML = `<div class="card error"><h2>Board failed to load</h2><p>${error.message}</p></div>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "updated": "2026-09-26T13:18:10.447428+02:00",
+  "team": "Tarasiuk Lab",
+  "hackathon": "Warsaw Model Trainers \u2014 Polish history matura",
+  "tracks": {
+    "matura_hack_grok": {
+      "role": "Matura Hack (Grok Bot)",
+      "highlights": [
+        "Forgehand 7B LoRA fh + fh-v2 COMPLETED on L40S",
+        "History MCQ: 1.5B 53.3%\u219285.6% modal; 3B 56.7%\u219275.6% history-v2 / 94.4% modal-v3 (train-set contaminated)",
+        "CKE headline eval 154/240 running on L40S",
+        "Honest bare geo practice ~4/15 (filed 14/15 was harness)",
+        "Adversarial COMMIT_AUDIT filed as issue #6"
+      ]
+    },
+    "claude": {
+      "role": "Claude Opus on trunk",
+      "highlights": [
+        "matura_router + fetch_matura; matura_all 573 items / 860 pts",
+        "Organizers OK with 8.9 GB base weights (LoRA excluded)",
+        "quantize_checkpoint.py NF4 + serve_exam.sh offline harness",
+        "Completion-only SFT, leak filter, staggered expert harness plan",
+        "STATUS job board + FINDINGS on main"
+      ]
+    }
+  },
+  "jobs": [
+    {
+      "id": "fh-7b",
+      "name": "Forgehand 7B LoRA fh",
+      "state": "COMPLETED"
+    },
+    {
+      "id": "fh-7b-v2",
+      "name": "Forgehand 7B LoRA fh-v2",
+      "state": "COMPLETED",
+      "detail": "2000 steps, mean_loss\u22480.067"
+    },
+    {
+      "id": "hist-eval",
+      "name": "History/CKE eval queue",
+      "state": "RUNNING",
+      "detail": "cke_1.5b_base on L40S"
+    },
+    {
+      "id": "aws",
+      "name": "AWS GPU burn",
+      "state": "PARKED"
+    },
+    {
+      "id": "specialists",
+      "name": "Specialist LoRAs",
+      "state": "BLOCKED",
+      "detail": "need per-format datasets"
+    }
+  ],
+  "mcq": {
+    "1.5b_base": {
+      "pct": 53.3,
+      "n": "48/90"
+    },
+    "1.5b_modal": {
+      "pct": 85.6,
+      "n": "77/90"
+    },
+    "3b_base": {
+      "pct": 56.7,
+      "n": "51/90"
+    },
+    "3b_history_v2": {
+      "pct": 75.6,
+      "n": "68/90",
+      "note": "contaminated"
+    },
+    "3b_modal_v3": {
+      "pct": 94.4,
+      "n": "85/90",
+      "note": "contaminated"
+    },
+    "7b_family": {
+      "pct": null,
+      "note": "queued on L40S"
+    }
+  },
+  "constraints": {
+    "max_base_disk_gb": 8.9,
+    "exam": "fully offline Sunday",
+    "registration_base": "Qwen2.5-3B-Instruct"
+  },
+  "links": {
+    "repo": "https://github.com/OrestTa/matura-model-trainers-hackathon",
+    "audit_issue": "https://github.com/OrestTa/matura-model-trainers-hackathon/issues/6",
+    "leaderboard": "https://warsawmodeltrainers.dev/matura.html"
+  }
+}
