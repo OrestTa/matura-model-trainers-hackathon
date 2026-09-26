@@ -3,6 +3,23 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:00 CEST · GPU VM thread: 1x L40S box runs training; staggered-harness plan
+
+- **GPU VM `root@34.224.61.209`** (key `~/.ssh/matura_gpu` on Orest's Mac only, never committed):
+  a Labqoat/Forgehand container (overlay FS, JupyterLab on :8888, no AWS metadata, so it is not
+  Orest's suspended AWS account). 1x NVIDIA L40S 46 GB, driver 595.91, CUDA 13.2, 4 vCPU, 30 GB RAM,
+  139 GB free disk, Ubuntu 22.04, Python 3.11, tmux + git, no docker. `~` is `/workspace/.home`
+  (persistent). The repo is private, so it was rsynced from the Mac, not cloned.
+- **Training runs there:** tmux session `train`, `TRAIN_MODELS=bielik-11b bash infra/jobs/train.sh`,
+  log `~/matura-model-trainers-hackathon/work/train.log` (+ `work/out/job.log`). With one GPU it
+  picks the teacher `Qwen3-30B-A3B-Instruct-2507-FP8` (~31 GB, fits 46 GB), then trains the 7
+  adapters one after another on the same card. Baselines stay on Modal.
+- **Plan for the exam:** [docs/PLAN_STAGGERED_HARNESS.md](PLAN_STAGGERED_HARNESS.md): a cascade of
+  rules/tools, then the router, then a 4-bit base with one LoRA per question type, then a
+  vote/verify check. Training follows the workshop's steps (domain continued-pretraining, per-type
+  SFT, GRPO/RLVR on the auto-scorable types), with a staircase chart per stage and waves until
+  01:00.
+
 ## 2026-09-26 13:15 CEST · compute thread: Modal can't run from Claude cloud sessions
 
 - The Modal client speaks gRPC, which the cloud sandbox proxy can't carry ("Could not
