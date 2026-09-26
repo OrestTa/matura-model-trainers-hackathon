@@ -11,6 +11,11 @@ MODEL="${1:?usage: serve_exam.sh <model key from configs/models.yaml>}"
 # entry's own pre-quantized HF weights (e.g. bielik-11b-v3 = speakleash's AWQ), from the HF cache.
 spec() { python -c "import yaml,sys; print(yaml.safe_load(open('configs/models.yaml'))['models']['$MODEL'].get('$1') or '')"; }
 QUANT="$(spec quantization)"
+SERVER="$(spec server)"
+if [ -z "${CHECKPOINT:-}" ] && [ "$SERVER" = llamacpp ]; then
+  # GGUF entries (gemma4-12b, qwen3.5-9b): the one .gguf file from the HF cache, on llama.cpp.
+  CHECKPOINT="$(HF_HUB_OFFLINE=1 python -c "from huggingface_hub import hf_hub_download; print(hf_hub_download('$(spec hf_id)', '$(spec gguf_file)'))")"
+fi
 if [ -z "${CHECKPOINT:-}" ]; then
   CHECKPOINT="work/checkpoints/$MODEL"
   if [ ! -f "$CHECKPOINT/config.json" ] && [ -z "$QUANT" ]; then
@@ -22,8 +27,13 @@ export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 VLLM_NO_USAGE_STATS=1 DO_NOT_TRAC
 
 # The checkpoint is bitsandbytes 4-bit, which vLLM 0.28+ can't load: same pin as infra/jobs/common.sh.
 VLLM_PIN="${VLLM_PIN:-0.27.1}"
+if [ "$SERVER" = llamacpp ]; then
+  LLAMA_SERVER="${LLAMA_SERVER:-work/llama.cpp/build/bin/llama-server}"
+  [ -x "$LLAMA_SERVER" ] || { echo "no llama-server at $LLAMA_SERVER: build it before going offline (infra/jobs/common.sh ensure_llama_server)"; exit 1; }
+else
 have=$(python -c "import vllm; print(vllm.__version__)" 2>/dev/null || echo none)
 [ "$have" = "$VLLM_PIN" ] || { echo "vLLM $have found, need $VLLM_PIN: pip install vllm==$VLLM_PIN (before going offline)"; exit 1; }
+fi
 
 # Base weights at most ship_limit_gb (8.0 GB), base + adapters at most finetuned_limit_gb (8.8 GB).
 python scripts/quantize_checkpoint.py --check "$CHECKPOINT" --adapters "$ADAPTERS"
@@ -38,8 +48,16 @@ done
 [ ${#LORA[@]} -gt 0 ] && LORA=(--enable-lora --max-loras ${#LORA[@]} --max-lora-rank 64 --lora-modules "${LORA[@]}")
 echo "adapters: ${LORA[*]:-none (base model only)}"
 
+if [ "$SERVER" = llamacpp ]; then
+  # Same flags as run_baselines.py start_llamacpp: 16 slots of 8192 tokens. Adapters would be
+  # GGUF LoRAs (--lora); none are trained for the GGUF bases yet.
+  [ ${#LORA[@]} -gt 0 ] && echo "WARNING: PEFT adapters are ignored on llama.cpp"
+  CUDA_VISIBLE_DEVICES="${GPU:-0}" "$LLAMA_SERVER" -m "$CHECKPOINT" --alias base --host 127.0.0.1 \
+    --port 8000 -ngl 999 --parallel 16 -c 131072 --jinja -fa on --no-webui > work/exam-vllm.log 2>&1 &
+else
 CUDA_VISIBLE_DEVICES="${GPU:-0}" vllm serve "$CHECKPOINT" --served-model-name base \
   ${QUANT:+--quantization "$QUANT"} --port 8000 --max-model-len 8192 "${LORA[@]}" > work/exam-vllm.log 2>&1 &
+fi
 VLLM=$!
 trap 'kill $VLLM 2>/dev/null' EXIT
 until curl -sf http://127.0.0.1:8000/v1/models >/dev/null; do
