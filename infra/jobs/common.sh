@@ -51,11 +51,12 @@ step "${#GPU_LIST[@]} GPUs, eval set $EVAL"
 
 # Serves a HF model with vLLM on the given GPUs and waits until it answers.
 # Usage: serve_vllm <hf_id> <gpus csv> <port> <served-name>; sets SERVED_PID.
+# VLLM_UTIL caps its share of GPU memory (default 0.9) when other jobs share the card.
 serve_vllm() {
   local n tp=1; n=$(echo "$2" | tr ',' '\n' | wc -l)
   while [ $((tp * 2)) -le "$n" ]; do tp=$((tp * 2)); done   # heads must divide by TP: 3 GPUs -> 2
   CUDA_VISIBLE_DEVICES=$2 vllm serve "$1" --served-model-name "$4" --port "$3" \
-    --tensor-parallel-size "$tp" --max-model-len 16384 --gpu-memory-utilization 0.9 \
+    --tensor-parallel-size "$tp" --max-model-len 16384 --gpu-memory-utilization "${VLLM_UTIL:-0.9}" \
     > "$OUT/vllm-$4.log" 2>&1 &
   SERVED_PID=$!
   for _ in $(seq 360); do

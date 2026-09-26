@@ -10,6 +10,12 @@ Modes: raw    = one generic prompt, the untouched base model (the official basel
 
     python scripts/run_baselines.py --eval data/eval/matura.jsonl --gpus 0,1,2,3
     python scripts/run_baselines.py --models qwen3-8b --base-url http://localhost:8000/v1
+    python scripts/run_baselines.py --gpus 0 --gpu-budget-gb 34   # many models on one GPU
+
+With --gpu-budget-gb, models share the (first) GPU instead of taking one GPU each:
+each vLLM server is capped at its model's memory estimate (models.yaml `gpu_gb`, else
+disk_gb + 5 GB for the KV cache and activations), servers start one at a time, and a model starts as
+soon as its estimate fits in what's left of the budget. Leave room for other jobs.
 
 Then draw the charts with scripts/plot_baselines.py.
 """
@@ -65,10 +71,10 @@ def served_weights(key: str, spec: dict) -> str:
 
 
 def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: Path,
-               adapters_dir: Path | None) -> subprocess.Popen:
+               adapters_dir: Path | None, util: float | None = None) -> subprocess.Popen:
     cmd = ["vllm", "serve", served_weights(key, spec), "--served-model-name", "base",
            "--port", str(port), "--max-model-len", str(vcfg.get("max_model_len", 8192)),
-           "--gpu-memory-utilization", str(vcfg.get("gpu_memory_utilization", 0.9))]
+           "--gpu-memory-utilization", f"{util or vcfg.get('gpu_memory_utilization', 0.9):.3f}"]
     if spec.get("quantization"):
         cmd += ["--quantization", spec["quantization"]]
     if adapters_dir:
@@ -131,6 +137,8 @@ def main():
     p.add_argument("--adapters-dir", help="adapters/<model>/<category>/ for mode 'adapters'")
     p.add_argument("--out", default=str(ROOT / "runs/baselines"))
     p.add_argument("--concurrency", type=int, default=32)
+    p.add_argument("--gpu-budget-gb", type=float, default=0,
+                   help="share one GPU between models within this many GB (0 = one model per GPU)")
     p.add_argument("--gold-category", action="store_true",
                    help="route by the eval set's category instead of the classifier")
     p.add_argument("--judge-url", help="OpenAI-compatible endpoint that grades open answers")
@@ -202,6 +210,10 @@ def run_all(p, args, cfg, models, keys, rows):
         run_model(keys[0], models[keys[0]], args.base_url, rows, args)
         return
 
+    if args.gpu_budget_gb:
+        run_shared_gpu(args, cfg, models, keys, rows)
+        return
+
     todo: queue.Queue = queue.Queue()
     for k in keys:
         todo.put(k)
@@ -230,6 +242,71 @@ def run_all(p, args, cfg, models, keys, rows):
                     stop(proc)
 
     threads = [threading.Thread(target=worker, args=(g,)) for g in args.gpus.split(",")]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    if failures:
+        log(f"failed models: {failures}")
+        sys.exit(1)
+
+
+def gpu_total_gb(gpu: str) -> float:
+    out = subprocess.run(["nvidia-smi", "-i", gpu, "--query-gpu=memory.total",
+                          "--format=csv,noheader,nounits"], capture_output=True, text=True)
+    return float(out.stdout.split()[0]) / 1024
+
+
+def model_gb(spec: dict) -> float:
+    """GPU memory one vLLM server needs: weights as served plus KV cache and overhead."""
+    return float(spec.get("gpu_gb") or max(8.0, float(spec.get("disk_gb", 8)) + 5))
+
+
+def run_shared_gpu(args, cfg, models, keys, rows):
+    """Runs every model at once on one GPU, as many as fit in --gpu-budget-gb."""
+    gpu = args.gpus.split(",")[0]
+    total = gpu_total_gb(gpu)
+    budget = {"free": args.gpu_budget_gb}
+    fits = threading.Condition()
+    starting = threading.Lock()  # vLLM sizes its cache from free memory: start one at a time
+    failures = []
+    # Biggest first, so a large model isn't starved by a stream of small ones.
+    order = sorted(keys, key=lambda k: -model_gb(models[k]))
+    too_big = [k for k in order if model_gb(models[k]) > args.gpu_budget_gb]
+    if too_big:
+        log(f"over the {args.gpu_budget_gb} GB budget, skipped: {too_big}")
+        failures += too_big
+    log(f"sharing GPU {gpu} ({total:.0f} GB): " +
+        ", ".join(f"{k}={model_gb(models[k]):.0f}GB" for k in order if k not in too_big))
+
+    def worker(i: int, key: str):
+        need = model_gb(models[key])
+        with fits:
+            fits.wait_for(lambda: budget["free"] >= need)
+            budget["free"] -= need
+        proc = None
+        port = 8100 + i
+        try:
+            with starting:
+                proc = start_vllm(key, models[key], cfg.get("vllm", {}), gpu, port,
+                                  Path(args.out) / key / "vllm.log",
+                                  Path(args.adapters_dir) if args.adapters_dir else None,
+                                  util=min(0.95, need / total))
+                url = f"http://127.0.0.1:{port}/v1"
+                wait_ready(url, proc)
+            run_model(key, models[key], url, rows, args)
+        except Exception as e:  # noqa: BLE001
+            log(f"[{key}] FAILED: {e} (see {Path(args.out) / key / 'vllm.log'})")
+            failures.append(key)
+        finally:
+            if proc:
+                stop(proc)
+            with fits:
+                budget["free"] += need
+                fits.notify_all()
+
+    threads = [threading.Thread(target=worker, args=(i, k))
+               for i, k in enumerate(order) if k not in too_big]
     for t in threads:
         t.start()
     for t in threads:

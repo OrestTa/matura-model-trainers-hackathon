@@ -21,7 +21,9 @@ detached with nohup. Outputs go to /workspace/work/out/<job>-<time>/, the log to
 /workspace/work/<job>-<time>.log; the venv and adapters live in /workspace/work; Hugging Face
 downloads are cached in /team/hf so every session and workspace reuses them.
 WORKSPACE (default: the team workspace below) selects another workspace.
-AFTER=<run name> queues a run behind another; WAIT_GPU=1 makes `run` wait until the GPU is free (the team may run only one GPU session).
+The team may run only one GPU session, so jobs share its card: GPU_GB=<n> makes `run` wait
+until n GB of GPU memory are free (WAIT_GPU=1: the whole card), AFTER=<run name> queues a
+run behind another. CPU-only jobs need neither.
 start, run, stop and a `log` that sees the job finish update docs/STATUS.md on main.
 """
 import base64, io, json, os, re, shlex, ssl, subprocess, sys, tarfile, time, uuid
@@ -167,10 +169,10 @@ def main():
         j.sh(f"mkdir -p {rel}work/upload")
         j.put_file(f"{rel}work/upload/{name}.tar.gz", tar)
         env_s = " ".join(shlex.quote(e) for e in env)
-        # WAIT_GPU=1: the team has one GPU session, so queue behind whatever holds the card.
-        wait = ("while [ $(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | "
-                "sort -n | tail -1) -gt 2000 ]; do echo waiting for a free GPU; sleep 60; done"
-                if os.environ.get("WAIT_GPU") == "1" else "")
+        # GPU_GB=<n>: start once n GB of GPU memory are free (infra/jobs/gpu_admit.py), so
+        # several jobs share the team's one card. WAIT_GPU=1 asks for the whole card.
+        need = os.environ.get("GPU_GB") or ("44" if os.environ.get("WAIT_GPU") == "1" else "")
+        wait = f"python3 infra/jobs/gpu_admit.py {name} {need}" if need else ""
         # AFTER=<run name>: start only once that run's log says it finished.
         if os.environ.get("AFTER"):
             wait = (f"until grep -q 'done (exit' /workspace/work/{os.environ['AFTER']}.log; do "

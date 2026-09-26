@@ -5,6 +5,9 @@
 #   MODES=raw,routed         baseline modes
 #   HF_TOKEN                 needed for gated models (Gemma)
 #   JUDGE_HF=Qwen/Qwen3-32B  open model that grades open answers (last 2 GPUs); "" = no judge
+#   GPU_BUDGET_GB=40         one GPU: run models side by side within this much memory
+#                            (default on 1-GPU boxes: 40 of 46 GB); 0 = one at a time
+#   CONCURRENCY=64           parallel requests per model server
 #   STOP_WHEN_DONE=1         power off (= terminate) when finished, to save credits
 source "$(dirname "$0")/common.sh"
 MODELS="${MODELS:-all}"; MODES="${MODES:-raw,routed}"; JUDGE_HF="${JUDGE_HF-Qwen/Qwen3-32B}"
@@ -19,12 +22,17 @@ elif [ -n "$JUDGE_HF" ]; then
   echo "Fewer than 4 GPUs: no judge, open answers without keywords stay unscored"
 fi
 GPUS=$(IFS=,; echo "${ALL[*]}")
+BUDGET_ARGS=()
+if [ ${#ALL[@]} -eq 1 ] && [ "${GPU_BUDGET_GB:-40}" != 0 ]; then
+  BUDGET_ARGS=(--gpu-budget-gb "${GPU_BUDGET_GB:-40}")
+fi
 ADAPTER_ARGS=()
 [ -d "$WORK/adapters" ] && ADAPTER_ARGS=(--adapters-dir "$WORK/adapters")
 
 step "baselines: models=$MODELS modes=$MODES gpus=$GPUS judge=${JUDGE_HF:-none}"
 python scripts/run_baselines.py --eval "$EVAL" --models "$MODELS" --modes "$MODES" \
-  --gpus "$GPUS" --out "$OUT/baselines" "${JUDGE_ARGS[@]}" "${ADAPTER_ARGS[@]}"
+  --gpus "$GPUS" --out "$OUT/baselines" --concurrency "${CONCURRENCY:-64}" \
+  "${JUDGE_ARGS[@]}" "${ADAPTER_ARGS[@]}" "${BUDGET_ARGS[@]}"
 status=$?
 python scripts/plot_baselines.py --runs "$OUT/baselines" --out "$OUT/report"
 finish $status
