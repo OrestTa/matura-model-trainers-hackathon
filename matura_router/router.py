@@ -13,7 +13,7 @@ import yaml
 from .backends import Backend, GenerationParams, make_backend
 from .categories import Category
 from .classifier import Classifier, LLMClassifier, RuleClassifier
-from .prompts import build_messages, postprocess
+from .prompts import build_messages, postprocess, strip_think
 
 log = logging.getLogger(__name__)
 
@@ -90,6 +90,9 @@ class Router:
             confidence, method = 1.0, "forced"
 
         route = self.routes.get(category) or self.routes[Category.GENERAL]
+        if mode == "raw":
+            # The bare-model baseline must not inherit the closed types' tiny token caps.
+            route = self.routes[Category.GENERAL]
         adapter = self.resolve_adapter(category) if mode == "adapters" else None
         prompt_cat = Category.GENERAL if mode == "raw" else category
         messages = build_messages(prompt_cat, question, context)
@@ -103,7 +106,7 @@ class Router:
             adapter = None
             raw = self.backend.chat(messages, None, route.params)
 
-        answer = raw.strip() if mode == "raw" else postprocess(category, raw)
+        answer = strip_think(raw) if mode == "raw" else postprocess(category, raw)
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,

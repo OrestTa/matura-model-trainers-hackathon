@@ -34,9 +34,21 @@ def build_messages(category: Category, question: str, context: str = "") -> list
     ]
 
 
+def strip_think(text: str) -> str:
+    """Drop Qwen3-style <think>...</think> reasoning (also an unclosed one cut off by max_tokens)."""
+    text = re.sub(r"<think>.*?(</think>|$)", "", text, flags=re.S)
+    return text.strip()
+
+
 def postprocess(category: Category, text: str) -> str:
-    """Light normalisation so closed answers come out in a gradable shape."""
-    text = text.strip()
+    """Light normalisation so closed answers come out in a gradable shape.
+
+    Only rewrites short answers: a long one usually means the question was misrouted
+    (e.g. a table to fill in), and shrinking it to letters would throw the answer away.
+    """
+    text = strip_think(text)
+    if len(text) > 40 and category in (Category.CLOSED_CHOICE, Category.CHRONOLOGY):
+        return text
     if category is Category.CLOSED_CHOICE:
         letters = re.findall(r"\b([A-F])\b", text)
         return ", ".join(dict.fromkeys(letters)) if letters else text

@@ -70,6 +70,7 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
 
     earned = sum(b["earned"] for b in by_cat.values())
     maximum = sum(b["max"] for b in by_cat.values())
+    all_max = sum(r["points"] for r in results)
     labelled = [r for r in results if r.get("gold_category") and r.get("category")]
     # Items whose source is a photo/map/chart can't be answered from text alone;
     # the text-only score is the fairer measure of the model itself.
@@ -84,6 +85,8 @@ def summarise(results: list[dict], wall_s: float = 0.0) -> dict:
         "max": maximum,
         "pct": round(100 * earned / maximum, 1) if maximum else None,
         "pct_text_only": round(100 * sum(r["score"] for r in text) / text_max, 1) if text_max else None,
+        # Earned over the points of ALL rows (unscored count as 0): comparable with an exam score.
+        "pct_all_rows": round(100 * earned / all_max, 1) if all_max else None,
         "unscored": sum(1 for r in results if r["score"] is None),
         "routing_accuracy": round(100 * sum(r["category"] == r["gold_category"] for r in labelled)
                                   / len(labelled), 1) if labelled else None,

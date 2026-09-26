@@ -6,6 +6,7 @@ adapters are a few tens of MB each and don't count toward the limit.
 
 from __future__ import annotations
 
+import threading
 from pathlib import Path
 from typing import Optional
 
@@ -36,6 +37,7 @@ class PeftBackend(Backend):
                 model.load_adapter(path, adapter_name=name)
             self.adapters = set(present)
         self.model = model.eval()
+        self._lock = threading.Lock()
 
     def available_adapters(self) -> Optional[set[str]]:
         return self.adapters
@@ -49,7 +51,8 @@ class PeftBackend(Backend):
         if params.temperature > 0:
             gen_kwargs.update(temperature=params.temperature, top_p=params.top_p)
 
-        with self.torch.inference_mode():
+        # set_adapter mutates the shared model; the server and evaluate() call us from threads.
+        with self._lock, self.torch.inference_mode():
             if adapter and adapter in self.adapters:
                 self.model.set_adapter(adapter)
                 out = self.model.generate(ids, **gen_kwargs)

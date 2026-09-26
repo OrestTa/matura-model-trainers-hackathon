@@ -30,7 +30,8 @@ def _norm(s: str) -> str:
 
 
 def _letters(s: str) -> list[str]:
-    return re.findall(r"\b([A-F])\b", s.upper())
+    # Case-sensitive: upper-casing would turn the Polish word "a" into option A.
+    return re.findall(r"\b([A-F])\b", s)
 
 
 def _pf(s: str) -> list[str]:
@@ -46,6 +47,25 @@ def _pairs(s: str) -> dict[str, str]:
 
 def _order(s: str) -> list[str]:
     return re.findall(r"\b([A-F]|\d)\b", s.upper())
+
+
+def _correct_of(category: Category, answer: str, gold: str) -> Optional[tuple[int, int]]:
+    """(correct, total) sub-items for true/false and matching, else None."""
+    if category is Category.TRUE_FALSE:
+        g, a = _pf(gold), _pf(answer)
+        return sum(x == y for x, y in zip(g, a)), len(g)
+    if category is Category.MATCHING:
+        g, a = _pairs(gold), _pairs(answer)
+        return sum(a.get(k) == v for k, v in g.items()), len(g)
+    return None
+
+
+def cke_points(correct: int, total: int, points: float) -> float:
+    """CKE step rule for multi-part items: full points only when all parts are right, one point
+    less per mistake (3 statements/2 pts: 3->2, 2->1; 2 statements/1 pt: 2->1, 1->0)."""
+    if not total:
+        return 0.0
+    return float(min(points, max(0.0, correct - (total - points))))
 
 
 def score_closed(category: Category, answer: str, gold: str) -> float:
@@ -90,16 +110,27 @@ def score_row(row: dict, answer: str,
     """Points earned (0..row['points']), or None if the row can't be scored."""
     points = float(row.get("points", 1))
     cat = Category(row["category"]) if row.get("category") else Category.GENERAL
-    gold = row.get("gold")
+    gold = row.get("gold") or row.get("reference")
 
     if cat in CLOSED and gold:
+        parts = _correct_of(cat, answer, gold)
+        if parts is not None:
+            return cke_points(*parts, points)
         return points * score_closed(cat, answer, gold)
     if row.get("gold_keywords"):
         return points * score_keywords(answer, row["gold_keywords"])
     if judge and gold:
-        out = judge(JUDGE_PROMPT.format(question=row["question"], gold=gold, answer=answer,
-                                        rubric=row.get("rubric") or "brak – oceń według przykładu",
-                                        points=int(points)))
+        rubric = row.get("rubric") or "brak – oceń według przykładu"
+        question = row["question"]
+        if row.get("context"):
+            question = f"{row['context'][:3000]}\n\n{question}"
+        try:
+            out = judge(JUDGE_PROMPT.format(question=question, answer=answer, rubric=rubric,
+                                            # Essay rows repeat the rubric as gold; don't send it twice.
+                                            gold=gold if gold != rubric else "(patrz zasady oceniania)",
+                                            points=int(points)))
+        except Exception:  # noqa: BLE001 - a judge timeout leaves the row unscored, not the run dead
+            return None
         # Expect a bare small integer; anything else (an essay, a year) counts as 0.
         m = re.match(r"\D{0,20}?(\d{1,2})\b", out.strip())
         got = float(m.group(1)) if m else 0.0
