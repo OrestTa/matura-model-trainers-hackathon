@@ -90,7 +90,7 @@ def main() -> int:
     size = weights_gb(target)
     # Quantized size (Orest, 15:55 CEST): the deck's 8/4-bit figure when it has one for the model at
     # the precision we ship, else the measured file. A bf16 deck figure is information only.
-    if args.model in cfg["models"]:
+    if args.model in cfg["models"] and not args.finetuned:  # a merged fine-tune isn't the deck's model
         deck_gb, label = deck_size(cfg["models"][args.model])
         print(f"{args.model}: measured {size:.2f} GB; deck "
               f"{f'{deck_gb:.2f} GB ({label})' if deck_gb is not None else label}")

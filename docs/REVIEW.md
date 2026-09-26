@@ -7,6 +7,33 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 16:05 CEST: 80c79f8..eb3376e (18 commits) and board repo e65a47e..727d7c2
+
+- bed5c3d, aa157b6, c2b0a60 (us, 15:54-15:56) deck sizes and Orest's 15:55 call ("always use the quantized size"):
+  bed5c3d briefly made MODELS=all fail models on the deck's bf16 figure (bielik-4.5b 9.51, qwen3-4b 8.04, gemma3-4b
+  8.60 dropped although they ship as quantized GGUF); c2b0a60 fixed that in model_size.reference_size (a bf16
+  deck figure never counts). OK now. FIXED one gap: quantize_checkpoint.py also swapped in the stock model's deck
+  figure under --finetuned, so a merged fine-tune would be checked at the stock size; the deck now applies only
+  to base checks, a merged fine-tune is measured.
+- 0823463 (us, 15:56) GGUF quantization sweep for the small-model prize, 9cec457 fh_job real exit code: OK.
+- eb3376e (us, 15:56) Bielik-1.5B 19.6% (47/240), "LLM-graded vs CKE key": label says LLM-graded, OK.
+- 8216a23 (us, 15:49) preflight before every Forgehand job: OK (weights, vLLM support, llama-server, eval
+  images; writes "done (exit 3)" so AFTER chains and gpu_admit release). FIXED one overreach: it failed any
+  baselines job naming a model whose disk_gb is over 8.0, which blocked scoring bf16 references
+  (bielik-11b-bf16, qwen3.5-4b, gemma4-e2b). For baselines that is now a note; train/dapt still fail.
+- 3fb87d7 (us, 15:46) conda CUDA 12.8.1 toolkit for the llama.cpp build: OK; conda output goes to /dev/null, so
+  a failed install shows up only as a later cmake error.
+- 7b369c9 follow-up check: claude_grade.py writes graded_by/judge_kind "claude", files named *.claude.json and
+  results/claude-graded/, and build_tracks_page.py doesn't read them, so Claude grades can't pass as CKE: OK.
+- b90ee8a (us, 15:54) findings, first small-model scores labelled judge-free: OK.
+- 91ab447 (us, 15:36) small_models note on quantized shipped packs: OK.
+- 9b55916 (Grok bot, 15:40) HISTORY_EXT_INVENTORY: OK, lists CKE papers by code; no PDFs are committed (checked).
+- f174a53 (Grok bot, 15:41) COMMIT_AUDIT_INSIGHTS: OK and it agrees with us on the size table.
+- Board repo 5f14ef0, 2005fed, 39c8339, 727d7c2 (Grok bot, 15:39-15:52): labels OK (AWQ+fh 29.8% shown as demoted,
+  bf16 lanes marked illegal). Still open: 37.6%, 29.8%, 28.3% and 17.1% have no committed summary/answers, so
+  they should say unverified.
+- Status-only (us): 8213cc8, ec9e161, fae3ea6, fdd68e8, d23e183: OK.
+
 ## 2026-09-26 15:45 CEST: a54fe23..223a5f4 (26 commits) and board repo e65a47e
 
 Times below are CEST (UTC+2). The three headings below this one say "UTC" but were CEST too.

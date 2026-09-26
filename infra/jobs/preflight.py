@@ -123,7 +123,13 @@ def main():
             fail(f"{key}: not in the models config")
             continue
         if spec.get("disk_gb", 0) > limit:
-            fail(f"{key}: {spec['disk_gb']} GB stored is over the {limit} GB base limit")
+            msg = f"{key}: {spec['disk_gb']} GB stored is over the {limit} GB base limit"
+            if job == "baselines":
+                # Scoring a bf16 reference (the -bf16 keys, small_models.yaml's bf16 scoring copies whose
+                # shipped pack is quantized) is allowed; the ship check is quantize_checkpoint/serve_exam.
+                print(f"PREFLIGHT NOTE: {msg}; scored as a reference, not shippable as is", flush=True)
+            else:
+                fail(msg)
         vision |= bool(spec.get("vision"))
         path = check_weights(key, spec)
         if spec.get("server") == "llamacpp":
