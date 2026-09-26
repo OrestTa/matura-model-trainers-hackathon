@@ -3,6 +3,13 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:05 CEST · matura_all.jsonl no longer double-counts the 2023/2024 papers (eval-set thread)
+
+- The old-format (EHIP) 2023 and 2024 papers are almost the same exam as the new-format (MHIP) ones:
+  28 of 33 and 33 of 35 items repeat a formuła 2023 task. `fetch_matura.py` now marks these with
+  `duplicate_of` and drops them from the full set by default. **`matura_all.jsonl` is now 512 distinct
+  items, 789 points** (was 573 / 860). Headline `matura.jsonl` is unchanged (154 items, 240 points).
+
 ## 2026-09-26 13:55 CEST · 133 real past-paper items as training data (eval-set thread)
 
 - `scripts/build_train_from_papers.py` turns the non-headline papers (formuła 2015 May 2015–2024, 2022 demo,

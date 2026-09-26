@@ -158,7 +158,8 @@ python scripts/plot_baselines.py
 answer key, into `data/raw/cke/`, and parses them into eval JSONL. Nothing it downloads is committed.
 Sets: `headline` (default: formuła 2023, May 2023–2026, 154 items → `data/eval/matura.jsonl`),
 `formula2023` (plus the 2022 demo paper and the January 2026 mock), `formula2015` (the previous
-format, May 2015–2024) and `all` (16 papers, 573 items, 860 points → `data/eval/matura_all.jsonl`).
+format, May 2015–2024) and `all` (16 papers, 512 distinct items, 789 points → `data/eval/matura_all.jsonl`; old-format items
+that repeat a current-format task are dropped unless `--keep-duplicates`).
 Per-paper coverage is in [results/eval_set_papers.md](results/eval_set_papers.md).
 
 ```bash

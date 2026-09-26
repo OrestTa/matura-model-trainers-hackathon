@@ -522,6 +522,29 @@ def auto_scorable(r: dict) -> bool:
     return bool((r.get("gold") and r["category"] in AUTO_TYPES) or r.get("gold_keywords"))
 
 
+def _shingles(s: str, n: int = 5) -> set[str]:
+    w = re.findall(r"\w+", s.lower())
+    return {" ".join(w[i:i + n]) for i in range(max(0, len(w) - n + 1))}
+
+
+def mark_duplicates(rows: list[dict]) -> list[dict]:
+    """Old-format (EHIP) papers sat on the same day as the new ones (MHIP) reuse their tasks.
+
+    A formuła 2015 item whose question and context mostly repeat a formuła 2023 item gets
+    `duplicate_of`, so a full-set score doesn't count the same task twice.
+    """
+    new = [(r["id"], _shingles(r["question"]), _shingles(r["context"])) for r in rows if r["formula"] == 2023]
+    for r in rows:
+        if r["formula"] != 2015:
+            continue
+        q, c = _shingles(r["question"]), _shingles(r["context"])
+        for rid, nq, nc in new:
+            if q and len(q & nq) / len(q) > 0.6 and (not c or len(c & nc) / len(c) > 0.5):
+                r["duplicate_of"] = rid
+                break
+    return rows
+
+
 def report(rows: list[dict]) -> str:
     """Markdown table: one line per paper."""
     out = ["| paper | formuła | items | points | auto-scorable items (points) | needs image | types |",
@@ -544,6 +567,8 @@ def main() -> None:
     ap.add_argument("-o", "--out", default=None,
                     help="default: data/eval/matura.jsonl for headline, data/eval/matura_<set>.jsonl otherwise")
     ap.add_argument("--text-only", action="store_true", help="drop items that need an image")
+    ap.add_argument("--keep-duplicates", action="store_true",
+                    help="keep formuła 2015 items that repeat a formuła 2023 item (the 2023/2024 papers share tasks)")
     ap.add_argument("--report", help="also write the per-paper table (markdown) here")
     args = ap.parse_args()
 
@@ -551,6 +576,9 @@ def main() -> None:
     rows = []
     for p in papers:
         rows += build(p, Path(args.raw_dir))
+    rows = mark_duplicates(rows)
+    if not args.keep_duplicates:
+        rows = [r for r in rows if "duplicate_of" not in r]
     if args.text_only:
         rows = [r for r in rows if not r["needs_image"]]
     default = "matura.jsonl" if args.papers == "headline" else f"matura_{args.papers.replace(',', '_')}.jsonl"
