@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| gemma-lora-Gm3 | train TRAIN_MODELS=gemma4-12b TEACHER_HF=none JUDGE_HF= SCORE_MODELS=gemma4-12b-think SCORE_MODES=adapters THINK_FALLBACK=1 SINGLE_ADAPTER=1 RANK=16 LR=2e-4 EPOCHS=0.2 EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl /repo/train_data/open_claude_synth.jsonl /repo/train_data/essay_claude_synth.jsonl /repo/train_data/essay_claude_synth.jsonl /repo/train_data/essay_claude_synth.jsonl' | Modal H100 | running | 2026-09-26 19:34 | 2026-09-26 19:34 | modal volume matura-jobs:out/gemma-lora-Gm3 | Modal wrapper |
 | subtype-z-0b |  |  | cancelled | 2026-09-26 19:25 | 2026-09-26 19:25 |  |  |
 | gemma-lora-B4m2 | train TRAIN_MODELS=gemma4-12b TEACHER_HF=none JUDGE_HF= SCORE_MODELS=gemma4-12b-think SCORE_MODES=adapters THINK_FALLBACK=1 SINGLE_ADAPTER=1 RANK=32 LR=2e-4 EPOCHS=0.5 EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl /repo/train_data/open_claude_synth.jsonl' | Modal H100 | running | 2026-09-26 19:24 | 2026-09-26 19:24 | modal volume matura-jobs:out/gemma-lora-B4m2 | Modal wrapper |
 | subtype-w2-1 |  |  | cancelled | 2026-09-26 19:25 | 2026-09-26 19:25 |  |  |
