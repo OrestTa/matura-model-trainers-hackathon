@@ -17,6 +17,7 @@ Only the stdlib is used so the harness runs on a bare exam machine.
 """
 
 from __future__ import annotations
+import os
 
 import json
 import logging
@@ -32,7 +33,7 @@ class OpenAICompatBackend(Backend):
     def __init__(self, base_url: str = "http://localhost:8000/v1",
                  base_model: str = "base", adapter_mode: str = "model_name",
                  llamacpp_lora_ids: Optional[dict[str, int]] = None,
-                 api_key: str = "none", timeout: float = 300.0,
+                 api_key: str = "none", timeout: float = 1800.0,
                  extra_body: Optional[dict] = None):
         if adapter_mode not in ("model_name", "llamacpp"):
             raise ValueError("adapter_mode must be 'model_name' or 'llamacpp'")
@@ -41,7 +42,9 @@ class OpenAICompatBackend(Backend):
         self.adapter_mode = adapter_mode
         self.lora_ids = llamacpp_lora_ids or {}
         self.api_key = api_key
-        self.timeout = timeout
+        # Thinking runs (gemma4-12b-think8k: up to 16k tokens at ~25 tok/s per slot) need far more than
+        # the old 300 s: at 300 s, 4 of 37 May 2023 answers came back blank ("timed out").
+        self.timeout = float(os.environ.get("BACKEND_TIMEOUT", timeout))
         # Merged into every request, e.g. {"chat_template_kwargs": {"enable_thinking": false}}
         # to switch off Qwen3's thinking mode.
         self.extra_body = extra_body or {}
