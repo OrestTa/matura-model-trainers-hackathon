@@ -37,6 +37,9 @@ def main():
     p.add_argument("--grad-accum", type=int, default=4)
     p.add_argument("--max-len", type=int, default=4096)
     p.add_argument("--min-examples", type=int, default=30)
+    p.add_argument("--vision", action="store_true",
+                   help="rows carry `images` (scripts/build_vision_train.py): train through the frozen "
+                        "vision tower with the processor; LoRA stays on the text layers")
     args = p.parse_args()
 
     spec = yaml.safe_load(Path(args.models_config).read_text())["models"][args.model]
@@ -55,8 +58,15 @@ def main():
     ds = load_dataset("json", data_files=str(data))["train"].shuffle(seed=0)
     # Prompt/completion split so the loss covers only the answer; with a plain "messages"
     # column TRL trains on the system prompt and question too (~98% of tokens on closed types).
-    ds = ds.map(lambda r: {"prompt": r["messages"][:-1], "completion": r["messages"][-1:]},
-                remove_columns=ds.column_names)
+    if args.vision:
+        from datasets import Image, Sequence
+        ds = ds.map(lambda r: {"prompt": r["messages"][:-1], "completion": r["messages"][-1:],
+                            # relative image paths are relative to the data file (a portable pack)
+                            "images": [str(data.parent / i) for i in r["images"]]},
+                    remove_columns=ds.column_names).cast_column("images", Sequence(Image()))
+    else:
+        ds = ds.map(lambda r: {"prompt": r["messages"][:-1], "completion": r["messages"][-1:]},
+                    remove_columns=ds.column_names)
     cfg_kwargs = dict(
         output_dir=str(out / "checkpoints"), num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.grad_accum,
@@ -87,10 +97,17 @@ def main():
         tok.chat_template = (ROOT / spec["chat_template"]).read_text()
         tok.pad_token = tok.pad_token or tok.unk_token
         extra["processing_class"] = tok
+    if args.vision:
+        from transformers import AutoProcessor
+        extra["processing_class"] = AutoProcessor.from_pretrained(spec.get("train_hf_id") or spec["hf_id"])
+        # Whole exam pages are big images: keep them uncut, never truncate the image tokens.
+        cfg_kwargs["max_length"] = None
+        trainer_args = SFTConfig(**cfg_kwargs)
     trainer = SFTTrainer(
         # Pre-quantized entries (AWQ, GGUF) train on their full-precision twin, `train_hf_id`;
         # the adapter then loads onto the quantized weights at serve time.
-        model=spec.get("train_hf_id") or spec["hf_id"], train_dataset=ds, args=SFTConfig(**cfg_kwargs), **extra,
+        model=spec.get("train_hf_id") or spec["hf_id"], train_dataset=ds,
+        args=trainer_args if args.vision else SFTConfig(**cfg_kwargs), **extra,
         peft_config=LoraConfig(r=args.rank, lora_alpha=2 * args.rank, lora_dropout=0.05,
                                target_modules=spec.get("lora_target") or "all-linear",  # a regex keeps LoRA off vision layers
                                task_type="CAUSAL_LM"),
