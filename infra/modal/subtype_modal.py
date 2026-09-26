@@ -3,7 +3,7 @@
     modal run infra/modal/subtype_modal.py --shards 8 --papers dev --name subtype-m1
     modal run infra/modal/subtype_modal.py --shards 4 --papers heldout --name subtype-ho \\
         --sweep-args "--selected --candidates base"
-    modal volume get matura-jobs out/subtype-m1 results/subtype/     # then commit results/subtype/subtype-m1
+    modal volume get claude-matura-subtype out/subtype-m1 results/subtype/     # then commit results/subtype/subtype-m1
 
 Image: llama.cpp's CUDA server image (llama-server prebuilt in /app, no build), plus Python.
 The repo (with data/eval incl. images/ and data/kb/passages.jsonl) is copied from this checkout,
@@ -18,7 +18,7 @@ import modal
 
 REPO = Path(__file__).resolve().parents[2]
 VOL = "/vol"
-volume = modal.Volume.from_name("matura-jobs", create_if_missing=True)
+volume = modal.Volume.from_name("claude-matura-subtype", create_if_missing=True)
 image = (
     modal.Image.from_registry("ghcr.io/ggml-org/llama.cpp:full-cuda", add_python="3.12")
     .apt_install("tesseract-ocr", "tesseract-ocr-pol", "curl")
@@ -26,7 +26,7 @@ image = (
     .add_local_dir(REPO, "/src", ignore=[".git", "work", "runs", "adapters", "models", "**/__pycache__",
                                           "**/*.safetensors", "**/*.gguf"])
 )
-app = modal.App("matura-subtype", image=image)
+app = modal.App("claude-matura-subtype", image=image)
 
 
 # Not H100: the prebuilt llama.cpp image's CUDA kernels abort on sm90 ("illegal instruction", 26 Sep).
@@ -50,4 +50,4 @@ def shard(i: int, n: int, papers: str, name: str, sweep_args: str, extra_env: st
 def main(shards: int = 8, papers: str = "dev", name: str = "subtype-modal", sweep_args: str = "", env: str = ""):
     """env: space-separated KEY=VALUE for the job (MODEL=gemma4-12b-think8k SMOKE=1 SLOTS=8 RAW=' ')."""
     codes = list(shard.starmap([(i, shards, papers, name, sweep_args, env) for i in range(shards)]))
-    print("exit codes:", codes, f"-> modal volume get matura-jobs out/{name} results/subtype/")
+    print("exit codes:", codes, f"-> modal volume get claude-matura-subtype out/{name} results/subtype/")
