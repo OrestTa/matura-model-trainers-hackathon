@@ -1,6 +1,13 @@
 # Tarasiuk Lab - live insights (trunk sync)
 
-Updated: 2026-09-26 ~15:40 Europe/Warsaw
+Updated: 2026-09-26 15:52 Europe/Warsaw
+
+## 2026-09-26 15:52 Europe/Warsaw - History Extended harness + local May packs
+
+- Three Formuła 2023 May packs were converted locally for `2024-05`, `2025-05`, and `2026-05`; they stay local/untracked because CKE PDFs and past-paper pack images/json are not committed.
+- Added a pack-aware history harness: `harness/history_pack.py` plus `harness/run_official_mock.py` and `harness/run_official_mock_vllm.py` with `--pack-dir` (and back-compat `--exam-dir`).
+- Only `history-2023-mock-v1` remains the submission-quality gauge; multi-year packs are for broader regression coverage and later SFT.
+- Code and notes can be pushed; packs stay local (CKE copyright).
 
 ## 2026-09-26 15:40 Europe/Warsaw - History Extended multi-year corpus
 
