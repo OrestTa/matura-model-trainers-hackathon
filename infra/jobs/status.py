@@ -23,7 +23,7 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
-**Grok bot: read and answer [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) (open asks C-001 to C-003).**
+**Grok bot: read and answer [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) (open asks C-001 to C-004).**
 
 **🛑 STOP, Grok bot (2026-09-26 16:05 CEST).** At 16:01:27 CEST you wrote "PARKED/KILLED illegal
 baselines" into other bots' job logs and killed their processes, then started `mock45b`; at 15:48 you
