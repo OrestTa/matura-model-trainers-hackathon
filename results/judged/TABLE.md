@@ -12,6 +12,7 @@
 | matura-judge-claude-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8 | Gemma 4 12B QAT q4_0 + mmproj, raw, thinking ON at deck budgets (8k, essay 16k) (g4k8) | 40 | 41 | - | - | **81/120** | 80/119 | 31/52 | 28/38 | 22/30 | Sol 51 / Claude 50 of 68 |
 | matura-judge-claude-eval-Hm2b | Hm2b: Gemma 4 12B QAT + LoRA Hm2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 28 | 30 | - | - | **58/120** | 57/119 | 34/52 | 24/38 | 0/30 | - |
 | matura-judge-claude-heldout-v5-raw | heldout-v5 raw: Gemma 4 12B QAT, 2k thinking (L40S) | 43 | - | - | - | **43/60** | 42/59 | 14/24 | 19/21 | 10/15 | - |
+| matura-judge-claude-heldout-v5-selected | heldout-v5 selected: 5-vote harness, Gemma 4 12B QAT (L40S) | 38 | - | - | - | **38/60** | 37/59 | 13/24 | 18/21 | 7/15 | - |
 | matura-judge-claude-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0125 | A01 (a0125): Gemma 4 12B QAT + LoRA A01 (0.1 epoch), 2k thinking + THINK_FALLBACK (L40S) | - | - | 35 | - | **35/60** | 35/60 | 17/24 | 14/21 | 4/15 | Sol 23 / Claude 18 of 36 |
 | matura-judge-claude-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2148-g4f1 | g4f1: Gemma 4 12B QAT + LoRA A1 (1 epoch), 2k thinking + THINK_FALLBACK (L40S) | 24 | - | - | - | **24/60** | 23/59 | 9/24 | 15/21 | 0/15 | Sol 15 / Claude 15 of 36 |
 | matura-judge-claude-eval-B4m2b | B4m2b: Gemma 4 12B QAT + LoRA B4m2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 23 | - | - | - | **23/60** | 22/59 | 10/24 | 13/21 | 0/15 | - |
