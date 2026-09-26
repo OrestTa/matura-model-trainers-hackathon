@@ -48,3 +48,37 @@ own Codex gpt-6-luna, at most four concurrent calls, no automatic retries, origi
 images plus generated descriptions only, and no questions or keys. Classification
 is faithful/unsupported/missing_details/unsafe_to_use. No description is integrated
 into Bielik input merely because inference returned nonempty text.
+
+## Luna fidelity outcome and next prepared candidate
+
+Own Codex gpt-6-luna completed all five fidelity reviews: three `missing_details`
+(IDs1,3,7), two `unsafe_to_use` (IDs14.1,20). SmolVLM256M caption integration is
+rejected. This conclusion comes from Luna image-fidelity review, not Astra grading.
+
+The next prepared candidate is [Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B),
+Apache2.0, using [Unsloth's published GGUFs](https://huggingface.co/unsloth/Qwen3.5-0.8B-GGUF)
+at immutable revision `6ab461498e2023f6e3c1baea90a8f0fe38ab64d0`.
+Exact publisher blob metadata:
+
+| Artifact | Bytes | SHA256 |
+|---|---:|---|
+| Qwen3.5-0.8B-Q4_K_M.gguf |532517120|bd258782e35f7f458f8aced1adc053e6e92e89bc735ba3be89d38a06121dc517|
+| Qwen3.5-0.8B-Q3_K_M.gguf |470167808|c49ad509cd0a3f8584c4eff50d84202336bf9475b8a724c89f4061687c1fb510|
+| mmproj-F16.gguf |204987232|56e4c6cfe73b0c82e3e82bc518d7591997e61d81f723fc41a586f4fa69ea2453|
+
+Q4 plus required projector is737,504,352bytes; with clean BielikQ4 the aggregate is
+1,800,171,890bytes. Q3 alternative totals1,737,822,578bytes. PreferQ4 for the first
+quality probe; Q3 saves only62,349,312bytes. SmolVLM500M native weights at revision
+`a7da5b986cb59b408707209984f360a5f4ad7e47` are1,015,025,832bytes,
+SHA256 `d05b567eeaf534e83d375551f068ed57b5f52d37c657197f644af5ef9db091a2`;
+its combined package would be2,077,693,370bytes. All are metadata checks, not quality
+measurements. The selected probe requires actual downloaded-hash verification.
+
+`qwen08_visual_smoke.py` and `infra/small_track/qwen08_caption_smoke.sh` are prepared
+but were not launched during preparation. They retain the same five images and
+caption prompt,160-token greedy outputs, a single4096-token server slot, a6GB free
+VRAM gate, and the existing owned llama.cpp81bc6b8 binary with verified SHA256.
+Port18934 is isolated from other experiments. The server's outbound network is
+blocked by seccomp and proof checked by the fixed-loopback client. Parent should
+wrap the complete staging/launch script in480seconds; the inference child itself
+is bounded to240seconds. Outputs still require independent Luna fidelity review.
