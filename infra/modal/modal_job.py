@@ -58,7 +58,9 @@ for rel in ("data/eval/matura.jsonl", "data/train/synthetic.jsonl", "data/train/
 app = modal.App("matura-jobs", image=image)
 
 
-@app.function(gpu="L40S:4", volumes={VOL: volume}, timeout=24 * 3600)
+# HF token for Hub calls (unauthenticated ones got reset mid-run): Modal secret claude-hf.
+@app.function(gpu="L40S:4", volumes={VOL: volume}, timeout=24 * 3600,
+              secrets=[modal.Secret.from_name("claude-hf")])
 def run_job(job: str, env: str, name: str) -> int:
     """Copies the repo to a writable dir and runs infra/jobs/<job>.sh with outputs on the volume."""
     subprocess.run("rm -rf /repo && cp -r /src /repo", shell=True, check=True)
