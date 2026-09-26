@@ -52,8 +52,8 @@ def dump(a):
     for i, r in rows.items():
         print(f"\n===== {i} [{r['category']}] max {r['points']} auto={score_row(r, ans.get(i, ''))} decision={r.get('decision')}")
         print(f"Q: {r['question'][:900]}\nCTX: {r.get('context', '')[:1500]}")
-        rub = r.get('rubric', '') if r['category'] == 'essay' else r.get('rubric', '')[:1500]  # full CKE essay criteria
-        print(f"RUBRIC: {rub}\nGOLD: {r.get('gold', '')[:1200]}")
+        rub = (r.get('rubric') or '') if r['category'] == 'essay' else (r.get('rubric') or '')[:1500]  # full CKE essay criteria
+        print(f"RUBRIC: {rub}\nGOLD: {(r.get('gold') or '')[:1200]}")
         if r.get("needs_image"):
             # page crops from scripts/fetch_matura.py (data/eval/images, gitignored); graders Read them
             print("IMAGES (open each before grading): " + " ".join(str(ROOT / i) for i in r.get("images", [])))
