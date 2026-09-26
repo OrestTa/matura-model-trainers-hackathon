@@ -82,3 +82,32 @@ Port18934 is isolated from other experiments. The server's outbound network is
 blocked by seccomp and proof checked by the fixed-loopback client. Parent should
 wrap the complete staging/launch script in480seconds; the inference child itself
 is bounded to240seconds. Outputs still require independent Luna fidelity review.
+
+## Qwen0.8 outcome and existing Qwen2B review
+
+The Qwen0.8 five-image probe completed in20.18seconds and its owned server exited.
+Luna classified three descriptions as missing_details with conditional auxiliary
+usability, ID3 unsafe, and ID14.1 produced an internally inconsistent unsafe/safe
+response that failed validation. The whole pilot is not reliable enough for
+integration. Do not select per-question captions based on judge decisions: that
+would introduce an evaluator-dependent inference path.
+
+Existing Qwen3.5-2B captions from `20260926-183536-qwen35-2b-vision-captions`
+contain the same five source image hashes. A separate fidelity packet is staged at
+`results/small_track/20260927-qwen2b-existing-caption-fidelity/` with provenance;
+no new inference was run. Dataset SHA256:
+`0dc8ebebaa876c193c47fe0716b7e00a6f252d4576214eb509ebdf097ada3ef7`.
+That older run used a Polish prompt,900-token cap and1280-pixel resize. Thus fidelity
+comparison with the160-token English probes does not isolate model size.
+
+At publisher revision `f6d5376be1edb4d416d56da11e5397a961aca8ae`, Qwen2B Q3_K_M is
+1,107,149,056bytes, SHA256
+`8b049f98461020b7e15797e13413fc63b9b500ffa883c74618b618ecbc2bfccf`.
+The required F16 projector is668,227,264bytes, SHA256
+`7035e9cb8d7c6a9681d07eef9a364783e86ea4cd73faab2eabb4f43a101830c7`.
+Combined with clean BielikQ4, aggregate weights would be2,838,043,858bytes.
+Q3_K_S is1,030,947,072bytes (SHA256
+`21026bce70a757887bce861047c26966109206ebe2adeb7b662de9a179952d28`),
+for a2,761,841,874-byte aggregate. Existing Q4 would total3,011,730,642bytes.
+These exact blob metadata checks establish size feasibility only; lower-precision
+caption quality remains unmeasured and no further GPU caption job is authorized here.
