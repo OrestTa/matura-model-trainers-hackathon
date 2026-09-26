@@ -159,7 +159,11 @@ def main():
         sys.exit(code or 0)
     elif cmd == "run":
         session, job, env = args[0], args[1], args[2:]
-        name = os.environ.get("NAME") or f"{job}-{time.strftime('%m%d-%H%M', time.gmtime())}"
+        # NAME=<run name> works as an argument or in the environment; the default has
+        # seconds so two runs of one job started in the same minute don't share a directory.
+        name = next((kv[5:] for kv in env if kv.startswith("NAME=")), None)
+        env = [kv for kv in env if not kv.startswith("NAME=")]
+        name = name or os.environ.get("NAME") or f"{job}-{time.strftime('%m%d-%H%M%S', time.gmtime())}"
         j = Jupyter(session)
         root, _ = j.sh("pwd")
         rel = os.path.relpath("/workspace", root) if root.startswith("/") else "/workspace"
