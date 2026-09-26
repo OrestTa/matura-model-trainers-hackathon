@@ -1,7 +1,8 @@
 # Exam day: best matura score (track 01)
 
 The exact on-stage path for our best-score entry. Owner: thread "Win best matura score".
-Status: **model frozen, mode pending the graded held-out runs** (see "Decision" below).
+Status: **FROZEN 26.09 22:30 CEST: base Gemma 4 12B QAT, `gemma4-12b-think`, `MODE=raw`, `THINK_FALLBACK=1`, no LoRA.**
+Every fine-tune we graded scored below the base (see "Fine-tunes tried"); full table in docs/FINAL_RESULTS.md.
 
 ## What we ship
 
@@ -19,8 +20,9 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
   (77 vs 84 on May 2023+2024) because thought that never closes returns a blank answer. Graded over the four
   held-out papers: thinking on 169/240 (70.4%) vs thinking off 126/240 (grader, 997f811). The token
   budget must cover the thought, or the answer comes back empty (docs/FINDINGS.md, 18:30 CEST).
-- **Mode:** `MODE=<raw|routed|rag>`, the best graded one of the runs below. No LoRA unless it
-  beats that by ≥3 points over the four held-out papers.
+- **Mode:** `MODE=raw` (the exam prompt as given, no harness help): the best graded setting on the
+  held-out papers. No LoRA: none reached base + 3.
+- **Submission size:** 7.16 GB (no adapter, no OCR model), under the 8.8 GB all-models budget.
 
 ## Evidence (Claude-graded against the CKE key)
 
@@ -35,10 +37,25 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
 
 References on the same mock: Gemma-3-27B via API 58.3% (too big to ship), Bielik-4.5B FP8 40.0%.
 
-## Decision
+## Decision (22:30 CEST)
 
-Pick the mode with the highest total over the four held-out papers (2023-05 … 2026-05). Ties go to
-the simpler mode (raw < routed < rag). Record it here and set `MODE` below.
+Graded with pictures viewed and the full CKE essay criteria (7e6fe48), the base scores **163/240**
+(41/42/39/41; picture 67/101, text 66/79, essay 30/60). Ship bar for a fine-tune: 166/240.
+
+### Fine-tunes tried (all rejected)
+
+| adapter | training | graded | base on the same paper | failure |
+|---|---|---|---|---|
+| A1 | 1 epoch, 5,041 synth + past-paper items | May 2023 24/60 | 41 | essay loops (1,747 words), invented facts |
+| B4m2 | r32, 0.5 epoch | May 2023 23/60 | 41 | essay 147 words (under 300 = 0) |
+| Hm2 | r16, lr 1e-4, 0.3 epoch | May 2023 28/60 | 41 | essay 198 words |
+| S4m2 | r32, 0.15 epoch, no past papers | May 2023 25/60 | 41 | essay 2/15 (factual errors), picture misreads |
+| A01 | 0.1 epoch | May 2026 35/60 | 41 | essay 297 words (3 short); short items tie 35/45 |
+
+Every adapter broke the essay and none beat the base on short items, so the picture LoRA V1 and
+per-type routing (`LORA_ROUTED=1`, 7d705a3) stay unused. The per-subtype harness (`--mode subtype`,
+configs/subtypes.yaml: OCR notes on open picture items) won on dev papers only; its held-out sweep did
+not finish before the 22:15 compute stop, so raw stays the frozen mode.
 
 ## Before going offline (the evening before)
 
@@ -48,7 +65,7 @@ bash -c 'source infra/jobs/common.sh && ensure_llama_server'   # CUDA llama-serv
 python -c "from huggingface_hub import hf_hub_download as d; \
   [print(d('google/gemma-4-12B-it-qat-q4_0-gguf', f)) for f in \
   ('gemma-4-12b-it-qat-q4_0.gguf', 'mmproj-gemma-4-12b-it-qat-q4_0.gguf')]"
-MODEL=gemma4-12b-think MODE=<mode> PAPERS=2023-05 bash infra/jobs/rehearsal.sh   # dress rehearsal, ~10 min
+MODEL=gemma4-12b-think MODE=raw PAPERS=2023-05 bash infra/jobs/rehearsal.sh   # dress rehearsal, ~10 min
 ```
 
 ## On stage
@@ -58,7 +75,7 @@ export LD_LIBRARY_PATH=$PWD/work/llama.cpp/build/bin:${CUDA_LIB:-/workspace/work
 export THINK_FALLBACK=1   # re-ask a blank (runaway-thinking) answer once with thinking off
 export GGML_CUDA_DISABLE_GRAPHS=1   # llama-server with CUDA graphs aborted mid-paper on H100 ("illegal instruction")
 ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &        # waits until ready
-python scripts/run_exam.py <exam package dir> --model gemma4-12b-think --mode <mode> --concurrency 16 -o answers.json
+python scripts/run_exam.py <exam package dir> --model gemma4-12b-think --mode raw --concurrency 16 -o answers.json
 ```
 
 `ADAPTERS=/nonexistent` keeps any stray trained LoRA out. Check before uploading:
