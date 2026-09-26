@@ -84,3 +84,18 @@ def test_ship_size_check_and_served_checkpoint(tmp_path, monkeypatch):
     spec.loader.exec_module(rb)
     assert rb.served_weights("x", {"hf_id": "org/x", "checkpoint": str(tmp_path)}) == str(tmp_path)
     assert rb.served_weights("x", {"hf_id": "org/x", "checkpoint": str(tmp_path / "none")}) == "org/x"
+
+
+def test_cke_items_clean_keys_and_skip_headline_papers():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("cke", ROOT / "scripts/cke_train_items.py")
+    cke = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cke)
+    q = "Rozstrzygnij, czy ... Odpowiedź uzasadnij.\nRozstrzygnięcie: …\nUzasadnienie: …"
+    gold = "Rozstrzygnięcie: nie\nPrzykładowe uzasadnienia:\n• Pierwsze [opcjonalne] uzasadnienie.\n• Drugie."
+    assert cke.clean_answer(gold, q) == "Rozstrzygnięcie: nie\nUzasadnienie: Pierwsze uzasadnienie."
+    assert cke.clean_answer("[Ignacy] Łukasiewicz", "Podaj nazwisko.") == "Łukasiewicz"
+    row = {"paper": "2024-05", "category": "short_open", "question": "Podaj.", "gold": "X"}
+    assert cke.convert(row) is None
+    assert cke.convert({**row, "paper": "f15-2019-05"})["answer"] == "X"
+    assert cke.convert({**row, "paper": "f15-2019-05", "needs_image": True}) is None
