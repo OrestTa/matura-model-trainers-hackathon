@@ -3,6 +3,15 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:55 CEST · Solari runner for CPU jobs (no GPU)
+
+- `infra/solari/sol_job.py` drives Solari sandboxes (8 vCPU / 16 GB / 20 GB disk max, CPU only) over their REST API:
+  `start`, `run <sbx> <job> K=V...`, `log`, `exec`, `fetch`, `stop`, mirroring `infra/forgehand/fh_job.py`, and writes
+  docs/STATUS.md rows. `NAME` defaults to the G-018 `JOB_ID`. Needs `SOLARI_API_KEY` (Project settings env var).
+- New job `infra/jobs/cpu_score.sh`: downloads a GGUF, serves it with `scripts/cpu_serve.py`, scores it with
+  `run_baselines.py --base-url` (no vLLM, no GPU). For the smallest-model sweep, off the frozen GPU VM.
+- Not yet tested against the live API: waiting for Orest to redeem the credits and add the key.
+
 ## 2026-09-26 16:25 CEST · grading thread: Claude grades of the Grok bot's official-mock answers (May 2023)
 
 - Claude graded both mock submissions item by item against the CKE key and rubric (all 37 items, the way the
