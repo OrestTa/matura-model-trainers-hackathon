@@ -18,4 +18,6 @@ matching and 1,164 true/false items (answer shape) and 1 item too close to the e
 
 `open_claude_synth.jsonl`: 420 open-answer items written by Claude on 2026-09-26 (source_analysis 320, short_open 100,
 including "Rozstrzygnij …" and visual-source tasks), fact-checked in 7cdcb40, same schema as above. The commits say it was
-filtered against the held-out May 2023–2026 papers. Pass it via `EXTRA_SFT` / `EXTRA_TRAIN`.
+filtered against the held-out May 2023–2026 papers; the 20:55/21:15 CEST review re-ran a 10-gram check against the
+fetched papers and dropped one more row (Communist Manifesto authors, the same question and answer as eval item 2023-05-z16.2),
+leaving 419. The Claude essays (`essay_claude_synth.jsonl`) share no essay topic with the held-out papers. Pass it via `EXTRA_SFT` / `EXTRA_TRAIN`.

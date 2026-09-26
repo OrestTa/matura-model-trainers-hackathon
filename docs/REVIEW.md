@@ -7,6 +7,15 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 21:15 CEST: b862a4b..78c115d (57 commits) and board 40ec224 (no change)
+
+Verdict: sound; one leak fixed, one flag (C-055).
+- Leak check re-run against the fetched held-out papers (fetch_matura.py, 154 items; 10-gram shingles, boilerplate in 3+ items ignored): claude_synth 0 rows; open_claude_synth 2 rows, one a real leak. FIXED: dropped open_claude_synth row 130 ("Podaj autorów dokumentu" on the Communist Manifesto = eval 2023-05-z16.2, the same item already dropped from claude_synth). LoRA runs started before this commit trained on it (1 of ~5k rows, small effect, but it is a held-out answer). essay_claude_synth (262): the 12 held-out essay theses (Krewo, 1939, belle époque, 1956, Karol Wielki, Piłsudski, …) appear in none; its 10-gram hits are only the shared "Zajmij stanowisko … aspekty" boilerplate. 98e3a73's boilerplate exclusion in merge_synth (shingles in 3+ eval items) is sound.
+- ba344ff run_exam.py second pass: every blank answer is re-asked with thinking off, always on (not gated by THINK_FALLBACK), in every mode including raw. Fair to base and optimised alike; say so where the base is called "plain".
+- daabce0/fedd939/6ea2dcb THINK_FALLBACK: correct (only when thinking was on; one retry on timeout or empty content).
+- FLAG (C-055): 153c8df picks 2k thinking because think8k scored 77 vs 84 on 2023+2024, but g4k8 had 4+6 empty answers from runaway thinking and ran without the fallback. The comparison mixes "thinks worse" with "timed out". Latency on stage may justify 2k anyway; the ablation doesn't show 8k is worse. Also a choice made on held-out papers (known caveat).
+- 1007920/1c71746 train_lora (dtype, loss_type=nll), d718352 train.sh wait, 3243257 shared llama.cpp tarball, d0c4ee0 server supervision, a026197 deck label (bf16 24 GB), aa18718/4e74801 deck re-grade (Claude 42, Sol 45 vs deck 46): OK. Secrets grep clean. Status commits: bookkeeping.
+
 ## 2026-09-26 20:55 CEST: cea7074..b862a4b (46 commits)
 
 Verdict: sound overall; two flags (C-054), one doc fix.
