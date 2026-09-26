@@ -88,19 +88,16 @@ def main() -> int:
              "size_gb": round(weights_gb(target), 2)}, indent=2))
 
     size = weights_gb(target)
-    # Reference size (Orest, 15:47 CEST): the organisers' deck when it lists the model at the precision
-    # we ship; the measured file size only when the deck has no figure ("not in deck").
+    # The organisers' deck size, for reference only: the check below still uses the measured size.
     if args.model in cfg["models"]:
         deck_gb, label = deck_size(cfg["models"][args.model])
-        print(f"{args.model}: measured {size:.2f} GB on disk; deck size: "
+        print(f"{args.model}: deck size "
               f"{f'{deck_gb:.2f} GB ({label})' if deck_gb is not None else label}")
-        if deck_gb is not None:
-            size = deck_gb
     adapters = Path(args.adapters) if args.adapters else None
     # Alone, a checkpoint is the base model, or with --finetuned a merged fine-tune.
     limit = tuned_limit if args.finetuned and not adapters else base_limit
     ok = 0 < size <= limit
-    print(f"{target}: {size:.2f} GB of weights (reference), limit {limit} GB -> {'OK' if ok else 'OVER THE LIMIT'}")
+    print(f"{target}: {size:.2f} GB of weights, limit {limit} GB -> {'OK' if ok else 'OVER THE LIMIT'}")
     if adapters and adapters.exists():  # base + adapters is the fine-tuned model
         total = size + weights_gb(adapters)
         tuned_ok = total <= tuned_limit

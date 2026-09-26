@@ -10,8 +10,11 @@ them ourselves. Each entry in configs/models.yaml and configs/small_models.yaml 
 or `deck_size_gb: not in deck` when the deck doesn't list the model. The bf16 figures are on the
 slide "Model memory without quantisation" (every model in the deck); 8-bit and 4-bit figures are
 on the slide "Model memory after quantisation" (only the five 8B+ multimodal models). When the
-deck has no figure for the precision we ship, the size is "not in deck" too, and callers fall
-back to their old number (disk_gb / measured) with that label.
+deck has no figure for the precision we ship, the size is "not in deck" too.
+
+For now (coordinator, 15:54 CEST) the deck size is recorded and shown only: the size checks still use
+disk_gb / the measured shipped file, until Orest decides whether a pre-quantized file counts at its
+published size or at the deck's figure.
 """
 
 from __future__ import annotations

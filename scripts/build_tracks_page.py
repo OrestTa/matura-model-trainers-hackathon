@@ -95,17 +95,17 @@ def load_summaries() -> list[dict]:
         # With a judge the score is over all 240 points: rows the judge left unscored count as 0
         # (`pct` alone divides by the scored rows only and would overstate the result).
         pct = s.get("pct_all_rows") if judged and s.get("pct_all_rows") is not None else s["pct"]
-        # Sizes come from the organisers' deck (Orest, 15:47 CEST); ours only where it has none.
+        # The organisers' deck size is shown next to ours; pass/fail still uses disk_gb (pending Orest).
         deck_gb, size_src = deck.get(s["model"], (None, "not in deck"))
         rows.append({
-            "size_src": size_src if deck_gb is not None else "not in deck",
+            "size_src": f"deck {deck_gb:.2f} GB ({size_src[5:]})" if deck_gb is not None else "not in deck",
             "id": f"{run}/{s['model']}/{mode}", "run": run, "model": s["model"],
             "stage": MODE_STAGE.get(mode, "harness"), "mode": mode,
             "method": MODE_METHOD.get(mode, mode),
             "eval": eval_kind(str(s.get("eval", "")), judged),
             "pct": pct, "pct_text_only": s.get("pct_text_only"),
             "earned": s.get("earned"), "max": s.get("max"),
-            "disk_gb": deck_gb if deck_gb is not None else s.get("disk_gb"),
+            "disk_gb": s.get("disk_gb"),
             "by": "Claude threads", "verified": True,
             "date": datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),
             "note": f"run {run}",
