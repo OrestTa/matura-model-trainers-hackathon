@@ -151,3 +151,18 @@ per paper. This is a harness change, not a fine-tune.
 Honest expectation: short items tied the base at best in every run, so the realistic gain from step 1 is
 a few points on short items. The essay and thinking fixes stop the losses; they do not add points by
 themselves.
+
+## Commands for the revised recipe (added 22:50 CEST)
+
+```bash
+# 1. base q4_0 GGUF on llama-server (no LoRA), thinking on via --jinja; then build the targets
+python scripts/build_selfdistill.py --url http://127.0.0.1:8080 --samples 4 -o data/train/selfdistill.jsonl \
+  --input /mnt/project-files/data/train/past_papers.jsonl train_data/claude_synth.jsonl train_data/open_claude_synth.jsonl
+#    smoke first: add --limit 20 and check that "kept" is > 0 and that rows carry reasoning_content
+# 2. train in the thinking format (asserts the thought channel is in every target)
+python scripts/train_lora.py --model gemma4-12b-think --category selfdistill --data-dir data/train \
+  --think --lr 5e-5 --epochs 1 --rank 16 --batch 2 --grad-accum 8 --max-len 6144
+# 3. convert as in infra/jobs/train.sh (convert_lora_to_gguf.py --outtype f16), run scripts/probe_lora.py think
+#    against the new adapter (reasoning length must match the base), then eval raw + 2k thinking +
+#    THINK_FALLBACK with essays routed to the base (LORA_ROUTED=1), same grader as the base's 163/240.
+```

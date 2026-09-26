@@ -40,6 +40,10 @@ def main():
     p.add_argument("--vision", action="store_true",
                    help="rows carry `images` (scripts/build_vision_train.py): train through the frozen "
                         "vision tower with the processor; LoRA stays on the text layers")
+    p.add_argument("--think", action="store_true",
+                   help="train in the thinking-on exam format (Gemma 4): render with enable_thinking=True and "
+                        "put the assistant's `reasoning_content` in the thought channel of the target "
+                        "(scripts/build_selfdistill.py rows; docs/LORA_ROOT_CAUSE.md cause 1)")
     args = p.parse_args()
 
     spec = yaml.safe_load(Path(args.models_config).read_text())["models"][args.model]
@@ -64,6 +68,23 @@ def main():
                             # relative image paths are relative to the data file (a portable pack)
                             "images": [str(data.parent / i) for i in r["images"]]},
                     remove_columns=ds.column_names).cast_column("images", Sequence(Image()))
+    elif args.think:
+        # Without this, TRL renders Gemma 4's template with thinking off: the target starts right after
+        # `<|turn>model\n`, where the thinking-on exam starts its reasoning, so the adapter learns to skip it.
+        # Rendered here as plain strings; the prompt is then an exact prefix of prompt + target.
+        from transformers import AutoTokenizer
+        tok = AutoTokenizer.from_pretrained(spec.get("train_hf_id") or spec["hf_id"])
+
+        def render(r):
+            m = r["messages"]
+            prompt = tok.apply_chat_template(m[:-1], tokenize=False, add_generation_prompt=True, enable_thinking=True)
+            full = tok.apply_chat_template(m, tokenize=False, enable_thinking=True)
+            assert full.startswith(prompt) and "<|channel>thought" in full[len(prompt):], "thinking target not rendered"
+            bos = tok.bos_token or ""
+            return {"prompt": prompt[len(bos):] if bos and prompt.startswith(bos) else prompt,
+                    "completion": full[len(prompt):].rstrip("\n")}
+        ds = ds.map(render, remove_columns=ds.column_names)
+        print("think-format sample:", repr(ds[0]["prompt"][-120:] + " || " + ds[0]["completion"][:200]))
     else:
         ds = ds.map(lambda r: {"prompt": r["messages"][:-1], "completion": r["messages"][-1:]},
                     remove_columns=ds.column_names)
