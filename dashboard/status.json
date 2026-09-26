@@ -1,289 +1,194 @@
 {
   "meta": {
     "title": "Matura model trainers",
-    "updatedAt": "2026-09-26 12:35 Europe/Warsaw",
+    "updatedAt": "2026-09-26 10:54 UTC",
     "repo": "OrestTa/matura-model-trainers-hackathon",
-    "publicUrl": "https://orestta.github.io/matura-model-trainers-hackathon/"
+    "publicUrl": "https://forty-masks-tap.loca.lt/"
   },
   "highlights": [
     {
       "label": "Practice best",
       "value": "15/15",
-      "detail": "Geography practice tuned v2 is locked perfect after the GEO-025 retry."
+      "detail": "Current best visible practice score from the seeded status snapshot."
     },
     {
       "label": "Honest bare geo",
       "value": "4/15",
-      "detail": "Qwen2.5-3B local bare-model estimate, with no formulas and no RAG."
+      "detail": "Bare Qwen 3B local estimate, separate from the harness-inflated filed base."
     },
     {
-      "label": "Recent LoRA eval",
-      "value": "68/90",
-      "detail": "History LoRA v2 on 3B reached 75.6% on the full 90-question eval."
+      "label": "Forgehand 7B LoRA",
+      "value": "300/300 complete",
+      "detail": "Completed in about 56 seconds on an L40S with mean_loss around 0.47."
     },
     {
-      "label": "Active compute",
-      "value": "1 running, 1 queued",
-      "detail": "The Bielik LoRA wave is running; the Forgehand baseline scorer is queued behind a Grok 7B LoRA occupant."
+      "label": "Forgehand credits",
+      "value": "$0.21+ / $200",
+      "detail": "Current uploaded burn note for the Forgehand track."
     }
   ],
   "jobs": [
     {
-      "name": "Forgehand L40S 7-adapter LoRA wave",
-      "status": "running",
-      "statusLabel": "Running",
+      "name": "Forgehand L40S 7B LoRA",
+      "status": "completed",
+      "statusLabel": "Completed",
       "platform": "Labqoat / Forgehand",
-      "model": "Bielik-11B base with 7 per-type LoRA adapters",
-      "summary": "The tracked train-bielik-l40s job is running on the single L40S Forgehand VM, generating teacher data and then training seven adapters sequentially on one card.",
+      "model": "Qwen/Qwen2.5-7B-Instruct + LoRA",
+      "summary": "The uploaded dashboard seed shows the Forgehand 7B LoRA run fully completed on the L40S box and exiting cleanly after all planned steps.",
       "metrics": [
         {
-          "label": "Job id",
-          "value": "train-bielik-l40s"
+          "label": "Progress",
+          "value": "300 / 300 steps"
+        },
+        {
+          "label": "Mean loss",
+          "value": "~0.4732"
+        },
+        {
+          "label": "Runtime",
+          "value": "~56.4 s"
         },
         {
           "label": "GPU",
-          "value": "1x NVIDIA L40S 46 GB"
-        },
-        {
-          "label": "Teacher",
-          "value": "Qwen3-30B-A3B FP8 (~31 GB)"
-        },
-        {
-          "label": "Step / loss",
-          "value": "Not published in repo yet"
+          "value": "NVIDIA L40S 48 GB"
         }
       ],
       "notes": [
-        "docs/STATUS.md marks it running since about 10:55 UTC.",
-        "From the shared findings: tmux session train drives the run and logs go to work/train.log and work/out/job.log.",
-        "This is the main expert-router training lane, not the baseline scorer."
+        "Host: 34.224.61.209 with 4 CPU and 30 GB RAM in the uploaded seed.",
+        "Adapter output path: /workspace/hackathon/runs/lora/forgehand-lora-7b-fh/.",
+        "The captured log tail ends with TRAIN_EXIT:0, so the run completed successfully."
       ],
       "sources": [
         {
-          "label": "docs/STATUS.md"
-        },
-        {
-          "label": "docs/FINDINGS.md"
-        },
-        {
-          "label": "docs/PLAN_STAGGERED_HARNESS.md"
+          "label": "uploads/dashboard-status_d4e5.json"
         }
       ]
     },
     {
-      "name": "Forgehand baseline scorer",
-      "status": "queued",
-      "statusLabel": "Queued",
-      "platform": "Labqoat / Forgehand",
-      "model": "Baselines, JUDGE_HF disabled",
-      "summary": "The labqoat-baselines job is currently queued on the team's only Forgehand GPU and is waiting for the Grok 7B LoRA run to free the card.",
-      "metrics": [
-        {
-          "label": "Job id",
-          "value": "labqoat-baselines"
-        },
-        {
-          "label": "Session",
-          "value": "Forgehand 01a0dd4b"
-        },
-        {
-          "label": "Queue reason",
-          "value": "Behind Grok 7B LoRA"
-        },
-        {
-          "label": "Judge",
-          "value": "Disabled (1 GPU lane)"
-        }
-      ],
-      "notes": [
-        "docs/STATUS.md now marks the job queued on the GPU rather than running.",
-        "docs/FINDINGS.md says the rst team may run only one GPU session at a time on Forgehand.",
-        "WAIT_GPU=1 was added to let this job wait until GPU memory drops under 2 GB."
-      ],
-      "sources": [
-        {
-          "label": "docs/STATUS.md"
-        },
-        {
-          "label": "docs/REVIEW.md"
-        }
-      ]
-    },
-    {
-      "name": "Modal LoRA 3B v3",
+      "name": "Modal Qwen 3B LoRA v3",
       "status": "completed",
       "statusLabel": "Completed",
       "platform": "Modal (L4)",
       "model": "Qwen2.5-3B-Instruct + LoRA",
-      "summary": "The latest 3B LoRA run finished on Modal, was downloaded back into the repo workspace, and is waiting for local history evaluation.",
+      "summary": "The 3B Modal LoRA job remains completed and available as a recent comparison point beside the new Forgehand 7B run.",
       "metrics": [
+        {
+          "label": "Progress",
+          "value": "270 steps"
+        },
         {
           "label": "Mean loss",
           "value": "0.595"
         },
         {
-          "label": "Train time",
+          "label": "Runtime",
           "value": "~102 s"
         },
         {
-          "label": "Train recipe",
-          "value": "270 steps = 3x90"
-        },
-        {
-          "label": "Credit burn",
-          "value": "metered ~$2.27, billed $0.00"
+          "label": "GPU",
+          "value": "L4"
         }
       ],
       "notes": [
-        "STATUS.md says the adapter artifacts are in runs/lora/modal-3b-v3/.",
-        "This is still the declared base-model track at roughly 5.8-6.2 GB on disk.",
-        "The next requested check is local_eval.py against the history MCQ set."
+        "This is still the most recent completed 3B adapter in the repo-tracked notes.",
+        "Prior status notes place artifacts in runs/lora/modal-3b-v3/."
       ],
       "sources": [
         {
+          "label": "uploads/dashboard-status_d4e5.json"
+        },
+        {
           "label": "STATUS.md"
-        },
-        {
-          "label": "notes/MODAL_TRAIN.md"
-        },
-        {
-          "label": "INSIGHTS.md"
         }
       ]
     },
     {
-      "name": "Modal LoRA 1.5B v1",
+      "name": "Modal Qwen 1.5B LoRA v1",
       "status": "completed",
       "statusLabel": "Completed",
       "platform": "Modal (L4)",
       "model": "Qwen2.5-1.5B-Instruct + LoRA",
-      "summary": "The size-track 1.5B adapter run also completed successfully and remains the compact contrast against the larger 3B setup.",
+      "summary": "The smaller 1.5B size-track adapter remains completed and provides the compact counterpoint to the 3B and 7B lanes.",
       "metrics": [
+        {
+          "label": "Progress",
+          "value": "270 steps"
+        },
         {
           "label": "Mean loss",
           "value": "0.675"
         },
         {
-          "label": "Train time",
+          "label": "Runtime",
           "value": "~79 s"
         },
         {
-          "label": "Train recipe",
-          "value": "270 steps = 3x90"
-        },
-        {
-          "label": "Bare baseline",
-          "value": "3/15 geo, 48/90 history"
+          "label": "GPU",
+          "value": "L4"
         }
       ],
       "notes": [
-        "The untuned 1.5B history baseline already clears the 35% small-model bar at 53.3%.",
-        "Like the 3B run, this adapter is downloaded but not yet scored with the follow-up local history eval.",
-        "This track is useful both for the size prize and for showing the bare-vs-harness spread."
+        "Useful for the small-model storyline and the bare-vs-harness comparison.",
+        "The seeded upload marks it completed; previous repo notes keep the 1.5B bare baseline at 3/15 geo."
       ],
       "sources": [
+        {
+          "label": "uploads/dashboard-status_d4e5.json"
+        },
         {
           "label": "STATUS.md"
-        },
-        {
-          "label": "HACKATHON_LOG.md"
-        },
-        {
-          "label": "notes/MODAL_TRAIN.md"
-        }
-      ]
-    },
-    {
-      "name": "Qwen2.5-7B cap-track",
-      "status": "queued",
-      "statusLabel": "Queued",
-      "platform": "Next push",
-      "model": "Qwen2.5-7B near the disk-size cap",
-      "summary": "The next model push aims at the strongest 7B-class option that can still fit the hackathon disk limit, depending on whether the real cap is 8.0 GB or about 8.9 GB.",
-      "metrics": [
-        {
-          "label": "Cap check",
-          "value": "8.88 GB GPTQ-Int8 if ~8.9 GB is allowed"
-        },
-        {
-          "label": "Safer quant",
-          "value": "~5.58 GB AWQ"
-        },
-        {
-          "label": "Practice target",
-          "value": "Keep 15/15 harness edge"
-        },
-        {
-          "label": "Status",
-          "value": "Investigate after current evals"
-        }
-      ],
-      "notes": [
-        "INSIGHTS.md and HACKATHON_LOG.md both describe this as the next push after the current Modal LoRA work.",
-        "Full 7B bf16 is explicitly too large; only a compressed 7B checkpoint is viable.",
-        "Do not compare this track against the 14/15 filed base without calling out that the base run was harness-inflated."
-      ],
-      "sources": [
-        {
-          "label": "INSIGHTS.md"
-        },
-        {
-          "label": "HACKATHON_LOG.md"
-        },
-        {
-          "label": "docs/PLAN_STAGGERED_HARNESS.md"
         }
       ]
     }
   ],
   "results": [
     {
-      "name": "Practice tuned v2",
+      "name": "Practice best",
       "score": "15/15",
-      "detail": "Perfect geography practice result after the GEO-025 public-answer-consensus fix; this is the current best visible practice score."
+      "detail": "Current best practice score from the uploaded seed."
     },
     {
       "name": "Practice base filed",
       "score": "14/15",
-      "detail": "Important caveat: repo notes say the filed base run used the geo harness, so it should not be treated as an untouched model baseline."
+      "detail": "Keep this distinct from the honest bare baseline when telling the progress story."
     },
     {
       "name": "Honest bare geo (3B)",
       "score": "4/15",
-      "detail": "Local bare-model estimate for Qwen2.5-3B with no deterministic solver and no RAG."
+      "detail": "Bare Qwen 3B local result with no formulas and no RAG."
     },
     {
       "name": "Honest bare geo (1.5B)",
       "score": "3/15",
-      "detail": "Same local bare test on the 1.5B model; useful size-track contrast against the full harness."
+      "detail": "Smaller-model bare result from the repo-tracked notes."
     },
     {
       "name": "History LoRA v2",
       "score": "68/90 (75.6%)",
-      "detail": "Current 3B history LoRA eval signal from the tracked notes."
+      "detail": "Current history eval signal retained from STATUS.md and the uploaded seed."
     },
     {
-      "name": "1.5B history baseline",
-      "score": "48/90 (53.3%)",
-      "detail": "Untuned 1.5B history baseline that already clears the 35% small-model threshold."
+      "name": "AWS status",
+      "score": "suspended",
+      "detail": "The uploaded seed keeps AWS out of the active compute story."
     }
   ],
   "operationalNotes": [
     {
-      "label": "GPU utilization notes",
-      "value": "Forgehand currently exposes one team-wide GPU session, so jobs queue on a single L40S card. The Bielik LoRA wave is running, the baseline scorer is queued behind a Grok 7B LoRA holder, and the standalone Modal LoRA recipe still prefers cheaper L4 or A10G GPUs."
+      "label": "Current compute story",
+      "value": "The freshest seeded state is simple: Forgehand 7B LoRA completed on L40S, and the two recent Modal LoRA jobs remain completed on L4."
     },
     {
       "label": "Credit burn",
-      "value": "The latest tracked number is for Modal: the two LoRA runs pushed metered usage to about $2.27 while billed spend remained $0.00 thanks to credits. AWS notes still show Activate credit remaining, but the team's AWS path is operationally suspended and not the active lane."
+      "value": "Forgehand is marked at $0.21+ out of $200 in the uploaded seed. Existing repo notes still show Modal billed at $0.00 because credits covered the recent LoRA runs."
     },
     {
       "label": "Practice score interpretation",
-      "value": "The tuned harness is legitimately at 15/15 on practice, but the honest bare base is much lower. This matters for any progress story shown to judges or teammates."
+      "value": "The tuned harness is at 15/15 on practice, but the honest bare base remains much lower. Keep that distinction visible on any public dashboard."
     },
     {
       "label": "Image ceiling",
-      "value": "The eval-set notes say 85 of 154 history items need images. Text-only models have a hard ceiling below 100% on the full paper unless tools or image handling close that gap."
+      "value": "The eval-set notes still matter: many history items require images, so text-only models have a hard ceiling without tool or image support."
     }
   ],
   "refresh": {
@@ -291,38 +196,26 @@
     "summary": "The page shell is static; the data file is the control plane. Other bots can add or edit cards without touching the HTML, CSS, or JavaScript.",
     "steps": [
       "Open dashboard/status.json and update the fields that changed: updatedAt, highlights, jobs, results, or operationalNotes.",
-      "Keep every value grounded in tracked repo files such as STATUS.md, docs/STATUS.md, docs/FINDINGS.md, INSIGHTS.md, or future committed results files.",
+      "Seed new values from committed notes or uploaded JSON snapshots like uploads/dashboard-status_d4e5.json.",
       "Commit and push to main, then redeploy the dashboard/ folder to your preferred public static host."
     ]
   },
   "sources": [
     {
+      "label": "uploads/dashboard-status_d4e5.json",
+      "detail": "Primary seed for this refresh, including the completed Forgehand 7B LoRA run and current results snapshot."
+    },
+    {
       "label": "STATUS.md",
-      "detail": "Best current summary of practice runs, bare geo baselines, Modal LoRA metrics, and current next steps."
-    },
-    {
-      "label": "docs/STATUS.md",
-      "detail": "Tracked running job inventory, including the live Forgehand training and baseline lanes."
-    },
-    {
-      "label": "docs/FINDINGS.md",
-      "detail": "Shared multi-thread findings log, including the single-L40S Forgehand box and current compute constraints."
-    },
-    {
-      "label": "docs/PLAN_STAGGERED_HARNESS.md",
-      "detail": "The main architecture and training-wave plan, including the staircase and cascade story."
+      "detail": "Repo-tracked source for the Modal run metrics and the broader score context."
     },
     {
       "label": "INSIGHTS.md",
-      "detail": "Quick decision notes on the 3B and 1.5B tracks, the 15/15 practice result, and the 7B size-cap push."
-    },
-    {
-      "label": "notes/MODAL_TRAIN.md",
-      "detail": "The exact Modal LoRA recipe and artifact locations for the 3B and 1.5B runs."
+      "detail": "Quick decision notes on current model tracks and live practice interpretation."
     },
     {
       "label": "HACKATHON_LOG.md",
-      "detail": "Narrative log of practice and history-track scores that backs the interim results on this page."
+      "detail": "Narrative score log backing the history and practice result cards."
     }
   ]
 }
