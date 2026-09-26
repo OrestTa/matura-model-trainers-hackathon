@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-26T17:32:47+02:00",
+  "updated": "2026-09-26T18:46:46+02:00",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
@@ -9,6 +9,7 @@
         "Official mock (history-2023-mock-v1, 60 pts) is the standing gauge; CKE headline-auto is proxy-only.",
         "Official mock triple judge on speakleash Bielik-4.5 FP8 (~4.898 GB): Claude 24/60 = 40.0%, Grok 28/60 = 46.7%, Sol 29/60 = 48.3%.",
         "Five-category splits are published for Grok and Sol only on the same Bielik answers: Grok TO 63.6 / IO 47.8 / TC 75.0 / IC 42.9 / essay 26.7; Sol TO 63.6 / IO 43.5 / TC 75.0 / IC 42.9 / essay 40.0.",
+        "Gemma 4 12B QAT GGUF + mmproj, raw vision-on: Claude master 41/60 = 68.3% on the May 2023 CKE paper at 7.16 GB measured pack, under the 8.0/8.8 caps; not yet the standing history-2023-mock-v1 gauge and awaiting Grok/Sol dual-judge.",
         "Parallel Grok cloud grades on the same packs: AWQ 20/60 = 33.3% (harness OCR+essay_regen); E2E Qwen2.5-3B 15/60 = 25.0%.",
         "CKE headline-auto 37.6% for bare 7B AWQ is unverified auto-scored (70 pts) — not a graded official mock.",
         "Measured packs: AWQ ~5.58 GB; speakleash Bielik-4.5 FP8 ~4.898 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
@@ -35,6 +36,23 @@
     }
   },
   "stages": [
+    {
+      "id": "mock-gemma4-12b-qat-may2023-claude",
+      "sort": 4,
+      "name": "May 2023 CKE Gemma 4 12B QAT (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 68.3,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "Claude master 41/60 = 68.3% on paper 2023-05 (May 2023 CKE), coarse only: closed 8/11, open 24/34, essay 9/15. Five CKE text/vision category % unknown, so five cats stay null. Measured pack 7.16 GB on disk (6.98 GGUF + 0.18 mmproj), legal under the 8.0/8.8 quantized pack rules. This is May 2023 paper, not the standing gauge history-2023-mock-v1 unless/until that mock is also graded for Gemma. 6/37 answers were empty from a thinking-on bug fixed in trainers 6359957. Grok/Sol dual-judge not yet run on this answer set.",
+      "source": "results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/claude_score.json"
+    },
     {
       "id": "mock-bielik45-fp8-claude",
       "sort": 5,
@@ -294,7 +312,7 @@
       "title": "Best matura score",
       "goal": "Highest honest Sunday exam score under the 8.0 GB base / 8.8 GB after-FT caps.",
       "status": "RUNNING",
-      "summary": "Best verified official-mock score is speakleash Bielik-4.5 FP8 at 40.0% (Claude). Parallel Grok/Sol judges on the same answers read 46.7% / 48.3%. Prior 37.6% AWQ figure is headline-auto only and demoted.",
+      "summary": "Gemma 4 12B QAT GGUF + mmproj now leads Claude-graded 60-pt results with 68.3% on the May 2023 CKE paper at 7.16 GB, but the standing Sunday gauge remains history-2023-mock-v1, where speakleash Bielik-4.5 FP8 is still the best verified pack at Claude 40.0% with parallel Grok/Sol reads of 46.7% / 48.3% on the same answers. Prior 37.6% AWQ figure is headline-auto only and demoted.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
@@ -306,6 +324,7 @@
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-gemma4-12b-qat-may2023-claude",
             "mock-bielik45-fp8-claude",
             "mock-bielik45-fp8-grok",
             "mock-bielik45-fp8-sol",
@@ -361,7 +380,7 @@
       "title": "Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
       "status": "RUNNING",
-      "summary": "speakleash Bielik-4.5 FP8 (~4.898 GB) remains Mały primary and a Best Score contender: 40.0% Claude on the gauge, with parallel Grok/Sol judges at 46.7% / 48.3% on the same answers. E2E 3B is 25.0% Grok. New Claude official-mock sub-2B probes failed: Qwen2.5-0.5B at 5.0% and Qwen2.5-1.5B at 6.7%, supporting C-027 (no more GPU on sub-2B; 3/2-bit 4B first).",
+      "summary": "speakleash Bielik-4.5 FP8 (~4.898 GB) remains the Mały floor and primary contender on the standing gauge: 40.0% Claude on history-2023-mock-v1, with parallel Grok/Sol judges at 46.7% / 48.3% on the same answers. Gemma 4 12B QAT GGUF + mmproj reached 68.3% Claude on the May 2023 paper at 7.16 GB, well above 35% and under the cap, but it is larger than the Bielik floor and does not take the Mały lead. E2E 3B is 25.0% Grok. New Claude official-mock sub-2B probes failed: Qwen2.5-0.5B at 5.0% and Qwen2.5-1.5B at 6.7%, supporting C-027 (no more GPU on sub-2B; 3/2-bit 4B first).",
       "sections": [
         {
           "title": "Baselines (honest bare)",
@@ -373,6 +392,7 @@
         {
           "title": "Interim results",
           "stage_ids": [
+            "mock-gemma4-12b-qat-may2023-claude",
             "mock-bielik45-fp8-claude",
             "mock-bielik45-fp8-grok",
             "mock-bielik45-fp8-sol",
@@ -443,8 +463,8 @@
     {
       "id": "gemma4-vision",
       "name": "Gemma-4-12B vision baselines",
-      "state": "RUNNING",
-      "detail": "llama.cpp :8101; ~7.16 GB disk"
+      "state": "COMPLETED",
+      "detail": "Claude 68.3% on May 2023 CKE paper; 7.16 GB measured pack; 6/37 answers empty from the fixed thinking-on bug; Grok/Sol not yet run on this answer set"
     },
     {
       "id": "size-cap",
@@ -522,7 +542,8 @@
     ],
     "score_conflicts": [
       "Judge totals disagree on identical official-mock answers (AWQ: Grok 33.3 vs Claude 18.3; Bielik: Claude 40.0 vs Grok 46.7 vs Sol 48.3).",
-      "Board shows all published judges; Claude rows stay the verified reference where category splits are unknown or unreconciled. Grok remains primary for E2E 3B until Claude secondary lands."
+      "Board shows all published judges; Claude rows stay the verified reference where category splits are unknown or unreconciled. Grok remains primary for E2E 3B until Claude secondary lands.",
+      "Gemma 4 12B QAT 68.3% is a May 2023 paper result, not yet dual-judged and not comparable to the standing history-2023-mock-v1 gauge until Gemma is graded on that mock."
     ]
   }
 }
