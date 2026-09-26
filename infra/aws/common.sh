@@ -1,6 +1,15 @@
 # Shared settings for the AWS scripts. Source this file; don't run it.
 set -euo pipefail
 
+# Optional: read the AWS key from 1Password with a service account. Set OP_SERVICE_ACCOUNT_TOKEN
+# and AWS_OP_ITEM (e.g. "op://Hackathon/AWS root key") in the environment; the item needs
+# fields named "access key id" and "secret access key".
+if [ -n "${OP_SERVICE_ACCOUNT_TOKEN:-}" ] && [ -n "${AWS_OP_ITEM:-}" ]; then
+  AWS_ACCESS_KEY_ID="$(op read "${AWS_OP_ITEM}/access key id")"
+  AWS_SECRET_ACCESS_KEY="$(op read "${AWS_OP_ITEM}/secret access key")"
+  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+fi
+
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 PROJECT_TAG="matura-hackathon"
 REGIONS=(us-east-1 us-east-2 us-west-2)

@@ -3,7 +3,8 @@
 Scripts for running training on AWS GPUs, paid for by AWS Activate credits only.
 
 Credentials come from `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`
-(environment settings, never committed). Needs the AWS CLI (`pip install awscli`).
+(environment settings, never committed), or from 1Password: set `OP_SERVICE_ACCOUNT_TOKEN` and
+`AWS_OP_ITEM` (for example `op://Hackathon/AWS root key`) and install the `op` CLI. Needs the AWS CLI (`pip install awscli`).
 
 | Script | What it does |
 | --- | --- |
