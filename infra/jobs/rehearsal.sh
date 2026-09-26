@@ -46,6 +46,7 @@ for _ in $(seq 360); do
   kill -0 $SERVE 2>/dev/null || { cat "$OUT/serve_exam.log"; finish 1; }
   sleep 5
 done
+curl -sf http://127.0.0.1:8000/v1/models >/dev/null || { step "server never came up"; tail -50 "$OUT/serve_exam.log"; finish 1; }
 
 status=0
 printf "paper\titems\tseconds\n" > "$OUT/timing.tsv"
@@ -55,6 +56,13 @@ for p in $PAPERS; do
   t0=$(date +%s)
   python scripts/run_exam.py "$WORK/packages/$p" --model "$MODEL" --mode "$MODE" --concurrency "${CONCURRENCY:-16}" \
     -o "$OUT/$p/answers.json" || status=1
+  # A dead server gives all-blank answers in seconds: keep them out of answers.json so nobody grades a 0.
+  e=$(python -c "import json; a=json.load(open('$OUT/$p/answers.json'))['answers']; print(sum(not str(x.get('answer') or '').strip() for x in a), len(a))" 2>/dev/null || echo "? ?")
+  step "$p: blank answers ${e% *}/${e#* }"
+  if [ "${e% *}" = "${e#* }" ] || [ "${e% *}" = "?" ]; then
+    step "$p: every answer blank, server log tail:"; tail -30 work/exam-vllm.log 2>/dev/null
+    mv -f "$OUT/$p/answers.json" "$OUT/$p/answers.FAILED.json" 2>/dev/null; status=1
+  fi
   n=$(python -c "import json; print(len(json.load(open('$WORK/packages/$p/exam.json'))['items']))")
   printf "%s\t%s\t%s\n" "$p" "$n" "$(( $(date +%s) - t0 ))" | tee -a "$OUT/timing.tsv"
 done
