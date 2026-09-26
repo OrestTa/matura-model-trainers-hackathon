@@ -80,7 +80,7 @@ step "training adapters for $TRAIN_MODELS"
 mkdir -p "$OUT/train_logs" "$WORK/adapters"
 # Round-robin the (model, category) jobs over GPUs; each GPU works through its own list.
 n=${#GPU_LIST[@]}; i=0
-declare -a per_gpu
+declare -a per_gpu train_pids
 for m in ${TRAIN_MODELS//,/ }; do
   for f in data/by_category/*.jsonl; do
     [ -e "$f" ] || { step "no training data after the split"; finish 1; }
@@ -96,8 +96,11 @@ for g in $(seq 0 $((n - 1))); do
         > "$OUT/train_logs/$m-$c.log" 2>&1
     done
   ) &
+  train_pids+=($!)
 done
-wait
+# Wait on the trainers only: a bare `wait` also waits on common.sh's `exec > >(tee ...)`
+# process substitution (bash >= 5.1) and hangs forever after training.
+wait "${train_pids[@]}"
 grep -h "saved\|skip" "$OUT"/train_logs/*.log
 if [ "${SINGLE_ADAPTER:-0}" = 1 ]; then  # the one adapter answers every route
   for m in ${TRAIN_MODELS//,/ }; do
