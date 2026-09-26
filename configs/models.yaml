@@ -165,6 +165,14 @@ models:
     params_b: 4.6
     quantization: bitsandbytes
     disk_gb: 2.9
+  # Smallest-model entry for now (category 3): speakleash's own FP8 pack, 4.90 GB on disk, Claude-graded
+  # 24/60 = 40.0% on May 2023 with the pictures' OCR text (results/claude-graded/official_mock/). Text model,
+  # so run_exam.py --model bielik-4.5b-fp8 turns on OCR of the pictures (tesseract pol on the exam box).
+  bielik-4.5b-fp8:
+    hf_id: speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic
+    params_b: 4.6
+    disk_gb: 4.90
+    ocr: true
   bielik-1.5b:
     deck_size_gb: {bf16: 3.19}
     ship_precision: bf16
