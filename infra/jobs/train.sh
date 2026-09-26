@@ -6,7 +6,9 @@
 #   3. one LoRA adapter per (model, question type), one per GPU in parallel
 #   4. re-score raw / routed / adapters and draw the charts
 # Env:
-#   TRAIN_MODELS=bielik-11b   keys from configs/models.yaml to train adapters for
+#   TRAIN_MODELS=bielik-11b   keys from configs/models.yaml (or MODELS_CONFIG) to train adapters for
+#   MODELS_CONFIG=configs/small_models.yaml   another model list (small-model track)
+#   SCORE_MODES=raw,routed,adapters           modes for the re-score in step 4
 #   TEACHER_HF    served on all GPUs for step 1 (none = skip step 1; default: Qwen3-235B on 8 GPUs,
 #                 Qwen3-30B-A3B on fewer)
 #   PER_CATEGORY=400          synthetic items per question type
@@ -88,7 +90,7 @@ for g in $(seq 0 $((n - 1))); do
     for job in ${per_gpu[$g]:-}; do
       m=${job%%:*}; c=${job#*:}
       CUDA_VISIBLE_DEVICES=${GPU_LIST[$g]} python scripts/train_lora.py --model "$m" --category "$c" \
-        --epochs "$EPOCHS" --batch 2 --grad-accum 8 --out-dir "$WORK/adapters" \
+        --models-config "${MODELS_CONFIG:-configs/models.yaml}" --epochs "$EPOCHS" --batch 2 --grad-accum 8 --out-dir "$WORK/adapters" \
         > "$OUT/train_logs/$m-$c.log" 2>&1
     done
   ) &
@@ -108,4 +110,4 @@ ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapte
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 
 # 4. Re-score with adapters (and without, for the comparison charts).
-MODELS="$TRAIN_MODELS" MODES="raw,routed,adapters" source "$(dirname "$0")/baselines.sh"
+MODELS="$TRAIN_MODELS" MODES="${SCORE_MODES:-raw,routed,adapters}" source "$(dirname "$0")/baselines.sh"
