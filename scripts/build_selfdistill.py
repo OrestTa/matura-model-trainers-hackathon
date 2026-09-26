@@ -154,8 +154,9 @@ def main():
             continue
         rows.append((r, imgs))
     if a.only_ids:
-        want = {l.strip() for l in open(a.only_ids) if l.strip()}
-        rows = [(r, i) for r, i in rows if r["id"] in want]
+        want = [l.strip() for l in open(a.only_ids) if l.strip()]
+        pos = {x: k for k, x in enumerate(want)}   # the file's order: a cut-short build keeps its first items
+        rows = sorted(((r, i) for r, i in rows if r["id"] in pos), key=lambda t: pos[t[0]["id"]])
     rows = rows[: a.limit] if a.limit else rows
     print(f"{len(rows)} items x {a.samples} samples (papers: {sorted({r['paper'] for r, _ in rows})})", flush=True)
     vision = not a.no_vision
