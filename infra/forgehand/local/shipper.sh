@@ -3,7 +3,7 @@
 # results/gemma4/<job>/, push to main, and Sol-grade it. Jobs: any /scratch/out/matura-infer-* dir.
 S=/tmp/claude-0/-home-user-matura-model-trainers-hackathon/b6eb735e-2991-5c23-9f51-7520b5adb6ca/scratchpad
 R=/home/user/matura-model-trainers-hackathon; cd $R
-export SOL_BASE=https://app.forgehand.app/api/v1/teams/01a0d9f4-5e58-7440-875a-81dfcbccbabf/llm/v1
+export SOL_BASE=${SOL_BASE:?set SOL_BASE to the Forgehand team LLM URL (secret: team id)}
 export SOL_TOKEN=$(python3 -c "import json;print(json.load(open('/root/.config/forgehand/config.json'))['token'])")
 while true; do
   list=$(python3 $S/fhx.py exec 'for d in /scratch/out/matura-infer-*/; do j=$(basename $d); for f in $d*/answers.json; do [ -f "$f" ] && echo "$j $(basename $(dirname $f))"; done; done' 2>/dev/null | grep '^matura-infer')
