@@ -7,14 +7,21 @@
 #   4. re-score raw / routed / adapters and draw the charts
 # Env:
 #   TRAIN_MODELS=bielik-11b   keys from configs/models.yaml to train adapters for
-#   TEACHER_HF=Qwen/Qwen3-235B-A22B-Instruct-2507-FP8   served on all GPUs for step 1
+#   TEACHER_HF    served on all GPUs for step 1 (default: Qwen3-235B on 8 GPUs,
+#                 Qwen3-30B-A3B on fewer)
 #   PER_CATEGORY=400          synthetic items per question type
 #   REGEN_DATA=0              1 = regenerate data even if S3 has it
 #   EPOCHS=2                  training epochs per adapter
 #   JUDGE_HF, HF_TOKEN, STOP_WHEN_DONE as in baselines.sh
 source "$(dirname "$0")/common.sh"
 TRAIN_MODELS="${TRAIN_MODELS:-bielik-11b}"
-TEACHER_HF="${TEACHER_HF:-Qwen/Qwen3-235B-A22B-Instruct-2507-FP8}"
+# The 235B teacher needs ~8 big GPUs; on a small instance fall back to a 30B MoE
+# that fits one 48 GB GPU in FP8.
+if [ ${#GPU_LIST[@]} -ge 8 ]; then
+  TEACHER_HF="${TEACHER_HF:-Qwen/Qwen3-235B-A22B-Instruct-2507-FP8}"
+else
+  TEACHER_HF="${TEACHER_HF:-Qwen/Qwen3-30B-A3B-Instruct-2507-FP8}"
+fi
 PER_CATEGORY="${PER_CATEGORY:-400}"; EPOCHS="${EPOCHS:-2}"
 TRAIN=$REPO/data/train/synthetic.jsonl
 mkdir -p "$(dirname "$TRAIN")"

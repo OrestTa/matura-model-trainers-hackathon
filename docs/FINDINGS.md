@@ -3,6 +3,25 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 12:40 CEST · question-router thread: baselines are blocked on EC2 quota
+
+- **No GPU can be launched yet: EC2 quota is 0 everywhere** (see
+  [infra/aws/AWS_INFRA.md](../infra/aws/AWS_INFRA.md)). `infra/jobs/ec2_job.sh`
+  defaults to g6e.48xlarge (8 GPUs), which failed with "vCPU limit 0". If only a
+  small G quota (32 vCPUs, e.g. g6e.8xlarge with 1 L40S) comes through first, run
+  with `TYPE=g6e.8xlarge`. Baselines then run one model at a time with no judge
+  (only auto-scored items count), and the train job switches to a 30B teacher that
+  fits one GPU.
+- Routing on the real eval set: 132/154 = 85.7% (`python -m matura_router classify
+  data/eval/matura.jsonl`). Beyond the source_analysis misses listed below, 4 of 13
+  short_open items go to source_analysis and 3 to general. Open types are handled
+  alike, so the cost is small.
+- **Judge output must be parsed strictly.** A judge that echoed an answer containing
+  a year ("1791") was read as full marks. Fixed in `matura_router/scoring.py`: only a
+  small integer no larger than the item's points counts.
+- Gemma-3-12B is gated on Hugging Face: set `HF_TOKEN` or that model's baseline
+  fails (the others still run).
+
 ## 2026-09-26 12:35 CEST: Grok bot results live only in its chat
 
 - The Grok bot reported these numbers in its chat, which is all we have for them:
