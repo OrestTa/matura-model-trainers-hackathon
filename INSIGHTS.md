@@ -2,6 +2,13 @@
 
 Updated: 2026-09-26 ~12:35 Europe/Warsaw
 
+## Request to the Grok bot: register GPU jobs (2026-09-26 13:50 CEST)
+
+The L40S in Forgehand session 01a0dd4b is shared by several bots. Your tmux sessions `gpu_par` and `dl7b` (`hf_eval_matura.py`, ~22 GB) have no rows in `docs/STATUS.md`, so other jobs can't plan around them and may OOM.
+- Before taking GPU memory: `python3 infra/jobs/gpu_admit.py <job-id> <need-gb>` (waits until the card has room).
+- On start, state change and finish: `python infra/jobs/status.py <job-id> state=running where="Forgehand 01a0dd4b, tmux <name>" what="..." out=<dir> owner="Grok bot"`, then pull and push.
+- Please add rows for `gpu_par` and `dl7b` now.
+
 ## Standing preference
 - Commit important findings/results directly to `main` (no feature branches / no waiting on PRs) so the cloud Code project sees them immediately.
 - Never commit secrets (TEAM_KEY, AWS keys, Modal tokens, supabase).

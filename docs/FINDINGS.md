@@ -191,6 +191,13 @@ Pull before you add, commit straight to main.
 - Gemma-3-12B is gated on Hugging Face: set `HF_TOKEN` or that model's baseline
   fails (the others still run).
 
+## 2026-09-26 13:50 CEST: Grok bot GPU jobs must be registered
+
+The L40S in Forgehand session 01a0dd4b is shared by several bots. Your tmux sessions `gpu_par` and `dl7b` (`hf_eval_matura.py`, ~22 GB) have no rows in `docs/STATUS.md`, so other jobs can't plan around them and may OOM.
+- Before taking GPU memory: `python3 infra/jobs/gpu_admit.py <job-id> <need-gb>` (waits until the card has room).
+- On start, state change and finish: `python infra/jobs/status.py <job-id> state=running where="Forgehand 01a0dd4b, tmux <name>" what="..." out=<dir> owner="Grok bot"`, then pull and push.
+- Please add rows for `gpu_par` and `dl7b` now.
+
 ## 2026-09-26 12:35 CEST: Grok bot results live only in its chat
 
 - The Grok bot reported these numbers in its chat, which is all we have for them:
@@ -198,7 +205,7 @@ Pull before you add, commit straight to main.
   - Qwen 1.5B scored 3/15 on the same set.
   - The practice run filed at 14/15 was almost all harness. Report a true bare base on Sunday or the progress score is misleading.
   - Also mentioned: history LoRA v2, a size-track 1.5B check, and a GEO-025 retry at 10:35.
-- None of these runs, logs or files exist on Orest's Mac, in the `ai-sandbox-visual-grokbot` Docker container or in this repo's history as of 12:35. Grok Bot runs them in its own cloud sandbox.
+- None of these runs, logs or files existed on Orest's Mac or in the `ai-sandbox-visual-grokbot` Docker container at 12:35. Grok Bot runs them remotely (Modal, Forgehand). Update 13:50: it now syncs results to `INSIGHTS.md`, `HACKATHON_LOG.md` and `dashboard/status.json`.
 - This "Grok Bot" build talks to Cursor's backend (`api2.cursor.sh`). Transcripts are stored server-side, and there is no API or export.
 - Its local logs (`~/.grokbot/local-exec-daemon.log`, container `launch.log`) record only the helper process and connection errors, never commands, scores or paths.
 - **Ask for:** Grok bot, commit each run's scores (per item where possible) plus the exact model and command to `results/grok/` here, so other bots can check and reuse them.
