@@ -248,3 +248,12 @@ Owned VM path: `/workspace/codex-small-track-clean-v3/output/clean-v3-full-epoch
 Versioned package configs: `infra/small_track/configs/bielik15-q4-real-five-adapter-boundary-clean-v3.json`
 and correspondingQ8 config. Accuracy evaluation remains separate; backup completion
 is not a claim that this candidate meets35%.
+
+The full clean-v3 Q4 weight package is now also present on the Mac at
+`artifacts/small_track/offline-bielik-clean-v3-q4/`:all nine weight files verified,
+1,062,667,538bytes, zero missing. The weights manifest SHA256 is
+`034420954f1c29cafa063829b0205eef2b77f7f3c71f538524172f284b00dae5`.
+Its accompanying `run.py` completed a37-item structural dry run with original
+image checksums and strict empty-answer export. This backup includes weights and
+portable Python code; host-specific CUDA/llama/Tesseract binaries remain runtime
+prerequisites, and the dry run is not measured exam accuracy.

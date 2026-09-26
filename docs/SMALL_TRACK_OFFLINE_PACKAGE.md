@@ -80,3 +80,17 @@ The source corpus is the frozen138real rows with exact-source allowance for one
 Training manifest SHA256:
 `da25c2a0773f34cf5a7282de500304d4d6db4cabb0824d931051fcbfed5039ab`.
 No synthetic historical targets or caption-generated evidence are included.
+
+## Verified complete local Q4 restoration
+
+The public pinned Q4 base has now been downloaded into the local package. All nine
+weight files (one shared base, five adapters, one classifier, two OCR language
+files) pass exact SHA256 and byte verification; no weights are missing.
+Weights manifest SHA256:
+`034420954f1c29cafa063829b0205eef2b77f7f3c71f538524172f284b00dae5`.
+The completed structural dry run is saved at
+`artifacts/small_track/offline-bielik-clean-v3-q4-complete-dryrun/`:37unique taskIDs,
+60points, original image hashes, learned routing and strict empty-answer export
+verified. No GPU inference ran during restoration. This completes local learned
+weight recovery, not installation of a platform-specific llama/Tesseract runtime
+or demonstration of35% accuracy.
