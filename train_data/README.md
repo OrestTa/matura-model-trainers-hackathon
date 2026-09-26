@@ -15,3 +15,7 @@ Schema = gen_synthetic's: {category, topic, question, context, answer}. Use with
 (topic = synthetic exam id) and run through `scripts/merge_synth.py --eval data/eval/matura_img.jsonl`: row 37
 (history-synth-0001 z26, an essay topic paraphrasing May 2023 z26) dropped by hand, then 3,076 duplicates, 1,086
 matching and 1,164 true/false items (answer shape) and 1 item too close to the eval set dropped. See docs/FINDINGS.md.
+
+`open_claude_synth.jsonl`: 420 open-answer items written by Claude on 2026-09-26 (source_analysis 320, short_open 100,
+including "Rozstrzygnij …" and visual-source tasks), fact-checked in 7cdcb40, same schema as above. The commits say it was
+filtered against the held-out May 2023–2026 papers. Pass it via `EXTRA_SFT` / `EXTRA_TRAIN`.

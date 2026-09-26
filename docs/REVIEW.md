@@ -7,6 +7,17 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 20:55 CEST: cea7074..b862a4b (46 commits)
+
+Verdict: sound overall; two flags (C-054), one doc fix.
+- Judge totals checked against the committed claude_score.json files: g4vr 41/43/41/44 = 169/240, g4r0 34/30/34/28 = 126/240, g4t1 31/34/26/37 = 128/240. results/judged/TABLE.md matches.
+- ca5d49e (stage harness vs the organisers' JSON guide): keyed answers, conform_keyed and per-key voting are gated to mode != raw. Two raw-mode changes remain: run_exam.py `answer_format_text` blanks the closed-format examples for every mode, and the `[Obraz: …]` -> "ilustracja N" relabel runs whenever the model has vision, raw included. Both are prompt text for base and optimised alike, so the comparison stays fair; say so if the base is presented as "untouched organiser prompt". Minor: when the question already contains the raw format, the blanked copy is appended as well.
+- Secrets grep over the whole diff (keys, tokens, IPs): clean. sol_judge.py reads endpoint and token from env only.
+- open_claude_synth.jsonl (2f187c9, 7cdcb40, 11d5cbb): 420 rows (source_analysis 320, short_open 100), gen_synthetic schema, no empty answers, no duplicate questions, no CKE/paper references. The eval set is not in this checkout, so the held-out overlap filter the commit claims could not be re-run here. Added a train_data/README.md paragraph.
+- 3bcb9cb classifier, 1df81c5 latency, 3965be8 BACKEND_TIMEOUT (default kept, env override), f0ecbc2 warmup (transformers 5 compat), eval_adapter.sh, SKIP_SCORE: OK.
+- FLAG (C-054): infra/modal/modal_job.py uses app and volume "matura-jobs", not the "claude-" prefix Orest asked for (Codex shares the Modal account).
+- FLAG (C-054): 356fed7 g4k8 think8k raw 2023-05 on the L40S has 4/37 empty answers (the pre-1800 s timeout run). Don't use it as the think8k ship-bar baseline without a rerun.
+
 ## 2026-09-26 20:15 CEST: 6e2d256..cea7074 (22 commits) and board 40ec224
 
 - a34dfbf, f8b6f35 (us) per-model `ocr: true` via apply_model + bielik-4.5b-fp8 (4.90 GB, the smallest-model entry):
