@@ -6,7 +6,7 @@ Pull before you add, commit straight to main.
 ## 2026-09-26 14:55 CEST · Solari credits: CPU-only, no GPUs
 
 - **Solari (getsolari.com, organisers' "1 month of credits") has no GPUs.** Per docs.getsolari.com it sells
-  cloud Chrome browsers, Linux VMs and headless sandboxes on Firecracker-style microVMs: max **8 vCPU / 16 GB RAM**
+  cloud Chrome browsers, Linux VMs and headless sandboxes on Cloud Hypervisor microVMs: max **8 vCPU / 16 GB RAM**
   per machine, one region (us-west), max session 5 h (Starter) or 24 h (Professional). No GPU option in the
   docs, API reference or pricing page. It cannot run vLLM, training or GPU eval.
 - api.getsolari.com and docs are reachable from our cloud sandboxes (API returns 401 without a key).
