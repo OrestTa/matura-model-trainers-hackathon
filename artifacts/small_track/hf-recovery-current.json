@@ -1,0 +1,67 @@
+{
+  "repo": "orestta/matura-small-track-recovery",
+  "private": true,
+  "files": [
+    {
+      "path": "models/bielik15/adapters-real/closed_without_images/adapter-f16.gguf",
+      "bytes": 16135968,
+      "sha256": "ba3a3249822e8978303f9da15ce53d58db31b9399af991b133feba6d62a8c704",
+      "commit": "ec390c355b91ce947998646f6a537056bfe6be61",
+      "verified": true
+    },
+    {
+      "path": "models/bielik15/adapters-real/open_without_images/adapter-f16.gguf",
+      "bytes": 16135968,
+      "sha256": "f9cab931dcea3e03c2aa66f23475c1dd79da4432e3bd0f970c5c52d12983a77d",
+      "commit": "4aaed5a10c549dfe643cefc519b83f31e221c0e5",
+      "verified": true
+    },
+    {
+      "path": "router/router-real-2026-0926.json",
+      "bytes": 485357,
+      "sha256": "f2a63e81376f1da0a7324323b997c972151a4f7e1af002c108b7a8fd53f66312",
+      "commit": "76c9115e0b7810b26d4faa7740eb3f298cb42e36",
+      "verified": true
+    },
+    {
+      "path": "models/qwen35-4b/Qwen3.5-4B-Q3_K_M.gguf",
+      "bytes": 2293388448,
+      "sha256": "d6981ab4d77ba712b48ef69d69042d75b5e39b9dce5fb5a5b054fd08e06afb95",
+      "commit": "8d8624a48b0fb74537491b7de3f565bdc5da6e52",
+      "verified": true,
+      "upstream_repo": "unsloth/Qwen3.5-4B-GGUF",
+      "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "license": "apache-2.0",
+      "transfer": "HF server-side cross-repository copy"
+    },
+    {
+      "path": "models/bielik15/Bielik-1.5B-v3.0-Instruct-Q4_K_M.gguf",
+      "bytes": 972797408,
+      "sha256": "ea9cc250a6c65718c290fd963d8e3237b924ccfc7632f20a6127bba5904a50d9",
+      "commit": "8d8624a48b0fb74537491b7de3f565bdc5da6e52",
+      "verified": true,
+      "upstream_repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+      "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+      "license": "apache-2.0",
+      "transfer": "HF server-side cross-repository copy"
+    }
+  ],
+  "commit": "8d8624a48b0fb74537491b7de3f565bdc5da6e52",
+  "existing_projector_verified": {
+    "path": "models/qwen35-4b/mmproj-F16.gguf",
+    "bytes": 672423616,
+    "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864"
+  },
+  "trained_specialists_backed_up": [
+    "closed_without_images",
+    "open_without_images"
+  ],
+  "pending_clean_specialists": [
+    "closed_with_images",
+    "open_with_images",
+    "essay"
+  ],
+  "exam_data_or_keys_included": false,
+  "synthetic_trained_artifacts_included": false,
+  "documentation_commit": "0153d0683f3cf21be40b486b65745376bc213432"
+}

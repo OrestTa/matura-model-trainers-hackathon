@@ -39,8 +39,17 @@ Never claim a whole-run backup exists merely because a model was uploaded.
 
 ## Exact current model identities
 
-All sizes are bytes. A vision model includes its required projector. The user
-optimizes the largest deployed model; report total package size separately.
+All sizes are bytes. A vision model includes its required projector. The organizer
+clarification relayed on 2026-09-26 requires summing ALL deployed model weights
+within 8 GB + 10% margin (8,800,000,000 bytes). Optimize this aggregate, not the
+largest individual model. Count OCR and learned routers, distinct quantizations
+separately, and genuinely shared identical weight files once. Repeated sampling
+from the same weights increases compute but not packaged weight bytes.
+
+The standalone Q4 vision bundle totals 3,413,361,504 bytes; standalone Q3 totals
+2,965,812,064 bytes. Combining Q4 and Q3 with their one shared projector totals
+5,706,749,952 bytes BEFORE adding a learned router or OCR. These are package
+sizes, not claims that a combined routing configuration has passed evaluation.
 
 | Component | Pinned Hugging Face repository and revision | File | Bytes | SHA256 |
 |---|---|---|---:|---|
@@ -187,3 +196,14 @@ selected answers and errors, execution logs and judge bindings. Commit small
 manifests and recovery instructions to the own Git branch; copy large artifacts
 to the private model repository/owned volumes and verify remote hashes before
 retiring any unique copy. HF model backup does not include credentials or keys.
+
+
+## Verified private recovery additions (latest)
+
+Private repository `orestta/matura-small-track-recovery`, verified model commit `8d8624a48b0fb74537491b7de3f565bdc5da6e52`, now also contains Qwen3.5 Q3 (2,293,388,448 bytes), Bielik1.5 Q4 (972,797,408 bytes), two valid real-data text GGUF adapters (16,135,968 bytes each), and the current real-only router (485,357 bytes). Per-file hashes and commits are recorded in `artifacts/small_track/hf-recovery-current.json`. The required Qwen projector was reverified at672,423,616bytes against its knownSHA.
+
+The large additions used Hugging Face server-side cross-repository copy from pinned public upstream commits, then destinationLFS SHA/size checks. No paid compute was required: Modal refused its CPU recovery launch at the account spend limit. The replacement local transfer was stopped after server-side copies succeeded. Public base weights remain independently available upstream, while adapters and classifier now have private recovery copies.
+
+Paths: `models/qwen35-4b/Qwen3.5-4B-Q3_K_M.gguf`, `models/qwen35-4b/mmproj-F16.gguf`, `models/bielik15/Bielik-1.5B-v3.0-Instruct-Q4_K_M.gguf`, `models/bielik15/adapters-real/{closed_without_images,open_without_images}/adapter-f16.gguf`, and `router/router-real-2026-0926.json`. Use authenticated `hf download REPO PATH --revision COMMIT --local-dir recovery` for each needed file; never embed tokens in commands.
+
+At this snapshot clean essay and image adapters are pending. The older essay checkpoint that trained on the subsequently excluded Charlemagne exemplar is deliberately not uploaded. No exam data, keys, synthetic-trained model artifacts or invalid converted SFT checkpoints are included in these additions.
