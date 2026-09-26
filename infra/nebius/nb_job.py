@@ -112,6 +112,7 @@ set -uo pipefail
 pip install -q awscli trl peft datasets accelerate bitsandbytes hf_transfer pyyaml matplotlib pymupdf >/tmp/pip.log 2>&1 \
   || { tail -20 /tmp/pip.log; exit 1; }
 apt-get -qq update >/dev/null 2>&1 && apt-get -qq install -y git curl procps >/dev/null 2>&1
+command -v python >/dev/null || ln -sf "$(command -v python3)" /usr/local/bin/python  # vllm image has only python3
 mkdir -p /repo && aws s3 cp "s3://$NB_BUCKET/src/$NAME.tgz" - --only-show-errors | tar xz -C /repo || exit 1
 export REPO=/repo WORK=/work OUT=/work/out/$NAME HF_HOME=/work/hf STOP_WHEN_DONE=0 VENV=/nonexistent
 mkdir -p "$OUT"
