@@ -1,0 +1,319 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q4_K_M",
+  "judge": "Own ChatGPT Codex gpt-6-luna only",
+  "protocol": "local-luna-official-v3-imagegroups",
+  "adapter_handshake": {
+    "passed": true,
+    "method": "posthoc exact fullpath + remotefile SHA + local downloaded SHA compared against training manifest, before grading",
+    "adapters": [
+      {
+        "id": 0,
+        "route": "closed_without_images",
+        "exact_path": "/opt/codex-small-track/bielik-real-2050/adapters/closed_without_images/adapter-f16.gguf",
+        "sha256": "ba3a3249822e8978303f9da15ce53d58db31b9399af991b133feba6d62a8c704",
+        "bytes": 16135968,
+        "scale": 0.0
+      },
+      {
+        "id": 1,
+        "route": "open_without_images",
+        "exact_path": "/opt/codex-small-track/bielik-real-2050/adapters/open_without_images/adapter-f16.gguf",
+        "sha256": "f9cab931dcea3e03c2aa66f23475c1dd79da4432e3bd0f970c5c52d12983a77d",
+        "bytes": 16135968,
+        "scale": 0.0
+      },
+      {
+        "id": 2,
+        "route": "closed_with_images",
+        "exact_path": "/opt/codex-small-track/bielik-real-2050/adapters/closed_with_images/adapter-f16.gguf",
+        "sha256": "6c5231bc427b237e2fbd9fff56182b68b1880ef348f9106017ffef353b4ab2d9",
+        "bytes": 16135392,
+        "scale": 0.0
+      },
+      {
+        "id": 3,
+        "route": "open_with_images",
+        "exact_path": "/opt/codex-small-track/bielik-real-2050/adapters/open_with_images/adapter-f16.gguf",
+        "sha256": "39364c09119a70381a9bd772ab2fdab14bdcd07cf27f385ad1473da424cad0a3",
+        "bytes": 16135392,
+        "scale": 0.0
+      },
+      {
+        "id": 4,
+        "route": "essay",
+        "exact_path": "/opt/codex-small-track/bielik-real-2050/adapters/essay/adapter-f16.gguf",
+        "sha256": "0021aa278c2d6fb124b2b9ed4bd4aceff2f45b47c9dc92ac87423ca0f13d92ab",
+        "bytes": 16135392,
+        "scale": 0.0
+      }
+    ]
+  },
+  "runs": [
+    {
+      "label": "bielik15-five-base",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2102-bielik15-q4-five-real-adapters-offline/paired-baseline",
+      "aggregate_bytes": 982161371,
+      "protocol": "local-luna-official-v3-imagegroups",
+      "primary_provisional_points": 11,
+      "validated_tasks": 35,
+      "raw_point_coverage_complete": true,
+      "settled_lower_points": 11,
+      "unresolved_upper_points": 13,
+      "exact_points": null,
+      "official_max_points": 60,
+      "uncertain_or_missing_ids": [
+        "4.1",
+        "4.2"
+      ],
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 57.142857142857146,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 5,
+          "primary_provisional_percent": 45.45454545454545,
+          "settled_lower_points": 5,
+          "unresolved_upper_points": 5,
+          "exact_points": 5,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 8.695652173913043,
+          "settled_lower_points": 2,
+          "unresolved_upper_points": 4,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "4.1",
+            "4.2"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "failed_calls": [
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-five-real-pair-grades-v2/bielik15-five-base/calls/visual-4.1-4.2.state.json",
+          "error": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "4.1": {
+          "id": "4.1",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "The answer names the Lübeck and Magdeburg laws, but not the Hanseatic League (Hanza), the medieval trading association asked for.",
+          "rubric_reference": "0 pkt – błędna odpowiedź; 1 pkt requires the correct name.",
+          "viewed_images": []
+        },
+        "4.2": {
+          "id": "4.2",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "No actual resolution or justification is given; the response repeats source material and instructions. The rubric requires both a correct resolution and a justification referring to both sources.",
+          "rubric_reference": "0 pkt – odpowiedź niepełna lub błędna; 1 pkt requires correct resolution and justification based on both sources.",
+          "viewed_images": []
+        }
+      },
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false,
+      "answer_sha256": "cfef703a88da59823df96d77a8ad3ffc81835f28cd4c58185f4b26112dd386e7"
+    },
+    {
+      "label": "bielik15-five-trained",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2102-bielik15-q4-five-real-adapters-offline",
+      "aggregate_bytes": 1062839483,
+      "protocol": "local-luna-official-v3-imagegroups",
+      "primary_provisional_points": 9,
+      "validated_tasks": 33,
+      "raw_point_coverage_complete": true,
+      "settled_lower_points": 8,
+      "unresolved_upper_points": 12,
+      "exact_points": null,
+      "official_max_points": 60,
+      "uncertain_or_missing_ids": [
+        "4.1",
+        "4.2",
+        "13.1",
+        "13.2"
+      ],
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 25.0,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 1,
+          "exact_points": 1,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 57.142857142857146,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 4,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "13.2"
+          ]
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 3,
+          "primary_provisional_percent": 27.272727272727273,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 3,
+          "exact_points": 3,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 4.3478260869565215,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 4,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "4.1",
+            "4.2",
+            "13.1"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "failed_calls": [
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-five-real-pair-grades-v2/bielik15-five-trained/calls/visual-4.1-4.2.state.json",
+          "error": "AssertionError"
+        },
+        {
+          "state": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-five-real-pair-grades-v2/bielik15-five-trained/calls/visual-13.1-13.2.state.json",
+          "error": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "4.1": {
+          "id": "4.1",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Odpowiedź podaje prawo magdeburskie, czyli prawo lokacyjne, a nie nazwę związku handlowego. Wymagana odpowiedź to Hanza.",
+          "rubric_reference": "0 pkt – odpowiedź błędna; 1 pkt za prawidłową nazwę.",
+          "viewed_images": []
+        },
+        "4.2": {
+          "id": "4.2",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Kandydat nie podaje rozstrzygnięcia ani uzasadnienia. W odpowiedzi przytacza treść źródeł, ale nie wiąże jej z planem Elbląga ani nie wskazuje widocznego układu ulic i braku centralnego prostokątnego rynku.",
+          "rubric_reference": "1 pkt wymaga prawidłowego rozstrzygnięcia i uzasadnienia odwołującego się do obu źródeł; odpowiedź niepełna otrzymuje 0 pkt.",
+          "viewed_images": [
+            "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/data/small_track/official_mock_v1/images/Z04-S2.png"
+          ]
+        },
+        "13.1": {
+          "id": "13.1",
+          "earned_points": 0,
+          "uncertain": false,
+          "rationale": "Kandydat nie podał rozstrzygnięcia ani uzasadnienia. Rubryka wymaga wskazania planu, nazwy bitwy i odwołania do obu źródeł.",
+          "rubric_reference": "0 pkt za odpowiedź niepełną lub brak odpowiedzi; 1 pkt wymaga prawidłowego rozstrzygnięcia i pełnego uzasadnienia.",
+          "viewed_images": []
+        },
+        "13.2": {
+          "id": "13.2",
+          "earned_points": 1,
+          "uncertain": false,
+          "rationale": "Odpowiedź C jest prawidłowa; klucz wskazuje C.",
+          "rubric_reference": "1 pkt za prawidłową odpowiedź.",
+          "viewed_images": []
+        }
+      },
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false,
+      "answer_sha256": "c809b435bd546139095d859f6c1ca18f6edcf016cec17fe14c520e2ae21862a0"
+    }
+  ],
+  "trained_minus_matched_base": {
+    "primary_provisional_points": -2,
+    "conservative_interval_points": [
+      -5,
+      1
+    ],
+    "exact_points": null
+  },
+  "original_baseline_comparison": "Historical original Bielik1.5 baseline used different serving harness and local visual per-item protocol. Its difference from this matched base is not an adapter effect or controlled causal comparison.",
+  "ania_reference": "Bielik1.5 Ania15/55=27.27%,closed5/11,open9/29,essay1/15. Adapted inputs/55point subset differ; five-way unavailable; no comparable numerical delta.",
+  "interpretation": "Only saved Luna judgments aggregated. Image metadata failures remain unresolved; no assistant marks, no averaging or selecting highest essay repeat. Bounds are worst-case unresolved-point bounds, not confidence intervals.",
+  "cost": "Own Codex plan; monetary cost unknown. No Forgehand calls."
+}
