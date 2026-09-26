@@ -17,7 +17,7 @@ import yaml
 from .backends import Backend, GenerationParams, make_backend
 from .categories import Category
 from .classifier import Classifier, LLMClassifier, RuleClassifier
-from .prompts import build_messages, postprocess, strip_think
+from .prompts import build_messages, keyed_format, postprocess, strip_think
 from .rag import BM25Retriever, SQLiteRetriever, format_knowledge, load_retriever
 from .subtypes import DEFAULT_SUBTYPES, Profile, load_profiles, subtype_of
 
@@ -166,13 +166,14 @@ class Router:
         return adapter
 
     def _vote(self, greedy: str, messages: list[dict], adapter: Optional[str],
-              route: Route, category: Category) -> str:
-        """Majority over the greedy answer plus sampled ones; ties go to the greedy answer."""
+              route: Route, category: Category, keys: Optional[list] = None) -> str:
+        """Majority over the greedy answer plus sampled ones; ties go to the greedy answer.
+        With `keys` ("key: value" answer lines) the vote is per key."""
         params = dataclasses.replace(route.params, temperature=route.vote_temperature, top_p=0.95)
 
         def sample(_):
             try:
-                return postprocess(category, self.backend.chat(messages, adapter, params))
+                return postprocess(category, self.backend.chat(messages, adapter, params), keys)
             except Exception:  # noqa: BLE001 - a failed sample just doesn't vote
                 log.exception("vote sample failed")
                 return ""
@@ -180,6 +181,18 @@ class Router:
         # In parallel so vLLM batches them: sequential samples made closed items ~5x slower on stage.
         with ThreadPoolExecutor(max_workers=route.votes - 1) as pool:
             answers = [greedy, *pool.map(sample, range(route.votes - 1))]
+        if keys:
+            rows = [dict(re.findall(r"(?m)^(\S+): (\S+)$", a)) for a in answers]
+            rows = [r for r in rows if set(r) == set(keys)]
+            if not rows:
+                return greedy
+            first = rows[0]
+            out = []
+            for k in keys:
+                c = collections.Counter(r[k] for r in rows)
+                top = max(c.values())
+                out.append(f"{k}: {first[k] if c[first[k]] == top else c.most_common(1)[0][0]}")
+            return "\n".join(out)
         if category is Category.TRUE_FALSE:
             # Vote per statement: whole-string votes on 3-4 statements rarely reach a majority.
             rows = [re.findall(r"\b([PF])\b", a) for a in answers]
@@ -262,9 +275,15 @@ class Router:
             # Our eval rows keep the text-only placeholder where a picture sits; a vision model
             # that reads "niedostępna" tends to answer that it can't see the picture. Point it at
             # the attached image instead, numbered in the order they are sent.
+            # The organisers' exam.json marks each picture in source_text as "[Obraz: images/Z04-S2.png]":
+            # point it at the attached image with that file name (numbered in sending order).
             n = iter(range(1, 1000))
-            context = re.sub(r"\[ilustracja – niedostępna w wersji tekstowej\]",
-                             lambda _: f"[ilustracja {next(n)} – obraz dołączony do wiadomości]", context)
+            by_name = {Path(str(im)).name: i for i, im in enumerate(images, 1)}
+
+            def label(m):
+                i = by_name.get(Path(m.group(1)).name) if m.group(1) else None
+                return f"[ilustracja {i or next(n)} – obraz dołączony do wiadomości]"
+            context = re.sub(r"\[ilustracja – niedostępna w wersji tekstowej\]|\[Obraz: ([^\]\n]+)\]", label, context)
             if profile is not None and profile.ocr:
                 from . import ocr
                 if ocr.available():
@@ -285,9 +304,10 @@ class Router:
             adapter = None
             raw = self.backend.chat(messages, None, route.params)
 
-        answer = strip_think(raw) if mode == "raw" else postprocess(category, raw)
-        if mode != "raw" and route.votes > 1 and category in VOTABLE:
-            answer = self._vote(answer, messages, adapter, route, category)
+        keys = keyed_format(question) if mode != "raw" else []
+        answer = strip_think(raw) if mode == "raw" else postprocess(category, raw, keys)
+        if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
+            answer = self._vote(answer, messages, adapter, route, category, keys)
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,

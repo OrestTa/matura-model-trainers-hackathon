@@ -68,7 +68,10 @@ def build_messages(category: Category, question: str, context: str = "",
     paths sent as image parts (only for a vision model; the router decides)."""
     user = f"{context.strip()}\n\n{question.strip()}" if context.strip() else question.strip()
     system = SYSTEM_PROMPTS[category]
-    if fill_template and category not in _CLOSED:
+    keys = keyed_format(question) if fill_template else []
+    if keys:
+        system += keyed_instruction(keys)
+    elif fill_template and category not in _CLOSED:
         system += template_instruction(question)
     content = [{"type": "text", "text": user}, *(image_part(i) for i in images)] if images else user
     return [
@@ -119,13 +122,64 @@ def verdict_matches(answer: str, decision: str) -> bool:
     return all(hit(g) for g in gold)
 
 
-def postprocess(category: Category, text: str) -> str:
-    """Light normalisation so closed answers come out in a gradable shape.
+# The organisers' `answer_format` for closed items is one "key: value" line per statement / blank:
+# "1: P\n2: F\n3: P", "A: 1\nB: 1", "1: A\n2: A" (syntax only). run_exam.py shows it with the
+# values blanked ("1: …"); these lines are how the router knows the keys.
+_KEYED_LINE = re.compile(r"^\s*([0-9]{1,2}|[A-H])\s*:\s*(?:…|\.\.\.|[A-Z]|\d{1,2})\s*$")
+
+
+def keyed_format(question: str) -> list[str]:
+    """The keys of a "key: value" answer format at the end of the task ([] if none, or only one line)."""
+    keys = []
+    for ln in reversed(question.strip().splitlines()):
+        m = _KEYED_LINE.match(ln)
+        if not m:
+            break
+        keys.append(m.group(1))
+    keys.reverse()
+    return keys if len(keys) >= 2 and len(set(keys)) == len(keys) else []
+
+
+def keyed_instruction(keys: list[str]) -> str:
+    return ("\n\nOdpowiedz wyłącznie w formacie z karty odpowiedzi: po jednym wierszu „klucz: odpowiedź” "
+            f"dla kluczy {', '.join(keys)}, w tej kolejności, bez komentarzy, np. „{keys[0]}: …”.")
+
+
+_VAL = r"(prawda|fałsz|[A-Z]\b|\d{1,2}\b)"
+
+
+def conform_keyed(text: str, keys: list[str]) -> str:
+    """The answer as "key: value" lines, one per key. Reads "1: P", "1. P", "1) P", "**1** – P"; falls
+    back to the values in order when the keys aren't written. Unparseable answers stay as they are."""
+    text = strip_think(text).replace("*", "")
+    found = {}
+    for k in keys:
+        m = (re.search(rf"(?m)^\s*(?:zdanie\s+|stwierdzenie\s+)?{re.escape(k)}\s*[.:)\-–—]*\s*" + _VAL, text, re.I)
+             or re.search(rf"(?:^|[\s,;(]){re.escape(k)}\s*[.:)\-–—]+\s*" + _VAL, text, re.I))
+        if m:
+            found[k] = m.group(1)
+    if len(found) < len(keys):
+        # "P, F, P" or "A B": the values in order, once the key labels are dropped.
+        vals = re.findall(r"\b(prawda|fałsz|[A-H]|P|F|\d{1,2})\b",
+                          re.sub(r"(?:^|(?<=[\s,;(]))(?:\d{1,2}|[A-H])\s*[.:)\-–—]+", " ", text), re.I)
+        if len(vals) == len(keys):
+            found = dict(zip(keys, vals))
+    if len(found) < len(keys):
+        return text.strip()
+    norm = {"prawda": "P", "fałsz": "F"}
+    return "\n".join(f"{k}: {norm.get(found[k].lower(), found[k].upper())}" for k in keys)
+
+
+def postprocess(category: Category, text: str, keys: list[str] | None = None) -> str:
+    """Light normalisation so closed answers come out in a gradable shape. With `keys` (a
+    "key: value" answer format), the answer becomes exactly those lines.
 
     Only rewrites short answers: a long one usually means the question was misrouted
     (e.g. a table to fill in), and shrinking it to letters would throw the answer away.
     """
     text = strip_think(text)
+    if keys:
+        return conform_keyed(text, keys)
     if len(text) > 40 and category in (Category.CLOSED_CHOICE, Category.CHRONOLOGY):
         return text
     if category is Category.CLOSED_CHOICE:

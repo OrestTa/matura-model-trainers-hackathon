@@ -28,6 +28,10 @@ if [ ! -x "${LLAMA_SERVER:-}" ]; then
   unset LLAMA_SERVER; source infra/jobs/common.sh && ensure_llama_server || { step "no llama-server"; exit 1; }
 fi
 
+# The llama.cpp images keep libllama*.so next to the binary (/app), outside the loader path.
+export LD_LIBRARY_PATH="$(dirname "$LLAMA_SERVER"):${LD_LIBRARY_PATH:-}"
+"$LLAMA_SERVER" --version >/dev/null 2>&1 || { "$LLAMA_SERVER" --version; step "llama-server doesn't start"; exit 1; }
+
 step "downloading $MODEL"
 export HF_HUB_ENABLE_HF_TRANSFER=1
 read -r GGUF MMPROJ < <(python3 - "$MODEL" <<'PY'

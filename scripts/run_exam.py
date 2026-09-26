@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -40,10 +41,24 @@ MAX_BYTES = 1 << 20
 MAX_ANSWER_CHARS = 100_000
 
 
+def answer_format_text(fmt: str) -> str:
+    """The item's answer_format as the model sees it. The organisers' closed formats are syntax
+    examples with values ("1: P\n2: F\n3: P", "A: 1\nB: 1", "A"): the values are blanked so the model
+    can't copy them, and the "key: …" lines tell the router the keys (prompts.keyed_format)."""
+    fmt = (fmt or "").strip()
+    lines = fmt.splitlines()
+    keyed = [re.match(r"^\s*(\S{1,2})\s*:\s*\S{1,3}\s*$", ln) for ln in lines]
+    if len(lines) >= 2 and all(keyed):
+        return "Format odpowiedzi (tylko składnia, nie rozwiązanie):\n" + "\n".join(f"{m.group(1)}: …" for m in keyed)
+    if re.fullmatch(r"[A-H](, ?[A-H])*", fmt):
+        return "Format odpowiedzi: tylko litera (litery) wybranej odpowiedzi."
+    return fmt
+
+
 def item_question(item: dict) -> str:
     """The task text plus the answer-sheet lines, unless the question already has them."""
     q = (item.get("question") or "").strip()
-    fmt = (item.get("answer_format") or "").strip()
+    fmt = answer_format_text(item.get("answer_format") or "")
     if fmt and fmt not in q:
         q = f"{q}\n{fmt}"
     return q
