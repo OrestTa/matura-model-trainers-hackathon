@@ -7,6 +7,18 @@ says organisers accept up to 8.9 GB, measured on the base model before fine-tuni
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 12:25 UTC: trained-on papers kept out of the headline (2444ab1, 8e354ca, 4ea128b)
+
+- 2444ab1 turns the non-headline papers (formuła 2015 May 2015-2024, the 2022 demo, the Jan 2026 mock) into
+  adapter training data; the held-out headline papers are excluded by id and by a 5-word-shingle overlap check
+  on question/context. OK. 8e354ca drops formuła 2015 items that repeat a formuła 2023 task. OK.
+- Problem: matura_all.jsonl still contains those trained-on papers as eval rows, so after training a score on
+  the full set mixes in contaminated items. Fixed in 4ea128b: evaluate.summarise computes all headline numbers
+  on the four held-out May 2023-2026 papers only, and reports the rest under `trained_on_papers` with a
+  "contaminated" note. A set with no held-out paper gets a `warning`.
+- Rule for every agent: the headline number is always data/eval/matura.jsonl (May 2023-2026). Never quote a
+  matura_all.jsonl score after any adapter training as a result.
+
 ## 2026-09-26 12:10 UTC: b914f5c, fcdb505
 
 - b914f5c (FINDINGS: one Forgehand GPU session per team): OK.
