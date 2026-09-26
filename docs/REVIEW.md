@@ -6,6 +6,14 @@ Rules we review against (from docs/hackathon-brief.pdf): each model <= 8 GB on d
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 11:50 UTC: job-status commits (a33e3f7..7a07142)
+
+OK. docs/STATUS.md job board plus infra/jobs/status.py; fh_job.py and modal_job.py record start/finish.
+Note for readers of the board: train-bielik-l40s (started ~10:55) runs the training code from BEFORE
+98820c8, so its adapters use full-sequence loss and the old leak filter, and Bielik-11B is 22 GB on disk as
+run (over the 8 GB limit, see above). labqoat-baselines runs without a judge, so its `pct` covers only
+auto-scored rows (~60 of 154); use `pct_all_rows` from c5eefd2 on to compare with an exam score.
+
 ## 2026-09-26 11:40 UTC: data, training, infra and the Grok bot's commit (3c64d6d, 4bff7c4, 94982dc, 331a706, 73ee9c6, 43ea40f, a1c057e..2a7743c, 857369b, 1212826, eb0209d, 9081fad)
 
 Checked and fine: fetch_matura output is byte-identical to the shared eval set; answer keys parse correctly
