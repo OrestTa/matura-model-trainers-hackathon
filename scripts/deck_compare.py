@@ -19,7 +19,7 @@ from deck_breakdown import breakdown  # noqa: E402
 DECK = {
     # gemma-4-12b-vision.html: bf16, original page images, up to 8,192 thinking tokens (16,384 essay)
     # no text-mode (/55) run of Gemma 4 12B in the deck
-    "gemma-4-12b": {"mode": "images /60", "closed": 10, "open": 24, "essay": 12, "text28": 24, "text30": 26, "total": 46,
+    "gemma-4-12b": {"mode": "bf16 24 GB, unquantised, images /60", "closed": 10, "open": 24, "essay": 12, "text28": 24, "text30": 26, "total": 46,
                     "text55": None},
     # bielik-4-5b page: text mode /55
     "bielik-4.5b": {"mode": "text /55", "closed": 6, "open": 15, "essay": 2, "text28": 12, "text30": 14, "total": 23,
