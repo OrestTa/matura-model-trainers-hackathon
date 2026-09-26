@@ -3,6 +3,15 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 20:15 CEST · Gemma 4: thinking ON wins, 169/240 vs 126/240 (best score)
+
+Claude-graded over the four held-out papers (grading thread, 316a39f / 997f811): Gemma 4 12B QAT raw with
+thinking on (llama-server default, 2000-token cap) **169/240 = 70.4%**; the same with thinking off
+**126/240 = 52.5%**, lower on every paper. This reverses the 18:30 default: the empty answers were a
+budget problem, not a reason to turn thinking off. The exam key is now `gemma4-12b-think` (+2000 tokens
+per answer), and every LoRA is judged with thinking on (train.sh `SCORE_MODELS=gemma4-12b-think`, 05b6211).
+Ship bar for a LoRA: ≥172/240. Weakest part: essay 31/60.
+
 ## 2026-09-26 20:05 CEST · smallest-model thread: stood down (Orest: focus on best score)
 
 State of category 3 ("Mały, ale wariat") at stand-down:

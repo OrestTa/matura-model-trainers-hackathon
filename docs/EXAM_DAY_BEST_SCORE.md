@@ -9,8 +9,9 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
   (6.98 GB) + `mmproj-gemma-4-12b-it-qat-q4_0.gguf` (0.18 GB) = **7.16 GB**, under the 8.0 GB base
   limit. Key `gemma4-12b` in `configs/models.yaml`. The exam's pictures are sent to the model.
 - **Server:** llama.cpp `llama-server` (CUDA build), 16 slots, router on :8080.
-- **Thinking:** off (`enable_thinking: false`, main ≥ 6359957). With it on, llama-server hides the
-  thought in `reasoning_content` and short answers come back empty (docs/FINDINGS.md, 18:30 CEST).
+- **Thinking: ON**, key `gemma4-12b-think` (+2000 tokens per answer for the thought). Graded over the four
+  held-out papers: thinking on 169/240 (70.4%) vs thinking off 126/240 (grader, 997f811). The token
+  budget must cover the thought, or the answer comes back empty (docs/FINDINGS.md, 18:30 CEST).
 - **Mode:** `MODE=<raw|routed|rag>`, the best graded one of the runs below. No LoRA unless it
   beats that by ≥3 points over the four held-out papers.
 
@@ -19,7 +20,8 @@ Status: **model frozen, mode pending the graded held-out runs** (see "Decision" 
 | run | May 2023 mock | 4 held-out papers | note |
 |---|---|---|---|
 | gemma4-12b raw, thinking on by accident (16:17 CEST) | 41/60 = 68.3% | – | 6 empty answers (7 pts) from the thinking bug |
-| gemma4-12b raw, thinking off | pending | pending | |
+| gemma4-12b raw, thinking on (server default, 2000 cap) | – | **169/240 = 70.4%** | closed 29/38, open 109/142, essay 31/60 (316a39f) |
+| gemma4-12b raw, thinking off (g4r0) | – | 126/240 = 52.5% | worse on all four papers (997f811) |
 | gemma4-12b routed, thinking off | pending | pending | |
 | gemma4-12b-think routed | pending | pending | +2000 tokens per answer, slower |
 | gemma4-12b rag (best of the two above) | pending | pending | |
@@ -39,15 +41,15 @@ bash -c 'source infra/jobs/common.sh && ensure_llama_server'   # CUDA llama-serv
 python -c "from huggingface_hub import hf_hub_download as d; \
   [print(d('google/gemma-4-12B-it-qat-q4_0-gguf', f)) for f in \
   ('gemma-4-12b-it-qat-q4_0.gguf', 'mmproj-gemma-4-12b-it-qat-q4_0.gguf')]"
-MODEL=gemma4-12b MODE=<mode> PAPERS=2023-05 bash infra/jobs/rehearsal.sh   # dress rehearsal, ~10 min
+MODEL=gemma4-12b-think MODE=<mode> PAPERS=2023-05 bash infra/jobs/rehearsal.sh   # dress rehearsal, ~10 min
 ```
 
 ## On stage
 
 ```bash
 export LD_LIBRARY_PATH=$PWD/work/llama.cpp/build/bin:${CUDA_LIB:-/workspace/work/cuda/lib}
-ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b &        # waits until ready
-python scripts/run_exam.py <exam package dir> --model gemma4-12b --mode <mode> --concurrency 16 -o answers.json
+ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &        # waits until ready
+python scripts/run_exam.py <exam package dir> --model gemma4-12b-think --mode <mode> --concurrency 16 -o answers.json
 ```
 
 `ADAPTERS=/nonexistent` keeps any stray trained LoRA out. Check before uploading:
@@ -60,6 +62,6 @@ print(len(a), "answers,", len(empty), "empty:", empty)
 EOF
 ```
 
-Empty answers mean thinking leaked back on: re-run just those items after checking the request
-carries `chat_template_kwargs.enable_thinking: false`. The essay must name a topic number and have
+Empty answers mean the thought used up the token budget: re-run those items with a bigger
+`think_tokens`. The essay must name a topic number and have
 ≥300 words.
