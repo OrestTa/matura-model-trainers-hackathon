@@ -121,6 +121,18 @@ def main():
     if args.vision:
         from transformers import AutoProcessor
         extra["processing_class"] = AutoProcessor.from_pretrained(spec.get("train_hf_id") or spec["hf_id"])
+        if args.think:
+            # TRL renders the processor's template itself: make thinking the default so the system turn gets
+            # <|think|> and the assistant's reasoning_content goes into the thought channel of the target.
+            proc = extra["processing_class"]
+            for obj in (proc, getattr(proc, "tokenizer", None)):
+                t = getattr(obj, "chat_template", None)
+                if t:
+                    assert "enable_thinking | default(false)" in t, "Gemma 4 template changed: can't turn thinking on"
+                    obj.chat_template = t.replace("enable_thinking | default(false)", "enable_thinking | default(true)")
+            probe = proc.apply_chat_template(ds[0]["prompt"] + ds[0]["completion"], tokenize=False)
+            assert "<|think|>" in probe and "<|channel>thought" in probe, "thinking target not rendered"
+            print("think-format sample:", repr(probe[-400:]))
         # Whole exam pages are big images: keep them uncut, never truncate the image tokens.
         cfg_kwargs["max_length"] = None
         trainer_args = SFTConfig(**cfg_kwargs)

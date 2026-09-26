@@ -24,6 +24,8 @@ from .subtypes import DEFAULT_SUBTYPES, Profile, load_profiles, subtype_of
 
 log = logging.getLogger(__name__)
 
+BASE_ONLY = "__base__"   # adapter name meaning "no LoRA for this request" (LORA_NO_ESSAY=1)
+
 # Essay length (Orest 22:14 CEST): CKE scores an essay under 300 words 0, and the base writes 305-369.
 # ESSAY_TARGET_WORDS=550 asks for that length in the essay prompt; ESSAY_MIN_WORDS=350 re-asks a shorter one.
 ESSAY_TARGET_TEXT = "Wypracowanie powinno mieć około {} słów (minimum 300; krótsze otrzymuje 0 punktów)."
@@ -335,6 +337,10 @@ class Router:
                 adapter = None
         else:
             adapter = None
+        if category == Category.ESSAY and os.environ.get("LORA_NO_ESSAY") == "1":
+            # Essays go to the untouched base even when the server applies a LoRA to every request
+            # (docs/LORA_ROOT_CAUSE.md: every LoRA so far broke the essay). Backend: all LoRA scales 0.
+            adapter = BASE_ONLY
         prompt_cat = Category.GENERAL if mode == "raw" else category
         use_rag = mode in ("adapters", "rag") or (profile is not None and profile.rag)
         knowledge, retrieved = self.knowledge(category, question, context) if use_rag else ("", ())

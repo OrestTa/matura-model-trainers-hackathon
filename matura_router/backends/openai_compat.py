@@ -49,6 +49,7 @@ class OpenAICompatBackend(Backend):
         # to switch off Qwen3's thinking mode.
         self.extra_body = extra_body or {}
         self._lora_probed = adapter_mode == "llamacpp"
+        self._all_lora_ids: Optional[list] = None
 
     def _probe_llamacpp_loras(self) -> None:
         """A llama-server started with --lora-init-without-apply (serve_exam.sh LORA_ROUTED=1) holds
@@ -68,6 +69,14 @@ class OpenAICompatBackend(Backend):
             self.lora_ids = {Path(a["path"]).parent.name: a["id"] for a in loras}
             log.info("llama.cpp routed LoRAs: %s", self.lora_ids)
 
+    def _list_lora_ids(self) -> list:
+        try:
+            root = self.base_url[:-3] if self.base_url.endswith("/v1") else self.base_url
+            with urllib.request.urlopen(root + "/lora-adapters", timeout=10) as r:
+                return [a["id"] for a in json.loads(r.read())]
+        except Exception:  # noqa: BLE001 - vLLM: the base model name already means no adapter
+            return []
+
     def _post(self, path: str, body: dict) -> dict:
         req = urllib.request.Request(
             self.base_url + path, data=json.dumps(body).encode(),
@@ -84,6 +93,12 @@ class OpenAICompatBackend(Backend):
                 "top_p": params.top_p, **self.extra_body}
         for k, v in (params.extra or {}).items():  # per-request settings win over the backend's
             body[k] = {**body[k], **v} if isinstance(v, dict) and isinstance(body.get(k), dict) else v
+        if adapter == "__base__":   # router.BASE_ONLY: switch every loaded LoRA off for this request
+            if self._all_lora_ids is None:
+                self._all_lora_ids = self._list_lora_ids()
+            if self._all_lora_ids:
+                body["lora"] = [{"id": i, "scale": 0.0} for i in self._all_lora_ids]
+            return body
         if self.adapter_mode == "model_name":
             if adapter:
                 body["model"] = adapter
