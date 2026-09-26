@@ -1,0 +1,88 @@
+{
+  "_readme": "Source for the three-track results page. Add a row to `results` whenever a score lands, then run `python scripts/build_tracks_page.py` (writes results/tracks/index.html). Scores from runs/baselines/*/*/summary.json and results/**/summary.json are picked up automatically. eval: headline = held-out May 2023-2026 papers with a judge (240 pts); headline-auto = same papers, auto-scorable items only, no judge; contaminated = older papers (matura_all.jsonl), also used for training; dev = not the matura (MCQ sets, practice geography). No IPs, tokens or account IDs here.",
+  "updated": "2026-09-26 13:25 UTC",
+  "tracks": [
+    {
+      "id": "score",
+      "name": "Best matura score",
+      "short": "Score",
+      "goal": "Highest final exam result with a base of at most 8.0 GB and a trained model of at most 8.8 GB on disk.",
+      "thread": "Win best matura score",
+      "state": "waiting",
+      "status": "Head-to-head of Bielik-11B v2.3, Bielik-11B v3 AWQ, Gemma-4-12B QAT and Qwen3.5-9B with a local judge is queued for the shared L40S. The exam sends real pictures (85 of 154 held-out items), so vision-capable bases are now in scope.",
+      "next": [
+        "Run score-shootout on the held-out papers with the Qwen3-14B-AWQ judge",
+        "Decide the GGUF serving path (llama.cpp in serve_exam.sh or an AWQ build) before Gemma-4 or Qwen3.5 can be the exam model",
+        "Retarget DAPT and SFT to the winning base"
+      ],
+      "blockers": ["HF_TOKEN in Forgehand Secrets to train the gated bf16 Bielik v3"],
+      "candidates": [
+        {"model": "Bielik-11B v3.0 Instruct AWQ", "disk_gb": 6.19, "note": "ungated, vLLM-native"},
+        {"model": "Gemma-4-12B-it QAT Q4_0 GGUF", "disk_gb": 6.98, "note": "reads pictures, llama.cpp only"},
+        {"model": "Qwen3.5-9B Q6_K GGUF", "disk_gb": 7.46, "note": "llama.cpp only"},
+        {"model": "Bielik-11B v2.3 Instruct NF4", "disk_gb": 6.7, "note": "current DAPT/SFT target"}
+      ],
+      "job_match": "score-shootout|router-ablation|baselines-0926|baselines-all3|Best matura score"
+    },
+    {
+      "id": "progress",
+      "name": "Best progress",
+      "short": "Progress",
+      "goal": "Largest gain of the trained model over the untouched base model, both scored the same way.",
+      "thread": "Win best progress",
+      "state": "waiting",
+      "status": "Proposed base is the pretrained, non-chat Bielik-11B-v2 (about 6.7 GB in NF4): weak raw, strong once we do DAPT, SFT and RAG ourselves. 953 Claude-written training items are on main. Raw base eval, DAPT and SFT are queued behind the GPU.",
+      "next": [
+        "Score the untouched Bielik-11B-v2 raw on the held-out papers (progress-base-raw)",
+        "DAPT on the filtered Polish history corpus (progress-dapt)",
+        "SFT with past papers and synthetic items, then raw/routed/adapters/rag evals (progress-sft)"
+      ],
+      "blockers": ["Organisers: one base/trained pair per team for all prizes, or one per prize?"],
+      "candidates": [
+        {"model": "Bielik-11B-v2 (pretrained) NF4", "disk_gb": 6.7, "note": "proposed base, no chat tuning"},
+        {"model": "Qwen2.5-3B-Instruct", "disk_gb": 6.2, "note": "base currently registered on the site"}
+      ],
+      "job_match": "progress-|dapt|train-|Best progress"
+    },
+    {
+      "id": "small",
+      "name": "Mały, ale wariat",
+      "short": "Smallest ≥35%",
+      "goal": "Smallest model on disk that scores at least 35%.",
+      "thread": "Win smallest model",
+      "state": "running",
+      "status": "Nine tiny models (270M to 4.6B) are scoring on the shared GPU, raw and routed; Qwen3-0.6B is also scoring on CPU. A Wikipedia knowledge base for RAG is being built. The only result at or above 35% so far is Qwen2.5-7B AWQ (5.6 GB), on the auto-scored subset.",
+      "next": [
+        "Finish small-baselines and rank by size",
+        "Boost the best tiny model with RAG, SFT and prompt tricks",
+        "Try small vision models (Gemma-3-4B, Qwen2.5-VL-3B) since the exam sends pictures"
+      ],
+      "blockers": [],
+      "candidates": [
+        {"model": "Gemma-3-270M", "disk_gb": 0.29, "note": ""},
+        {"model": "Qwen3-0.6B", "disk_gb": 0.64, "note": ""},
+        {"model": "Qwen2.5-0.5B", "disk_gb": 0.68, "note": ""},
+        {"model": "Gemma-3-1B", "disk_gb": 1.07, "note": ""},
+        {"model": "Llama-3.2-1B", "disk_gb": 1.32, "note": ""},
+        {"model": "Bielik-1.5B v3", "disk_gb": 1.68, "note": "Polish"},
+        {"model": "Qwen3-1.7B", "disk_gb": 1.83, "note": ""},
+        {"model": "Qwen2.5-1.5B", "disk_gb": 1.89, "note": ""},
+        {"model": "Bielik-4.5B v3", "disk_gb": 4.9, "note": "Polish, gated"}
+      ],
+      "job_match": "small-|smallest|cpu"
+    }
+  ],
+  "results": [
+    {"id": "g-7b-awq", "model": "Qwen2.5-7B-Instruct-AWQ", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 37.6, "pct_text_only": 38.9, "earned": 26.33, "max": 70, "disk_gb": 5.58, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:56", "note": "Best legal result so far. Not the untouched base: router prompts on."},
+    {"id": "g-7b-bf16", "model": "Qwen2.5-7B-Instruct bf16", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 37.1, "pct_text_only": 40.1, "earned": 26.0, "max": 70, "disk_gb": 15.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:13", "note": "Over the 8.0 GB limit; research signal only."},
+    {"id": "g-3b-base", "model": "Qwen2.5-3B-Instruct", "stage": "base", "method": "router prompts", "eval": "headline-auto", "pct": 26.7, "pct_text_only": 27.4, "earned": 18.67, "max": 70, "disk_gb": 6.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:13", "note": "Base registered on the site."},
+    {"id": "g-3b-hist-v2", "model": "Qwen2.5-3B + history-v2 LoRA", "stage": "trained", "base": "g-3b-base", "method": "router prompts + LoRA", "eval": "headline-auto", "pct": 28.3, "pct_text_only": 31.3, "earned": 19.83, "max": 70, "disk_gb": 6.3, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:56", "note": "Small lift over the 3B base."},
+    {"id": "g-3b-modal-v3", "model": "Qwen2.5-3B + modal-v3 LoRA", "stage": "trained", "base": "g-3b-base", "method": "router prompts + LoRA", "eval": "headline-auto", "pct": 17.1, "pct_text_only": 23.0, "earned": 12.0, "max": 70, "disk_gb": 6.3, "by": "Grok bot", "verified": false, "date": "2026-09-26 12:13", "note": "Regression against the base."},
+    {"id": "g-mcq-7b-base", "model": "Qwen2.5-7B-Instruct", "stage": "base", "method": "90-question history MCQ", "eval": "dev", "pct": 76.7, "disk_gb": 15.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 11:42", "note": "Not matura papers."},
+    {"id": "g-mcq-7b-fh", "model": "Qwen2.5-7B + fh LoRA", "stage": "trained", "base": "g-mcq-7b-base", "method": "90-question history MCQ", "eval": "dev", "pct": 100.0, "disk_gb": 15.4, "by": "Grok bot", "verified": false, "date": "2026-09-26 11:43", "note": "Trained on the same questions; contaminated."},
+    {"id": "g-mcq-3b-base", "model": "Qwen2.5-3B-Instruct", "stage": "base", "method": "90-question history MCQ", "eval": "dev", "pct": 56.7, "disk_gb": 6.2, "by": "Grok bot", "verified": false, "date": "2026-09-26", "note": "Not matura papers."},
+    {"id": "g-mcq-3b-v2", "model": "Qwen2.5-3B + history-v2 LoRA", "stage": "trained", "base": "g-mcq-3b-base", "method": "90-question history MCQ", "eval": "dev", "pct": 75.6, "disk_gb": 6.3, "by": "Grok bot", "verified": false, "date": "2026-09-26", "note": "Trained on the same questions; contaminated."},
+    {"id": "g-geo-3b-bare", "model": "Qwen2.5-3B-Instruct", "stage": "base", "method": "practice exam (geography), bare", "eval": "dev", "pct": 26.7, "earned": 4, "max": 15, "disk_gb": 6.2, "by": "Grok bot", "verified": false, "date": "2026-09-26", "note": "Practice subject was geography."},
+    {"id": "g-geo-3b-tuned", "model": "Qwen2.5-3B + geo harness", "stage": "trained", "base": "g-geo-3b-bare", "method": "practice exam (geography), filed", "eval": "dev", "pct": 100.0, "earned": 15, "max": 15, "disk_gb": 6.2, "by": "Grok bot", "verified": false, "date": "2026-09-26 10:45", "note": "Official practice leaderboard; deterministic rules did most of the work."}
+  ]
+}
