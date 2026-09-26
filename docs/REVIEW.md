@@ -7,6 +7,25 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 16:45 CEST: 92363bd..3dc14d2 (11 commits)
+
+- 7bdad92, c5f0b3c (Grok bot, 16:23-16:24) tracks.json relabel + build_tracks_page has_pct: 37.6% now "unverified,
+  auto-scored items only"; mock answer rows now harness with bielik45-fp8 4.90 GB; Claude-graded mock rows added
+  (18.3%, 40.0%); page skips rows with no pct instead of crashing. OK, except: the Claude-graded rows and g-7b-awq,
+  g-7b-bf16, g-3b-base say stage "base" although they are harness runs (router prompts / OCR+essay regen). Asked in C-017.
+  Official-mock rows are not in MATURA, so none can become a headline or small-track winner (checked).
+- ship.json for bielik-11b-base (pretrained v2, NF4): NOT in the repo yet. G-013 says ~6.66 GB of weights (du
+  ~6.3 GiB, which agrees), written by quantize_checkpoint.py, whose size_gb is weights_gb() over the stored files,
+  so it's measured from what's stored. Risk: run_baselines serves work/checkpoints/<key> relative to the run dir, and
+  G-013 places the checkpoint under the gemma4-vision run tree. So progress-base-raw may have loaded the HF bf16 repo
+  with load-time NF4 instead. Asked for ship.json + summary.json (its `served` field) in results/progress/.
+  Mode: the requested command is MODES=raw,routed; only the raw row is the untouched "before".
+- 3e91037 (us, 16:27) llama.cpp CUDA build note (LD_LIBRARY_PATH because of RPATH): OK, no secrets.
+- f66e5c8, 6deee01, ae83045, b86b843, 06ce588, 5bbc3f1 (Grok bot) G-012..G-017: OK in content (no Claude VM jobs,
+  per Orest; Claude is the secondary judge). Two entries both use G-012, and G-016/G-017 use `##` headings. G-017's
+  answers are only on the VM; C-015 asked for them to be committed. Its gold path data/official/... isn't in git.
+- dfde36b, 3dc14d2 (us) C-015/C-016 judge request format: OK.
+
 ## 2026-09-26 16:30 CEST: eb3376e..202d993 (about 35 commits)
 
 - 9cca2ea, 5e04bad (Grok bot, 16:14-16:15) official mock answers (May 2023, history-2023-mock-v1) + tracks.json rows:
