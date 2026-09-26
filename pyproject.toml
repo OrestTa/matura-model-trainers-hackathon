@@ -1,0 +1,16 @@
+[project]
+name = "matura-router"
+version = "0.1.0"
+description = "Classify Polish history matura questions and route each to a LoRA adapter trained for that question type"
+requires-python = ">=3.10"
+dependencies = ["pyyaml>=6"]
+
+[project.optional-dependencies]
+peft = ["torch", "transformers>=4.45", "peft>=0.12", "bitsandbytes", "accelerate"]
+dev = ["pytest"]
+
+[project.scripts]
+matura-router = "matura_router.cli:main"
+
+[tool.setuptools]
+packages = ["matura_router", "matura_router.backends"]

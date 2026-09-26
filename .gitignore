@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+# Model weights, adapters and exam data stay out of the repo (size + copyright).
+adapters/
+models/
+data/
+*.gguf
+*.safetensors
+runs/

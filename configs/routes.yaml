@@ -1,0 +1,29 @@
+# Which adapter answers which question type, and how.
+#
+# One base model is loaded once; each category swaps in its own LoRA adapter.
+# `adapter: null` (or an adapter the backend doesn't have yet) uses the base model,
+# so this config works before any adapter is trained.
+
+backend:
+  kind: openai                 # openai | peft | echo
+  base_url: http://localhost:8000/v1
+  base_model: base             # served model name (vLLM) or HF id / path (peft)
+  adapter_mode: model_name     # model_name (vLLM) | llamacpp
+  # llamacpp_lora_ids: {closed_choice: 0, true_false: 1, ...}
+  # For kind: peft, list adapter dirs:
+  # adapters: {closed_choice: adapters/closed_choice, essay: adapters/essay}
+
+classifier:
+  min_score: 1.0      # rule score below this -> base model
+  min_margin: 0.5     # top score must beat runner-up by this -> else base model
+  llm_fallback: false # ask the base model for a label when the rules are unsure
+
+routes:
+  closed_choice:   {adapter: closed_choice,   max_tokens: 16,   temperature: 0.0}
+  true_false:      {adapter: true_false,      max_tokens: 48,   temperature: 0.0}
+  matching:        {adapter: matching,        max_tokens: 64,   temperature: 0.0}
+  chronology:      {adapter: chronology,      max_tokens: 32,   temperature: 0.0}
+  source_analysis: {adapter: source_analysis, max_tokens: 256,  temperature: 0.0}
+  short_open:      {adapter: short_open,      max_tokens: 192,  temperature: 0.0}
+  essay:           {adapter: essay,           max_tokens: 1500, temperature: 0.3}
+  general:         {adapter: null,            max_tokens: 512,  temperature: 0.0}

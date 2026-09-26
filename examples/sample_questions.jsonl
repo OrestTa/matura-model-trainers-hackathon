@@ -1,0 +1,10 @@
+{"id": "q1", "question": "Zaznacz poprawne dokończenie zdania. Unia w Krewie została zawarta w roku\nA. 1385\nB. 1410\nC. 1569\nD. 1611", "category": "closed_choice"}
+{"id": "q2", "question": "Oceń prawdziwość poniższych zdań. Zaznacz P, jeśli zdanie jest prawdziwe, albo F, jeśli jest fałszywe.\n1. Konstytucję 3 maja uchwalono w 1791 roku.\n2. Bitwa pod Grunwaldem odbyła się w 1466 roku.", "category": "true_false"}
+{"id": "q3", "question": "Uporządkuj chronologicznie wydarzenia, zaczynając od najwcześniejszego.\nA. hołd pruski\nB. chrzest Polski\nC. unia lubelska\nD. koronacja Bolesława Chrobrego", "category": "chronology"}
+{"id": "q4", "question": "Przyporządkuj każdemu władcy wydarzenie z jego panowania.\n1. Kazimierz Wielki\n2. Stefan Batory\nA. założenie Akademii Krakowskiej\nB. wojna z Moskwą o Inflanty", "category": "matching"}
+{"id": "q5", "question": "Na podstawie tekstu źródłowego podaj imię i nazwisko autora oraz wyjaśnij, do jakiego wydarzenia się odnosi.", "category": "source_analysis", "context": "Tekst źródłowy: „Wszelka władza w społeczności ludzkiej początek swój bierze z woli narodu”."}
+{"id": "q6", "question": "Podaj nazwę dynastii, która panowała w Polsce po śmierci Kazimierza Wielkiego i Ludwika Węgierskiego.", "category": "short_open"}
+{"id": "q7", "question": "Napisz wypracowanie na temat: Oceń znaczenie reform sejmu czteroletniego dla ustroju Rzeczypospolitej.", "category": "essay"}
+{"id": "q8", "question": "Na podstawie mapy wyjaśnij, dlaczego po II rozbiorze granica Rzeczypospolitej przebiegała w tym miejscu.", "category": "source_analysis", "context": "[mapa: Rzeczpospolita po II rozbiorze]"}
+{"id": "q9", "question": "Na podstawie źródła oceń prawdziwość zdań. Zaznacz P albo F.\n1. Autor był zwolennikiem reform.\n2. Tekst powstał przed 1772 rokiem.", "category": "true_false", "context": "Fragment pamiętnika szlachcica z XVIII wieku."}
+{"id": "q10", "question": "Wyjaśnij, dlaczego w 1573 roku uchwalono konfederację warszawską.", "category": "short_open"}
