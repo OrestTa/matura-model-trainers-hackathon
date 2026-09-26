@@ -38,9 +38,10 @@ Board ownership: Matura Hack / Grok Bot refreshes https://orestta.github.io/tara
 | train-bielik-l40s | train TRAIN_MODELS=bielik-11b-dapt VLLM_UTIL=0.8 | Forgehand L40S | CANCEL_REQUESTED (11B>8GB): after dapt-bielik, SFT on the DAPT model (code d09ac3d) | 2026-09-26 10:58 | 2026-09-26 12:05 | /workspace/work/out/train-bielik-l40s | Modal compute setup thread |
 | labqoat-baselines | baselines on all 16 papers (matura_all.jsonl, 573 items), no judge | Forgehand L40S | superseded by baselines-all: old sequential code on vLLM 0.30 (no bitsandbytes), will fail | 2026-09-26 10:58 | 2026-09-26 11:46 | /workspace/work/out/labqoat-baselines | Modal compute setup thread |
 
-## Track 01 update
+## Matura Best Score update
 
-- Best legal committed CKE result remains the bare `Qwen/Qwen2.5-7B-Instruct-AWQ` base at **37.6% full / 38.9% text-only** with an approximately **5.582 GB** pack on disk.
-- Latest legal tuned check, **AWQ + `forgehand-lora-7b-fh` (offline)**, scored **29.8% full / 32.1% text-only** and regresses versus the bare AWQ base.
-- Keep the bare AWQ base as the preferred Sunday quality path; do not promote the fh adapter pack from this result.
-- Canonical note: `notes/TRACK01_BEST_SCORE.md`.
+- See [`INSIGHTS.md`](INSIGHTS.md) for the merged leaders and hard rules.
+- Current official-mock Best Score / Mały floor leader is `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic` at about **4.90 GB**.
+- Current judge set on that official mock answer pack is **Claude 40.0%**, **Grok 46.7%**, **Sol 48.3%**.
+- Historical legal proxy: bare `Qwen/Qwen2.5-7B-Instruct-AWQ` reached **37.6% full / 38.9% text-only** on the CKE headline-auto subset at about **5.582 GB**, but that is not the current official-mock leader.
+- Current Best Progress base remains `Bielik-11B-v2 NF4` at about **6.66 GB**, with a clean holdout pair of **25.5% -> 26.9% (+1.4)**.

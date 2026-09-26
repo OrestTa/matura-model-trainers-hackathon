@@ -1,15 +1,15 @@
 {
   "meta": {
     "title": "Matura model trainers",
-    "updatedAt": "2026-09-26 12:56 UTC",
+    "updatedAt": "2026-09-26 17:05 UTC",
     "repo": "OrestTa/matura-model-trainers-hackathon",
     "publicUrl": ""
   },
   "highlights": [
     {
-      "label": "Track 01 best legal CKE",
+      "label": "Matura Best Score proxy",
       "value": "37.6%",
-      "detail": "Qwen/Qwen2.5-7B-Instruct-AWQ on data/eval/matura.jsonl."
+      "detail": "Historical CKE headline-auto proxy for Qwen/Qwen2.5-7B-Instruct-AWQ on data/eval/matura.jsonl."
     },
     {
       "label": "Measured AWQ pack",
@@ -29,12 +29,12 @@
   ],
   "jobs": [
     {
-      "name": "CKE 7B AWQ base",
+      "name": "Historical CKE proxy 7B AWQ",
       "status": "completed",
       "statusLabel": "Completed",
       "platform": "Modal (A10G)",
       "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
-      "summary": "The best legal Track 01 result so far: 37.6% on the committed CKE headline set with a measured 5.582 GB pack on disk.",
+      "summary": "Historical legal CKE proxy: 37.6% on the committed headline-auto set with a measured 5.582 GB pack on disk; not the current official-mock leader.",
       "metrics": [
         {
           "label": "CKE full",
@@ -54,7 +54,7 @@
         }
       ],
       "notes": [
-        "This is the current Track 01 headline result because it is both legal and stronger than the 3B line.",
+        "Keep this as historical legal proxy evidence, not as the current official-mock Best Score leader.",
         "The legal AWQ result matches the illegal 7B bf16 base result within noise."
       ],
       "sources": [
@@ -84,7 +84,7 @@
         }
       ],
       "notes": [
-        "Use this as a small 3B improvement reference, not as the headline Track 01 result."
+        "Use this as a small 3B improvement reference, not as the current Best Score headline."
       ],
       "sources": [
         {
@@ -121,7 +121,7 @@
   ],
   "results": [
     {
-      "name": "Track 01 best legal CKE",
+      "name": "Matura Best Score proxy",
       "score": "37.6%",
       "detail": "7B AWQ base on data/eval/matura.jsonl."
     },
@@ -152,12 +152,12 @@
       "value": "Use CKE on data/eval/matura.jsonl as the score to quote. The 90-question history MCQ set is dev-only and contaminated for some adapters."
     },
     {
-      "label": "Sunday declaration",
-      "value": "Preferred quality path is 7B AWQ if registration can be updated; otherwise keep the current 3B declaration honest."
+      "label": "Leaders and locks",
+      "value": "See INSIGHTS.md for merged leaders: Bielik-4.5 FP8 is the current official-mock Best Score / Mały floor, and Bielik-11B-v2 NF4 stays locked for Best Progress."
     },
     {
-      "label": "Illegal Sunday bases",
-      "value": "Never use 7B bf16, 7B GPTQ-Int8 at 8.875 GB, or Bielik-11B as the Sunday base."
+      "label": "Size and legality",
+      "value": "Quantized on-disk pack size is the rule: never use 7B bf16 or 7B GPTQ-Int8 at 8.875 GB, while Bielik-11B-v2 NF4 remains legal for Best Progress only."
     },
     {
       "label": "Image ceiling",
@@ -184,7 +184,7 @@
   "sources": [
     {
       "label": "notes/TRACK01_BEST_SCORE.md",
-      "detail": "Canonical Track 01 best-score note with the legal AWQ 7B result and Sunday decision guidance."
+      "detail": "Canonical historical note for the legal AWQ 7B proxy result."
     },
     {
       "label": "STATUS.md",
@@ -192,7 +192,7 @@
     },
     {
       "label": "INSIGHTS.md",
-      "detail": "Quick trunk-sync summary of the latest Track 01 guidance."
+      "detail": "Quick trunk-sync summary of the merged leaders and hard rules."
     }
   ]
 }
