@@ -22,6 +22,7 @@ VOL = "/vol"
 volume = modal.Volume.from_name("claude-matura-subtype", create_if_missing=True)
 image = (
     modal.Image.from_registry("ghcr.io/ggml-org/llama.cpp:full-cuda", add_python="3.12")
+    .entrypoint([])  # the image's own entrypoint (tools.sh) swallows Modal's python command
     .apt_install("tesseract-ocr", "tesseract-ocr-pol", "curl")
     .pip_install("pyyaml", "huggingface_hub", "hf_transfer")
     .add_local_dir(REPO, "/src", ignore=[".git", "work", "runs", "adapters", "models", "**/__pycache__",
