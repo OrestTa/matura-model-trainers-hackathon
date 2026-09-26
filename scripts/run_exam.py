@@ -107,10 +107,12 @@ def main() -> int:
     ap.add_argument("package", help="dir with exam.json (or the exam.json itself)")
     ap.add_argument("-o", "--out", default="answers.json")
     ap.add_argument("--config", default=str(DEFAULT_CONFIG))
-    ap.add_argument("--mode", default="adapters", choices=["raw", "routed", "rag", "adapters"])
+    ap.add_argument("--mode", default="adapters", choices=["raw", "routed", "rag", "adapters", "subtype"],
+                    help="subtype = the per-subtype setups of configs/subtypes.yaml (closed/open x text/image, essay)")
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--model", help="key in configs/models.yaml: its `vision` flag overrides routes.yaml "
                                     "(the model serve_exam.sh started)")
+    ap.add_argument("--subtypes", help="per-subtype setups for --mode subtype (default configs/subtypes.yaml)")
     ap.add_argument("--log", help="per-item log (jsonl); default <out>.log.jsonl")
     args = ap.parse_args()
 
@@ -128,6 +130,11 @@ def main() -> int:
         spec = yaml.safe_load((Path(__file__).resolve().parent.parent / "configs/models.yaml")
                               .read_text())["models"][args.model]
         router.apply_model(spec)
+    if args.subtypes:
+        from matura_router.subtypes import load_profiles
+        router.profiles = load_profiles(args.subtypes)
+    if args.mode == "subtype":
+        print("subtypes:", {k: v.name for k, v in router.profiles.items()}, file=sys.stderr)
     print(f"vision: {router.vision}", file=sys.stderr)
 
     def one(item):

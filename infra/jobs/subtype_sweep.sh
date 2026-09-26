@@ -23,8 +23,8 @@ python3 -m pip install -q --break-system-packages pyyaml huggingface_hub hf_tran
 tesseract --list-langs 2>/dev/null | grep -qx pol || step "WARNING: no tesseract pol, ocr candidates = base"
 [ -s data/eval/matura_all.jsonl ] || { step "no data/eval/matura_all.jsonl (ship it with the job)"; exit 1; }
 
-LLAMA_SERVER="${LLAMA_SERVER:-$(command -v llama-server || echo /app/llama-server)}"
-if [ ! -x "$LLAMA_SERVER" ]; then
+LLAMA_SERVER="${LLAMA_SERVER:-$(command -v llama-server || ls /app/llama-server 2>/dev/null || find / -xdev -name llama-server -type f 2>/dev/null | head -1)}"
+if [ ! -x "${LLAMA_SERVER:-}" ]; then
   unset LLAMA_SERVER; source infra/jobs/common.sh && ensure_llama_server || { step "no llama-server"; exit 1; }
 fi
 

@@ -109,7 +109,10 @@ def setup(_):
 
 ENTRY = r"""
 set -uo pipefail
-pip install -q awscli trl peft datasets accelerate bitsandbytes hf_transfer pyyaml matplotlib pymupdf >/tmp/pip.log 2>&1 \
+# Images without pip (e.g. ghcr.io/ggml-org/llama.cpp:full-cuda for subtype_sweep) get it from apt.
+command -v pip >/dev/null || { apt-get -qq update >/dev/null 2>&1; apt-get -qq install -y python3-pip >/dev/null 2>&1; }
+export PIP_BREAK_SYSTEM_PACKAGES=1
+pip install -q ${PIP_PKGS:-awscli trl peft datasets accelerate bitsandbytes hf_transfer pyyaml matplotlib pymupdf} >/tmp/pip.log 2>&1 \
   || { tail -20 /tmp/pip.log; exit 1; }
 apt-get -qq update >/dev/null 2>&1 && apt-get -qq install -y git curl procps >/dev/null 2>&1
 command -v python >/dev/null || ln -sf "$(command -v python3)" /usr/local/bin/python  # vllm image has only python3
@@ -144,7 +147,7 @@ def launch(a):
     if os.environ.get("HF_TOKEN"):
         env["HF_TOKEN"] = os.environ["HF_TOKEN"]
     env.update(dict(kv.split("=", 1) for kv in shlex.split(a.env)))
-    args = ["ai", "job", "create", "--name", name, "--image", IMAGE, "--platform", a.platform,
+    args = ["ai", "job", "create", "--name", name, "--image", a.image, "--platform", a.platform,
             "--preset", a.preset, "--disk-size", a.disk, "--timeout", a.timeout, "--async",
             "--container-command", "bash", "--args", f"-c {shlex.quote(ENTRY)}"]
     args += ["--preemptible", "--follows-spot-price"] if a.preemptible else ["--on-demand"]
@@ -198,6 +201,7 @@ def main():
     l.add_argument("--timeout", default="12h")
     l.add_argument("--preemptible", action="store_true", help="spot VM: cheaper, can be stopped")
     l.add_argument("--name")
+    l.add_argument("--image", default=IMAGE, help="container image (default the pinned vLLM one)")
     l.add_argument("--owner", default="Nebius runner")
     l.set_defaults(fn=launch)
     for cmd, fn in (("status", show), ("fetch", fetch), ("cancel", cancel)):

@@ -133,10 +133,14 @@ def main() -> int:
 
     results = defaultdict(list)
     t0, done = time.time(), 0
+    Path(args.out).mkdir(parents=True, exist_ok=True)
+    partial = open(Path(args.out) / "partial.jsonl", "a", encoding="utf-8")  # survives a crash or timeout
     with ThreadPoolExecutor(args.concurrency) as pool:
         for fut in as_completed([pool.submit(one, t) for t in tasks]):
             g, name, out = fut.result()
             results[(g, name)].append(out)
+            partial.write(json.dumps({"group": g, "candidate": name, **out}, ensure_ascii=False) + "\n")
+            partial.flush()
             done += 1
             if done % 50 == 0 or done == len(tasks):
                 print(f"{done}/{len(tasks)} answers, {time.time() - t0:.0f}s", file=sys.stderr, flush=True)
