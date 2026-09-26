@@ -3,6 +3,19 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 16:25 CEST · grading thread: Claude grades of the Grok bot's official-mock answers (May 2023)
+
+- Claude graded both mock submissions item by item against the CKE key and rubric (all 37 items, the way the
+  organisers' LLM grader does). **Bielik-4.5B FP8: 24/60 = 40.0%. Qwen2.5-7B-Instruct-AWQ: 11/60 = 18.3%.**
+  Pipeline-style (scoring.py auto items + Claude only on judge-path items): 24/60 and 8/60.
+- Label: Claude-graded, not the organisers' grade. May 2023 is the official mock and one of our headline eval
+  papers ("in our practice set"). The AWQ submission is awaiting the official grade: use it to calibrate.
+- The 7B AWQ answers lose points on facts (5.1, 9.1, 14.x, 16.2, 25.x), unfilled "Rozstrzygnięcie:" lines and an
+  essay that states topic 2, writes topic 1 and then loops the same sentence. Bielik-4.5B's essay (topic 3)
+  cites the Cuban crisis, martial law and KOR as 1950s events: 3/15.
+- Per-item grades: results/claude-graded/official_mock/<run>/summary.json. Grader for pipeline runs:
+  scripts/claude_grade.py (judge = "claude" in every summary it writes).
+
 ## 2026-09-26 16:10 CEST · best-score thread: fine-tuning Gemma 4 12B without losing the QAT file
 
 - **A LoRA can ride on Google's QAT q4_0 GGUF at serve time; no re-quantizing.** llama.cpp master

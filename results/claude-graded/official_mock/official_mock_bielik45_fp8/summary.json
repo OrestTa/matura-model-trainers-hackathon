@@ -1,0 +1,281 @@
+{
+ "exam_id": "history-2023-mock-v1",
+ "paper": "2023-05",
+ "model": "Bielik-4.5B FP8",
+ "answers": "results/grok/official_mock_bielik45_fp8/answers.json",
+ "judge": "claude (Claude session, 2026-09-26 16:20 CEST; CKE rubric, JUDGE_PROMPT criteria)",
+ "judge_kind": "claude",
+ "note": "May 2023 = the official mock and in our practice/eval set (headline paper); the Grok bot's models may have seen it. Claude-graded, not the organisers' grade.",
+ "claude_all_items": {
+  "earned": 24,
+  "max": 60.0,
+  "pct": 40.0
+ },
+ "pipeline_style": {
+  "earned": 24.0,
+  "max": 60.0,
+  "pct": 40.0,
+  "how": "auto-scored items keep scoring.py's score; only judge-path items use Claude's grade"
+ },
+ "items": [
+  {
+   "id": "1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "2.1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "2.2",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": 1.0,
+   "pipeline_points": 1.0
+  },
+  {
+   "id": "3",
+   "max_points": 2.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "4.1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": 1.0,
+   "pipeline_points": 1.0
+  },
+  {
+   "id": "4.2",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "5.1",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "5.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "5.3",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "6",
+   "max_points": 2.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "7",
+   "max_points": 2.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "8",
+   "max_points": 2.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "9.1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": 1.0,
+   "pipeline_points": 1.0
+  },
+  {
+   "id": "9.2",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "9.3",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "10",
+   "max_points": 2.0,
+   "claude_points": 2,
+   "auto_points": 2.0,
+   "pipeline_points": 2.0
+  },
+  {
+   "id": "11.1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "11.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "12",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "13.1",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "13.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "14.1",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "14.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "15",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "16.1",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "16.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "17",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "18",
+   "max_points": 3.0,
+   "claude_points": 2,
+   "auto_points": null,
+   "pipeline_points": 2
+  },
+  {
+   "id": "19",
+   "max_points": 2.0,
+   "claude_points": 1,
+   "auto_points": 1.0,
+   "pipeline_points": 1.0
+  },
+  {
+   "id": "20",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": 0.0,
+   "pipeline_points": 0.0
+  },
+  {
+   "id": "21",
+   "max_points": 2.0,
+   "claude_points": 2,
+   "auto_points": 2.0,
+   "pipeline_points": 2.0
+  },
+  {
+   "id": "22",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "23",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "24",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "25.1",
+   "max_points": 1.0,
+   "claude_points": 1,
+   "auto_points": null,
+   "pipeline_points": 1
+  },
+  {
+   "id": "25.2",
+   "max_points": 1.0,
+   "claude_points": 0,
+   "auto_points": null,
+   "pipeline_points": 0
+  },
+  {
+   "id": "26",
+   "max_points": 15.0,
+   "claude_points": 3,
+   "auto_points": null,
+   "pipeline_points": 3
+  }
+ ]
+}
