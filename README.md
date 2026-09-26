@@ -8,6 +8,14 @@ fine-tuned for just that type. All adapters sit on **one shared base model**, so
 only the base counts toward the 8 GB limit, and switching adapters per question is
 cheap.
 
+## Live status dashboard
+
+Public URL: https://orestta.github.io/matura-model-trainers-hackathon/
+
+- Site source: [`dashboard/`](dashboard/)
+- Bot-editable data: [`dashboard/status.json`](dashboard/status.json)
+- Refresh flow: update `dashboard/status.json`, commit, and push to `main`
+
 **New here? Start with [docs/HOWTO.md](docs/HOWTO.md).**
 
 ## Hackathon operations

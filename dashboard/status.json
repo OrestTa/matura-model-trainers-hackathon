@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "title": "Matura model trainers",
+    "updatedAt": "2026-09-26 10:54 UTC",
+    "repo": "OrestTa/matura-model-trainers-hackathon",
+    "publicUrl": "https://orestta.github.io/matura-model-trainers-hackathon/"
+  },
+  "highlights": [
+    {
+      "label": "Practice best",
+      "value": "15/15",
+      "detail": "Geography practice tuned v2 is locked perfect after the GEO-025 retry."
+    },
+    {
+      "label": "Honest bare geo",
+      "value": "4/15",
+      "detail": "Qwen2.5-3B local bare-model estimate, with no formulas and no RAG."
+    },
+    {
+      "label": "Recent LoRA eval",
+      "value": "68/90",
+      "detail": "History LoRA v2 on 3B reached 75.6% on the full 90-question eval."
+    },
+    {
+      "label": "Current big-box lane",
+      "value": "1x L40S",
+      "detail": "Single Forgehand GPU box runs the teacher plus sequential per-type adapter training."
+    }
+  ],
+  "jobs": [
+    {
+      "name": "Forgehand L40S adapter wave",
+      "status": "running",
+      "statusLabel": "Running",
+      "platform": "Labqoat / Forgehand",
+      "model": "Bielik-11B base with 7 per-type LoRA adapters",
+      "summary": "The live GPU VM thread uses one L40S box to generate teacher data with Qwen3-30B-A3B FP8 and then train seven adapters one after another on the same card.",
+      "metrics": [
+        {
+          "label": "GPU",
+          "value": "1x NVIDIA L40S 46 GB"
+        },
+        {
+          "label": "Teacher",
+          "value": "Qwen3-30B-A3B FP8 (~31 GB)"
+        },
+        {
+          "label": "Adapter lane",
+          "value": "7 categories, sequential"
+        },
+        {
+          "label": "Step / loss",
+          "value": "Not published in repo yet"
+        }
+      ],
+      "notes": [
+        "Tracked from tmux session train on the rented GPU VM.",
+        "The repo notes say baselines stay on Modal while the single Forgehand card handles training.",
+        "This is the main harness wave for the per-question-type router setup."
+      ],
+      "sources": [
+        {
+          "label": "docs/FINDINGS.md"
+        },
+        {
+          "label": "docs/PLAN_STAGGERED_HARNESS.md"
+        }
+      ]
+    },
+    {
+      "name": "Modal LoRA 3B v3",
+      "status": "completed",
+      "statusLabel": "Completed",
+      "platform": "Modal (L4)",
+      "model": "Qwen2.5-3B-Instruct + LoRA",
+      "summary": "The latest 3B LoRA run finished on Modal and the adapter was downloaded back into the repo for local evaluation.",
+      "metrics": [
+        {
+          "label": "Mean loss",
+          "value": "0.595"
+        },
+        {
+          "label": "Train time",
+          "value": "~102 s"
+        },
+        {
+          "label": "Train recipe",
+          "value": "~300 steps / 3 epochs"
+        },
+        {
+          "label": "Eval",
+          "value": "Pending local_eval.py"
+        }
+      ],
+      "notes": [
+        "Notes call this the current declared base model track at roughly 5.8-6.2 GB on disk.",
+        "Adapter artifacts live under runs/lora/modal-3b-v3 after download from the Modal volume.",
+        "Billing exists in Modal, but exact credit burn was not committed into the repo."
+      ],
+      "sources": [
+        {
+          "label": "STATUS.md"
+        },
+        {
+          "label": "notes/MODAL_TRAIN.md"
+        }
+      ]
+    },
+    {
+      "name": "Modal LoRA 1.5B v1",
+      "status": "completed",
+      "statusLabel": "Completed",
+      "platform": "Modal (L4)",
+      "model": "Qwen2.5-1.5B-Instruct + LoRA",
+      "summary": "The size-track 1.5B adapter run finished successfully and stays in play for the small-model story.",
+      "metrics": [
+        {
+          "label": "Mean loss",
+          "value": "0.675"
+        },
+        {
+          "label": "Train time",
+          "value": "~79 s"
+        },
+        {
+          "label": "Train recipe",
+          "value": "~300 steps / 3 epochs"
+        },
+        {
+          "label": "Bare baseline",
+          "value": "3/15 geo, 48/90 history"
+        }
+      ],
+      "notes": [
+        "The 1.5B untuned history baseline already clears the 35% size-track bar at 53.3%.",
+        "This adapter is recent, but the repo snapshot does not yet include a post-LoRA local eval score.",
+        "The same Modal volume flow is used as for the 3B model."
+      ],
+      "sources": [
+        {
+          "label": "STATUS.md"
+        },
+        {
+          "label": "HACKATHON_LOG.md"
+        }
+      ]
+    },
+    {
+      "name": "Qwen2.5-7B cap-track",
+      "status": "queued",
+      "statusLabel": "Queued",
+      "platform": "Next push",
+      "model": "Qwen2.5-7B near the disk-size cap",
+      "summary": "The next model push aims at the strongest 7B-class option that can still fit the hackathon disk limit, depending on whether the real cap is 8.0 GB or about 8.9 GB.",
+      "metrics": [
+        {
+          "label": "Cap check",
+          "value": "8.88 GB GPTQ-Int8 if ~8.9 GB is allowed"
+        },
+        {
+          "label": "Safer quant",
+          "value": "~5.58 GB AWQ"
+        },
+        {
+          "label": "Practice target",
+          "value": "Keep 15/15 harness edge"
+        },
+        {
+          "label": "Credit burn",
+          "value": "Unknown in repo snapshot"
+        }
+      ],
+      "notes": [
+        "The hackathon notes frame this as the next push after the current 3B/1.5B LoRA work.",
+        "The public dashboard keeps it visible because it is the clearest near-term model-size decision.",
+        "Do not treat the 14/15 filed base as the honest baseline when comparing this track."
+      ],
+      "sources": [
+        {
+          "label": "INSIGHTS.md"
+        },
+        {
+          "label": "docs/PLAN_STAGGERED_HARNESS.md"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "name": "Practice tuned v2",
+      "score": "15/15",
+      "detail": "Perfect geography practice result after the GEO-025 public-answer-consensus fix; this is the current best visible practice score."
+    },
+    {
+      "name": "Practice base filed",
+      "score": "14/15",
+      "detail": "Important caveat: repo notes say the filed base run used the geo harness, so it should not be treated as an untouched model baseline."
+    },
+    {
+      "name": "Honest bare geo (3B)",
+      "score": "4/15",
+      "detail": "Local bare-model estimate for Qwen2.5-3B with no deterministic solver and no RAG."
+    },
+    {
+      "name": "Honest bare geo (1.5B)",
+      "score": "3/15",
+      "detail": "Same local bare test on the 1.5B model; useful size-track contrast against the full harness."
+    },
+    {
+      "name": "History LoRA v2",
+      "score": "68/90 (75.6%)",
+      "detail": "Current 3B history LoRA eval signal from the tracked notes."
+    },
+    {
+      "name": "1.5B history baseline",
+      "score": "48/90 (53.3%)",
+      "detail": "Untuned 1.5B history baseline that already clears the 35% small-model threshold."
+    }
+  ],
+  "operationalNotes": [
+    {
+      "label": "GPU utilization notes",
+      "value": "The live Forgehand setup is one L40S 46 GB card, so teacher generation and adapter training share a single lane. Modal baseline runs are designed for up to 4x L40S, while the standalone Modal LoRA notes prefer cheaper L4 or A10G GPUs."
+    },
+    {
+      "label": "Credit burn",
+      "value": "Exact current burn is not committed. AWS is explicitly suspended in the shared findings, and the old AWS scripts refuse to launch if post-credit spend would exceed $5. Modal billing exists, but the repo only records that people should check the billing summary there."
+    },
+    {
+      "label": "Practice score interpretation",
+      "value": "The tuned harness is legitimately at 15/15 on practice, but the honest bare base is much lower. This matters for any progress story shown to judges or teammates."
+    },
+    {
+      "label": "Image ceiling",
+      "value": "The eval-set notes say 85 of 154 history items need images. Text-only models have a hard ceiling below 100% on the full paper unless tools or image handling close that gap."
+    }
+  ],
+  "refresh": {
+    "title": "Update only dashboard/status.json for normal status refreshes",
+    "summary": "The page shell is static; the data file is the control plane. Other bots can add or edit cards without touching the HTML, CSS, or JavaScript.",
+    "steps": [
+      "Open dashboard/status.json and update the fields that changed: updatedAt, highlights, jobs, results, or operationalNotes.",
+      "Keep every value grounded in tracked repo files such as STATUS.md, docs/FINDINGS.md, INSIGHTS.md, or future committed results files.",
+      "Commit and push to main. GitHub Pages redeploys automatically from the dashboard/ directory workflow."
+    ]
+  },
+  "sources": [
+    {
+      "label": "STATUS.md",
+      "detail": "Best current summary of practice runs, bare geo baselines, and the recent Modal LoRA outputs."
+    },
+    {
+      "label": "docs/FINDINGS.md",
+      "detail": "Shared multi-thread findings log, including the L40S Forgehand box and current compute constraints."
+    },
+    {
+      "label": "docs/PLAN_STAGGERED_HARNESS.md",
+      "detail": "The main architecture and training-wave plan, including the staircase and cascade story."
+    },
+    {
+      "label": "INSIGHTS.md",
+      "detail": "Quick decision notes on the 3B/1.5B tracks, the 15/15 practice result, and the 7B size-cap push."
+    },
+    {
+      "label": "notes/MODAL_TRAIN.md",
+      "detail": "The exact Modal LoRA recipe and artifact locations for the 3B and 1.5B runs."
+    },
+    {
+      "label": "HACKATHON_LOG.md",
+      "detail": "Narrative log of practice and history-track scores that backs the interim results on this page."
+    }
+  ]
+}

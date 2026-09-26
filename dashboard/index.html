@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matura model trainers status dashboard</title>
+  <meta
+    name="description"
+    content="Public live status dashboard for the OrestTa/matura-model-trainers-hackathon training jobs, interim metrics, and recent results."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">Public project dashboard</p>
+        <h1>Matura model trainers</h1>
+        <p class="hero__lede">
+          Current training runs, interim scores, and the most useful operational notes from the
+          hackathon repo in one public page.
+        </p>
+      </div>
+      <div class="hero__meta" id="hero-meta">
+        <div class="meta-card">
+          <span class="meta-card__label">Data source</span>
+          <a class="meta-card__value" href="./status.json">dashboard/status.json</a>
+        </div>
+        <div class="meta-card">
+          <span class="meta-card__label">Deploy target</span>
+          <span class="meta-card__value">GitHub Pages</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="app">
+      <section class="loading-card">
+        <div class="loading-card__spinner" aria-hidden="true"></div>
+        <div>
+          <p class="loading-card__title">Loading dashboard data</p>
+          <p class="loading-card__detail">Fetching the latest status snapshot from status.json…</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Built from this repo for quick hackathon visibility. Update the data in
+        <code>dashboard/status.json</code> and push to <code>main</code> to refresh the site.
+      </p>
+    </footer>
+  </div>
+
+  <noscript>
+    <section class="noscript-card">
+      JavaScript is required for the visual dashboard. You can still read the raw data at
+      <a href="./status.json">status.json</a>.
+    </section>
+  </noscript>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
