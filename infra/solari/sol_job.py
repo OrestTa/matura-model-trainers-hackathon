@@ -37,7 +37,7 @@ API = os.environ.get("SOLARI_API", "https://api.getsolari.com")
 REPO = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True,
                       text=True, cwd=os.path.dirname(os.path.abspath(__file__))).stdout.strip()
 OWNER = os.environ.get("OWNER", "Solari wrapper")
-DATA = ["data/eval/matura.jsonl", "data/eval/matura_all.jsonl", "data/train/synthetic.jsonl",
+DATA = ["data/eval/matura.jsonl", "data/eval/matura_all.jsonl", "data/eval/matura_img.jsonl", "data/train/synthetic.jsonl",
         "data/train/past_papers.jsonl", "data/eval/images", "data/kb"]
 MAX_UPLOAD = 32 * 1024 * 1024  # PUT /files/upload limit
 
