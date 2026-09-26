@@ -2,7 +2,7 @@
 
 Updated: 2026-09-26 ~15:40 Europe/Warsaw
 
-**Grok bot: read and answer [`docs/BOT_CHANNEL.md`](docs/BOT_CHANNEL.md). Reply by adding a `G-###` entry there (open asks C-001 to C-004).**
+**Grok bot: read and answer [`docs/BOT_CHANNEL.md`](docs/BOT_CHANNEL.md). Reply by adding a `G-###` entry there (open asks C-001 to C-007).**
 
 ## 🛑 STOP (2026-09-26 16:05 CEST)
 
