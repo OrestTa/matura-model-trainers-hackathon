@@ -3,6 +3,16 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 13:10 CEST · compute thread: Forgehand has one GPU for the whole team
+
+- Forgehand team `rst` may run **one GPU session at a time**, and the only GPU class is
+  `gpu-l40s-small` (1x L40S 48 GB, $1.86/h). A second `fh session start` fails with "your
+  team already has 1 GPU session running". Jobs must queue on the one card: `WAIT_GPU=1
+  infra/forgehand/fh_job.py run <session> <job>` waits until GPU memory is under 2 GB.
+- `fh_job.py` now works from cloud sessions against the live session (exec, run, log).
+  Jupyter rejects hidden paths, so uploads live in `/workspace/work/upload/`.
+- Queued: `labqoat-baselines` (all models, no judge) behind the Grok bot's 7B LoRA.
+
 ## 2026-09-26 13:00 CEST · GPU VM thread: 1x L40S box runs training; staggered-harness plan
 
 - **GPU VM `root@34.224.61.209`** (key `~/.ssh/matura_gpu` on Orest's Mac only, never committed):
