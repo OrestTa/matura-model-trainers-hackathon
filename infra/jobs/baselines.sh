@@ -10,6 +10,7 @@
 #   GPU_BUDGET_GB=40         one GPU: run models side by side within this much memory
 #                            (default on 1-GPU boxes: 40 of 46 GB); 0 = one at a time
 #   CONCURRENCY=64           parallel requests per model server
+#   ROUTES=configs/routes.yaml  router config (e.g. one with another rag.path)
 #   STOP_WHEN_DONE=1         power off (= terminate) when finished, to save credits
 source "$(dirname "$0")/common.sh"
 MODELS="${MODELS:-all}"; MODES="${MODES:-raw,routed}"; JUDGE_HF="${JUDGE_HF-Qwen/Qwen3-32B}"
@@ -45,7 +46,7 @@ ADAPTER_ARGS=()
 
 step "baselines: models=$MODELS modes=$MODES gpus=$GPUS judge=${JUDGE_HF:-none}"
 python scripts/run_baselines.py --eval "$EVAL" --models "$MODELS" --modes "$MODES" \
-  --models-config "${MODELS_CONFIG:-configs/models.yaml}" \
+  --models-config "${MODELS_CONFIG:-configs/models.yaml}" --routes "${ROUTES:-configs/routes.yaml}" \
   --gpus "$GPUS" --out "$OUT/baselines" --concurrency "${CONCURRENCY:-64}" \
   "${JUDGE_ARGS[@]}" "${ADAPTER_ARGS[@]}" "${BUDGET_ARGS[@]}"
 status=$?
