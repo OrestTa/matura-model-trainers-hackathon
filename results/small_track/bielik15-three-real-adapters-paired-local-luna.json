@@ -1,0 +1,203 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q4_K_M",
+  "protocol": "local-luna-official-v2",
+  "judge": "gpt-6-luna via own ChatGPT Codex plan only",
+  "matched_base_package_bytes": 982161371,
+  "trained_package_bytes": 1030569275,
+  "trained_adapter_count": 3,
+  "legacy_filename_caveat": "Filename says five-specialists; actually three adapters. Both image routes use base model.",
+  "base_provisional_points": 8,
+  "trained_provisional_points": 11,
+  "base_settled_lower_points": 8,
+  "trained_settled_lower_points": 10,
+  "official_max_points": 60,
+  "graded_tasks_each": 37,
+  "exact_full_paper_scores": null,
+  "provisional_full_paper_delta_points": 3,
+  "exact_full_paper_delta_points": null,
+  "exact_nonessay_delta_points": 2,
+  "nonessay_denominator": 45,
+  "uncertain_item_cancellation": "Task13.1 has identical answer bytes, same original task/key/images, and both Luna marks0. Its common visual metadata uncertainty cancels for the paired short-task difference.",
+  "base_score_interval_points": [
+    8,
+    9
+  ],
+  "trained_score_interval_points": [
+    10,
+    26
+  ],
+  "interval_caveat": "Worst-case unresolved-point bounds, not confidence intervals. Essay remains unresolved despite observed repeats1/2/1.",
+  "essay_repeats": {
+    "base": [
+      0,
+      0,
+      0
+    ],
+    "trained": [
+      1,
+      2,
+      1
+    ]
+  },
+  "five_categories": [
+    {
+      "category": "closed_without_images",
+      "max_points": 4,
+      "base_provisional_points": 1,
+      "trained_provisional_points": 1,
+      "base_settled_lower_points": 1,
+      "trained_settled_lower_points": 1,
+      "base_complete": true,
+      "trained_complete": true,
+      "provisional_delta_points": 0,
+      "exact_delta_if_common_uncertain_answers_cancel": 0
+    },
+    {
+      "category": "closed_with_images",
+      "max_points": 7,
+      "base_provisional_points": 3,
+      "trained_provisional_points": 4,
+      "base_settled_lower_points": 3,
+      "trained_settled_lower_points": 4,
+      "base_complete": true,
+      "trained_complete": true,
+      "provisional_delta_points": 1,
+      "exact_delta_if_common_uncertain_answers_cancel": 1
+    },
+    {
+      "category": "open_without_images",
+      "max_points": 11,
+      "base_provisional_points": 2,
+      "trained_provisional_points": 4,
+      "base_settled_lower_points": 2,
+      "trained_settled_lower_points": 4,
+      "base_complete": true,
+      "trained_complete": true,
+      "provisional_delta_points": 2,
+      "exact_delta_if_common_uncertain_answers_cancel": 2
+    },
+    {
+      "category": "open_with_images",
+      "max_points": 23,
+      "base_provisional_points": 2,
+      "trained_provisional_points": 1,
+      "base_settled_lower_points": 2,
+      "trained_settled_lower_points": 1,
+      "base_complete": false,
+      "trained_complete": false,
+      "provisional_delta_points": -1,
+      "exact_delta_if_common_uncertain_answers_cancel": -1
+    },
+    {
+      "category": "essay",
+      "max_points": 15,
+      "base_provisional_points": 0,
+      "trained_provisional_points": 1,
+      "base_settled_lower_points": 0,
+      "trained_settled_lower_points": 0,
+      "base_complete": true,
+      "trained_complete": false,
+      "provisional_delta_points": 1,
+      "exact_delta_if_common_uncertain_answers_cancel": null
+    }
+  ],
+  "predicted_route_contributions": [
+    {
+      "predicted_route": "closed_with_images",
+      "task_count": 4,
+      "max_points": 7,
+      "base_provisional_points": 3,
+      "trained_provisional_points": 4,
+      "provisional_delta_points": 1,
+      "has_trained_adapter": false,
+      "uncertain_ids": []
+    },
+    {
+      "predicted_route": "closed_without_images",
+      "task_count": 1,
+      "max_points": 2,
+      "base_provisional_points": 1,
+      "trained_provisional_points": 1,
+      "provisional_delta_points": 0,
+      "has_trained_adapter": true,
+      "uncertain_ids": []
+    },
+    {
+      "predicted_route": "essay",
+      "task_count": 1,
+      "max_points": 15,
+      "base_provisional_points": 0,
+      "trained_provisional_points": 1,
+      "provisional_delta_points": 1,
+      "has_trained_adapter": true,
+      "uncertain_ids": [
+        "26"
+      ]
+    },
+    {
+      "predicted_route": "open_with_images",
+      "task_count": 19,
+      "max_points": 23,
+      "base_provisional_points": 2,
+      "trained_provisional_points": 1,
+      "provisional_delta_points": -1,
+      "has_trained_adapter": false,
+      "uncertain_ids": [
+        "13.1"
+      ]
+    },
+    {
+      "predicted_route": "open_without_images",
+      "task_count": 12,
+      "max_points": 13,
+      "base_provisional_points": 2,
+      "trained_provisional_points": 4,
+      "provisional_delta_points": 2,
+      "has_trained_adapter": true,
+      "uncertain_ids": []
+    }
+  ],
+  "identical_answer_count": 17,
+  "identical_answers_with_different_luna_points": [],
+  "metadata_validation_failures": [
+    "base13.1 empty viewed_images",
+    "trained13.1 empty viewed_images"
+  ],
+  "handling": "Raw judgments and failed validation states preserved. Original0 marks retained provisionally, image uncertainty added conservatively; no new call or assistant mark.",
+  "blank_answer_preserved": "Matched base14.1 contains only whitespace, preserved unchanged.",
+  "paired_conditions": {
+    "candidate_sha256": "737e5bce867a2fd0a437872179bdd3eda9de3bf6a9a833ab1ca2e88415da7cfc",
+    "model_revision_equal": true,
+    "classifier_equal": true,
+    "ocr_equal": true,
+    "predicted_routes_equal": true,
+    "temperature": 0,
+    "seed": 42,
+    "short_tokens": 500,
+    "essay_tokens": 1600
+  },
+  "training_scope": "Three adapters from real official sources; closed-text16steps, open-text16steps, essay5 official exemplars.2024topic overlap reported by compute; no2024holdout claim. This evaluation is2023.",
+  "interpretation": "INVALID_SPECIALIST_ROUTING: saved marks retained as diagnostic observations. Neither full-paper nor route delta establishes a trained-specialist improvement. See bielik15-harness-diagnosis-20260926.json.",
+  "ania_reference": "Matching Bielik1.5 slide15/55=27.27%, closed5/11 open9/29 essay1/15; adapted55point input noncomparable, five-way unavailable, no numerical delta.",
+  "cost": "Own Codex plan monetary cost unknown; no Forgehand calls.",
+  "source_summaries": [
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/paired-baseline/local_luna_official_v2/summary.luna.json",
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/local_luna_official_v2/summary.luna.json"
+  ],
+  "source_answer_hashes": [
+    "a26cd0470edcf2bece8e8a85c1dc33bf018fecbf8716ed48e23405ebbd9d666d",
+    "21b9086ba6e02af11e963e3a8ea5659ea70a75f7e0ceff8b7fb25c988e0f1f45"
+  ],
+  "experiment_validity": {
+    "status": "INVALID_SPECIALIST_ROUTING",
+    "threshold_qualifying": false,
+    "adapter_improvement_attribution_valid": false,
+    "reason": "Server log lines3–4 states repeated --lora uses only last value; declared three-adapter IDs were not verified by GET /lora-adapters. Scores describe saved outputs only, not a valid three-specialist experiment.",
+    "server_log": "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/server.log",
+    "server_log_sha256": "f9d0b6cb0c3784b43ab7819c4ffe7220183b1193ad18c40411e52ff4c3a2b096",
+    "actual_loaded_adapter_count_verified": false,
+    "declared_adapter_count": 3
+  },
+  "prior_interpretation_before_serving_audit": "Only open-text route shows a settled+2point gain. Untrained image routes change+1 and−1, net0, indicating repeated-generation variation. Essay gain unresolved. No verified35%pass."
+}

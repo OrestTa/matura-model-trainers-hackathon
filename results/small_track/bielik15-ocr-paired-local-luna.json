@@ -1,0 +1,114 @@
+{
+  "protocol": "local-luna-official-v2",
+  "provider": "Own ChatGPT Codex plan only",
+  "base_run": "20260926-183916-bielik15-q4-canonical-b0",
+  "ocr_run": "20260926-201850-bielik15-q4-canonical-ocr",
+  "graded_tasks_each": 37,
+  "official_denominator": 60,
+  "exact_full_paper_scores": null,
+  "baseline_settled_lower_points": 15,
+  "baseline_settled_lower_percent": 25,
+  "baseline_provisional_points": 15,
+  "ocr_settled_lower_points": 10,
+  "ocr_settled_lower_percent": 16.666666666666668,
+  "ocr_provisional_points": 12,
+  "exact_full_paper_delta": null,
+  "provisional_delta_points": -3,
+  "exact_nonessay_delta_points": -5,
+  "nonessay_denominator": 45,
+  "essay_repeats": {
+    "baseline": [
+      0,
+      0,
+      2
+    ],
+    "ocr": [
+      2,
+      1,
+      0
+    ]
+  },
+  "uncertainty": "Essay disagreement retained; first marks unchanged. No highest-mark selection, averaging, or assistant adjudication.",
+  "five_categories": [
+    {
+      "category": "closed_without_images",
+      "max_points": 4,
+      "base_points": 1,
+      "base_provisional_points": 1,
+      "base_percent": 25.0,
+      "ocr_points": 0,
+      "ocr_provisional_points": 0,
+      "ocr_percent": 0.0,
+      "exact_delta_points": -1
+    },
+    {
+      "category": "closed_with_images",
+      "max_points": 7,
+      "base_points": 3,
+      "base_provisional_points": 3,
+      "base_percent": 42.857142857142854,
+      "ocr_points": 3,
+      "ocr_provisional_points": 3,
+      "ocr_percent": 42.857142857142854,
+      "exact_delta_points": 0
+    },
+    {
+      "category": "open_without_images",
+      "max_points": 11,
+      "base_points": 5,
+      "base_provisional_points": 5,
+      "base_percent": 45.45454545454545,
+      "ocr_points": 5,
+      "ocr_provisional_points": 5,
+      "ocr_percent": 45.45454545454545,
+      "exact_delta_points": 0
+    },
+    {
+      "category": "open_with_images",
+      "max_points": 23,
+      "base_points": 6,
+      "base_provisional_points": 6,
+      "base_percent": 26.08695652173913,
+      "ocr_points": 2,
+      "ocr_provisional_points": 2,
+      "ocr_percent": 8.695652173913043,
+      "exact_delta_points": -4
+    },
+    {
+      "category": "essay",
+      "max_points": 15,
+      "base_points": null,
+      "base_provisional_points": 0,
+      "base_percent": null,
+      "ocr_points": null,
+      "ocr_provisional_points": 2,
+      "ocr_percent": null,
+      "exact_delta_points": null
+    }
+  ],
+  "baseline_aggregate_weight_bytes": 972797408,
+  "ocr_aggregate_weight_bytes": 981676014,
+  "added_ocr_bytes": 8878606,
+  "threshold_status": "Neither run establishes>=35%. All observed essay-repeat totals remain below21/60, but exact final grades are unresolved.",
+  "ania_reference": {
+    "model": "Bielik1.5",
+    "points": 15,
+    "max_points": 55,
+    "percent": 27.272727272727273,
+    "closed": "5/11",
+    "open": "9/29",
+    "essay": "1/15",
+    "five_way_breakdown": "unavailable",
+    "comparison": "Noncomparable adapted-input55point subset; no numeric delta."
+  },
+  "method_caveat": "One inference per variant. Same system/question/source/image pack, model revision, temperature0,seed42,caps500/1600; offline OCR appended separately. Serving/build and judge-sampling variation not quantified.",
+  "input_audits": [
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-183916-bielik15-q4-canonical-b0/local_luna_input_audit.json",
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-201850-bielik15-q4-canonical-ocr/local_luna_input_audit.json"
+  ],
+  "summary_paths": [
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-183916-bielik15-q4-canonical-b0/local_luna_official_v2/summary.luna.json",
+    "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-201850-bielik15-q4-canonical-ocr/local_luna_official_v2/summary.luna.json"
+  ],
+  "monetary_cost": "Own Codex plan usage unknown; no Forgehand calls."
+}

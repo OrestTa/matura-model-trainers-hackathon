@@ -1,0 +1,178 @@
+{
+  "protocol": "local-luna-official-v2",
+  "runs": [
+    {
+      "run": "20260926-193419-qwen35-4b-vision-q3-offline-b0",
+      "label": "q3-2023",
+      "summary": {
+        "judge": "gpt-6-luna",
+        "provider": "Own ChatGPT Codex plan via authenticated CLI only",
+        "model_identity_evidence": "Explicit --model gpt-6-luna; no fallback configured; CLI response does not echo resolved model identity.",
+        "protocol": "local-luna-official-v2",
+        "reads_prior_grades": false,
+        "official_max_points": 60,
+        "task_count": 37,
+        "graded_tasks": 37,
+        "complete": true,
+        "earned_points": 25,
+        "score_percent": 41.666666666666664,
+        "provisional_points": 25,
+        "settled_lower_bound_points": 25,
+        "settled_lower_bound_percent": 41.666666666666664,
+        "uncertain_ids": [],
+        "missing_ids": [],
+        "five_categories": [
+          {
+            "category": "closed_without_images",
+            "max_points": 4,
+            "earned_points": 3,
+            "provisional_points": 3,
+            "score_percent": 75.0,
+            "settled_lower_bound_points": 3,
+            "complete": true
+          },
+          {
+            "category": "closed_with_images",
+            "max_points": 7,
+            "earned_points": 4,
+            "provisional_points": 4,
+            "score_percent": 57.142857142857146,
+            "settled_lower_bound_points": 4,
+            "complete": true
+          },
+          {
+            "category": "open_without_images",
+            "max_points": 11,
+            "earned_points": 6,
+            "provisional_points": 6,
+            "score_percent": 54.54545454545455,
+            "settled_lower_bound_points": 6,
+            "complete": true
+          },
+          {
+            "category": "open_with_images",
+            "max_points": 23,
+            "earned_points": 12,
+            "provisional_points": 12,
+            "score_percent": 52.17391304347826,
+            "settled_lower_bound_points": 12,
+            "complete": true
+          },
+          {
+            "category": "essay",
+            "max_points": 15,
+            "earned_points": 0,
+            "provisional_points": 0,
+            "score_percent": 0.0,
+            "settled_lower_bound_points": 0,
+            "complete": true
+          }
+        ],
+        "cost": "Local Codex plan usage; monetary cost unknown. Zero Forgehand requests in this protocol.",
+        "base_vs_optimized_delta": {
+          "ocr_minus_plain_points": -2,
+          "percentage_points": -3.3333333333333335,
+          "method": "Same local-only protocol; one candidate inference each, serving and judge variance not quantified."
+        },
+        "ania_comparison": "Matching Qwen3.5-4B benchmark not verified; older input representations differ, no numerical Ania delta.",
+        "historical_reports": "Earlier Forgehand/hybrid results remain separate, not relabeled."
+      },
+      "summary_path": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-193419-qwen35-4b-vision-q3-offline-b0/local_luna_official_v2/summary.luna.json"
+    },
+    {
+      "run": "20260926-195215-qwen35-4b-vision-q3-ocr-offline-b0",
+      "label": "q3-2023-ocr",
+      "summary": {
+        "judge": "gpt-6-luna",
+        "provider": "Own ChatGPT Codex plan via authenticated CLI only",
+        "model_identity_evidence": "Explicit --model gpt-6-luna; no fallback configured; CLI response does not echo resolved model identity.",
+        "protocol": "local-luna-official-v2",
+        "reads_prior_grades": false,
+        "official_max_points": 60,
+        "task_count": 37,
+        "graded_tasks": 37,
+        "complete": true,
+        "earned_points": 23,
+        "score_percent": 38.333333333333336,
+        "provisional_points": 23,
+        "settled_lower_bound_points": 23,
+        "settled_lower_bound_percent": 38.333333333333336,
+        "uncertain_ids": [],
+        "missing_ids": [],
+        "five_categories": [
+          {
+            "category": "closed_without_images",
+            "max_points": 4,
+            "earned_points": 3,
+            "provisional_points": 3,
+            "score_percent": 75.0,
+            "settled_lower_bound_points": 3,
+            "complete": true
+          },
+          {
+            "category": "closed_with_images",
+            "max_points": 7,
+            "earned_points": 4,
+            "provisional_points": 4,
+            "score_percent": 57.142857142857146,
+            "settled_lower_bound_points": 4,
+            "complete": true
+          },
+          {
+            "category": "open_without_images",
+            "max_points": 11,
+            "earned_points": 6,
+            "provisional_points": 6,
+            "score_percent": 54.54545454545455,
+            "settled_lower_bound_points": 6,
+            "complete": true
+          },
+          {
+            "category": "open_with_images",
+            "max_points": 23,
+            "earned_points": 10,
+            "provisional_points": 10,
+            "score_percent": 43.47826086956522,
+            "settled_lower_bound_points": 10,
+            "complete": true
+          },
+          {
+            "category": "essay",
+            "max_points": 15,
+            "earned_points": 0,
+            "provisional_points": 0,
+            "score_percent": 0.0,
+            "settled_lower_bound_points": 0,
+            "complete": true
+          }
+        ],
+        "cost": "Local Codex plan usage; monetary cost unknown. Zero Forgehand requests in this protocol.",
+        "base_vs_optimized_delta": {
+          "ocr_minus_plain_points": -2,
+          "percentage_points": -3.3333333333333335,
+          "method": "Same local-only protocol; one candidate inference each, serving and judge variance not quantified."
+        },
+        "ania_comparison": "Matching Qwen3.5-4B benchmark not verified; older input representations differ, no numerical Ania delta.",
+        "historical_reports": "Earlier Forgehand/hybrid results remain separate, not relabeled."
+      },
+      "summary_path": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-195215-qwen35-4b-vision-q3-ocr-offline-b0/local_luna_official_v2/summary.luna.json"
+    }
+  ],
+  "aggregate_size_primary": true,
+  "base_package_bytes": 2965812064,
+  "ocr_package_bytes": 2974690670,
+  "extra_ocr_bytes": 8878606,
+  "ocr_minus_plain_points": -2,
+  "ocr_minus_plain_percentage_points": -3.3333333333333335,
+  "selection": "Plain Q3 is smaller and has the higher observed same-protocol score.",
+  "development_caveat": "2023 is a development paper, not an untouched holdout.",
+  "historical_hybrid": "Prior Forgehand/local hybrid scores24/60 and23/60 remain historical. The judge-protocol change is not a candidate improvement.",
+  "monetary_cost": "Unknown usage of own ChatGPT Codex plan; no Forgehand calls for local-only protocol.",
+  "local_cli_usage_new_calls_so_far": {
+    "input_tokens": 943414,
+    "cached_input_tokens": 684800,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 14067,
+    "reasoning_output_tokens": 3195
+  }
+}

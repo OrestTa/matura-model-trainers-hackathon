@@ -1,0 +1,400 @@
+{
+  "schema": "bielik-harness-diagnosis-v1",
+  "scope": "metadata, exact payload reconstruction, saved-output parity and existing Luna marks only; no new grading or inference",
+  "validity": {
+    "status": "INVALID_SPECIALIST_ROUTING",
+    "threshold_qualifying": false,
+    "adapter_improvement_attribution_valid": false,
+    "reason": "Server log lines3–4 states repeated --lora uses only last value; declared three-adapter IDs were not verified by GET /lora-adapters. Scores describe saved outputs only, not a valid three-specialist experiment.",
+    "server_log": "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/server.log",
+    "server_log_sha256": "f9d0b6cb0c3784b43ab7819c4ffe7220183b1193ad18c40411e52ff4c3a2b096",
+    "actual_loaded_adapter_count_verified": false,
+    "declared_adapter_count": 3
+  },
+  "sources": {
+    "data/small_track/official_mock_v1/canonical-b0-candidate.jsonl": "3ecfcc62c05cc28ba668ff751fa6ce33a81e54a5cd8e958cf1ae0d2e5c6b031a",
+    "data/small_track/official_mock_v1/ocr-offline-v1/ocr-candidate.jsonl": "abe9791630317612ece247d452a960549ad7dabc9c523f5717e0c726f279be67",
+    "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/answers.jsonl": "21b9086ba6e02af11e963e3a8ea5659ea70a75f7e0ceff8b7fb25c988e0f1f45",
+    "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/paired-baseline/answers.jsonl": "a26cd0470edcf2bece8e8a85c1dc33bf018fecbf8716ed48e23405ebbd9d666d",
+    "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/manifest.json": "d8011fc4fe467337076bb541e9b7bf728359031a1a9083b5d0fb5d2d1a0af534",
+    "results/small_track/20260926-203212-bielik15-q4-real-adapters-ocr-five-specialists-offline-b0/server.log": "f9d0b6cb0c3784b43ab7819c4ffe7220183b1193ad18c40411e52ff4c3a2b096",
+    "results/small_track/20260926-201850-bielik15-q4-canonical-ocr/answers.jsonl": "c5c1e1d822ae2afe76a9c7ad6481fa77f008b64856debbd8e7669d6f69a943f4",
+    "results/small_track/20260926-183916-bielik15-q4-canonical-b0/answers.jsonl": "4c7454479027311c76d35d380555547d29db89b376f71b3acf8b3eade797ae2c"
+  },
+  "request_checks": [
+    {
+      "id": "1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "2.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "2.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "3",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "4.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "4.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "5.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "5.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "5.3",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "6",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "7",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "8",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "9.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "9.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "9.3",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "10",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "11.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "11.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "12",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "13.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "13.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "14.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "14.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "15",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "16.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "16.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "17",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "18",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "19",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "20",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "21",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": true
+    },
+    {
+      "id": "22",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "23",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "24",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": true,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "25.1",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "25.2",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    },
+    {
+      "id": "26",
+      "standalone_ocr_payload_reconstructed": true,
+      "paired_base_payload_reconstructed": true,
+      "base_trained_identical_request": false,
+      "base_trained_identical_answer": false
+    }
+  ],
+  "all_37_standalone_and_paired_payloads_reconstructed": true,
+  "classifier_confusions": [
+    {
+      "id": "2.2",
+      "canonical_category": "closed_without_images",
+      "predicted_route": "open_without_images"
+    },
+    {
+      "id": "11.2",
+      "canonical_category": "closed_without_images",
+      "predicted_route": "open_without_images"
+    }
+  ],
+  "image_same_request_count": 23,
+  "same_request_changed_answer_ids": [
+    "4.1",
+    "4.2",
+    "5.2",
+    "7",
+    "9.3",
+    "13.2",
+    "14.1",
+    "14.2",
+    "24"
+  ],
+  "existing_luna_image_point_changes": [
+    {
+      "id": "7",
+      "base": 1,
+      "configured_trained": 0
+    },
+    {
+      "id": "13.2",
+      "base": 0,
+      "configured_trained": 1
+    }
+  ],
+  "response_parity": [
+    {
+      "left": "original",
+      "right": "standalone_ocr",
+      "identical_answers": 4,
+      "identical_noimage_answers": 2,
+      "noimage_tasks": 14,
+      "identical_ids": [
+        "11.2",
+        "12",
+        "19",
+        "21"
+      ]
+    },
+    {
+      "left": "standalone_ocr",
+      "right": "paired_base",
+      "identical_answers": 2,
+      "identical_noimage_answers": 1,
+      "noimage_tasks": 14,
+      "identical_ids": [
+        "11.2",
+        "19"
+      ]
+    },
+    {
+      "left": "paired_base",
+      "right": "configured_trained",
+      "identical_answers": 17,
+      "identical_noimage_answers": 3,
+      "noimage_tasks": 14,
+      "identical_ids": [
+        "1",
+        "2.2",
+        "3",
+        "5.1",
+        "5.3",
+        "8",
+        "9.1",
+        "9.2",
+        "10",
+        "11.2",
+        "13.1",
+        "15",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21"
+      ]
+    }
+  ],
+  "conditions": {
+    "same": "pinned model weight hash, Polish system instruction, context/question composition, temperature0,seed42,500/1600caps; standalone OCR and paired have identical messages on all37 tasks",
+    "different": [
+      "original plain to OCR: appended OCR in23 image-task contexts;14 other prompts unchanged",
+      "standalone OCR to paired: np8/c65536 to np4/c32768, both8192context per slot",
+      "paired adds server --reasoning-budget0 and request chat_template_kwargs.enable_thinking=false",
+      "paired has loaded adapters (invalid repeated flag), request lora=[] for base",
+      "paired performs sequential five-category smoke then4workers, base request immediately before configured-trained on warm server; prior harness8workers",
+      "floating server-cuda image; old paired no build identity, standaloneOCR server_version empty"
+    ],
+    "root_cause": "Adapter loading error proven. Base regression and same-payload response variation not causally isolated; batching/cache/build/template differences are hypotheses, not proven root cause."
+  },
+  "api_verification": {
+    "cli": "single --lora path1,path2,path3 plus --lora-init-without-apply",
+    "request": "lora:[{id:integer,scale:number}], missing adapters scale0; lora:[] disables all",
+    "get_schema": "array of id,path,scale with optional task_name,prompt_prefix,aLoRA metadata",
+    "readme": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/tools/server/README.md",
+    "source": "https://raw.githubusercontent.com/ggml-org/llama.cpp/master/tools/server/server-task.cpp",
+    "caveat": "Current upstream source, not proof of old binary commit. README endpoint prose repeated-flag example is stale relative to CLI table and observed runtime warning."
+  },
+  "recommended_independent_ablations": [
+    "Pin and record server binary/version (stdout+stderr) and image digest; verify loaded count/ID/path/hash and default scale0 before any evaluation.",
+    "Restore original base-only harness with unchanged input; compare OCR-only using identical scheduling/settings. No new learned-route choices from evaluation marks.",
+    "Then vary one serving condition at a time: template/reasoning flags; concurrency/cache policy; adapters loaded at all-zero scales versus none loaded.",
+    "Use fixed task-independent order and repeat identical payloads to quantify serving variation; only then compare verified adapter activation to matched all-zero baseline."
+  ]
+}
