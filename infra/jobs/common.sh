@@ -77,7 +77,7 @@ ensure_llama_server() {
       export CUDAToolkit_ROOT="$WORK/cuda"
       for d in "$WORK/cuda/bin" /usr/local/cuda/bin /usr/local/cuda-*/bin; do [ -x "$d/nvcc" ] && export PATH="$d:$PATH" && break; done
     fi
-    cd "$WORK/llama.cpp" && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DCMAKE_CUDA_ARCHITECTURES=89 \
+    cd "$WORK/llama.cpp" && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DCMAKE_CUDA_ARCHITECTURES="$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader | head -1 | tr -d . || echo 89)" \
       -DCMAKE_BUILD_TYPE=Release >/dev/null && cmake --build build --target llama-server -j "$(nproc)" >/dev/null
   ) 9>"$WORK/llama.lock"
   [ -x "$LLAMA_SERVER" ]

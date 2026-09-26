@@ -24,7 +24,7 @@ converted to `adapter.gguf` by train.sh for llama-server `--lora`. ~40 GB GPU, b
 
 ```bash
 git pull origin main    # ≥ 08c7621
-export TRAIN_MODELS=gemma4-12b SINGLE_ADAPTER=1 TEACHER_HF=none JUDGE_HF= SCORE_MODES=adapters
+export TRAIN_MODELS=gemma4-12b SINGLE_ADAPTER=1 TEACHER_HF=none JUDGE_HF= SCORE_MODES=adapters,rag
 export EXTRA_TRAIN="$PWD/train_data/history_ext_synth.jsonl $PWD/train_data/claude_synth.jsonl"
 # 0. smoke, FIRST, ~10 min: must end with "GGUF LoRA: …/adapter.gguf"
 NAME=gemma-lora-smoke EPOCHS=0.02 bash infra/jobs/train.sh
@@ -35,6 +35,21 @@ NAME=gemma-lora-C RANK=16 LR=1e-4 EPOCHS=2 bash infra/jobs/train.sh
 # each run writes work/adapters/gemma4-12b/: move it aside before the next run on the same box
 mv work/adapters/gemma4-12b work/adapters-A     # (B, C likewise)
 ```
+
+On Nebius (H100, one job per config; OUT, including `adapters/`, syncs to the bucket):
+
+```bash
+ENV="TRAIN_MODELS=gemma4-12b SINGLE_ADAPTER=1 TEACHER_HF=none JUDGE_HF= SCORE_MODES=adapters,rag \
+EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl'"
+python infra/nebius/nb_job.py launch --job train --name gemma-lora-B --platform gpu-h100-sxm \
+  --preset 1gpu-16vcpu-200gb --env "$ENV RANK=32 LR=2e-4 EPOCHS=1"
+python infra/nebius/nb_job.py launch --job train --name gemma-lora-C --platform gpu-h100-sxm \
+  --preset 1gpu-16vcpu-200gb --env "$ENV RANK=16 LR=1e-4 EPOCHS=2"
+```
+
+Step 4 of train.sh (`SCORE_MODES=adapters,rag`) answers the 154 held-out items with pictures twice on
+the same box: with the adapter (`adapters` = routed prompts + RAG + LoRA) and without (`rag`, the same
+harness untrained). Both `answers.jsonl` go to the grading thread; that pair is the ≥3-point test.
 
 Adapter size at r=32 is ~0.2 GB, so base + adapter stays under the 8.8 GB limit.
 

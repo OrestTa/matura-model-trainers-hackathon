@@ -122,6 +122,8 @@ done
 # Without adapters the "adapters" mode silently equals "routed"; don't publish that.
 ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapter trained"; finish 1; }
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
+# Keep the adapters with the run output too (Nebius/Forgehand runners sync only $OUT).
+mkdir -p "$OUT/adapters" && cp -rL "$WORK"/adapters/. "$OUT/adapters/"
 
 # 4. Re-score with adapters (and without, for the comparison charts).
 MODELS="$TRAIN_MODELS" MODES="${SCORE_MODES:-raw,routed,adapters}" source "$(dirname "$0")/baselines.sh"

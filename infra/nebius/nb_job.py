@@ -44,7 +44,7 @@ REGION = os.environ.get("NEBIUS_REGION", "eu-north1")
 S3_ENDPOINT = f"https://storage.{REGION}.nebius.cloud"
 IMAGE = "vllm/vllm-openai:v0.27.1"  # vLLM stays on 0.27.1 (see common.sh)
 DATA = ("data/eval/matura.jsonl", "data/eval/matura_all.jsonl",
-        "data/train/synthetic.jsonl", "data/train/past_papers.jsonl")
+        "data/train/synthetic.jsonl", "data/train/past_papers.jsonl", "data/eval/images")
 SKIP = {".git", "work", "runs", "adapters", "models", "__pycache__", ".venv", ".run-venv", "secrets"}
 
 
@@ -129,10 +129,10 @@ def launch(a):
     with tarfile.open(tgz, "w:gz") as t:
         t.add(REPO, arcname=".", filter=lambda ti: None if SKIP & set(Path(ti.name).parts)
               or ti.name.endswith((".safetensors", ".gguf")) or (ti.name.startswith("./data/")
-              and ti.isfile() and ti.name[2:] not in DATA) else ti)
+              and ti.isfile() and not any(ti.name[2:] == d or ti.name[2:].startswith(d + "/") for d in DATA)) else ti)
         for rel in DATA:  # data/ is gitignored; cloud sessions keep it in the project's shared folder
             shared = Path("/mnt/project-files") / rel
-            if not (REPO / rel).is_file() and shared.is_file():
+            if not (REPO / rel).exists() and shared.exists():
                 t.add(shared, arcname=f"./{rel}")
     aws("cp", str(tgz), f"s3://{bucket()}/src/{name}.tgz")
     tgz.unlink()
