@@ -218,6 +218,115 @@ models:
     params_b: 11.2
     disk_gb: 22.4
 
+  # Thinking-budget sweep (Orest 22:34 CEST, "try different variants of thinking lens"): the same Gemma
+  # as gemma4-12b-think with other reasoning budgets. tbN: N tokens per answer; teN: essays at N tokens.
+  gemma4-12b-think-tb1k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 1024
+  gemma4-12b-think-tb2k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 2048
+  gemma4-12b-think-tb4k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 4096
+  gemma4-12b-think-tb8k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 8192
+  gemma4-12b-think-tb16k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 16384
+  gemma4-12b-think-te8k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 2000
+    think_tokens_by_type: {essay: 8192}
+  gemma4-12b-think-te16k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 2000
+    think_tokens_by_type: {essay: 16384}
+  gemma4-12b-think-te24k:
+    deck_size_gb: {bf16: 23.92, 8bit: 11.96, 4bit: 5.98}
+    ship_precision: 4bit
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    mmproj_file: mmproj-gemma-4-12b-it-qat-q4_0.gguf
+    vision: true
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 7.16
+    gpu_gb: 16
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+    think_tokens: 2000
+    think_tokens_by_type: {essay: 24576}
 vllm:
   max_model_len: 8192
   gpu_memory_utilization: 0.90
