@@ -92,6 +92,8 @@ models:
     params_b: 12.0
     disk_gb: 7.16
     gpu_gb: 16
+    train_hf_id: google/gemma-4-12B-it-qat-q4_0-unquantized   # same weights as gemma4-12b
+    lora_target: '^(?!.*(vision|audio|embed_vision|multi_modal)).*\.(q_proj|k_proj|v_proj|o_proj|gate_proj|up_proj|down_proj)$'
     think_tokens: 2000
     extra_body: {chat_template_kwargs: {enable_thinking: true}}
   # Qwen3.5 9B (Feb 2026), a vision model: Q5_K_M GGUF 6.58 GB + mmproj-F16 0.92 GB = 7.50 GB

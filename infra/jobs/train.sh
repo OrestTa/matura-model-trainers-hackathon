@@ -15,6 +15,7 @@
 #   REGEN_DATA=0              1 = regenerate data even if S3 has it
 #   EPOCHS=2                  training epochs per adapter
 #   RANK=16 LR=2e-4 MAX_LEN=4096   LoRA rank, learning rate, max tokens per example (sweeps)
+#   SCORE_MODELS=             keys to re-score in step 4 (default TRAIN_MODELS), e.g. gemma4-12b,gemma4-12b-think
 #   SINGLE_ADAPTER=0          1 = one adapter on all types together, served under every
 #                             category name and `general` (for a pretrained base, whose
 #                             untuned fallback can't follow the exam format)
@@ -126,4 +127,10 @@ s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"
 mkdir -p "$OUT/adapters" && cp -rL "$WORK"/adapters/. "$OUT/adapters/"
 
 # 4. Re-score with adapters (and without, for the comparison charts).
-MODELS="$TRAIN_MODELS" MODES="${SCORE_MODES:-raw,routed,adapters}" source "$(dirname "$0")/baselines.sh"
+# SCORE_MODELS scores other keys that share the trained weights (e.g. gemma4-12b-think = the same
+# Gemma with thinking on): they reuse the first trained model's adapters.
+first=${TRAIN_MODELS%%,*}
+for m in ${SCORE_MODELS//,/ }; do
+  [ -e "$WORK/adapters/$m" ] || ln -sfn "$first" "$WORK/adapters/$m"
+done
+MODELS="${SCORE_MODELS:-$TRAIN_MODELS}" MODES="${SCORE_MODES:-raw,routed,adapters}" source "$(dirname "$0")/baselines.sh"
