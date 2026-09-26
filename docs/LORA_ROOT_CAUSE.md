@@ -166,3 +166,21 @@ python scripts/train_lora.py --model gemma4-12b-think --category selfdistill --d
 #    against the new adapter (reasoning length must match the base), then eval raw + 2k thinking +
 #    THINK_FALLBACK with essays routed to the base (LORA_ROUTED=1), same grader as the base's 163/240.
 ```
+
+## Step 0 result (L40S, 22:23 CEST, results/probe-A1/, be9e956)
+
+Same llama-server, same 6 prompts, thinking on; A1 LoRA at scale 0 (= base) vs scale 1:
+
+| Item | Base: reasoning chars / answer words | A1: reasoning chars / answer words |
+|---|---|---|
+| 2023 z2.1 | 1587 / 44 | 788 / **0** |
+| 2023 z2.2 | 1932 / 42 | 1020 / 4 |
+| 2023 z4.1 | 1090 / 4 | 685 / 3 |
+| 2023 z5.2 | 2625 / 47 | 1662 / 51 |
+| 2023 z6 | 2406 / 59 | 2056 / 46 |
+| 2023 z26 essay | 3756 / 326 (stop) | 3935 / 2202 (hit 6000 tokens, looping) |
+
+Cause 1 confirmed: the adapter cuts reasoning by 15–50% and empties or truncates short answers. PEFT (bf16) and
+GGUF (q4_0) change the output about equally (0.9–1.0 of words changed on both), so the GGUF conversion is not a
+cause. The HF LoRA also writes the misspelling "Strzygnięcie:", so the misspellings come from the adapter, not
+from q4_0.
