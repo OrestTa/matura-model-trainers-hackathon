@@ -150,6 +150,11 @@ def main() -> int:
         router.profiles = load_profiles(args.subtypes)
     if args.mode == "subtype":
         print("subtypes:", {k: v.name for k, v in router.profiles.items()}, file=sys.stderr)
+        from matura_router import ocr
+        if any(p.ocr for p in router.profiles.values()) and not ocr.available():
+            print("WARNING: a subtype setup uses OCR notes but tesseract isn't installed "
+                  "(apt-get install -y tesseract-ocr tesseract-ocr-pol before going offline); "
+                  "those items run without them", file=sys.stderr)
     print(f"vision: {router.vision}", file=sys.stderr)
 
     def one(item):
