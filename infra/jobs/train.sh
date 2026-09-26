@@ -12,6 +12,10 @@
 #   PER_CATEGORY=400          synthetic items per question type
 #   REGEN_DATA=0              1 = regenerate data even if S3 has it
 #   EPOCHS=2                  training epochs per adapter
+#   SINGLE_ADAPTER=0          1 = one adapter on all types together, served under every
+#                             category name and `general` (for a pretrained base, whose
+#                             untuned fallback can't follow the exam format)
+#   EXTRA_TRAIN=              more training JSONL files (gen_synthetic schema), space-separated
 #   JUDGE_HF, HF_TOKEN, STOP_WHEN_DONE as in baselines.sh
 source "$(dirname "$0")/common.sh"
 TRAIN_MODELS="${TRAIN_MODELS:-bielik-11b}"
@@ -51,10 +55,19 @@ if [ "${PAST_PAPERS:-1}" = 1 ] && [ -s "$REPO/data/train/past_papers.jsonl" ]; t
   cat "$TRAIN" "$REPO/data/train/past_papers.jsonl" > "$ALL_TRAIN"
   step "adding $(wc -l < "$REPO/data/train/past_papers.jsonl") past-paper items"
 fi
+for f in ${EXTRA_TRAIN:-}; do
+  [ -s "$f" ] || { step "EXTRA_TRAIN file $f missing"; finish 1; }
+  [ "$ALL_TRAIN" = "$TRAIN" ] && { ALL_TRAIN=$OUT/train_all.jsonl; cp "$TRAIN" "$ALL_TRAIN"; }
+  cat "$f" >> "$ALL_TRAIN"; step "adding $(wc -l < "$f") items from $f"
+done
 
 # 2. Split per question type.
 rm -rf data/by_category   # stale files from earlier runs would get trained too
 python scripts/split_by_category.py "$ALL_TRAIN" -o data/by_category
+if [ "${SINGLE_ADAPTER:-0}" = 1 ]; then
+  cat data/by_category/*.jsonl | shuf --random-source=<(yes) > data/all.jsonl
+  rm data/by_category/*.jsonl; mv data/all.jsonl data/by_category/all.jsonl
+fi
 
 # 3. Train one adapter per (model, category), one job per GPU at a time.
 step "training adapters for $TRAIN_MODELS"
@@ -80,6 +93,14 @@ for g in $(seq 0 $((n - 1))); do
 done
 wait
 grep -h "saved\|skip" "$OUT"/train_logs/*.log
+if [ "${SINGLE_ADAPTER:-0}" = 1 ]; then  # the one adapter answers every route
+  for m in ${TRAIN_MODELS//,/ }; do
+    [ -f "$WORK/adapters/$m/all/adapter_config.json" ] || continue
+    for c in closed_choice true_false matching chronology source_analysis short_open essay general; do
+      ln -sfn all "$WORK/adapters/$m/$c"
+    done
+  done
+fi
 # Without adapters the "adapters" mode silently equals "routed"; don't publish that.
 ls "$WORK"/adapters/*/*/adapter_config.json >/dev/null 2>&1 || { step "no adapter trained"; finish 1; }
 s3 sync "$WORK/adapters" "s3://$BUCKET/$NAME/adapters/"

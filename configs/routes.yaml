@@ -28,7 +28,7 @@ routes:
   source_analysis: {adapter: source_analysis, max_tokens: 256,  temperature: 0.0}
   short_open:      {adapter: short_open,      max_tokens: 192,  temperature: 0.0}
   essay:           {adapter: essay,           max_tokens: 1500, temperature: 0.3}
-  general:         {adapter: null,            max_tokens: 512,  temperature: 0.0}
+  general:         {adapter: general,         max_tokens: 512,  temperature: 0.0}   # base model when no 'general' adapter is loaded
 
 # Offline retrieval (modes "rag" and "adapters"): BM25 over a local knowledge base
 # built by scripts/build_kb.py (.jsonl, BM25 in memory) or an SQLite FTS5 file
