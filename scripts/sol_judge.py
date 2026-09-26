@@ -74,15 +74,23 @@ def grade(a):
         if p is None:
             failed.append(i)
             p = 0
+        # Forgehand judges get text only (Orest 21:52 CEST): a picture item's grade is not image-checked;
+        # the Claude grading thread owns those. Use text_total for Sol-vs-Claude comparisons.
+        pic = bool(r.get("needs_image"))  # the answer depends on a picture (source, map, photo)
         items.append({"id": i, "max_points": float(r["points"]), "sol_points": float(p), "points": float(p),
-                      "raw": raw})
+                      "picture_item": pic, "image_checked": False if pic else None, "raw": raw})
         tot += p
         mx += float(r["points"])
     out = {"answers": a.answers, "paper": a.paper, "judge": f"forgehand {a.model}", "judge_kind": "sol",
            "total": tot, "max": mx, "pct": round(100 * tot / mx, 1), "failed": failed, "items": items}
+    text = [it for it in items if not it["picture_item"]]
+    out.update(text_total=sum(it["points"] for it in text), text_max=sum(it["max_points"] for it in text),
+               picture_items_not_image_checked=[it["id"] for it in items if it["picture_item"]])
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1))
-    print(f"sol {a.model} {a.paper}: {tot:g}/{mx:g} = {out['pct']}%" + (f" ({len(failed)} failed)" if failed else ""))
+    print(f"sol {a.model} {a.paper}: {tot:g}/{mx:g} = {out['pct']}%" + (f" ({len(failed)} failed)" if failed else "")
+          + f"; text items only {out['text_total']:g}/{out['text_max']:g}"
+          f" ({len(out['picture_items_not_image_checked'])} picture items not image-checked)")
     if a.claude:
         c = {it["id"]: it["claude_points"] for it in json.load(open(a.claude))["items"]}
         for it in items:
