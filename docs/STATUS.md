@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| eval-Hm2 | papers MODEL=gemma4-12b-think MODE=routed THINK_FALLBACK=1 LORA_FROM=gemma-lora-Hm2 PAPERS='2023-05 2024-05 2025-05 2026-05' | Modal H100 | running | 2026-09-26 19:46 | 2026-09-26 19:46 | modal volume matura-jobs:out/eval-Hm2 | Modal wrapper |
 | eval-B4m2 | papers MODEL=gemma4-12b-think MODE=routed THINK_FALLBACK=1 LORA_FROM=gemma-lora-B4m2 PAPERS='2023-05 2024-05 2025-05 2026-05' | Modal H100 | running | 2026-09-26 19:45 | 2026-09-26 19:45 | modal volume matura-jobs:out/eval-B4m2 | Modal wrapper |
 | eval-S4m2 | papers MODEL=gemma4-12b-think MODE=routed THINK_FALLBACK=1 LORA_FROM=gemma-lora-S4m2 PAPERS='2023-05 2024-05 2025-05 2026-05' | Modal H100 | running | 2026-09-26 19:45 | 2026-09-26 19:45 | modal volume matura-jobs:out/eval-S4m2 | Modal wrapper |
 | smoke-fa-off-A01 |  |  | cancelled | 2026-09-26 19:45 | 2026-09-26 19:45 |  |  |
