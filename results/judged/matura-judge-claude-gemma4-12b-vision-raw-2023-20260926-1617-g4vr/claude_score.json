@@ -1,0 +1,236 @@
+{
+ "answers": "results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/answers.json",
+ "paper": "2023-05",
+ "model": "Gemma 4 12B QAT GGUF + mmproj (gemma4-vision, raw, llama-server, hidden thinking on)",
+ "total": 41.0,
+ "max": 60.0,
+ "pct": 68.3,
+ "judge": "claude (master judge, all items vs CKE zasady oceniania)",
+ "judge_kind": "claude",
+ "klucz": "https://cke.gov.pl/images/_EGZAMIN_MATURALNY_OD_2023/Arkusze_egzaminacyjne/2023/Historia/MHIP-R0-100-2305-zasady.pdf",
+ "note": "job_id assigned by Claude (the run had none); May 2023 rows of results/gemma4/gemma4-vision/raw/answers.jsonl (G-035, run 16:17-16:32 CEST, 7.16 GB); 6/37 answers empty (4.2, 8, 9.1, 13.1, 13.2, 19), likely the thinking-on bug fixed in 6359957; essay topic 2, 304 words",
+ "items": [
+  {
+   "id": "1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "2.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "2.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "3",
+   "max_points": 2.0,
+   "claude_points": 2.0,
+   "auto_points": 2.0
+  },
+  {
+   "id": "4.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 1.0
+  },
+  {
+   "id": "4.2",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "5.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 1.0
+  },
+  {
+   "id": "5.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "5.3",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "6",
+   "max_points": 2.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "7",
+   "max_points": 2.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "8",
+   "max_points": 2.0,
+   "claude_points": 0.0,
+   "auto_points": null
+  },
+  {
+   "id": "9.1",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "9.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "9.3",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "10",
+   "max_points": 2.0,
+   "claude_points": 2.0,
+   "auto_points": 2.0
+  },
+  {
+   "id": "11.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "11.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 1.0
+  },
+  {
+   "id": "12",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "13.1",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "13.2",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "14.1",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "14.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 1.0
+  },
+  {
+   "id": "15",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "16.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "16.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": 1.0
+  },
+  {
+   "id": "17",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "18",
+   "max_points": 3.0,
+   "claude_points": 3.0,
+   "auto_points": null
+  },
+  {
+   "id": "19",
+   "max_points": 2.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "20",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": 0.0
+  },
+  {
+   "id": "21",
+   "max_points": 2.0,
+   "claude_points": 2.0,
+   "auto_points": 2.0
+  },
+  {
+   "id": "22",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "23",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "24",
+   "max_points": 1.0,
+   "claude_points": 0.0,
+   "auto_points": null
+  },
+  {
+   "id": "25.1",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "25.2",
+   "max_points": 1.0,
+   "claude_points": 1.0,
+   "auto_points": null
+  },
+  {
+   "id": "26",
+   "max_points": 15.0,
+   "claude_points": 9.0,
+   "auto_points": null
+  }
+ ]
+}
