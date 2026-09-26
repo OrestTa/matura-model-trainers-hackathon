@@ -21,6 +21,7 @@ detached with nohup. Outputs go to /workspace/work/out/<job>-<time>/, the log to
 /workspace/work/<job>-<time>.log; the venv and adapters live in /workspace/work; Hugging Face
 downloads are cached in /team/hf so every session and workspace reuses them.
 WORKSPACE (default: the team workspace below) selects another workspace.
+start, run, stop and a `log` that sees the job finish update docs/STATUS.md on main.
 """
 import base64, io, json, os, re, shlex, ssl, subprocess, sys, tarfile, time, uuid
 from urllib.parse import urlparse
@@ -28,9 +29,13 @@ from urllib.parse import urlparse
 import requests
 import websocket
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "jobs"))
+from status import update as status  # docs/STATUS.md, committed and pushed on each change
+
 WORKSPACE = os.environ.get("WORKSPACE", "01a0dd4b-4c82-73b7-8d65-9b217e851030")
 REPO = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True,
                       text=True, cwd=os.path.dirname(os.path.abspath(__file__))).stdout.strip()
+OWNER = os.environ.get("OWNER", "Forgehand wrapper")
 CA = os.environ.get("REQUESTS_CA_BUNDLE") or os.environ.get("SSL_CERT_FILE")
 
 
@@ -134,12 +139,16 @@ def main():
         cls = args[args.index("--class") + 1] if "--class" in args else None
         s = fh("session", "start", WORKSPACE, *(["--class", cls] if cls else []), "--wait")
         print(s["id"], s.get("state"), s.get("cls") or cls or "")
+        status(f"fh-session-{s['id'][:8]}", state=s.get("state", "running"),
+               where=f"Forgehand {s.get('cls') or cls or 'default GPU'}",
+               what="GPU session (billed while it exists)", owner=OWNER)
     elif cmd == "ls":
         for s in fh("session", "ls", WORKSPACE):
             print(s["id"], s.get("state"), s.get("cls"), s.get("costMicroUsd", 0) / 1e6, "USD")
     elif cmd == "stop":
         fh("session", "stop", args[0])
         print("stopping", args[0])
+        status(f"fh-session-{args[0][:8]}", state="stopped", owner=OWNER)
     elif cmd == "exec":
         out, code = Jupyter(args[0]).sh(args[1], timeout=int(os.environ.get("TIMEOUT", 600)))
         print(out)
@@ -165,11 +174,17 @@ def main():
         out, _ = j.sh(run)
         print(out)
         print(f"job {name}: log with `fh_job.py log {session} {name}`")
+        status(name, state="running", where=f"Forgehand session {session[:8]}",
+               what=" ".join([job, *env]), out=f"/workspace/work/out/{name}", owner=OWNER)
     elif cmd == "log":
         j = Jupyter(args[0])
         pat = f"/workspace/work/{args[1]}.log" if len(args) > 1 else "$(ls -t /workspace/work/*.log | head -1)"
         out, _ = j.sh(f"tail -n {os.environ.get('LINES', 40)} {pat}; nvidia-smi --query-gpu=index,utilization.gpu,memory.used --format=csv,noheader")
         print(out)
+        # The job's last line is "== HH:MM:SS done (exit N); ..." (infra/jobs/common.sh).
+        done = re.findall(r"done \(exit (\d+)\)", out)
+        if len(args) > 1 and done:
+            status(args[1], state="done" if done[-1] == "0" else f"failed (exit {done[-1]})", owner=OWNER)
     elif cmd == "fetch":
         session, dest = args[0], args[1]
         name = os.environ.get("NAME")

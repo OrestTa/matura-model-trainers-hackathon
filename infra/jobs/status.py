@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""Keeps docs/STATUS.md, the shared table of GPU jobs, and pushes it to main.
+
+Every bot on this repo reads that file to see what is running where. The job
+wrappers (infra/forgehand/fh_job.py, infra/modal/modal_job.py) call this on start,
+state change and finish; call it by hand for anything else:
+
+    python infra/jobs/status.py <job-id> state=running where="Forgehand 4x L40S" \
+        what="baselines, all models" out=/workspace/work/out/<name> owner="compute thread"
+
+A row is keyed by job id; given fields replace the old ones, `started` is set on the
+first write and `updated` on every write. NO_PUSH=1 edits the file without committing.
+"""
+import os
+import subprocess
+import sys
+import time
+
+COLS = ["job", "what", "where", "state", "started", "updated", "out", "owner"]
+HEADER = """# Job status
+
+Live table of GPU jobs, one row per job, newest first. Written by
+`infra/jobs/status.py` (the job wrappers call it); pull before reading.
+Times are UTC.
+
+"""
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PATH = os.path.join(REPO, "docs", "STATUS.md")
+
+
+def git(*args, check=True):
+    return subprocess.run(["git", "-C", REPO, *args], capture_output=True, text=True, check=check)
+
+
+def read_rows():
+    rows = []
+    if os.path.exists(PATH):
+        for line in open(PATH):
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if line.startswith("|") and len(cells) == len(COLS) and cells[0] not in ("job", "---"):
+                rows.append(dict(zip(COLS, cells)))
+    return rows
+
+
+def write_rows(rows):
+    with open(PATH, "w") as f:
+        f.write(HEADER)
+        f.write("| " + " | ".join(COLS) + " |\n|" + "---|" * len(COLS) + "\n")
+        for r in rows:
+            f.write("| " + " | ".join(r.get(c, "").replace("|", "/") for c in COLS) + " |\n")
+
+
+def update(job, **fields):
+    now = time.strftime("%Y-%m-%d %H:%M", time.gmtime())
+    push = os.environ.get("NO_PUSH") != "1"
+    if push:
+        git("pull", "-q", "--rebase", "--autostash", "origin", "main", check=False)
+    rows = read_rows()
+    row = next((r for r in rows if r["job"] == job), None)
+    if row is None:
+        row = {"job": job, "started": now}
+        rows.insert(0, row)
+    row.update({k: str(v) for k, v in fields.items() if k in COLS})
+    row["updated"] = now
+    write_rows(rows)
+    if not push:
+        return
+    git("add", PATH)
+    msg = f"Status: {job} {row.get('state', '')}".strip()
+    if git("commit", "-q", "-m", msg, "--", PATH, check=False).returncode:
+        return
+    for _ in range(4):
+        if git("push", "-q", "origin", "HEAD:main", check=False).returncode == 0:
+            return
+        git("pull", "-q", "--rebase", "--autostash", "origin", "main", check=False)
+    print(f"status.py: could not push {PATH}; committed locally", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    update(sys.argv[1], **dict(a.split("=", 1) for a in sys.argv[2:]))
