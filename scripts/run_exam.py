@@ -64,7 +64,7 @@ def item_images(item: dict, base: Path) -> tuple[Path, ...]:
 
 def build_answers(exam: dict, answers: dict[str, str], template: dict | None = None) -> dict:
     """answers.json in the template's order, every id once, every answer a string."""
-    ids = [a["id"] for a in template["answers"]] if template else [str(i["id"]) for i in exam["items"]]
+    ids = [str(a["id"]) for a in template["answers"]] if template else [str(i["id"]) for i in exam["items"]]
     return {"exam_id": exam["exam_id"],
             "answers": [{"id": i, "answer": str(answers.get(i) or "")[:MAX_ANSWER_CHARS]} for i in ids]}
 
@@ -81,6 +81,25 @@ def validate(out: dict, exam: dict) -> list[str]:
     if size > MAX_BYTES:
         problems.append(f"file is {size} bytes, over 1 MiB")
     return problems
+
+
+def bare_model_ok(router) -> bool:
+    """--mode raw is the untouched-base submission: refuse a served model that is our own merge."""
+    url = getattr(router.backend, "base_url", None)
+    if not url:
+        return True
+    try:
+        import urllib.request
+        with urllib.request.urlopen(url + "/models", timeout=10) as r:
+            roots = [str(m.get("root") or m.get("id") or "") for m in json.load(r).get("data", [])]
+    except Exception as e:  # noqa: BLE001 - can't check; say so and go on
+        print(f"WARNING: could not check which model is served ({e})", file=sys.stderr)
+        return True
+    ours = [x for x in roots if any(t in x.lower() for t in ("dapt", "merged"))]
+    if ours:
+        print(f"--mode raw must run on the untouched base model, but the server has {ours}", file=sys.stderr)
+        return False
+    return True
 
 
 def main() -> int:
@@ -100,6 +119,8 @@ def main() -> int:
     tpl_path = base / "answers-template.json"
     template = json.loads(tpl_path.read_text(encoding="utf-8")) if tpl_path.exists() else None
     router = Router.from_config(args.config)
+    if args.mode == "raw" and not bare_model_ok(router):
+        return 1
 
     def one(item):
         t0 = time.perf_counter()

@@ -7,6 +7,33 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-26 15:20 UTC: official exam harness and 999b525..afa2bd8
+
+- 0593d6b (scripts/run_exam.py: exam.json -> answers.json): matches the guide as summarised in FINDINGS
+  (the guide itself is on warsawmodeltrainers.dev, which our sandboxes can't reach): `{"exam_id", "answers":
+  [{"id", "answer"}]}`, every id once in the template's order, strings only, blank on error, <=100k chars per
+  answer, <=1 MiB checked, UTF-8 with ensure_ascii=False, images checked by sha256. Fixed (this commit):
+  - template ids are now cast to strings too (an int id in answers-template.json produced an int in the output
+    and a false "ids differ" failure);
+  - `--mode raw` now refuses to run when the served model is one of our own merges (vLLM /v1/models root
+    containing "dapt" or "merged"), so the bare-model submission can't silently come from a fine-tuned model.
+- `--mode raw` is otherwise the untouched model: no adapter, no RAG, no template help, no voting, no
+  post-processing beyond stripping <think>, one generic system prompt. Fixed (this commit): raw used the general
+  route's 512-token cap for everything, so a bare-model essay could fall under the 300-word minimum and score
+  0, inflating our progress number; raw now gets the largest cap any route has (2000). Note the one-line
+  generic Polish system prompt is still there; if the organisers want a strictly prompt-free base run, drop it.
+- 999b525 (serve_exam.sh llama.cpp path for GGUF entries): OK, syntax checks; resolves the GGUF from the HF
+  cache offline and refuses without a built llama-server. PEFT adapters are ignored on llama.cpp (warned).
+- e559d24 (fh_job.py NAME= as argument, seconds in default run names): OK.
+- 25806aa / afa2bd8 (small-model track, cpu_serve.py, grade_batches.py): OK. grade_batches puts the CKE key
+  into batch files under runs/ (gitignored), fine.
+- Grok 53791b7 (notes/TRACK01_BEST_SCORE.md: Qwen2.5-7B-Instruct-AWQ 37.6% "CKE full", 5.58 GB): the size is
+  legal. The score can't be checked: no answers or summary are committed, and it doesn't say which scorer or
+  denominator (judge or not; pct over scored rows vs pct_all_rows). Please commit summary.json to results/grok/.
+  Its "never use Bielik-11B as the Sunday base" holds only for bf16; Bielik-11B NF4 (~6.7 GB) and
+  Bielik-11B-v3 AWQ (6.19 GB) are under 8.0 GB.
+- Status commits: consistent.
+
 ## 2026-09-26 14:55 UTC: 00603d6..b0b9604 (size caps, new candidates, Nebius, Solari, Claude synthetic data)
 
 Secrets scan of every added line: no keys, tokens, redeem codes, IPs or account/project IDs. The Nebius runner

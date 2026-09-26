@@ -166,8 +166,12 @@ class Router:
 
         route = self.routes.get(category) or self.routes[Category.GENERAL]
         if mode == "raw":
-            # The bare-model baseline must not inherit the closed types' tiny token caps.
-            route = self.routes[Category.GENERAL]
+            # The bare-model baseline must not inherit the closed types' tiny token caps, nor a
+            # tighter cap than the harness gets (a 512-token essay can fall under the 300-word
+            # minimum and score 0, which would inflate our progress number).
+            g = self.routes[Category.GENERAL]
+            cap = max(r.params.max_tokens for r in self.routes.values())
+            route = Route(None, GenerationParams(cap, g.params.temperature, g.params.top_p))
         adapter = self.resolve_adapter(category) if mode == "adapters" else None
         prompt_cat = Category.GENERAL if mode == "raw" else category
         knowledge, retrieved = self.knowledge(category, question, context) \
