@@ -18,6 +18,7 @@ marked their base-model DAPT "PARKED". **This must not happen again:**
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| gemma-lora-S4m2 | train TRAIN_MODELS=gemma4-12b TEACHER_HF=none JUDGE_HF= SCORE_MODELS=gemma4-12b-think SCORE_MODES=adapters THINK_FALLBACK=1 SINGLE_ADAPTER=1 RANK=32 LR=2e-4 EPOCHS=0.15 PAST_PAPERS=0 EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl /repo/train_data/open_claude_synth.jsonl' | Modal H100 | running | 2026-09-26 19:21 | 2026-09-26 19:21 | modal volume matura-jobs:out/gemma-lora-S4m2 | Modal wrapper |
 | gemma-lora-Hm | train TRAIN_MODELS=gemma4-12b TEACHER_HF=none JUDGE_HF= SCORE_MODELS=gemma4-12b-think SCORE_MODES=adapters THINK_FALLBACK=1 SINGLE_ADAPTER=1 RANK=16 LR=1e-4 EPOCHS=0.3 EXTRA_TRAIN='/repo/train_data/history_ext_synth.jsonl /repo/train_data/claude_synth.jsonl /repo/train_data/open_claude_synth.jsonl' | Modal H100 | running | 2026-09-26 19:11 | 2026-09-26 19:11 | modal volume matura-jobs:out/gemma-lora-Hm | Modal wrapper |
 | subtype-t2k-1 | subtype t2k candidate dev SHARD=1/2 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/subtype-t2k-1 | Per-subtype harness thread |
 | subtype-t2k-0 | subtype t2k candidate dev SHARD=0/2 | Nebius H100 | running | 2026-09-26 19:07 | 2026-09-26 19:07 | s3://matura-jobs-claude/out/subtype-t2k-0 | Per-subtype harness thread |
