@@ -182,11 +182,19 @@ def main():
             wait = (f"until grep -q 'done (exit' /workspace/work/{os.environ['AFTER']}.log; do "
                     f"echo waiting for {os.environ['AFTER']}; sleep 60; done\n") + wait
         # Fresh code dir per run; venv, adapters and HF cache are shared across runs.
+        # Preflight (infra/jobs/preflight.py) runs first, before any waiting: missing weights,
+        # a gated repo, an unsupported model or a missing llama-server end the job at once.
+        # PREFLIGHT=0 skips it.
+        pre = ""
+        if os.environ.get("PREFLIGHT", "1") != "0":
+            pre = (f"PY=/workspace/work/venv-py312/bin/python; [ -x $PY ] || PY=python3\n"
+                   f"$PY infra/jobs/preflight.py {job} || "
+                   f"{{ echo \"$(date +%T) done (exit 3); preflight failed\"; exit 3; }}\n")
         script = (f"set -e\nmkdir -p /workspace/runs/{name} /workspace/work /team/hf\n"
                   f"tar xzf /workspace/work/upload/{name}.tar.gz -C /workspace/runs/{name}\n"
-                  f"cd /workspace/runs/{name}\n{wait}\n"
+                  f"cd /workspace/runs/{name}\n"
                   f"export WORK=/workspace/work OUT=/workspace/work/out/{name} HF_HOME=/team/hf "
-                  f"NAME={name} {env_s}\nexec bash infra/jobs/{job}.sh\n")
+                  f"NAME={name} {env_s}\n{pre}{wait}\nexec bash infra/jobs/{job}.sh\n")
         j.put_file(f"{rel}work/upload/{name}.sh", script.encode())
         # setsid detaches the job from the terminal, which is deleted right after.
         run = (f"setsid nohup bash /workspace/work/upload/{name}.sh > /workspace/work/{name}.log "
