@@ -35,6 +35,8 @@ export LD_LIBRARY_PATH="$(dirname "$LLAMA_SERVER"):${LD_LIBRARY_PATH:-}"
 
 step "downloading $MODEL"
 export HF_HUB_ENABLE_HF_TRANSFER=1
+# As on stage: an answer lost to runaway thinking is asked again with thinking off (openai_compat).
+export THINK_FALLBACK="${THINK_FALLBACK:-1}"
 read -r GGUF MMPROJ < <(python3 - "$MODEL" <<'PY'
 import sys, yaml
 from huggingface_hub import hf_hub_download as d
