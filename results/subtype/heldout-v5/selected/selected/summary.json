@@ -1,0 +1,63 @@
+{
+  "n": 154,
+  "scored": 70,
+  "errors": 0,
+  "earned": 49.0,
+  "max": 81.0,
+  "pct": 60.5,
+  "pct_text_only": 75.0,
+  "pct_all_rows": 20.4,
+  "decision_acc": 82.7,
+  "unscored": 84,
+  "routing_accuracy": 86.4,
+  "latency_p50_s": 44.993,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 12,
+      "scored": 12,
+      "earned": 11.0,
+      "max": 13.0,
+      "pct": 84.6
+    },
+    "essay": {
+      "n": 4,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 4,
+      "scored": 4,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 13,
+      "scored": 5,
+      "earned": 3.0,
+      "max": 5.0,
+      "pct": 60.0
+    },
+    "source_analysis": {
+      "n": 109,
+      "scored": 37,
+      "earned": 21.0,
+      "max": 39.0,
+      "pct": 53.8
+    },
+    "true_false": {
+      "n": 12,
+      "scored": 12,
+      "earned": 14.0,
+      "max": 18.0,
+      "pct": 77.8
+    }
+  },
+  "model": "gemma4-12b-think",
+  "mode": "selected/selected",
+  "papers": "heldout",
+  "empty": 0
+}
