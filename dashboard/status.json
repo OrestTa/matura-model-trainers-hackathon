@@ -292,7 +292,7 @@
     "steps": [
       "Open dashboard/status.json and update the fields that changed: updatedAt, highlights, jobs, results, or operationalNotes.",
       "Keep every value grounded in tracked repo files such as STATUS.md, docs/STATUS.md, docs/FINDINGS.md, INSIGHTS.md, or future committed results files.",
-      "Commit and push to main. GitHub Pages redeploys automatically from the dashboard/ directory workflow."
+      "Commit and push to main, then redeploy the dashboard/ folder to your preferred public static host."
     ]
   },
   "sources": [
