@@ -1,0 +1,309 @@
+{
+  "run_id": "official_mock_bielik45_fp8",
+  "exam_id": "history-2023-mock-v1",
+  "model": "bielik45-fp8",
+  "answers_path": "results/grok/official_mock_bielik45_fp8/answers.json",
+  "gold_path": "data/eval/matura.jsonl",
+  "max_points": 60,
+  "earned_points": 28,
+  "pct": 46.67,
+  "n_items": 37,
+  "n_scored": 37,
+  "n_full": 17,
+  "n_partial": 4,
+  "n_zero": 16,
+  "judge": "cloud_llm_strict_cke",
+  "items": [
+    {
+      "id": "1",
+      "gold_id": "2023-05-z1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Neolit + uzasadnienie z odwołaniem do zabudowań/osiadłego trybu — OK."
+    },
+    {
+      "id": "2.1",
+      "gold_id": "2023-05-z2.1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Fragment 2 + Lacedemończycy/Peloponez/hegemonia — OK."
+    },
+    {
+      "id": "2.2",
+      "gold_id": "2023-05-z2.2",
+      "max": 1,
+      "earned": 1,
+      "rationale": "A–3, B–2 zgodne z kluczem."
+    },
+    {
+      "id": "3",
+      "gold_id": "2023-05-z3",
+      "max": 2,
+      "earned": 0,
+      "rationale": "TF gold F,P,P; model P,F,P — tylko 1/3; poniżej progu 2 wskazań."
+    },
+    {
+      "id": "4.1",
+      "gold_id": "2023-05-z4.1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Związek hanzeatycki / Hanza — poprawna nazwa."
+    },
+    {
+      "id": "4.2",
+      "gold_id": "2023-05-z4.2",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Tak + brak rynku/szeroka ulica z obu źródeł — OK."
+    },
+    {
+      "id": "5.1",
+      "gold_id": "2023-05-z5.1",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Wymagana wojna stuletnia; podano bitwę pod Crécy."
+    },
+    {
+      "id": "5.2",
+      "gold_id": "2023-05-z5.2",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Roszczenia Edwarda III przez matkę Izabelę/Kapetyngów — meritum OK."
+    },
+    {
+      "id": "5.3",
+      "gold_id": "2023-05-z5.3",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Brak lilii/lwów na proporcu; nieadekwatne uzasadnienie."
+    },
+    {
+      "id": "6",
+      "gold_id": "2023-05-z6",
+      "max": 2,
+      "earned": 2,
+      "rationale": "Podobieństwo i różnica opinii o Łokietku — oba elementy."
+    },
+    {
+      "id": "7",
+      "gold_id": "2023-05-z7",
+      "max": 2,
+      "earned": 1,
+      "rationale": "Gotyk+cechy OK; barok zamiast renesansu — 1 pkt."
+    },
+    {
+      "id": "8",
+      "gold_id": "2023-05-z8",
+      "max": 2,
+      "earned": 0,
+      "rationale": "Brak wagi/Biblii vs hierarchie katolickie — argumenty nietrafione."
+    },
+    {
+      "id": "9.1",
+      "gold_id": "2023-05-z9.1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Zygmunt III Waza — poprawne imię."
+    },
+    {
+      "id": "9.2",
+      "gold_id": "2023-05-z9.2",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Konflikt o Inflanty — prawidłowa przyczyna."
+    },
+    {
+      "id": "9.3",
+      "gold_id": "2023-05-z9.3",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Śmierć Augusta vs abdykacja Jana Kazimierza — meritum OK."
+    },
+    {
+      "id": "10",
+      "gold_id": "2023-05-z10",
+      "max": 2,
+      "earned": 2,
+      "rationale": "TF P,F,P — pełna zgodność z kluczem."
+    },
+    {
+      "id": "11.1",
+      "gold_id": "2023-05-z11.1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Liberum veto jako narzędzie walki/blokady sejmów — OK."
+    },
+    {
+      "id": "11.2",
+      "gold_id": "2023-05-z11.2",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Closed choice: gold C, model A."
+    },
+    {
+      "id": "12",
+      "gold_id": "2023-05-z12",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Nie + trzy stany vs trójpodział Monteskiusza — OK."
+    },
+    {
+      "id": "13.1",
+      "gold_id": "2023-05-z13.1",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Rozstrzygnięcie B OK, ale bitwa: Grochów zamiast Ostrołęki."
+    },
+    {
+      "id": "13.2",
+      "gold_id": "2023-05-z13.2",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Closed choice: gold C, model A."
+    },
+    {
+      "id": "14.1",
+      "gold_id": "2023-05-z14.1",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Łukasiewicz; model Piłsudski."
+    },
+    {
+      "id": "14.2",
+      "gold_id": "2023-05-z14.2",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold zabór austriacki/Galicja; model rosyjski."
+    },
+    {
+      "id": "15",
+      "gold_id": "2023-05-z15",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold realizm; model impresjonizm."
+    },
+    {
+      "id": "16.1",
+      "gold_id": "2023-05-z16.1",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Tak (zgodność pieśni z Manifestem); model Niezgodne."
+    },
+    {
+      "id": "16.2",
+      "gold_id": "2023-05-z16.2",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Marks/Engels; model Trocki."
+    },
+    {
+      "id": "17",
+      "gold_id": "2023-05-z17",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Tak (ilustracja potwierdza); model Nie."
+    },
+    {
+      "id": "18",
+      "gold_id": "2023-05-z18",
+      "max": 3,
+      "earned": 2,
+      "rationale": "Wymowa pomocy USA, banknot, Lafayette/tytuł, 1917; błędy (Kościuszko)."
+    },
+    {
+      "id": "19",
+      "gold_id": "2023-05-z19",
+      "max": 2,
+      "earned": 1,
+      "rationale": "TF gold F,P,F; model F,P,P — 2/3 → 1 pkt."
+    },
+    {
+      "id": "20",
+      "gold_id": "2023-05-z20",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Nie (Saara ≠ łamanie); model twierdzi, że oba łamią."
+    },
+    {
+      "id": "21",
+      "gold_id": "2023-05-z21",
+      "max": 2,
+      "earned": 2,
+      "rationale": "Closed 1:B 2:C — pełna zgodność z kluczem."
+    },
+    {
+      "id": "22",
+      "gold_id": "2023-05-z22",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Rozstrzygnięcie Nie OK, ale B opisane jako Zachód zamiast UW."
+    },
+    {
+      "id": "23",
+      "gold_id": "2023-05-z23",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Katyń + cenzura/kłamstwo katyńskie w PRL — OK."
+    },
+    {
+      "id": "24",
+      "gold_id": "2023-05-z24",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Nie + różne kampanie (1968 vs kościelna) — OK."
+    },
+    {
+      "id": "25.1",
+      "gold_id": "2023-05-z25.1",
+      "max": 1,
+      "earned": 1,
+      "rationale": "Breżniew + Solidarność jako «ciężka choroba» — OK."
+    },
+    {
+      "id": "25.2",
+      "gold_id": "2023-05-z25.2",
+      "max": 1,
+      "earned": 0,
+      "rationale": "Gold Jaruzelski; model Piłsudski."
+    },
+    {
+      "id": "26",
+      "gold_id": "2023-05-z26",
+      "max": 15,
+      "earned": 4,
+      "rationale": "Szkic 50s (Korea, Sputnik, Budapeszt), ale kryzys kubański 1962 i liczne błędy faktograficzne."
+    }
+  ],
+  "by_category": {
+    "text_open": {
+      "earned": 7,
+      "max": 11,
+      "pct": 63.6,
+      "n_items": 10
+    },
+    "text_closed": {
+      "earned": 3,
+      "max": 4,
+      "pct": 75.0,
+      "n_items": 3
+    },
+    "image_open": {
+      "earned": 11,
+      "max": 23,
+      "pct": 47.8,
+      "n_items": 19
+    },
+    "image_closed": {
+      "earned": 3,
+      "max": 7,
+      "pct": 42.9,
+      "n_items": 4
+    },
+    "essay": {
+      "earned": 4,
+      "max": 15,
+      "pct": 26.7,
+      "n_items": 1
+    }
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "run_id": "matura-judge-sol-bielik45fp8-2023-20260926-1726-0f08",
+  "exam_id": "history-2023-mock-v1",
+  "model": "gpt-6-sol",
+  "judge": "forgehand-llm",
+  "student_model": "Bielik-4.5B-FP8-Instruct",
+  "n_items": 37,
+  "total": 29,
+  "max": 60,
+  "pct": 48.3,
+  "wall_s": 139.036,
+  "api_errors": [],
+  "items": [
+    {
+      "id": "1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawne rozstrzygnięcie i uzasadnienie odwołujące się do zabudowań."
+    },
+    {
+      "id": "2.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_open",
+      "note": "Wskazano fragment 2 i właściwe informacje o Sparcie."
+    },
+    {
+      "id": "2.2",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_closed",
+      "note": "Oba wskazania poprawne."
+    },
+    {
+      "id": "3",
+      "points_awarded": 0,
+      "points_max": 2,
+      "earned": 0,
+      "max": 2,
+      "category": "image_closed",
+      "note": "Poprawne tylko trzecie wskazanie."
+    },
+    {
+      "id": "4.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Podano poprawną nazwę związku."
+    },
+    {
+      "id": "4.2",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawne rozstrzygnięcie i odniesienie do układu miasta w obu źródłach."
+    },
+    {
+      "id": "5.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Choć jako odpowiedź wskazano bitwę, poprawna nazwa wojny pada w uzasadnieniu."
+    },
+    {
+      "id": "5.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawny związek przez Izabelę podważają błędne informacje o jej pochodzeniu i przodkach Edwarda."
+    },
+    {
+      "id": "5.3",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Nie wskazano francuskich lilii na proporcu; opis elementów ilustracji jest nietrafny."
+    },
+    {
+      "id": "6",
+      "points_awarded": 2,
+      "points_max": 2,
+      "earned": 2,
+      "max": 2,
+      "category": "text_open",
+      "note": "Wskazano negatywną ocenę początków oraz różnicę w ocenie późniejszego panowania."
+    },
+    {
+      "id": "7",
+      "points_awarded": 1,
+      "points_max": 2,
+      "earned": 1,
+      "max": 2,
+      "category": "image_open",
+      "note": "Poprawnie rozpoznano gotyk i ostrołukowe okna; drugi styl jest błędny."
+    },
+    {
+      "id": "8",
+      "points_awarded": 0,
+      "points_max": 2,
+      "earned": 0,
+      "max": 2,
+      "category": "image_open",
+      "note": "Argumenty nie odnoszą się do przedstawionych na rycinie symboli i postaci."
+    },
+    {
+      "id": "9.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawnie wskazano Zygmunta III, mimo błędnej daty w uzasadnieniu."
+    },
+    {
+      "id": "9.2",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawnie wskazano rywalizację o Inflanty."
+    },
+    {
+      "id": "9.3",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawnie odróżniono śmierć Zygmunta Augusta od abdykacji Jana Kazimierza, mimo błędnej daty."
+    },
+    {
+      "id": "10",
+      "points_awarded": 2,
+      "points_max": 2,
+      "earned": 2,
+      "max": 2,
+      "category": "text_closed",
+      "note": "Wszystkie trzy wskazania poprawne."
+    },
+    {
+      "id": "11.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_open",
+      "note": "Wyjaśniono wykorzystanie liberum veto do blokowania prac sejmu i walki politycznej."
+    },
+    {
+      "id": "11.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "text_closed",
+      "note": "Poprawna odpowiedź: C."
+    },
+    {
+      "id": "12",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_open",
+      "note": "Poprawne rozstrzygnięcie i odróżnienie trzech stanów sejmujących od trzech władz."
+    },
+    {
+      "id": "13.1",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Poprawny plan, ale błędna nazwa bitwy; chodzi o Ostrołękę."
+    },
+    {
+      "id": "13.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_closed",
+      "note": "Poprawna odpowiedź: C."
+    },
+    {
+      "id": "14.1",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Na monecie przedstawiono Ignacego Łukasiewicza."
+    },
+    {
+      "id": "14.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Przemysł naftowy narodził się w zaborze austriackim."
+    },
+    {
+      "id": "15",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Obraz jest przykładem realizmu, nie impresjonizmu."
+    },
+    {
+      "id": "16.1",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "text_open",
+      "note": "Przesłania są zgodne; manifest również zapowiada rewolucję."
+    },
+    {
+      "id": "16.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "text_open",
+      "note": "Autorami manifestu byli Marks i Engels."
+    },
+    {
+      "id": "17",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Ilustracja potwierdza krytykę brytyjskiego ucisku w Indiach."
+    },
+    {
+      "id": "18",
+      "points_awarded": 2,
+      "points_max": 3,
+      "earned": 2,
+      "max": 3,
+      "category": "image_open",
+      "note": "Trafny kontekst 1917 roku i sens wsparcia, lecz błędnie rozpoznano postacie i znaczenie pieniędzy."
+    },
+    {
+      "id": "19",
+      "points_awarded": 1,
+      "points_max": 2,
+      "earned": 1,
+      "max": 2,
+      "category": "image_closed",
+      "note": "Poprawne dwa z trzech wskazań."
+    },
+    {
+      "id": "20",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Powrót Saary do Niemiec nastąpił zgodnie z traktatem wersalskim."
+    },
+    {
+      "id": "21",
+      "points_awarded": 2,
+      "points_max": 2,
+      "earned": 2,
+      "max": 2,
+      "category": "image_closed",
+      "note": "Obie odpowiedzi poprawne."
+    },
+    {
+      "id": "22",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "text_open",
+      "note": "Traktat B dotyczy Układu Warszawskiego, nie integracji zachodniej."
+    },
+    {
+      "id": "23",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_open",
+      "note": "Poprawnie wskazano zbrodnię katyńską i jej ukrywanie przez cenzurę PRL."
+    },
+    {
+      "id": "24",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "image_open",
+      "note": "Błędnie wyjaśniono źródło 2: dotyczy kampanii przeciw Kościołowi po liście biskupów."
+    },
+    {
+      "id": "25.1",
+      "points_awarded": 1,
+      "points_max": 1,
+      "earned": 1,
+      "max": 1,
+      "category": "text_open",
+      "note": "Poprawne nazwisko i odniesienie do kryzysu związanego z Solidarnością."
+    },
+    {
+      "id": "25.2",
+      "points_awarded": 0,
+      "points_max": 1,
+      "earned": 0,
+      "max": 1,
+      "category": "text_open",
+      "note": "Politykiem B był Wojciech Jaruzelski, który wprowadził stan wojenny."
+    },
+    {
+      "id": "26",
+      "points_awarded": 6,
+      "points_max": 15,
+      "earned": 6,
+      "max": 15,
+      "category": "essay",
+      "note": "Teza i układ czytelne, lecz kryzys kubański poza latami 50.; błędne datowanie KOR i filmów."
+    }
+  ]
+}
