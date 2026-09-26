@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| small-baselines-r | baselines MODELS_CONFIG=configs/small_models.yaml MODELS=gemma3-270m,qwen2.5-0.5b,qwen3-0.6b,gemma3-1b,llama3.2-1b,qwen2.5-1.5b,qwen3-1.7b MODES=raw,routed GPU_BUDGET_GB=20 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:26 | 2026-09-26 13:26 | /workspace/work/out/small-baselines-r | Win smallest model thread |
 | baselines-all3-r | baselines MODELS=bielik-11b,qwen3-8b,qwen3-1.7b EVAL=/workspace/runs/baselines-all3-r/data/eval/matura_all.jsonl GPU_BUDGET_GB=24 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:26 | 2026-09-26 13:26 | /workspace/work/out/baselines-all3-r | Modal compute setup thread |
 | progress-base-raw-r | baselines MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw-r/data/eval/matura_all.jsonl GPU_BUDGET_GB=0 VLLM_UTIL=0.3 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 13:26 | 2026-09-26 13:26 | /workspace/work/out/progress-base-raw-r | Best progress thread |
 | score-vision | baselines MODELS=gemma4-12b MODES=raw,routed JUDGE_HF=Qwen/Qwen3-14B-AWQ JUDGE_GB=16 GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:15 | 2026-09-26 13:17 | /workspace/work/out/score-vision | Win best matura score thread |
