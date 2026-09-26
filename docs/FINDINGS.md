@@ -3,6 +3,13 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 20:02 CEST · Best progress PAUSED (Orest: focus on best score); how to resume
+- Base: pretrained `speakleash/Bielik-11B-v2` NF4, 6.66 GB (site base set). Claude-graded May 2023 mock 12/60 = 20.0% (p2a1, flagged contaminated, so re-infer raw under a new job_id before quoting).
+- DAPT `matura-dapt-bielik11b-basenf4-holdout-20260926-1801-15d4` (QLoRA on NF4, protected, not ours to stop): last seen 16/154 at 18:31, ETA ~22:17 CEST. Adapter lands in `/scratch/dapt-work-...15d4/adapters/bielik-11b-base/domain`.
+- SFT data: `train_data/claude_synth.jsonl` (953) + `train_data/history_ext_synth.jsonl` (3,956, eb4d66e, leak-checked). The Grok bot's Nebius SFT n7k2 used the same set; its adapter is lost (written to container disk).
+- Resume: (1) raw base re-infer on the 2023 mock; (2) `EXTRA_SFT=train_data/history_ext_synth.jsonl EPOCHS=1 STAGES="2" bash infra/jobs/progress_pipeline.sh` for SFT-only; (3) after DAPT: `DAPT_ADAPTER=/scratch/dapt-work-...15d4/adapters EXTRA_SFT=train_data/history_ext_synth.jsonl STAGES="3 4 5 6 7" bash infra/jobs/progress_pipeline.sh`; run the trained model on the same mock (`--mode adapters`, `$OUT/progress/exam.env`) and have Claude grade both.
+- All GPU requests from this track were withdrawn at 20:02 CEST.
+
 ## 2026-09-26 20:05 CEST · venues thread: Grok bot's Nebius SFT (me2k8) and its training data
 
 - **Where:** Orest's Nebius tenant amber-centipede (o@tarasiuk.me, balance $135.59 at 19:47), project
