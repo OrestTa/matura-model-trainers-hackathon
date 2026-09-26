@@ -13,3 +13,26 @@ The real-only router `artifacts/small_track/router-real-2026-0926.json` uses can
 Final real image preprocessing completed152/152pages for181tasks; final286rows across routes25/43/76/138/4. All route file hashes, unique IDs, year exclusions and OCR provenance passed validation. No cloud worker remains active from this preprocessing.
 
 Legacy extraction update:2010–2014 now have122parsedtasks,250points and matched keyIDs, with original pages rendered. Three papers2011–2013 pass structural page/key checks;2010task20 and2014task22 need original-page linkage repair. All five remain excluded from the frozen training snapshot pending content QA. Years2007–2009 remain unparsed. Thus17years have task extraction,12modernplus5legacy, not20training-readypapers.
+
+## Optional legacy text expansion,2026-09-27
+
+Twelve additional text-only rows have been staged separately in
+`data/small_track_legacy_audit_20260927/optional-text-training.jsonl`:
+two closed and ten open tasks, five from2012 and seven from2014.
+SHA256: `39787692d5d6b8990d6f8f6a5bfa8b94dc0fc7bf377cc649f1eef6ad69db2122`.
+Each target comprises exact selected positive official answer spans, with whitespace
+normalization only; grading instructions and negative examples are excluded.
+Questions are self-contained early-paper tasks, with archive watermarks/point-box
+footers removed. Original source and candidate hashes are retained. Nothing was
+appended to the frozen138-row corpus and no training was launched.
+
+Authorship is corroborated by freshly downloaded primary examination-board keys:
+[OKE Kraków2012](https://www.oke.krakow.pl/inf/filemgmt/visit.php?lid=3521),
+SHA256 `300b46ab3b700354583d8212a76cd49e92d3b5b272b03a1c413bfa9168e22711`;
+[OKE Poznań2014](https://www.oke.poznan.pl/files/cms/347/historia_pr_klucz.pdf),
+SHA256 `0575c2b33f77c8d0dccfcae1b653f036470458b270091eb9a82783f1a45ba822`.
+2010/2011/2013 rows were not added without independent primary-key corroboration.
+The legacy parser's later shared-source sections can shift neighboring material
+into the wrong task, while some answer fields contain rubric/negative-example
+text. Thus122parsed rows do not mean122reliable additions. Images, ambiguous table
+layouts and late source-dependent tasks remain excluded from this text expansion.
