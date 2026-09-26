@@ -1,0 +1,172 @@
+{
+  "source": "Only saved own-Codex-Luna rationales; no assistant answer adjudication",
+  "themes": [
+    {
+      "theme": "Incomplete answers or repetition of prompt/source headings",
+      "evidence": [
+        {
+          "id": "4.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/4.2.json",
+          "sha256": "bded63b5d23dadf216a5a9501739f691dbdc0b1ccbda41d2aab06645e5142e79",
+          "luna_rationale_verbatim": "Kandydat przytacza treść źródeł i format odpowiedzi, ale nie podaje rozstrzygnięcia ani uzasadnienia odnoszącego się do planu. Na widocznym planie Elbląga są oznaczone ulice, m.in. Stary Rynek, lecz odpowiedź tego nie interpretuje."
+        },
+        {
+          "id": "5.1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/5.1.json",
+          "sha256": "794a0e703f3ce013aeb91200b9853720de382baa058886c0c260ad9236b51489",
+          "luna_rationale_verbatim": "Brak odpowiedzi na pytanie: lista nagłówków „Źródło” nie podaje nazwy konfliktu. W ilustracji widać walczące wojska, ale to nie zastępuje wymaganej odpowiedzi."
+        },
+        {
+          "id": "7",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/7.json",
+          "sha256": "9ad6e24901b214d5144d84cbdf144e2ddc93ed1b693055a5b129380a551a0566",
+          "luna_rationale_verbatim": "Podano dwa prawidłowe style: gotycki i renesansowy, co zgodnie z rubryką daje 1 pkt. Cechy pozostawiono puste. Na fotografii widać gotyckie ostrołukowe okno z maswerkiem oraz renesansowe prostokątne okna i wieżę z hełmem, ale kandydat ich nie wskazał."
+        },
+        {
+          "id": "14.1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/14.1.json",
+          "sha256": "a1a60ebd4aa1e3087c2526e24b26037ff0446613598a67234f0a55d43a33378e",
+          "luna_rationale_verbatim": "Brak odpowiedzi; moneta przedstawia Ignacego Łukasiewicza, ale kandydat nie podał nazwiska."
+        },
+        {
+          "id": "16.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/16.2.json",
+          "sha256": "5e4ffd71089abb002cbe96f39d48baaf1f07693ec83c77110af57c151672dfe2",
+          "luna_rationale_verbatim": "Nie podano nazwiska autora; odpowiedź jedynie powtarza polecenie."
+        }
+      ]
+    },
+    {
+      "theme": "Incorrect historical identification or explanation",
+      "evidence": [
+        {
+          "id": "2.1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/2.1.json",
+          "sha256": "1ee387d3966f901d0ecbb65518a9b4c549a4839e17abcbe5fc57eed5d50f4865",
+          "luna_rationale_verbatim": "Wskazano fragment 1, podczas gdy poprawny jest fragment 2; uzasadnienie powtarza informacje z fragmentu 1."
+        },
+        {
+          "id": "5.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/5.2.json",
+          "sha256": "820d509a6f12a5dde9bc45b2c6e49db041e0cdc6cd58445aa4f3966e2fe9b56f",
+          "luna_rationale_verbatim": "Odpowiedź podaje, że Edward III „zniósł pretensje” w 1322 r., i nie wyjaśnia związku jego roszczeń z pochodzeniem od Izabeli ani wygaśnięciem głównej linii Kapetyngów. Tablica pokazuje Izabelę jako córkę Filipa IV i matkę Edwarda III, a Filipa VI jako Walezjusza."
+        },
+        {
+          "id": "9.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/9.2.json",
+          "sha256": "11de41243506ab3b3234c2ff1b6359ee5dc73219e209eeb12f11bf2e3bf7527c",
+          "luna_rationale_verbatim": "Odpowiedź opisuje spory sukcesyjne po śmierci Zygmunta Augusta, a nie podaje innej przyczyny wojen polsko-szwedzkich. Wskazane jako poprawne w kluczu przyczyny to rywalizacja o panowanie nad Bałtykiem lub Inflantami."
+        },
+        {
+          "id": "9.3",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/9.3.json",
+          "sha256": "c499d893ee579b304a6b1de9d5f5530978e7859331f4442bee0c8f1a28385776",
+          "luna_rationale_verbatim": "Odpowiedź błędnie identyfikuje ostatniego męskiego Jagiellona jako Władysława IV, który na drzewie genealogicznym figuruje jako syn Zygmunta III. Klucz wymaga wskazania, że panowanie Zygmunta II Augusta zakończyła śmierć, podczas gdy Jan II Kazimierz abdykował. Odpowiedź przypisuje błędną przyczynę Władysławowi IV i Janowi Kazimierzowi."
+        },
+        {
+          "id": "12",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/12.json",
+          "sha256": "1cdbdb9981876361da6ca6aa25bb7e6e0234b8833c336b1bf8e6c3699d373354",
+          "luna_rationale_verbatim": "Rozstrzygnięcie „Tak” jest błędne. Źródło mówi o podziale władzy prawodawczej między stany sejmujące, a nie o trójpodziale władz."
+        },
+        {
+          "id": "14.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/14.2.json",
+          "sha256": "62d7fcd8ccf64be18f4011129a39dd2c24a45e77ee581996914a5a456eb9a5f7",
+          "luna_rationale_verbatim": "Kandydat wskazał Rosję. Na monecie widać napis „Przemysł naftowy i gazownictwo” oraz portret Łukasiewicza, ale te szczegóły nie potwierdzają odpowiedzi; klucz wskazuje zabór austriacki (Galicję)."
+        },
+        {
+          "id": "22",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/22.json",
+          "sha256": "c97f62752e63543b11c2c307f37d2b787f7611360d0a17a03e0796bdbdf4b04e",
+          "luna_rationale_verbatim": "Rozstrzygnięcie „Tak” jest błędne. Traktat A dotyczy NATO, a traktat B Układu Warszawskiego, czyli procesów po przeciwnych stronach żelaznej kurtyny."
+        },
+        {
+          "id": "25.1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/25.1.json",
+          "sha256": "a448d6324cc7018fb5e38ee2b6a87de58d6e74901019add4d1030480dd7cc28d",
+          "luna_rationale_verbatim": "Podano błędne nazwisko; ciężka choroba oznaczała kryzys komunistycznej władzy związany ze strajkami i powstaniem Solidarności, a nie stan wojenny."
+        },
+        {
+          "id": "25.2",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/25.2.json",
+          "sha256": "2e18331de602bc316a8656aa2eba4bcfd5acf5f8390c8b5cae96bfd48c1400ee",
+          "luna_rationale_verbatim": "Nie podano nazwiska Jaruzelski. Wyjaśnienie również nie trafia w wymagane działanie: wprowadzenie stanu wojennego w celu rozprawy z Solidarnością i opozycją."
+        }
+      ]
+    },
+    {
+      "theme": "Required visual evidence or interpretation missing or contradicted",
+      "evidence": [
+        {
+          "id": "1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/1.json",
+          "sha256": "83214fbf20501766077fbafb29c3fcf8d6eb005e768bccd166f1dd404a4051a0",
+          "luna_rationale_verbatim": "The answer gives the correct ruling, Neolithic, and refers to the pictured buildings, but the stated reason that they are made of stone is contradicted by the illustration: the visible structures are predominantly earthen/adobe-looking. The rubric requires a correct ruling together with a justification referring to the illustration; this justification does not support the ruling."
+        },
+        {
+          "id": "5.3",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/5.3.json",
+          "sha256": "d482be07b92d02d592a32abc71a9014c2be876bc3b05de39d92dd380fc53c483",
+          "luna_rationale_verbatim": "Odpowiedź wspomina o położeniu wojsk w centrum obrazu i ich otoczeniu, ale nie wskazuje elementu graficznego manifestującego pretensje do tronu. Na widocznym niebieskim proporcu znajdują się złote lilie, a sąsiedni proporzec ma czerwone pole z lwami."
+        },
+        {
+          "id": "8",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/8.json",
+          "sha256": "7b03075c25145e75bee12cb9889835c8e726ad747286293769e7a8c177effc82",
+          "luna_rationale_verbatim": "Żaden argument nie potwierdza tezy zgodnie z kluczem. Rycina przedstawia ważenie symboli Kościoła katolickiego i Biblii oraz zestawia hierarchię kościelną z grupą skromnie ubranych ludzi; nie widać na niej Jana Husa ani napisu „Jan Hus”."
+        },
+        {
+          "id": "13.1",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/13.1.json",
+          "sha256": "7a195f23e17d7f9cd06233b70b660e8c5e700556ca9a89207ad42cdfcf0d29a6",
+          "luna_rationale_verbatim": "The candidate names the Battle of Ostrołęka, but selects plan A. The map evidence supports plan B: it shows the Polish attack associated with Bem, whose name also appears on the map; the answer gives no valid link between plan A and the battle described in source 2. The rubric requires the correct choice, battle name, and references to both sources."
+        },
+        {
+          "id": "15",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/15.json",
+          "sha256": "38ee7929d93d69adea75a55fc4f336f3492ca4c9a7bea3ceac8e60ed0c94565b",
+          "luna_rationale_verbatim": "The key requires the style to be named correctly and one characteristic of it. The candidate names impressionism, while the key specifies realism, so the response does not earn the point. The image shows two ordinary rural figures resting in a meadow, with cattle and farm buildings, but the candidate’s claims about dynamic composition and unevenly distributed color patches do not supply a qualifying realism characteristic."
+        },
+        {
+          "id": "17",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/17.json",
+          "sha256": "0870fabbb4cf269c1f24111c9ffe7472169d86ee2aad4cfedb4bb683193e4373",
+          "luna_rationale_verbatim": "Rozstrzygnięcie jest prawidłowe, a uzasadnienie odnosi się do obu źródeł. Jednak opis ilustracji ogranicza się do obecności Brytyjczyków i Hindusów oraz domniemanych napięć. Nie wskazuje widocznego kontrastu między dobrze ubranymi Brytyjczykami a wychudzonymi, zrozpaczonymi Hindusami, który potwierdzałby wyzysk opisany w źródle 1. Odpowiedź nie spełnia więc warunku punktu za uzasadnienie."
+        },
+        {
+          "id": "18",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/18.json",
+          "sha256": "3ed6fe705f9598042f62d627018628c9d376ff973effc2dc63913ea39d2585ba",
+          "luna_rationale_verbatim": "Poprawnie wskazuje, że rysunek przedstawia miliard dolarów, oraz osadza go w realiach I wojny światowej w 1917 roku. Nie wyjaśnia jednak, że mężczyzna wręczający worek to Wuj Sam, nie interpretuje La Fayette’a ani tytułu „Duch roku ’76”, a opis banknotu 1000 franków i reformy monetarnej jest sprzeczny z rysunkiem. Brakuje więc wymowy o amerykańskiej pomocy finansowej dla Francji i długu wdzięczności."
+        },
+        {
+          "id": "20",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/items/20.json",
+          "sha256": "1d509d9bcc7ce5b1d4fec5855196a05ddd2b50c323f47555c80f817fafaba34a",
+          "luna_rationale_verbatim": "Kandydat poprawnie odwołuje się do obu źródeł, lecz błędnie rozstrzyga, że oba dotyczą łamania traktatu wersalskiego. Źródło 1 opisuje plebiscyt w Saarze, który nie stanowił naruszenia traktatu; źródło 2 nawiązuje do wycofania wojsk niemieckich z Nadrenii. Na widocznej stronie tytułowej z 10 marca 1936 r. nagłówek mówi: „Zanim Niemcy nie wycofają wojska z Nadrenji”."
+        }
+      ]
+    },
+    {
+      "theme": "Essay lacks functional factual argument and substantive300word length",
+      "evidence": [
+        {
+          "id": "26",
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/essay_repeats/26-r1.json",
+          "sha256": "198910c3312d9898ff4b440b0ab7363384c0f5ee9c9935619e23066ecc07c261",
+          "luna_rationale_verbatim": "A: 0/12 — teza jest powtórzona, ale argumenty o wszystkich trzech władcach są w większości niepoparte faktami lub błędne; nie uzasadniają decentralizacji. B: 0/3 — właściwe wypracowanie ma mniej niż 300 słów; powtarzany wykaz nazwisk w końcowej sekcji źródła nie stanowi części wypowiedzi. Suma: 0/15."
+        }
+      ]
+    }
+  ],
+  "internal_consistency_flag": {
+    "id": "19",
+    "raw_luna_mark": 1,
+    "status": "UNRESOLVED",
+    "reason": "The rationale describes one correct choice, then says two correct choices are required for one point, while awarding one point. Original raw response untouched.",
+    "bound_rule": "Remove its one raw point from settled lower; allow full2point maximum in upper. No assistant replacement mark.",
+    "clarification": "Deferred because even complete unresolved upper14/60 cannot reach21/60."
+  },
+  "next_minimal_experiment": "No tested minimal Bielik change is established as sufficient to close the remaining gap. If continuing Bielik, isolate essay-adapter training with the optional fifth downloaded CKE worked exemplar while keeping inference inputs, router, nonessay adapters and caps frozen; use a development paper excluded from its training, then validate separately. Larger token caps already showed no measured gain. This is an experiment recommendation, not a promised improvement."
+}

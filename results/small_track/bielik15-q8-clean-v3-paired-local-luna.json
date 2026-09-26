@@ -1,0 +1,260 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q8_0",
+  "trained_aggregate_bytes": 1789438226,
+  "base_aggregate_bytes": 1708760306,
+  "adapters": true,
+  "protocol": "local-luna-official-v4-imagegroups",
+  "judge": "Own ChatGPT Codex gpt-6-luna only",
+  "final_full_inference_gate": true,
+  "runs": [
+    {
+      "label": "bielik15-clean-v3-base",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2205-bielik15-q8-clean-v3-paired/evaluation/base",
+      "candidate_inference_complete": true,
+      "answer_count": 37,
+      "aggregate_bytes": 1708760306,
+      "caps": [
+        500,
+        1600
+      ],
+      "answers_sha256": "eef5e0f39ec62e89c6f9b9cefed5a4dab01b6d53e85f3224e26ee7be1a7ec259",
+      "validated_tasks": 36,
+      "missing_ids": [
+        "1"
+      ],
+      "uncertain_ids": [],
+      "official_max_points": 60,
+      "primary_provisional_points": 11,
+      "settled_lower_points": 11,
+      "unresolved_upper_points": 12,
+      "exact_points": null,
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 1,
+          "primary_provisional_percent": 25.0,
+          "settled_lower_points": 1,
+          "unresolved_upper_points": 1,
+          "exact_points": 1,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 28.571428571428573,
+          "settled_lower_points": 2,
+          "unresolved_upper_points": 2,
+          "exact_points": 2,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 36.36363636363637,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 17.391304347826086,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 5,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "1"
+          ]
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true,
+        "sources": [
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-base/essay_repeats/26-r1.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-base/essay_repeats/26-r2.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-base/essay_repeats/26-r3.json"
+        ]
+      },
+      "failed_calls": [
+        {
+          "path": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-base/calls/visual-1.state.json",
+          "error_type": "AssertionError"
+        }
+      ],
+      "raw_invalid_metadata_marks": {
+        "1": {
+          "grade": {
+            "id": "1",
+            "earned_points": 0,
+            "uncertain": false,
+            "rationale": "The candidate repeats the question but gives no paleolithic/neolithic decision and no justification. The OCR-like description of the image does not supply an answer. The rubric awards 1 point only for a correct decision with a justification referring to the illustration.",
+            "rubric_reference": "Official rubric: 1 point for a correct decision with justification referring to the illustration; 0 points for an incomplete or incorrect answer, or no answer.",
+            "viewed_images": []
+          },
+          "source": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-base/calls/visual-1.response.json"
+        }
+      },
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false
+    },
+    {
+      "label": "bielik15-clean-v3-trained",
+      "run": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/20260926-2205-bielik15-q8-clean-v3-paired/evaluation/trained",
+      "candidate_inference_complete": true,
+      "answer_count": 37,
+      "aggregate_bytes": 1789438226,
+      "caps": [
+        500,
+        1600
+      ],
+      "answers_sha256": "9bc8185dd203141fdb449c2fbb78763b1d8e4591c3b4c0b1b00a190199ffd92c",
+      "validated_tasks": 37,
+      "missing_ids": [],
+      "uncertain_ids": [
+        "19"
+      ],
+      "official_max_points": 60,
+      "primary_provisional_points": 13,
+      "settled_lower_points": 12,
+      "unresolved_upper_points": 14,
+      "exact_points": null,
+      "five_categories": [
+        {
+          "category": "closed_without_images",
+          "max_points": 4,
+          "primary_provisional_points": 2,
+          "primary_provisional_percent": 50.0,
+          "settled_lower_points": 2,
+          "unresolved_upper_points": 2,
+          "exact_points": 2,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "closed_with_images",
+          "max_points": 7,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 57.142857142857146,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 5,
+          "exact_points": null,
+          "uncertain_or_missing_ids": [
+            "19"
+          ]
+        },
+        {
+          "category": "open_without_images",
+          "max_points": 11,
+          "primary_provisional_points": 4,
+          "primary_provisional_percent": 36.36363636363637,
+          "settled_lower_points": 4,
+          "unresolved_upper_points": 4,
+          "exact_points": 4,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "open_with_images",
+          "max_points": 23,
+          "primary_provisional_points": 3,
+          "primary_provisional_percent": 13.043478260869565,
+          "settled_lower_points": 3,
+          "unresolved_upper_points": 3,
+          "exact_points": 3,
+          "uncertain_or_missing_ids": []
+        },
+        {
+          "category": "essay",
+          "max_points": 15,
+          "primary_provisional_points": 0,
+          "primary_provisional_percent": 0.0,
+          "settled_lower_points": 0,
+          "unresolved_upper_points": 0,
+          "exact_points": 0,
+          "uncertain_or_missing_ids": []
+        }
+      ],
+      "essay_repeats": {
+        "points": [
+          0,
+          0,
+          0
+        ],
+        "uncertainty_flags": [
+          false,
+          false,
+          false
+        ],
+        "disagreement": false,
+        "first_mark_retained": true,
+        "sources": [
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/essay_repeats/26-r1.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/essay_repeats/26-r2.json",
+          "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/local-luna-bielik15-clean-v3-grades-v4/bielik15-clean-v3-trained/essay_repeats/26-r3.json"
+        ]
+      },
+      "failed_calls": [],
+      "raw_invalid_metadata_marks": {},
+      "threshold_at_least35_proved_by_lower_bound": false,
+      "threshold_above35_proved_by_lower_bound": false
+    }
+  ],
+  "trained_minus_matched_base": {
+    "primary_provisional_points": 2,
+    "conservative_interval_points": [
+      0,
+      3
+    ]
+  },
+  "input_gate": {
+    "status": "VERIFIED_FIVE_ADAPTER_IDS_PATHS_SCALES_HASHES_AND_PAIRED_REQUESTS",
+    "candidate_sha256": "9da70c87598ae0e86218613f74f55f4070794e820b67e86e5e93c6680e2a9807",
+    "handshake_sha256": "fef9bdbca332a774511e7c47dae435a438bfc0804b7df42242fa89ae83801537",
+    "frozen_config_sha256": "b7c62a0283c38aa825e09285d8ed2dc9ed9c1c6dad208134b662fc4ccfa6173c",
+    "runtime_sha256": "e60463b161be41e898d247dd7a04be56ce808b5471041989b23bb504b8b65eeb",
+    "model_weight_sha256": "90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e",
+    "trained_aggregate_bytes": 1789438226,
+    "base_aggregate_bytes": 1708760306,
+    "comparison": "Clean138-trained five adapters versus zero scales, same aligned router/OCR and serving run; multiple conditions differ from earlier experiments."
+  },
+  "comparison": "Same base answering model, original candidate input with aligned classifier/OCR, serving run, seed42, temperature0 and caps500/1600. Only explicit adapter scales differ: all zero versus selected trained route at one. Clean138-trained adapters and aligned router differ from historical runs; no causal attribution across harnesses.",
+  "ania_reference": "Bielik1.5 Ania15/55=27.27%,closed5/11,open9/29,essay1/15. Adapted inputs/55point subset differ; five-way unavailable; no comparable numerical delta.",
+  "interpretation": "Saved Luna judgments only. Keep first essay mark and flag repeat disagreement. Missing or image-metadata-invalid marks unresolved; worst-case bounds are not expected scores. No assistant adjudication.",
+  "cost": "Own Codex plan; monetary cost unknown. Zero Forgehand grading requests.",
+  "mechanical_consistency_flags": [
+    {
+      "id": "19",
+      "raw_luna_mark": 1,
+      "status": "UNRESOLVED",
+      "reason": "The rationale describes one correct choice, then says two correct choices are required for one point, while awarding one point. Original raw response untouched.",
+      "bound_rule": "Remove its one raw point from settled lower; allow full2point maximum in upper. No assistant replacement mark.",
+      "clarification": "Deferred because even complete unresolved upper14/60 cannot reach21/60."
+    }
+  ],
+  "failure_themes_artifact": "/Users/Orest/.codex/worktrees/small-model-track/matura-model-trainers-hackathon/results/small_track/bielik15-q8-clean-v3-luna-failure-themes.json"
+}

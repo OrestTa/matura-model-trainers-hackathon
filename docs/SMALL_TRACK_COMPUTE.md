@@ -159,3 +159,31 @@ Q8_0 precision comparison ran under the existing 300-second cap. Scheduled guest
 ### 21:27 UTC recovery outcome
 
 Q8fullpairedrun recovered successfully:37/37base and37/37trainedanswers, allnonblank, zeroerrors; exactfiveadaptergate andnetworkdenial passed. Aggregate1,789,610,139bytes. OwnLuna handoffcomplete. Three-minute-cappedrecoveryboot performed noadditionalinference; outputs/nativeGGUFtokenizer metadata copied locally, ownVMstoprequestedimmediately. The pre-recovery experiment had completedbeforethe300-secondcap; no partialscoreclaim. Remainingcreditrequiresfreshaccountverification beforeanynextallocation.
+
+## 2026-09-26 22:09 UTC — shared Forgehand clean-v3 pair complete
+
+- Host remains shared with Claude; only our isolated processes were used. Cap-only
+  and clean-v3 inference supervisors/servers exited after durable outputs; no VM
+  stop or Claude process changes were performed.
+- Cap-only Q8 base run: 37 control and 37 raised answers, no API errors. Own-Luna
+  primary totals were 11/60 in both arms; no measured benefit from increasing
+  500/1600 token caps to 1000/2400. This uses its own matched Forgehand runtime.
+- Clean-v3 Q8 run: `results/small_track/20260926-2205-bielik15-q8-clean-v3-paired/`.
+  Five real-data adapters, 138/138 training rows, aligned real router, OCR only
+  predicted image routes. Total deployed weights: **1,789,438,226 bytes**; matched
+  zero-adapter baseline: **1,708,760,306 bytes**. Q4 packaging of the same adapters
+  would be 1,062,667,538 bytes, but this completed inference used Q8_0.
+- Exact five-adapter IDs, full paths, file hashes and zero default scales verified
+  before answering. Every request specified all five scales. Same 500/1600 caps,
+  seed 42, temperature zero, two workers for both arms. Original fields retained;
+  locally derived OCR appended separately. Server seccomp blocked outbound TCP
+  connects and UDP sockets; clients used loopback with redirects/proxies disabled.
+- Both arms have all 37 task IDs and zero API errors; baseline has 37 nonempty
+  answers, trained has 36. The blank trained answer is preserved. Exact organizer
+  JSON, executed source, runtime, handshakes, logs and completion audit are saved.
+  Own-Luna evaluation is pending; completion alone establishes no score or pass.
+- Shared llama-server binary SHA:
+  `efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf`.
+  Owned server peak observed memory was 2,816 MiB. Completion/process exit checked
+  at 22:08:47 UTC. The newer router and repaired training corpus make this a new
+  combined candidate; compare against its matched baseline, not older runs.
