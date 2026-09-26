@@ -7,6 +7,15 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 00:45 CEST: 69d70ee..da24d07 (43 commits) and board 40ec224 (no change)
+
+Verdict: sound; one comparability flag (C-057).
+- b490949 heldout-v5 (images viewed): frozen raw 2k 159.5/240 vs 5-vote harness 162/240. Rows add up (by subtype and by paper). The same frozen setting scored 163 in g4vr, so rerun noise is about ±3-4 points on /240: the harness's +2.5 is inside it (it wins open +6.5, loses essay -4 and May 2023 closed 9 -> 6). Keeping raw frozen is consistent with the evidence.
+- a6b8d33 OPEN_BEST_OF / PICTURE_DESCRIBE: env-gated, off by default (router.py:51-57); frozen stage commands unchanged. Practice arms P1-P3 and the thinking sweep run on dev/practice papers.
+- 25411a7 judge dump tolerates items without gold (f15 essays): OK.
+- FLAG (C-057): infra/jobs/sd_train.sh evaluates SD1 with ESSAY_MIN_WORDS=350 (length guard) on the base-served essays, but the base it must beat (163 / 159.5) ran without the guard. Any gain would mix the LoRA with the guard. Compare against a base run with the same ESSAY_MIN_WORDS, or report essays separately.
+- Secrets grep clean.
+
 ## 2026-09-26 23:40 CEST: e628683..69d70ee (12 commits, 2 non-status) and board 40ec224 (no change)
 
 Verdict: sound, no flags. d89e013 orders the SD2 build list (still overlap-filtered by build_selfdistill.py). 69d70ee runs the essay arms (plan/guard, length target, best-of-3) on the 12 dev essays on a second llama-server, so these experiments tune on dev papers, not held-out. Secrets grep clean. The frozen stage setting is unchanged.
