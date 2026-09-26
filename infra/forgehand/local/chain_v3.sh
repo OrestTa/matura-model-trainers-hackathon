@@ -22,6 +22,9 @@ train() { local id=$1; shift; clean; log "START $id"
 cd /scratch/repo4; ln -sfn /scratch/work /scratch/repo4/work
 export TRAIN_MODELS=gemma4-12b SINGLE_ADAPTER=1 TEACHER_HF=none JUDGE_HF= SCORE_MODES=adapters SCORE_MODELS=gemma4-12b-think
 export EXTRA_TRAIN="/scratch/repo4/train_data/history_ext_synth.jsonl /scratch/repo4/train_data/claude_synth.jsonl"
+# Dev papers for error analysis (grader, 20:34 CEST): never tune on held-out.
+[ -s /scratch/repo4/data/eval/matura_all.jsonl ] || (cd /scratch/repo4 && /scratch/work/venv-py312/bin/python scripts/fetch_matura.py --papers all --images -o data/eval/matura_all.jsonl > /scratch/out/fetch_all.log 2>&1)
+reh matura-infer-gemma4-12b-think8k-raw-dev-$TS-g4d8 MODEL=gemma4-12b-think8k MODE=raw CONCURRENCY=8 EVAL=/scratch/repo4/data/eval/matura_all.jsonl PAPERS="probny-2026-01 pokaz-2022-03"
 rm -rf /scratch/work/adapters/gemma4-12b
 train gemma-lora-A03 SKIP_SCORE=1 RANK=16 LR=1e-4 EPOCHS=0.3 || { log A_FAILED; exit 1; }
 mv /scratch/work/adapters/gemma4-12b /scratch/work/adapters-A
