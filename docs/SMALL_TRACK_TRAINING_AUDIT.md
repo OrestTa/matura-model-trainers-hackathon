@@ -86,3 +86,24 @@ remain excluded. All138 assistant targets match the source bytes. No training ha
 been launched from this dataset. Accepted OCR still uses original complete pages;
 it is not a claim that text OCR provides visual understanding. Fifteen focused
 repair, boundary and exclusion tests pass.
+
+## Native trainer readiness for clean v3
+
+The native trainer now accepts the one2023 worked guide only when its canonical
+row SHA256 is `5e0c5ca110aa03571c4ba2579da6c443fc7cd1a4b8db621ed7c96c1d21ffee38`,
+its exact PDF/row/paper/category match, and the input manifest is the frozen clean
+v3 manifest above. Altered answers, arbitrary2023 guides and reserved examination
+papers fail closed. All138 current rows pass the guard; ten guard tests pass.
+
+For an approved future run, retain all five routes and `--steps 0` (one full epoch),
+add `--expected-data-manifest-sha256 da25c2a0773f34cf5a7282de500304d4d6db4cabb0824d931051fcbfed5039ab`
+and `--gpu-memory-fraction 0.20`. The optional fraction must be in `(0,0.25]`.
+Before every route it requires free device memory of at least the allocator cap
+plus1GiB. This bounds PyTorch allocations, not all CUDA-context or third-party
+allocations; external GPU usage can still change after the snapshot. The model
+loading seed, fresh base per route, rank8/alpha16, learning rate5e-5, assistant-only
+loss and3072-token exclusion policy remain unchanged.
+
+Compute inspection found the shared VM's system Transformers4.46.3 differs from
+the tested native runtime. Use a separate pinned environment without modifying
+Claude's packages/processes. No training launch is implied by this readiness check.
