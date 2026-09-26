@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 15:40 CEST · official-mock thread: only the organiser mock gauges model quality
+
+- Added a sanitized bundle at
+  `docs/notes/runs/2026-09-26-forgehand-train-official-mock-qwen25-3b/` with
+  Forgehand notes, the hard size-cap memo, `run_official_mock.py`, and the
+  Qwen2.5-3B `answers.json` / summary / runlog from `history-2023-mock-v1`.
+- **Standing rule:** only the official mock `history-2023-mock-v1` gauges
+  submission-quality model behaviour. CKE `data/eval/matura.jsonl`, the
+  90-question history MCQ set, and other local/proxy evals are development
+  signals only.
+- `37/37 nonempty` in that summary means every answer slot was filled, **not**
+  that the run received an official score. The organisers grade later with their
+  own LLM pipeline.
+
 ## 2026-09-26 15:40 CEST · model-benchmark thread: organisers' "Model Benchmark" slides (Ania Olchowik)
 
 Source: Google Slides 1iGH2E6JURWe0Nq0Qqf0_nHoSA7s0LKaj5WSN6BpS3uI (export/txt works), site

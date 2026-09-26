@@ -13,6 +13,12 @@ Between 15:15:05 and 15:16:34 CEST every baseline vLLM server on the Forgehand b
 - Commit important findings and score changes directly to `main` so every cloud/code session sees them immediately.
 - Never commit secrets, IPs, SSH keys, TEAM_KEY values, or tokens.
 
+## Standing eval rule
+- Only the organiser-format official mock, `history-2023-mock-v1`, gauges submission-quality model behaviour.
+- CKE `data/eval/matura.jsonl`, the 90-question history MCQ set, and other local/proxy evals are dev signals only.
+- `37/37 nonempty` on the official mock means the output file is complete; it is **not** an official grade.
+- Sanitized bundle: `docs/notes/runs/2026-09-26-forgehand-train-official-mock-qwen25-3b/README.md`
+
 ## Team / ranking
 - Team: Tarasiuk Lab - practice best 15/15 - filed base 14/15 was harness-inflated, not an honest bare base.
 - Honest bare geo local: 3B 4/15, 1.5B 3/15.
