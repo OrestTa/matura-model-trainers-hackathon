@@ -3,6 +3,12 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 18:35 CEST · Gemma 4 12B QAT (7.16 GB) scores 41/60 = 68.3% on the May 2023 mock, Claude-graded (best score)
+
+Untouched Gemma 4 12B QAT GGUF + mmproj, raw mode, pictures sent (gemma4-vision run, 16:17 CEST), graded against the CKE key by the grading thread: **41/60 = 68.3%** (closed 8/11, open 24/34, essay 9/15). Score: `results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/claude_score.json`.
+- Best graded model so far: Gemma-3-27B via API 58.3% (not shippable), Bielik-4.5B FP8 40.0%, Qwen2.5-7B AWQ 18.3%.
+- Six answers were empty (items 4.2, 8, 9.1, 13.1, 13.2, 19, 7 points) even with a 2000-token cap: the hidden thinking ran out of tokens (see the entry below). With thinking off (6359957) those 7 points are back in play, so the ceiling on this paper is ~80%.
+
 ## 2026-09-26 18:30 CEST · Gemma 4 routed scored 1.3% because llama-server thinks by default (best score)
 
 `results/gemma4/gemma4-vision/` (Grok bot run, finished 16:32 CEST, held-out 154 items, auto-scored): **raw 47.8%, routed 1.3%**.
