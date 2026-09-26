@@ -1,0 +1,65 @@
+{
+  "n": 154,
+  "scored": 154,
+  "errors": 0,
+  "earned": 159.5,
+  "max": 240.0,
+  "pct": 66.5,
+  "pct_text_only": 72.8,
+  "pct_all_rows": 66.5,
+  "decision_acc": 80.8,
+  "unscored": 0,
+  "routing_accuracy": 86.4,
+  "latency_p50_s": 37.245,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 12,
+      "scored": 12,
+      "earned": 11.0,
+      "max": 13.0,
+      "pct": 84.6
+    },
+    "essay": {
+      "n": 4,
+      "scored": 4,
+      "earned": 34.0,
+      "max": 60.0,
+      "pct": 56.7
+    },
+    "matching": {
+      "n": 4,
+      "scored": 4,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 13,
+      "scored": 13,
+      "earned": 10.0,
+      "max": 13.0,
+      "pct": 76.9
+    },
+    "source_analysis": {
+      "n": 109,
+      "scored": 109,
+      "earned": 90.5,
+      "max": 130.0,
+      "pct": 69.6
+    },
+    "true_false": {
+      "n": 12,
+      "scored": 12,
+      "earned": 14.0,
+      "max": 18.0,
+      "pct": 77.8
+    }
+  },
+  "model": "gemma4-12b-think",
+  "mode": "raw/raw",
+  "judge": "claude (Claude session, scripts/claude_grade.py, JUDGE_PROMPT + CKE rubric)",
+  "judge_kind": "claude",
+  "ungraded_open": 0,
+  "source": "results/subtype/heldout-v5/raw/raw/answers.jsonl"
+}
