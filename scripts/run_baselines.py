@@ -208,10 +208,20 @@ def main():
             stop(judge_proc)
 
 
+def free_port(start: int) -> int:
+    """First port from `start` that nothing listens on; other jobs share the box."""
+    import socket
+    for port in range(start, start + 200):
+        with socket.socket() as sock:
+            if sock.connect_ex(("127.0.0.1", port)) != 0:
+                return port
+    raise RuntimeError(f"no free port from {start}")
+
+
 def start_judge(args) -> subprocess.Popen:
     """Serves a larger open model that grades open answers against the CKE key."""
     gpus = args.judge_gpus or "0"
-    port = 8099
+    port = free_port(8099)
     cmd = ["vllm", "serve", args.judge_hf, "--served-model-name", "judge", "--port", str(port),
            "--max-model-len", "8192", "--tensor-parallel-size", str(len(gpus.split(",")))]
     if args.judge_gb:  # the judge shares the card with the models under test
@@ -256,7 +266,7 @@ def run_all(p, args, cfg, models, keys, rows):
     failures = []
 
     def worker(gpu: str):
-        port = 8100 + int(gpu.split(",")[0])
+        port = free_port(8100 + 10 * int(gpu.split(",")[0]))
         while True:
             try:
                 key = todo.get_nowait()
@@ -324,7 +334,7 @@ def run_shared_gpu(args, cfg, models, keys, rows):
     def worker(i: int, key: str):
         need = model_gb(models[key])
         proc = None
-        port = 8100 + i
+        port = None
         admitted = False
         try:
             # One server starts at a time, and only once its memory is actually free on the
@@ -336,6 +346,7 @@ def run_shared_gpu(args, cfg, models, keys, rows):
                         fits.wait(30)
                     budget["free"] -= need
                     admitted = True
+                port = free_port(8100 + i)
                 proc = start_vllm(key, models[key], cfg.get("vllm", {}), gpu, port,
                                   Path(args.out) / key / "vllm.log",
                                   Path(args.adapters_dir) if args.adapters_dir else None,
