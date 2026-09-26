@@ -3,6 +3,21 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 17:05 CEST · model-benchmark thread: our May 2023 results vs Ania's deck, five categories
+
+- **Five categories** (Ania's per-model pages): Closed = tasks 2.2, 3, 10, 11.2, 13.2, 19, 21 (/11); Open = all
+  other items but 26 (/34, /29 in text mode); Essay = 26 (/15); "Originally text only" = groups 2, 6, 11, 12, 16,
+  22, 23, 25, 26 (/28); "+ data table" = those + task 10 (/30). Total /60 with images, /55 in their text mode
+  (drops 7, 8, 15). `python scripts/deck_breakdown.py <summary.json>` prints both.
+- **Bielik-4.5B matches.** On the deck's 34 text-mode items ours (FP8, Claude-graded) is 23/55 = 41.8%, the
+  same as the deck (bf16, their AI grader). Closed 6/11 both; Open 14 vs 15 /29; Essay 3 vs 2 /15; Text28 10 vs
+  12; Text30 12 vs 14. The totals agree but 15 items differ (5.1, 5.3, 6, 9.x, 11.2, 13.2, 14.x, 16.2, 18, 19,
+  21, 26): differences in grading, FP8 vs bf16, input (their written image descriptions vs ours) and sampling,
+  which cancel out. With 7, 8, 15 ours is 24/60 = 40.0%. Deck per-item grades: the site's bielik-4-5b page.
+- **Qwen2.5-7B-AWQ (11/60, 18.3%) and Qwen2.5-3B (11/60, 18.3%) are not in the deck** (it has Qwen3 only:
+  Qwen3-1.7B 23.6%, Qwen3-4B 40.0% on /55). Breakdown: 7B closed 3/11, open 8/34, essay 0/15, text28 5/28,
+  text30 5/30; 3B closed 5/11, open 6/34, essay 0/15, text28 5/28, text30 5/30. Both lose the essay (0/15).
+
 ## 2026-09-26 16:55 CEST · Solari runner for CPU jobs (no GPU)
 
 - `infra/solari/sol_job.py` drives Solari sandboxes (8 vCPU / 16 GB / 20 GB disk max, CPU only) over their REST API:
