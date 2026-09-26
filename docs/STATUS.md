@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| baselines-0926-1254 | baselines NAME=progress-base-raw MODELS=bielik-11b-base MODES=raw,routed EVAL=/workspace/runs/progress-base-raw/data/eval/matura_all.jsonl GPU_BUDGET_GB=0 JUDGE_HF= | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/baselines-0926-1254 | Best progress thread |
 | dapt-0926-1254 | dapt NAME=dapt-prep2 PREP_ONLY=1 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | running | 2026-09-26 12:54 | 2026-09-26 12:54 | /workspace/work/out/dapt-0926-1254 | Polish Wikipedia thread (relaunched by compute thread) |
 | progress-base-raw | baselines MODELS=bielik-11b-base MODES=raw,routed (untouched pretrained Bielik-11B-v2, NF4, ~12 GB GPU) on matura.jsonl + matura_all.jsonl | Forgehand L40S | queued: after the box's storage fix | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-base-raw | Best progress thread |
 | progress-dapt | dapt DAPT_MODEL=bielik-11b-base (same corpus as dapt-bielik, ~36 GB GPU) | Forgehand L40S | queued: after dapt-prep's corpus exists | 2026-09-26 12:55 | 2026-09-26 12:55 | /workspace/work/out/progress-dapt | Best progress thread |
