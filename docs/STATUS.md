@@ -15,6 +15,7 @@ baseline vLLM server was SIGTERMed from outside at 15:15-15:16 CEST):
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| score-vision-qwen | baselines MODELS=qwen3.5-9b MODES=raw,routed JUDGE_HF= GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:34 | 2026-09-26 13:34 | /workspace/work/out/score-vision-qwen | Win best matura score thread |
 | gemma4-vision | baselines MODELS=gemma4-12b MODES=raw,routed JUDGE_HF= GPU_BUDGET_GB=16 CONCURRENCY=16 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:32 | 2026-09-26 13:32 | /workspace/work/out/gemma4-vision | Win best matura score thread |
 | train-bielik-dapt | train TRAIN_MODELS=bielik-11b-dapt VLLM_UTIL=0.35 | Forgehand session 01a0ddc1 | running | 2026-09-26 13:30 | 2026-09-26 13:30 | /workspace/work/out/train-bielik-dapt | Win best matura score thread |
 | dapt-bielik2 | dapt DAPT_MODEL=bielik-11b DAPT_TOKENS=10000000 CORPUS=/workspace/work/corpus | Forgehand session 01a0ddc1 | queued: waits for score-shootout to pick the base (best-score thread ask) | 2026-09-26 13:30 | 2026-09-26 13:33 | /workspace/work/out/dapt-bielik2 | Win best matura score thread |
