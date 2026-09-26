@@ -43,22 +43,28 @@ CSV) under `results/` and add a line to `docs/FINDINGS.md`.
 - **Score by question type:** a model × type heatmap. Weak columns show which
   adapters matter most.
 - **Size vs score:** shipped size on disk against score. Anything in the grey area
-  is over the 8.9 GB limit.
+  is over the 8.0 GB base limit.
 - The table under the charts adds `pct_text_only`, the score on items that don't
   need a picture. The models can't see pictures, so this is the fairer comparison.
 
 Pick the base model with the best score under the limit. Bielik-11B is the expected
 winner, but the chart decides.
 
-## 2b. Freeze the exam model as a checkpoint under 8.9 GB
+## 2b. Freeze the exam model as a checkpoint under the size limits
 
-The limit counts the base model's weights on disk before the exam (8.9 GB per the
-organisers; adapters and the RAG knowledge base don't count). The 11-12B models are
-22-24 GB in bf16, so write the chosen one as a 4-bit checkpoint on a GPU box:
+Two limits from the organisers: the base model's weights on disk at most **8.0 GB**,
+and the fine-tuned model (base plus all adapters, or a merged model) at most **8.8 GB**.
+The RAG knowledge base doesn't count. The 11-12B models are 22-24 GB in bf16, so write
+the chosen one as a 4-bit checkpoint on a GPU box:
 
 ```bash
-python scripts/quantize_checkpoint.py bielik-11b    # -> work/checkpoints/bielik-11b, fails if over the limit
+python scripts/quantize_checkpoint.py bielik-11b    # -> work/checkpoints/bielik-11b, fails if over 8.0 GB
+python scripts/quantize_checkpoint.py --check work/checkpoints/bielik-11b --adapters work/adapters/bielik-11b
 ```
+
+Estimated 4-bit sizes: Bielik-11B 6.7 GB (leaves ~2.1 GB for adapters; 7 adapters at
+r=16 in bf16 are ~0.9 GB), Qwen3-8B 6.4 GB, Bielik-4.5B 2.9 GB. Gemma-3-12B is ~8.3 GB
+because its large vocabulary stays in bf16, so it's out.
 
 From then on `run_baselines.py` serves that checkpoint instead of the HF weights
 (`served` in each summary.json says which), so the scores are for exactly the

@@ -1,12 +1,12 @@
 # Matura model trainers: question router
 
-Our entry for the Warsaw Model Trainers hackathon: a small local model (≤ 8.9 GB base weights on disk)
+Our entry for the Warsaw Model Trainers hackathon: a small local model (base weights ≤ 8.0 GB on disk, ≤ 8.8 GB with the fine-tuning)
 sitting the Polish history matura.
 
 The harness classifies each exam question by type and sends it to a LoRA adapter
 fine-tuned for just that type. All adapters sit on **one shared base model**, so
-only the base counts toward the 8 GB limit, and switching adapters per question is
-cheap.
+the base must fit 8.0 GB and base plus adapters 8.8 GB, and switching adapters per
+question is cheap.
 
 Made during the Warsaw Model Trainers hackathon, Kolektyw3, 25–27.09.2026 (see
 [SOURCE.md](SOURCE.md)). Data and model sources: [SOURCES.md](SOURCES.md). Nothing
@@ -25,7 +25,7 @@ python -m pytest -q                              # router, scoring, fetch, RAG, 
 # 1. Eval set from the official CKE papers (not committed)
 python scripts/fetch_matura.py                   # data/eval/matura.jsonl, May 2023-2026
 
-# 2. Pre-quantize the base model under the 8.9 GB limit
+# 2. Pre-quantize the base model under the 8.0 GB base limit
 python scripts/quantize_checkpoint.py bielik-11b     # -> work/checkpoints/bielik-11b
 
 # 3. Baseline: untouched base model (the "base" result)
@@ -145,7 +145,7 @@ python -m matura_router serve --port 8080
 
 `configs/models.yaml` lists the candidate base models (Bielik-11B, Qwen3-8B,
 Gemma-3-12B, plus small ones for the "Mały, ale wariat" category), each with the
-quantization we'd ship under 8 GB. `scripts/run_baselines.py` serves each one with
+quantization we'd ship under the 8.0 GB base limit (Gemma-3-12B doesn't fit). `scripts/run_baselines.py` serves each one with
 vLLM on its own GPU and scores it on the eval set in two modes:
 
 - `raw`: one generic prompt, untouched base model. This is the official baseline.
@@ -155,7 +155,7 @@ vLLM on its own GPU and scores it on the eval set in two modes:
 
 `scripts/plot_baselines.py` turns the results into `runs/report/index.html` with
 three charts: score per model (raw vs routed, with the 35% line), a model × question
-type heatmap, and shipped size vs score with the 8 GB limit.
+type heatmap, and shipped size vs score with the 8.0 GB base limit.
 
 On EC2 (used early in the event; the AWS account was later suspended, so the final runs used a Labqoat L40S VM with the same `infra/jobs/*.sh` scripts):
 

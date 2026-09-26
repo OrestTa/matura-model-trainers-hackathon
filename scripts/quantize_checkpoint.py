@@ -1,5 +1,6 @@
-"""Writes the exam model as a pre-quantized checkpoint that fits the size limit on disk.
+"""Writes the exam model as a pre-quantized checkpoint that fits the size limits on disk.
 
+<<<<<<< Updated upstream
 The limits count weights on disk: the base model before fine-tuning at most 8.0 GB
 (`ship_limit_gb`), the fine-tuned model as shipped, weights plus LoRA adapters, at most
 8.8 GB (`finetuned_limit_gb`, check with --finetuned [--adapters DIR]). The RAG knowledge
@@ -8,9 +9,19 @@ time doesn't help, since the 11-12B candidates are 22-24 GB in bf16. This script
 a model from configs/models.yaml in 4-bit NF4 (bitsandbytes, the same method the
 baselines use when vLLM quantizes at load time), saves it, measures it and fails if it
 is over the limit:
+=======
+Two limits (configs/models.yaml, from the organisers): the base model's weights at most
+base_limit_gb (8.0), and the fine-tuned model, base plus all its LoRA adapters (or a
+merged model), at most tuned_limit_gb (8.8). The RAG knowledge base doesn't count.
+Quantizing at load time doesn't help, since the 11-12B candidates are 22-24 GB in bf16.
+This script loads a model from configs/models.yaml in 4-bit NF4 (bitsandbytes, the same
+method the baselines use when vLLM quantizes at load time), saves it, measures it and
+fails if it is over a limit:
+>>>>>>> Stashed changes
 
     python scripts/quantize_checkpoint.py bielik-11b          # -> work/checkpoints/bielik-11b
-    python scripts/quantize_checkpoint.py --check work/checkpoints/bielik-11b
+    python scripts/quantize_checkpoint.py --check work/checkpoints/bielik-11b \
+        --adapters work/adapters/bielik-11b                   # base <= 8.0, base + adapters <= 8.8
 
 Needs a CUDA GPU and `transformers bitsandbytes accelerate`. vLLM serves the result
 directly (`vllm serve work/checkpoints/bielik-11b --quantization bitsandbytes`), and
@@ -58,6 +69,7 @@ def main() -> int:
     ap.add_argument("model", nargs="?", help="key in configs/models.yaml")
     ap.add_argument("--out", help="output dir (default work/checkpoints/<model>)")
     ap.add_argument("--check", help="only measure an existing checkpoint dir or weights file")
+<<<<<<< Updated upstream
     ap.add_argument("--limit-gb", type=float, help="size limit (default: ship_limit_gb in models.yaml)")
     ap.add_argument("--finetuned", action="store_true",
                     help="check against finetuned_limit_gb (the shipped fine-tuned model) instead")
@@ -65,6 +77,14 @@ def main() -> int:
     args = ap.parse_args()
     cfg = load_config()
     limit = args.limit_gb or float(cfg["finetuned_limit_gb"] if args.finetuned else cfg["ship_limit_gb"])
+=======
+    ap.add_argument("--adapters", help="adapter dir to count toward the fine-tuned limit")
+    ap.add_argument("--limit-gb", type=float, help="base limit (default: base_limit_gb in models.yaml)")
+    args = ap.parse_args()
+    cfg = load_config()
+    limit = args.limit_gb or float(cfg.get("base_limit_gb", 8.0))
+    tuned_limit = float(cfg.get("tuned_limit_gb", 8.8))
+>>>>>>> Stashed changes
 
     if args.check:
         target = Path(args.check)
@@ -83,7 +103,13 @@ def main() -> int:
     if args.adapters and Path(args.adapters).exists():
         size += weights_gb(Path(args.adapters))
     ok = 0 < size <= limit
-    print(f"{target}: {size:.2f} GB of weights, limit {limit} GB -> {'OK' if ok else 'OVER THE LIMIT'}")
+    print(f"{target}: {size:.2f} GB of weights, base limit {limit} GB -> {'OK' if ok else 'OVER THE LIMIT'}")
+    if args.adapters and Path(args.adapters).exists():
+        total = size + weights_gb(Path(args.adapters))
+        tuned_ok = total <= tuned_limit
+        print(f"with adapters in {args.adapters}: {total:.2f} GB, fine-tuned limit {tuned_limit} GB -> "
+              f"{'OK' if tuned_ok else 'OVER THE LIMIT (save adapters in bf16, lower the rank or drop one)'}")
+        ok = ok and tuned_ok
     return 0 if ok else 1
 
 

@@ -5,7 +5,11 @@
     # writes adapters/bielik-11b/essay/     (what run_baselines --adapters-dir and vLLM load)
 
 Needs `pip install -e .[train]` and a GPU. Trains in bf16 on the full-precision base;
+<<<<<<< Updated upstream
 at inference the adapter sits on the 4-bit base that fits under the 8.0 GB base limit, and adapters
+=======
+at inference the adapter sits on the 4-bit base that fits under the 8.0 GB base limit (base + adapters must stay under 8.8 GB), and adapters
+>>>>>>> Stashed changes
 don't count toward the limit. infra/jobs/train.sh runs one of these per GPU.
 """
 
@@ -76,6 +80,13 @@ def main():
     )
     result = trainer.train()
     trainer.save_model(str(out))
+    # PEFT keeps LoRA weights in fp32; bf16 halves the adapters' share of the 8.8 GB
+    # fine-tuned limit (about 130 MB instead of 260 MB per adapter on Bielik-11B, r=16).
+    from safetensors.torch import load_file, save_file
+    ad = out / "adapter_model.safetensors"
+    if ad.exists():
+        save_file({k: v.to(torch.bfloat16) for k, v in load_file(str(ad)).items()}, str(ad),
+                  metadata={"format": "pt"})
     (out / "train_meta.json").write_text(json.dumps({
         "model": args.model, "hf_id": spec["hf_id"], "category": args.category, "examples": n,
         "epochs": args.epochs, "lr": args.lr, "rank": args.rank,

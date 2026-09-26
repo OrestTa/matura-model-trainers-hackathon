@@ -1,26 +1,35 @@
 # Candidate base models for baselines. Each entry is served by vLLM on its own GPU.
 #
-# The size limit (ship_limit_gb) counts the base model's weights on disk before the
-# exam, so the 11-12B models must ship pre-quantized: scripts/quantize_checkpoint.py
+# Size limits (Orest, from the organisers, 2026-09-26 12:29 UTC): the base model's weights
+# on disk at most base_limit_gb, the fine-tuned model (base + all adapters, or a merged
+# model) at most tuned_limit_gb. The 11-12B models must ship pre-quantized: scripts/quantize_checkpoint.py
 # writes a 4-bit NF4 checkpoint to work/checkpoints/<key>, and run_baselines.py
 # serves that checkpoint instead of the HF weights once it exists. Until then vLLM
 # quantizes the HF weights to the same 4-bit NF4 at load time (`quantization`).
-# `disk_gb` is the approximate size of the shipped form (for the size-vs-score chart). Entries with a `-bf16` key are full-precision
-# references, to see what quantization costs.
+# `disk_gb` estimates the shipped 4-bit NF4 form: linear layers at ~0.56 bytes/param
+# (NF4 + fp32 block scales), embeddings and lm_head kept in bf16. The measured size from
+# quantize_checkpoint.py wins. MODELS=all skips entries over base_limit_gb.
+# Entries with a `-bf16` key are full-precision references, to see what quantization costs.
 #
 # Gated models (Gemma) need HF_TOKEN in the environment.
 
+<<<<<<< Updated upstream
 # Organisers (via Orest, 2026-09-26 12:29 UTC): the base model before fine-tuning at most
 # 8.0 GB on disk; the fine-tuned model as shipped (weights + adapters) at most 8.8 GB.
 ship_limit_gb: 8.0
 finetuned_limit_gb: 8.8
+=======
+base_limit_gb: 8.0
+tuned_limit_gb: 8.8
+>>>>>>> Stashed changes
 
 models:
+  # 11.2B: 0.26B bf16 embeddings (0.5 GB) + 10.9B NF4 (6.2 GB). Leaves ~2.1 GB for adapters.
   bielik-11b:
     hf_id: speakleash/Bielik-11B-v2.3-Instruct
     params_b: 11.2
     quantization: bitsandbytes
-    disk_gb: 6.5
+    disk_gb: 6.7
   # Bielik-11B after continued pretraining on Polish history text (infra/jobs/dapt.sh merges
   # the domain LoRA into it). Path on the Forgehand box; TRAIN_MODELS=bielik-11b-dapt trains
   # the per-type adapters on top of it. Skipped by MODELS=all until it exists.
@@ -28,21 +37,27 @@ models:
     hf_id: /workspace/work/models/bielik-11b-dapt
     params_b: 11.2
     quantization: bitsandbytes
-    disk_gb: 6.5
+    disk_gb: 6.7
   qwen3-8b:
     hf_id: Qwen/Qwen3-8B
     params_b: 8.2
     quantization: bitsandbytes
-    disk_gb: 5.0
+    disk_gb: 6.4   # untied 151k-token embeddings stay bf16 (2.5 GB) + 6.9B NF4 (3.9 GB)
     extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  # Over the 8.0 GB base limit: its 262k-token embeddings alone are 2.0 GB in bf16, so
+  # 4-bit NF4 lands at ~8.3 GB. Kept for reference; MODELS=all skips it.
   gemma3-12b:
     hf_id: google/gemma-3-12b-it
     params_b: 12.2
     quantization: bitsandbytes
+<<<<<<< Updated upstream
     # NF4 estimate: ~5.7 GB of 4-bit linears + 2.0 GB bf16 embedding (262k vocab) + ~0.8 GB
     # bf16 vision tower: over the 8.0 GB base limit, so MODELS=all skips it. Measure with
     # quantize_checkpoint.py before relying on it.
     disk_gb: 8.4
+=======
+    disk_gb: 8.3
+>>>>>>> Stashed changes
   # Small-model category ("Mały, ale wariat": smallest model scoring >= 35%).
   bielik-4.5b:
     hf_id: speakleash/Bielik-4.5B-v3.0-Instruct
