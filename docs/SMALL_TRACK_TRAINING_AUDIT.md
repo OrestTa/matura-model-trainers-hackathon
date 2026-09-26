@@ -70,3 +70,19 @@ CKE supplemental guide, not the2023 examination; retain its actual publication y
 and permit it only through an explicit source allowlist. It shares historical subject
 matter with evaluated material, but is not an exact evaluated prompt/answer copy.
 This optional file is not silently included in the frozen286-row training set.
+
+## Completed boundary-clean dataset
+
+All39 Luna boundary reviews reached terminal states:32 accepted,4 rejected,
+3 failed without retry. The earlier142 image rows remain quarantined.
+`data/small_track_real_training_boundary_clean_v3/` now contains138 rows:
+25closed text,76open text,7closed image,25open image,5official essays.
+Manifest SHA256:
+`da25c2a0773f34cf5a7282de500304d4d6db4cabb0824d931051fcbfed5039ab`.
+The builder `prepare_boundary_clean_training.py` refuses unfinished reviews and
+existing destination folders. Its exception for the January2023 guide requires
+exact row ID, PDF hash, paper ID and essay category; examination years2015/16/23/24
+remain excluded. All138 assistant targets match the source bytes. No training has
+been launched from this dataset. Accepted OCR still uses original complete pages;
+it is not a claim that text OCR provides visual understanding. Fifteen focused
+repair, boundary and exclusion tests pass.
