@@ -60,6 +60,25 @@ if [ ! -s "$EVAL" ] && ! s3 cp "s3://$BUCKET/data/eval/matura.jsonl" "$EVAL"; th
   else step "could not build the eval set (set ALLOW_SAMPLE_EVAL=1 to use the toy samples)"; exit 1; fi
 fi
 
+# llama.cpp's llama-server (CUDA) for the GGUF models; built once per box into $WORK/llama.cpp.
+ensure_llama_server() {
+  export LLAMA_SERVER="${LLAMA_SERVER:-$WORK/llama.cpp/build/bin/llama-server}"
+  [ -x "$LLAMA_SERVER" ] && return 0
+  (
+    flock 9
+    [ -x "$LLAMA_SERVER" ] && exit 0
+    step "building llama.cpp with CUDA"
+    [ -d "$WORK/llama.cpp" ] || git clone -q --depth 1 https://github.com/ggml-org/llama.cpp "$WORK/llama.cpp"
+    command -v cmake >/dev/null || pip install -q cmake
+    if ! command -v nvcc >/dev/null; then
+      for d in /usr/local/cuda/bin /usr/local/cuda-*/bin; do [ -x "$d/nvcc" ] && export PATH="$d:$PATH" && break; done
+    fi
+    cd "$WORK/llama.cpp" && cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=OFF -DCMAKE_CUDA_ARCHITECTURES=89 \
+      -DCMAKE_BUILD_TYPE=Release >/dev/null && cmake --build build --target llama-server -j "$(nproc)" >/dev/null
+  ) 9>"$WORK/llama.lock"
+  [ -x "$LLAMA_SERVER" ]
+}
+
 GPU_LIST=($(nvidia-smi --query-gpu=index --format=csv,noheader))
 step "${#GPU_LIST[@]} GPUs, eval set $EVAL"
 

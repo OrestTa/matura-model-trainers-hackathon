@@ -25,6 +25,32 @@ models:
     params_b: 11.2
     quantization: bitsandbytes
     disk_gb: 6.7
+  # Bielik-11B v3.0 (speakleash, Nov 2025), the successor of v2.3: speakleash's own AWQ W4A16
+  # checkpoint, 6.19 GB on disk (HF API, measured), not gated, loads natively in vLLM
+  # (compressed-tensors, no --quantization flag). Leaves 2.6 GB for adapters under 8.8 GB.
+  bielik-11b-v3:
+    hf_id: speakleash/Bielik-11B-v3.0-Instruct-awq
+    params_b: 11.2
+    disk_gb: 6.19
+  # Gemma 4 12B, Google's quantization-aware-trained Q4_0 GGUF: 6.98 GB (+0.18 GB mmproj if we
+  # ever send pictures). Served by llama.cpp (infra/jobs/common.sh ensure_llama_server); Google's
+  # vLLM-native w4a16 checkpoint is 10.3 GB because the 262k-vocab embedding stays bf16.
+  gemma4-12b:
+    hf_id: google/gemma-4-12B-it-qat-q4_0-gguf
+    gguf_file: gemma-4-12b-it-qat-q4_0.gguf
+    server: llamacpp
+    params_b: 12.0
+    disk_gb: 6.98
+    gpu_gb: 14
+  # Qwen3.5 9B (Feb 2026) at Q6_K GGUF, 7.46 GB, on llama.cpp.
+  qwen3.5-9b:
+    hf_id: unsloth/Qwen3.5-9B-GGUF
+    gguf_file: Qwen3.5-9B-Q6_K.gguf
+    server: llamacpp
+    params_b: 9.0
+    disk_gb: 7.46
+    gpu_gb: 13
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
   # Bielik-11B after continued pretraining on Polish history text (infra/jobs/dapt.sh merges
   # the domain LoRA into it). Path on the Forgehand box; TRAIN_MODELS=bielik-11b-dapt trains
   # the per-type adapters on top of it. Skipped by MODELS=all until it exists.

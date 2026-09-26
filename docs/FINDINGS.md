@@ -3,6 +3,20 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-26 14:55 CEST · best-score thread: newer base models that fit 8.0 GB
+
+- **We are testing Bielik v2.3, but Bielik-11B v3.0 is out (Nov 2025)** and speakleash ships
+  its own AWQ W4A16 checkpoint, `speakleash/Bielik-11B-v3.0-Instruct-awq`: **6.19 GB on disk**
+  (HF API sizes), not gated (no HF_TOKEN), loads natively in vLLM with no bitsandbytes. Config key
+  `bielik-11b-v3`. Leaves 2.6 GB for adapters under the 8.8 GB fine-tuned limit.
+- **Gemma 4 12B fits as Google's QAT Q4_0 GGUF**: `google/gemma-4-12B-it-qat-q4_0-gguf`, 6.98 GB
+  (+0.18 GB mmproj for pictures; 85 of 154 headline items have one). Google's vLLM-native w4a16
+  is 10.3 GB (bf16 262k-vocab embedding), so over. Config key `gemma4-12b`, served by llama.cpp.
+- Also `qwen3.5-9b` (Qwen3.5-9B Q6_K GGUF, 7.46 GB). Qwen3-14B-AWQ is 9.98 GB: over.
+- `run_baselines.py` now serves GGUF entries (`gguf_file`, `server: llamacpp`) with llama-server;
+  `infra/jobs/common.sh ensure_llama_server` builds it with CUDA on the box. On a 1-GPU box
+  `JUDGE_HF=... JUDGE_GB=n` runs the judge on the same card, so open answers get scored.
+
 ## 2026-09-26 14:05 CEST · release thread: repo audit before going public
 
 - **Tree is clean now**: brief PDF removed, VM IP and AWS account ID redacted, no tokens or keys. Please

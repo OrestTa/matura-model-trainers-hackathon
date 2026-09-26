@@ -66,13 +66,34 @@ def wait_ready(url: str, proc: subprocess.Popen | None, timeout: float = 1800) -
 
 def served_weights(key: str, spec: dict) -> str:
     """The pre-quantized exam checkpoint when it exists (scripts/quantize_checkpoint.py),
-    so baselines score exactly what we submit; else the HF weights."""
+    so baselines score exactly what we submit; else the HF weights. A `gguf_file` entry
+    is one file of the hf_id repo, downloaded to the HF cache."""
+    if spec.get("gguf_file"):
+        from huggingface_hub import hf_hub_download
+        return hf_hub_download(spec["hf_id"], spec["gguf_file"])
     ckpt = Path(spec.get("checkpoint") or ROOT / "work/checkpoints" / key)
     return str(ckpt) if (ckpt / "config.json").exists() else spec["hf_id"]
 
 
+def start_llamacpp(key: str, spec: dict, vcfg: dict, gpu: str, port: int,
+                   log_path: Path) -> subprocess.Popen:
+    """GGUF models (`server: llamacpp`) run on llama.cpp's OpenAI-compatible llama-server
+    (LLAMA_SERVER, built by infra/jobs/common.sh `ensure_llama_server`)."""
+    slots = int(spec.get("parallel", 16))
+    cmd = [os.environ.get("LLAMA_SERVER", "llama-server"), "-m", served_weights(key, spec),
+           "--alias", "base", "--host", "127.0.0.1", "--port", str(port), "-ngl", "999",
+           "--parallel", str(slots), "-c", str(slots * int(vcfg.get("max_model_len", 8192))),
+           "--jinja", "-fa", "on", "--no-webui"] + list(spec.get("llamacpp_args", []))
+    env = {**os.environ, "CUDA_VISIBLE_DEVICES": gpu}
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    log(f"[{key}] GPU {gpu}: {' '.join(cmd)}")
+    return subprocess.Popen(cmd, env=env, stdout=open(log_path, "w"), stderr=subprocess.STDOUT)
+
+
 def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: Path,
                adapters_dir: Path | None, util: float | None = None) -> subprocess.Popen:
+    if spec.get("server") == "llamacpp":
+        return start_llamacpp(key, spec, vcfg, gpu, port, log_path)
     cmd = ["vllm", "serve", served_weights(key, spec), "--served-model-name", "base",
            "--port", str(port), "--max-model-len", str(vcfg.get("max_model_len", 8192)),
            "--gpu-memory-utilization", f"{util or vcfg.get('gpu_memory_utilization', 0.9):.3f}"]
@@ -80,6 +101,8 @@ def start_vllm(key: str, spec: dict, vcfg: dict, gpu: str, port: int, log_path: 
         cmd += ["--quantization", spec["quantization"]]
     if spec.get("chat_template"):  # pretrained base without a chat template of its own
         cmd += ["--chat-template", str(ROOT / spec["chat_template"])]
+    if spec.get("tokenizer"):
+        cmd += ["--tokenizer", spec["tokenizer"]]
     if adapters_dir:
         mods = [f"{d.name}={d}" for d in sorted((adapters_dir / key).glob("*"))
                 if (d / "adapter_config.json").exists()]  # a crashed run leaves only checkpoints/
@@ -148,6 +171,8 @@ def main():
     p.add_argument("--judge-model", default="judge")
     p.add_argument("--judge-hf", help="start this HF model with vLLM as the judge, e.g. Qwen/Qwen3-32B")
     p.add_argument("--judge-gpus", default="", help="GPUs reserved for the judge, e.g. 6,7")
+    p.add_argument("--judge-gb", type=float, default=0,
+                   help="cap the judge at this much GPU memory, to share one GPU with the models")
     p.add_argument("--text-only", action="store_true", help="skip items that need an image")
     args = p.parse_args()
     args.modes = args.modes.split(",")
@@ -184,6 +209,8 @@ def start_judge(args) -> subprocess.Popen:
     port = 8099
     cmd = ["vllm", "serve", args.judge_hf, "--served-model-name", "judge", "--port", str(port),
            "--max-model-len", "8192", "--tensor-parallel-size", str(len(gpus.split(",")))]
+    if args.judge_gb:  # the judge shares the card with the models under test
+        cmd += ["--gpu-memory-utilization", f"{min(0.95, args.judge_gb / gpu_total_gb(gpus.split(',')[0])):.3f}"]
     log_path = Path(args.out) / "judge_vllm.log"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     log(f"[judge] GPU {gpus}: {' '.join(cmd)}")

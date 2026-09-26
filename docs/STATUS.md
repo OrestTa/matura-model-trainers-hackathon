@@ -6,6 +6,7 @@ Times are UTC.
 
 | job | what | where | state | started | updated | out | owner |
 |---|---|---|---|---|---|---|---|
+| score-shootout | baselines MODELS=bielik-11b,bielik-11b-v3,gemma4-12b,qwen3.5-9b MODES=raw,routed, headline eval, judge Qwen3-14B-AWQ on the same card (JUDGE_GB=16, GPU_BUDGET_GB=24) | Forgehand L40S | queued: via the compute thread once the box is back | 2026-09-26 12:39 | 2026-09-26 12:39 | /workspace/work/out/score-shootout | Best matura score thread |
 | size-cap-8gb | HARD caps base<=8.0 GB, after FT<=8.8 GB (adapters count); GPTQ-Int8 demoted; prefer 3B or 7B-AWQ; cancel Bielik-11B/dapt/train | box + Forgehand | active | 2026-09-26 12:33 | 2026-09-26 12:33 | notes/SIZE_CAP_8GB.md | Grok bot |
 | stop-bielik-11b | CANCEL dapt-bielik / train-bielik / 11B baselines / router-ablation-11B — ~22.3 GB illegal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | work/STOP/ | Grok bot |
 | stop-cke-7b-bf16 | SIGTERM cke_7b_fh (+ queued fh-v2): bf16 7B ~15.2 GB not Sunday-legal | Forgehand L40S | cancel_requested | 2026-09-26 12:33 | 2026-09-26 12:33 | runs/history_eval/ | Grok bot |
