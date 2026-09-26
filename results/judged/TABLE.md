@@ -10,5 +10,6 @@
 | matura-judge-claude-eval-Hm2b | Hm2b: Gemma 4 12B QAT + LoRA Hm2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 28 | 30 | - | - | **58/120** | 57/119 | 34/52 | 24/38 | 0/30 | - |
 | matura-judge-claude-eval-Gm3b | Gm3b: Gemma 4 12B QAT + LoRA Gm3b (Modal, static LoRA, think routed + THINK_FALLBACK) | 20 | 36 | - | - | **56/120** | 55/119 | 25/52 | 24/38 | 7/30 | - |
 | matura-judge-claude-eval-S4m2b | S4m2b: Gemma 4 12B QAT + LoRA S4m2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 25 | 31 | - | - | **56/120** | 55/119 | 31/52 | 23/38 | 2/30 | - |
+| matura-judge-claude-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0125 | A01 (a0125): Gemma 4 12B QAT + LoRA A01 (0.1 epoch), 2k thinking + THINK_FALLBACK (L40S) | - | - | 35 | - | **35/60** | 35/60 | 17/24 | 14/21 | 4/15 | Sol 23 / Claude 18 of 36 |
 | matura-judge-claude-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2148-g4f1 | g4f1: Gemma 4 12B QAT + LoRA A1 (1 epoch), 2k thinking + THINK_FALLBACK (L40S) | 24 | - | - | - | **24/60** | 23/59 | 9/24 | 15/21 | 0/15 | Sol 15 / Claude 15 of 36 |
 | matura-judge-claude-eval-B4m2b | B4m2b: Gemma 4 12B QAT + LoRA B4m2b (Modal, static LoRA, think routed + THINK_FALLBACK) | 23 | - | - | - | **23/60** | 22/59 | 10/24 | 13/21 | 0/15 | - |
