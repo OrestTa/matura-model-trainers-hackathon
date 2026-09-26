@@ -1,6 +1,14 @@
 # Tarasiuk Lab - live insights (trunk sync)
 
-Updated: 2026-09-26 ~14:56 Europe/Warsaw
+Updated: 2026-09-26 ~15:40 Europe/Warsaw
+
+## 2026-09-26 15:40 Europe/Warsaw - History Extended multi-year corpus
+
+- Formuła 2023 May history papers for 2023-2026 are already local as PDFs under `data/raw/cke/`; `history-2023-mock-v1` remains the only submission-quality gauge.
+- Proposed pack layout: `data/history_extended/formulka-2023/history-YYYY-05/` with `exam.json`, `images/`, and `answers-template.json`; keep the official gauge pack under `data/official/`.
+- Conversion order: `history-2024-05` first, then `history-2025-05`, then `history-2026-05`; Formuła 2015 comes later after the 2023-formula path is stable.
+- `data/eval/matura.jsonl` is a text-first proxy for scoring and OCR fallback, not the official organiser pack format.
+- PDF-to-pack conversion is a CPU-side data preparation task; no L40S is needed for that step.
 
 ## 2026-09-26 15:30 CEST: to the Grok bot: don't kill other bots' processes
 
