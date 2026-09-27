@@ -1,5 +1,86 @@
 # Matura model trainers: question router
 
+## What we changed to beat the base model
+
+We did not fine-tune the shipped model. Every gain comes from how our harness asks the questions
+(`scripts/run_exam.py --mode subtype`, harness at commit `007fb17`). The model file is the same as the base.
+
+| Change | What it does | What it bought (Claude-graded, blind) |
+|---|---|---|
+| Thinking on, capped at 2,000 tokens | The model reasons before answering. | Held-out 163/240 vs 123/240 with thinking off (+40). This is the model's default, so we count it as part of the base (316a39f, 7e6fe48). |
+| Blank-answer retry (`THINK_FALLBACK=1`) | If thinking uses up the budget and the answer is blank, ask once more with thinking off. | Removes the blank answers (6 blanks, 7 points on May 2023 before this). |
+| Question type routing (`--mode subtype`, `configs/subtypes.yaml`) | Each question goes to a setting for its type: closed, open text, open picture, essay. | The frame the changes below plug into. |
+| Closed questions: 3 of 5 vote | Answer 5 times, keep the majority. | Neutral on held-out (164 vs 165); kept as a guard against one-off slips. |
+| Open questions: the exam prompt unchanged | No extra instructions; we tested several and none helped. | Extra prompts, describe-the-picture and best of 3 all stayed within ±2 on 49 practice items (results/judged/matura-judge-claude-dev-*). |
+| Essay: plan first, then best of 3 drafts at 350–550 words, printed plan removed | The model writes a plan (16k thinking tokens), then three essays; we keep the best one. | Blind essay batches: 71 vs 56 of 120 (06f9aac), 69 vs 61 of 150 (125605a), side by side 40 vs 35 of 60. No essay can fall under the 300-word minimum (the base wrote 276 and 297 words = 0 points). |
+
+**Result on the Jan 2026 mock (60 points):** plain base with thinking on 32/60, our harness 43/60 (rehearsal, 964c246)
+and 38/60 (final run, 5b9f270; 41 after regrading the essay without its printed plan, fixed in 007fb17).
+That is **+10 to +18 percentage points**. Most of the gain is in open questions (+6) and questions with pictures (+5).
+
+**Honest limit:** on the four held-out papers (May 2023–2026) the full harness ties the thinking-on base,
+163 vs 163 of 240 (efcb3ed). The essay gain shows in blind side-by-side grading, but a paper-by-paper grade
+did not confirm it (29 vs 30 of 60). Run-to-run noise is about ±2 per 240 points and ±3 per paper.
+
+## How we measured (protocol)
+
+- **Papers.** Held-out set: the four real CKE papers May 2023, 2024, 2025, 2026 (240 points). They were never used for
+  training or for choosing prompts. Dev set: the January 2026 official mock and older practice papers.
+  Past answer keys were used only as training data, never in an exam prompt.
+- **Grading.** Claude Opus graders, one per paper per answer set, blind to which model wrote the answers.
+  They grade against the official CKE key, open the picture crops for picture questions and use the full CKE
+  essay criteria. An essay under 300 words scores 0. Check: our graders give the organisers' own deck answers
+  45/60 against the deck's 46 (7e6fe48).
+- **Essays in the same batch.** Essay grades drift 5–10 points between batches, so the base essay always sits in the
+  same blind batch as the candidate.
+- **Smoke first.** Every new job type first runs a small end-to-end test. A run with more than 10% blank answers is
+  thrown away (`run_exam.py` exits 2).
+- **Size.** We count the quantized file on disk. Base ≤ 8.0 GB; base plus fine-tune ≤ 8.8 GB; all models in one
+  entry are added up. Ours: 7.15 GB (q4_0 model + picture reader).
+- **Score tables** always show five categories (closed, open, essay, text only, with pictures) plus the total.
+
+## Everything we tried, in short
+
+### Gemma 4 12B settings (held-out /240 unless marked)
+- Thinking off: 123. Routed prompts with thinking off: 129. Thinking on, 2k: 163 (repeat run 165). (TABLE.md, 7e6fe48)
+- Thinking 8k (essays 16k): 81/120 on two papers vs 83 for 2k. Thinking often ran out and left blanks.
+- Thinking 4k vs 2k on practice papers: 49 vs 50. No gain.
+- 5-vote harness (closed vote, routed open): 164 vs 165 raw; essays −4.
+- Per-type harness without fine-tune: 123/180 on three papers vs base 122.
+- Picture text via OCR added to the prompt: −6.5 points per 100 on 26 paired items. Gemma reads pictures itself, so OCR is off.
+- Open questions best of 3, describe the picture first, or both: within ±2 of plain (pictures +4, text −5 for both).
+- Essay variants on 12 dev essays (/150): base 63, plan 68, length guard 56, plan + guard 67. Held-out essays (/120):
+  base 56, plan + best of 3 71, retrieval (RAG) + plan 66, plan + best of 3 without word targets 63. Best of 5: 71 vs 69 for best of 3 (noise).
+
+### Fine-tunes of Gemma 4 12B (LoRA; none shipped)
+- A1 (1 epoch): 24/60 on May 2023 vs 41. Essays loop, 0/15.
+- B4m2: 23/60. Copied the synthetic label "zestawu syntetycznego nr" into exam answers.
+- Hm2: 58/120. Gm3 (essay-weighted): 81/180. S4m2: 114/240. Essays 0–2 per paper.
+- A01 (0.1 epoch): 131/240. Short items tied the base; its essay was 296 words, so 0.
+- Root cause (ac32391, docs/LORA_ROOT_CAUSE.md): the training used thinking off while the exam uses thinking on,
+  72% of the data was the Grok bot's synthetic set, and more training hurt short answers more.
+- SD1, the fixed recipe (264 rows from real past papers, the model's own thinking as targets, essays left to the base):
+  155/240 vs 163 (fc60fe3). Short items within 2 of the base; lost on one 298-word essay.
+- SDALL (SD1 plus the held-out papers, an overfit test): stopped at 08:10 CEST for the deadline, never trained (d209713).
+
+### Training data
+- Grok bot's synthetic set: 9,284 rows from 250 invented exams. Essays repeat the same filler sentences
+  (one sentence 1,041 times), and 245 contain the "synthetic set" label. Dropped.
+- Real CKE past papers with official keys (formuła 2015 and 2023), May 2023–2026 always excluded.
+
+### Other models (May 2023 /60 unless marked)
+- Gemma-3-27B via API: 35 (too big to ship). Bielik-4.5B FP8 with OCR: 24. Bielik-11B NF4: 12 (a third of answers ran on past the answer).
+  Qwen2.5-7B AWQ: 11 (18.3%). Qwen2.5-3B: 11. Qwen2.5-1.5B: 4. Qwen2.5-0.5B: 3. Qwen3-4B Q3: 22.1% of held-out (no picture reading).
+- Bielik-11B domain pretraining and the Grok bot's Bielik-11B fine-tune: no graded result before the freeze.
+
+### Smallest model and biggest improvement tracks (Jan 2026 mock /60, 9bc74e5, cc1beca)
+- Bielik-1.5B: bare 9; our harness with OCR 9; without OCR 8; per-type 6; our adapters 8; Codex adapters 6, and 5 when trained on this mock.
+  The essay scored 0 in every version (length guard, anti-repetition, written in parts). The model lacks the facts:
+  it calls Poniatowski a Vasa king. Best improvement 0, dropped.
+- Bielik-4.5B: 13 plain, 11–12 with our harness. Under the 35% bar (21/60), dropped.
+- Gemma 4 E4B (4.2–5.2 GB) and a smaller 12B quantization (Q3, 5.87 GB): never run before the freeze.
+- So one Gemma 4 12B project (7.15 GB) enters all three categories. Tables: [docs/TRACKS_SMALL_AND_IMPROVEMENT.md](docs/TRACKS_SMALL_AND_IMPROVEMENT.md).
+
 ## Our final entry (all three categories), in short
 
 - **Categories:** one project, the same Gemma 4 12B file, enters **Best exam score**, **Smallest model passing 35%**
