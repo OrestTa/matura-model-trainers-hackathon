@@ -212,3 +212,23 @@ def test_raw_passthrough_profile_sends_the_raw_request():
     r.answer(q, "Źródło.", mode="raw")
     r.answer(q, "Źródło.", mode="subtype", profile=Profile(name="raw", raw=True))
     assert seen[0] == seen[1]
+
+
+def test_strip_essay_plan():
+    from matura_router.router import strip_essay_plan
+    essay = "Temat nr 2\n\n" + " ".join(["słowo"] * 320)
+    planned = "**Plan wypracowania:**\n1. **Wstęp:** teza\n2. Argument\n\n---\n\n" + essay
+    assert strip_essay_plan(planned) == essay
+    assert strip_essay_plan("**Plan:**\n1. a\n\n**WYPRACOWANIE**\n\n" + essay).startswith("**WYPRACOWANIE**")
+    assert strip_essay_plan(essay) == essay                      # no plan: unchanged
+    assert strip_essay_plan("Plan Marshalla był...\n" + essay[12:]) != ""  # no separator: unchanged
+    short = "Plan:\n1. a\n---\nkrótko"
+    assert strip_essay_plan(short) == short                      # never leave a stub essay
+
+
+def test_subtypes_yaml_env_block_is_valid():
+    import yaml
+    from matura_router.subtypes import DEFAULT_SUBTYPES, load_profiles
+    env = yaml.safe_load(DEFAULT_SUBTYPES.read_text())["env"]
+    assert {"ESSAY_BEST_OF", "ESSAY_MIN_WORDS", "ESSAY_TARGET_WORDS"} <= set(env)
+    assert load_profiles()["essay"].name == "plan"

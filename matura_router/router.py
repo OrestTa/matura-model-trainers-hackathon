@@ -85,6 +85,26 @@ def essay_words(text: str) -> int:
     body = [ln for ln in text.replace("*", "").splitlines() if not _ESSAY_HEADER.match(ln.strip())]
     return len(re.findall(r"\w+", " ".join(body)))
 
+_PLAN_START = re.compile(r"^\W*(plan|konspekt|szkic)\b", re.I)
+_PLAN_END = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$|^\W*(wypracowanie|temat( nr)?\s*\d+|na temat nr\s*\d+)\b", re.I)
+
+
+def strip_essay_plan(text: str) -> str:
+    """The plan prompt makes the model sometimes print its plan ("**Plan wypracowania:** 1. ...") before the
+    essay. The plan is not part of the essay: drop everything from a leading "Plan..." line up to the first
+    separator ("---") or essay header ("WYPRACOWANIE", "Temat nr 2"). No such marker: text unchanged."""
+    lines = text.strip().splitlines()
+    first = next((i for i, ln in enumerate(lines) if ln.strip()), None)
+    if first is None or not _PLAN_START.match(lines[first].strip()):
+        return text
+    for j in range(first + 1, len(lines)):
+        if _PLAN_END.match(lines[j].strip()):
+            k = j + 1 if re.match(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$", lines[j]) else j
+            rest = "\n".join(lines[k:]).strip()
+            return rest if essay_words(rest) >= 100 else text
+    return text
+
+
 # Closed types: post-processed answers are comparable strings, so they can be voted on.
 VOTABLE = {Category.CLOSED_CHOICE, Category.TRUE_FALSE, Category.MATCHING, Category.CHRONOLOGY}
 
@@ -257,7 +277,7 @@ class Router:
             except Exception:  # noqa: BLE001 - keep what we have
                 log.exception("essay retry failed")
                 break
-            a = strip_think(r)
+            a = strip_essay_plan(strip_think(r))
             if essay_words(a) > n:
                 best, best_raw, n = a, r, essay_words(a)
         return best, best_raw
@@ -272,7 +292,7 @@ class Router:
         def one(_):
             try:
                 r = self.backend.chat(messages, adapter, sp)
-                a = strip_think(r)
+                a = strip_essay_plan(strip_think(r))
                 if essay_min_words():
                     a, r = self._lengthen_essay(a, r, messages, adapter, params)
                 return a, r
@@ -527,6 +547,8 @@ class Router:
 
         keys = keyed_format(question) if mode != "raw" else []
         answer = strip_think(raw) if mode == "raw" else postprocess(category, raw, keys)
+        if category == Category.ESSAY:
+            answer = strip_essay_plan(answer)
         if guard:
             answer = self._lengthen(answer, messages, adapter, route, category, guard)
         if category == Category.ESSAY and essay_min_words():
@@ -537,6 +559,8 @@ class Router:
             answer, raw = self._best_open(answer, raw, messages, adapter, route.params)
         if mode != "raw" and route.votes > 1 and (category in VOTABLE or keys):
             answer = self._vote(answer, messages, adapter, route, category, keys)
+        if category == Category.ESSAY:
+            answer = strip_essay_plan(answer)
         return RoutedAnswer(answer=answer, raw=raw,
                             category=category.value, adapter=adapter,
                             confidence=round(confidence, 3), method=method,

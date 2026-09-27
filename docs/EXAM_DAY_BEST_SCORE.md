@@ -96,6 +96,8 @@ export ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550   # essay: 3 d
 ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-exam &        # 8 slots x 24k; waits until ready
 python scripts/run_exam.py <exam package dir> --model gemma4-12b-exam --mode subtype --concurrency 8 -o answers.json
 # configs/subtypes.yaml: open items = the exact raw request, closed = 5-sample vote; essay = plan prompt, 16k thinking, 2600 answer tokens.
+# The essay env values are also defaults in configs/subtypes.yaml `env:` (run_exam prints "essay settings: ..."; check it says 3/350/550).
+# A plan the model prints before its essay is stripped (router.strip_essay_plan), so only the essay goes into answers.json.
 # The essay takes ~8 min (p50 458 s on an L40S); everything else finishes first.
 ```
 

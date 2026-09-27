@@ -29,3 +29,10 @@ subtypes:
     think_tokens: 16384
     max_tokens: 2600
     prompt_suffix: "Zanim zaczniesz, ułóż w myślach plan. Wypracowanie: wstęp z tezą, 3–4 akapity argumentacyjne z konkretnymi datami, postaciami i wydarzeniami z omawianego okresu, kontekst epoki, podsumowanie. 500–700 słów."
+
+# Environment defaults that `run_exam.py --mode subtype` applies when they are not already set, so the stage
+# path does not depend on remembering the export line. A value already in the environment wins.
+env:
+  ESSAY_BEST_OF: 3          # 3 essays, keep the best one of 300+ words
+  ESSAY_MIN_WORDS: 350      # an essay under 350 words is asked again, longer
+  ESSAY_TARGET_WORDS: 550   # length asked for in the essay prompt

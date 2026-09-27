@@ -149,7 +149,15 @@ def main() -> int:
         from matura_router.subtypes import load_profiles
         router.profiles = load_profiles(args.subtypes)
     if args.mode == "subtype":
+        import os
+        import yaml
+        from matura_router.subtypes import DEFAULT_SUBTYPES
+        env = (yaml.safe_load(Path(args.subtypes or DEFAULT_SUBTYPES).read_text()) or {}).get("env") or {}
+        for k, v in env.items():
+            os.environ.setdefault(k, str(v))
         print("subtypes:", {k: v.name for k, v in router.profiles.items()}, file=sys.stderr)
+        print("essay settings:", {k: os.environ.get(k) for k in ("ESSAY_BEST_OF", "ESSAY_MIN_WORDS", "ESSAY_TARGET_WORDS")},
+              file=sys.stderr)
         from matura_router import ocr
         if any(p.ocr for p in router.profiles.values()) and not ocr.available():
             print("WARNING: a subtype setup uses OCR notes but tesseract isn't installed "
