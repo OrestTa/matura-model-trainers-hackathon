@@ -76,5 +76,6 @@ claim is "same total as base on held-out (163/240), essays about +5/60 better si
 | Describe the picture before answering (PICTURE_DESCRIBE=1) | 43 vs 42 (noise); with best-of-3: 44 |
 | Essay retrieval from era fact sheets + Wikipedia (ragplan) | dev 70–74/150; held-out 66/120 vs bo3plan 71 |
 | Retrieval + best of 3 (ragbo3plan) | dev 72 vs bo3plan 69, 5 wins / 5 losses |
+| Essay best of 5 instead of 3 (bo5plan) | dev 71 vs bo3plan 69/150 (3 wins, 2 losses, 7 ties), noise |
 | Thinking 4k vs 2k | 49 vs 50 on 51 practice items |
 | SD1 self-distilled LoRA (real past papers only) | 155/240 vs base 163 |

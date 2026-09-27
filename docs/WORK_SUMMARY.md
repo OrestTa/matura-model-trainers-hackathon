@@ -43,6 +43,7 @@ which scores 0.
 | Essay plan prompt | +5/150 on practice essays |
 | **Essay plan + best of 3** | **+9 to +13/150 practice; 71 vs 56/120 held-out side by side; shipped** |
 | Essay retrieval from fact sheets + Wikipedia | Level with best of 3; not shipped |
+| Essay best of 5 instead of 3 | 71 vs 69/150 on practice essays, noise |
 | Thinking 4k or 8k instead of 2k | No gain; 8k leaves blank answers |
 
 ## Infrastructure built
