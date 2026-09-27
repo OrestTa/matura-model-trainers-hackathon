@@ -1,0 +1,35 @@
+RAG knowledge base /scratch/b45h/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
+subtypes: {'closed_text': 'v5', 'closed_image': 'v5', 'open_text': 'raw', 'open_image': 'raw', 'essay': 'plan'}
+essay settings: {'ESSAY_BEST_OF': '3', 'ESSAY_MIN_WORDS': '350', 'ESSAY_TARGET_WORDS': '550'}
+vision: False
+essay pick failed
+Traceback (most recent call last):
+  File "/scratch/b45h/matura_router/router.py", line 314, in _best_essay
+    verdict = strip_think(self.backend.chat(judge, None, jp))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/b45h/matura_router/backends/openai_compat.py", line 118, in chat
+    out = self._post("/chat/completions", body)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/b45h/matura_router/backends/openai_compat.py", line 87, in _post
+    with urllib.request.urlopen(req, timeout=self.timeout) as r:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 525, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 400: Bad Request
+38 answers (0 blank) -> /scratch/claude-b15/b45-harness-subtype/answers.json; log /scratch/claude-b15/b45-harness-subtype/answers.json.log.jsonl
+rc=0 wall 742s

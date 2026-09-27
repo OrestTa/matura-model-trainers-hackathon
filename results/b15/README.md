@@ -25,3 +25,13 @@ Only the essay item (27) re-run: 2400 tokens, then up to 3 "continue" turns unti
 | allpapers | 206 → 473 |
 
 **Repetition check (sentences / unique sentences):** base 28/18, ours 106/16 (the essay loops on the same sentences), allpapers 30/19. The word counts clear 300, but a grader will likely mark the repeated text down; the "ours" essay is mostly one loop.
+
+## Our harness (scripts/run_exam.py at cf84ec6, 09:10–09:23 CEST)
+Bielik 4.5B Q8_0 (key `bielik-4.5b-q8`, OCR on), llama-server on :8093, ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550, concurrency 3 each (both ran at once).
+
+| arm | mode | blank | wall | essay words |
+|---|---|---|---|---|
+| b45-harness-adapters | adapters (default, no adapters loaded) | 0 | 512 s | 490 |
+| b45-harness-subtype | subtype (ESSAY_BEST_OF=3 from subtypes.yaml) | 0 | 742 s | 1711 |
+
+gemma-raw: Gemma 4 12B QAT, `--mode raw`, key gemma4-12b-exam, on the warm exam server (007fb17 checkout), 0 blank, 322 s, essay 339 words.

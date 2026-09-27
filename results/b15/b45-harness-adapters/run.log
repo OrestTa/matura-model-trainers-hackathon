@@ -1,0 +1,42 @@
+RAG knowledge base /scratch/b45h/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
+vision: False
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'closed_choice' not loaded, using base model for closed_choice
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'closed_choice' not loaded, using base model for closed_choice
+adapter 'general' not loaded, using base model for general
+adapter 'general' not loaded, using base model for general
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'matching' not loaded, using base model for matching
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'general' not loaded, using base model for general
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'closed_choice' not loaded, using base model for closed_choice
+adapter 'general' not loaded, using base model for general
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'closed_choice' not loaded, using base model for closed_choice
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'general' not loaded, using base model for general
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'true_false' not loaded, using base model for true_false
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'short_open' not loaded, using base model for short_open
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'short_open' not loaded, using base model for short_open
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'source_analysis' not loaded, using base model for source_analysis
+adapter 'essay' not loaded, using base model for essay
+38 answers (0 blank) -> /scratch/claude-b15/b45-harness-adapters/answers.json; log /scratch/claude-b15/b45-harness-adapters/answers.json.log.jsonl
+rc=0 wall 512s
