@@ -63,13 +63,35 @@ base (best: SD1 155/240), so none is shipped. So the expected improvement over t
   `validateAnswers` (run with node on 27.09) and `scripts/check_submission.py`, which ports it.
 - `SOURCE.md` holds the required line exactly.
 
+## One freeze, three tracks (plan from 27.09 08:35 CEST; Claude coordinates all submissions)
+
+Codex ran out of usage, so Claude now runs all three categories. Grok bot and Codex do nothing further.
+The site's readiness confirmation is **one per team**: after it, no project may change. So everything
+for all three tracks must be committed first, then one confirmation, one exam package, three runs.
+
+| Track | Project | Model(s) | Answers | Status |
+|---|---|---|---|---|
+| Best exam score | Gemma 4 12B QAT + matura exam harness | `google/gemma-4-12B-it-qat-q4_0-gguf`, 7.15 GB | `answers.json` from the stage command above | ready (main 007fb17+, smoke b371e40 OK) |
+| Smallest model passing 35% | from the "Take over Codex tracks" thread | pending | pending | stocktake running |
+| Biggest improvement | from the "Take over Codex tracks" thread | pending (needs base answers from the same exam) | `answers.json` + `answers-base.json` | stocktake running |
+
+Before the freeze, each track needs: its model files on the GPU box and their size measured; one command that
+turns the exam package into a valid answers.json (checked with `check_submission.py` on the mock package);
+its results for base and trained in the repo; and its section in this file.
+
+After the freeze (in this order, on the L40S, one model at a time):
+1. Confirm readiness with the team code and repo link; fetch the package straight onto the box from the 5-minute link.
+2. Run Best exam score (~10 min), check, upload as its own project (category Best exam score).
+3. Run the smallest-model track, check, upload (category Smallest model passing 35%).
+4. Run the improvement track and its base model, check both, upload with the base answers (category Biggest improvement).
+Every upload is a separate project with its own receipt. Receipts go to results/final-exam/.
+
 ## Orest's steps, in order
 
-1. Make the repo public (GitHub > Settings > Danger zone > Change visibility), or give the jury read access.
+1. ~~Make the repo public~~ done (public at 08:19 CEST).
 2. Push the tag on the final main commit: `git pull && git tag best-score-candidate && git push origin best-score-candidate`.
 3. Cancel all Nebius jobs in the Nebius console (our IAM token expired, so no agent can do it).
-4. On warsawmodeltrainers.dev "Update team", change the base model from Qwen/Qwen2.5-3B-Instruct to
-   `google/gemma-4-12B-it-qat-q4_0-gguf`.
+4. ~~Update team base model~~ done by Claude 08:27 CEST (Gemma 4 12B, 7.15 GB, repo link).
 5. Make sure every agent (Claude threads, Codex, Grok bot) has stopped pushing, and Codex's two projects are final.
 6. Form: team code, repo link, tick readiness, "Get final exam questions", download the zip within 5 minutes,
    and put it on the GPU box (post it in the project chat; the GPU box thread copies it over).
