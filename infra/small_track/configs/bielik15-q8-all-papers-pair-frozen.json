@@ -1,0 +1,28 @@
+{
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q8_0",
+  "base_bytes": 1699568096,
+  "base_sha256": "90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e",
+  "router_bytes": 833206,
+  "router_sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
+  "ocr_bytes": 8878606,
+  "adapter_bytes": 80677920,
+  "source_candidate_sha256": "3ecfcc62c05cc28ba668ff751fa6ce33a81e54a5cd8e958cf1ae0d2e5c6b031a",
+  "candidate_sha256": "be06504a89123d8c25c9f5b60476f23e2d25322e082de954146ea2cc4469101c",
+  "adapter_manifests_sha256": "908fd39991abb1f5f1de9fbb7cab465a4a71a13f059302fdae6d4cb600fb8f0c",
+  "ocr_source_sha256": "abe9791630317612ece247d452a960549ad7dabc9c523f5717e0c726f279be67",
+  "dataset_manifest_sha256": "ef4bd556304c7a856622ca06dfa5cc3a410c5ac859452ef93a0e405774136c07",
+  "concurrency": 1,
+  "caps": [
+    500,
+    1600
+  ],
+  "temperature": 0,
+  "seed": 42,
+  "comparison": "Fresh matched base vs all-225-official-row trained adapters; TRAINING-SET measurement, no holdouts",
+  "offline_scope": "server seccomp denies outbound TCP connect and UDP socket; client loopback only",
+  "base_aggregate_bytes": 1709279908,
+  "trained_aggregate_bytes": 1789957828,
+  "training_set_measurement": true,
+  "judge_policy_sha256": "e4d579e874a7eec9ca1b4191ad8a540b14caea70c1c433500aa7dde849a9c870"
+}

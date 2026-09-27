@@ -2,6 +2,21 @@
 
 ## Active smallest-model experiment (user instructions, 2026-09-26)
 
+- Latest hard delivery deadline:2026-09-27 06:40:39UTC (08:40 Warsaw).
+  Finish current all-paper Bielik training, matched inference and packaging.
+  Target inference completion by06:25UTC; no new exploratory models.
+  This supersedes the earlier open-ended continuation instruction.
+
+- Latest direct training instruction (2026-09-27): train Bielik1.5 on ALL
+  available official history Matura papers, with NO holdouts. Include2015/2016
+  and2023/2024. This explicitly supersedes earlier training-year exclusions
+  below. Use only real official targets, not synthetic answers; distinguish
+  official essay exemplars from rubrics. Freeze source hashes and actual coverage,
+  train a complete pass rather than a fixed16-row pilot, and persist resumable
+  checkpoints. Any score on an included paper is a training-set result, never
+  held-out generalization. Official keys may supervise training but must still
+  never enter candidate inference prompts. Compute remains shared-VM-only.
+
 - Latest provider instruction (2026-09-27 local time): stop all Nebius compute,
   as coordinated by the parent orchestrator, and use ONLY the existing shared
   Forgehand GPU VM for future compute. This supersedes every earlier Nebius,
