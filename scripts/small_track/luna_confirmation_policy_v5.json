@@ -1,0 +1,50 @@
+{
+  "protocol": "local-luna-official-v5-confirmed-pair",
+  "judge": "gpt-6-luna",
+  "provider": "Own ChatGPT Codex plan via authenticated CLI",
+  "measurement_kind": "training_set",
+  "paper": "Canonical2023 original37items,60points, original19PNG images",
+  "arms": [
+    "base",
+    "trained"
+  ],
+  "matching": [
+    "candidate input",
+    "runtime",
+    "OCR",
+    "router",
+    "prompt",
+    "seed",
+    "temperature",
+    "token caps"
+  ],
+  "changed_factor": "New trained adapter scales versus explicit zero scales",
+  "prior_run_verdict_reuse": false,
+  "within_pair_verdict_reuse": false,
+  "workers": 4,
+  "call_timeout_seconds": 180,
+  "automatic_retries": false,
+  "initial_method": "16 identical-image groups, one13-item text batch, three independent essay calls per arm",
+  "initial_calls_maximum": 40,
+  "essay_first_mark": "The first response is primary; later repeats only test consistency, never vote or average.",
+  "clarification_triggers": [
+    "transport/schema failure",
+    "unresolved evidence",
+    "arithmetic or logical contradiction",
+    "essay repeat points or uncertainty disagreement"
+  ],
+  "clarification_limit_per_item_per_arm": 1,
+  "clarification_calls_maximum": 74,
+  "clarification_blinding": "Original frozen packet and images only; no prior marks, rationales, arm name, or desired result.",
+  "arbitration": "A flagged item uses its one predeclared clarification verdict only if valid, justified, self-consistent and resolved. It may be lower, equal or higher. Otherwise unresolved; never choose highest or average.",
+  "image_metadata": "Truthfully report inspected paths, explicit evidence-independent rationale, or unavailable evidence. Never force fabricated inspection metadata.",
+  "confirmed_exact_score": "All37 items resolved under this policy. Both arms must be exact to claim a confirmed exact delta.",
+  "unresolved_bounds": "Resolved points plus0..official maximum for every unresolved item. Bounds are not exact confirmed scores.",
+  "threshold": {
+    "at_least35_percent_points": 21,
+    "strictly_above35_percent_points": 22
+  },
+  "claim_limit": "Training-set measurement, not held-out generalization or proof that model judging is infallible.",
+  "training_manifest_sha256": "ef4bd556304c7a856622ca06dfa5cc3a410c5ac859452ef93a0e405774136c07",
+  "training_exposure": "All36 nonessay2023 tasks included;2023 essay excluded because rubric is not an exemplar. Five other official essay exemplars included."
+}
