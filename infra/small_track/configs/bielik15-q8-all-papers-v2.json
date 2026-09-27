@@ -1,0 +1,310 @@
+{
+  "name": "bielik15-q8-all-papers-v2",
+  "offline": true,
+  "temperature": 0,
+  "seed": 42,
+  "vote_samples": 1,
+  "artifacts": {
+    "model": {
+      "repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+      "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+      "filename": "/private/tmp/Bielik-1.5B-v3.0-Instruct-Q8_0.gguf",
+      "bytes": 1699568096,
+      "sha256": "90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e",
+      "role": "weights",
+      "recovery": {
+        "repo": "second-state/Bielik-1.5B-v3.0-Instruct-GGUF",
+        "revision": "6c316d2be07dee472901150c3f3e9d4f725a4706",
+        "filename": "Bielik-1.5B-v3.0-Instruct-Q8_0.gguf",
+        "private": false
+      }
+    },
+    "closed_without_images": {
+      "filename": "artifacts/small_track/bielik15-all-papers-v2/closed_without_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "e2eb4aa68c692ea148bec6e707dbce0ea38718d35952d97fcaf856a13babbf30",
+      "role": "adapter",
+      "server_lora_id": 0,
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+        "filename": "models/bielik15/all-papers-v2/closed_without_images/adapter-f16.gguf",
+        "private": true
+      }
+    },
+    "essay": {
+      "filename": "artifacts/small_track/bielik15-all-papers-v2/essay/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "4f5fde93fba60534c606229c65ca004f910a1e735b717d646d9d6f336c205bf1",
+      "role": "adapter",
+      "server_lora_id": 4,
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+        "filename": "models/bielik15/all-papers-v2/essay/adapter-f16.gguf",
+        "private": true
+      }
+    },
+    "open_without_images": {
+      "filename": "artifacts/small_track/bielik15-all-papers-v2/open_without_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "f133d58173bfd0254b64e8999de88276e48eaac0fd753fbf8678c6bf9630005d",
+      "role": "adapter",
+      "server_lora_id": 1,
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+        "filename": "models/bielik15/all-papers-v2/open_without_images/adapter-f16.gguf",
+        "private": true
+      }
+    },
+    "closed_with_images": {
+      "filename": "artifacts/small_track/bielik15-all-papers-v2/closed_with_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "09c72ea07150264c90fc0cdec58dd89cd7c202d06fb8fd5bde3e26e7f9335856",
+      "role": "adapter",
+      "server_lora_id": 2,
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+        "filename": "models/bielik15/all-papers-v2/closed_with_images/adapter-f16.gguf",
+        "private": true
+      }
+    },
+    "open_with_images": {
+      "filename": "artifacts/small_track/bielik15-all-papers-v2/open_with_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "486b28cec7e10b9625c0de540671e0db597ef7326e2263580b3dc339da029b25",
+      "role": "adapter",
+      "server_lora_id": 3,
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+        "filename": "models/bielik15/all-papers-v2/open_with_images/adapter-f16.gguf",
+        "private": true
+      }
+    }
+  },
+  "routes": {
+    "closed_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "closed_without_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 1.0
+        },
+        {
+          "id": 1,
+          "scale": 0.0
+        },
+        {
+          "id": 2,
+          "scale": 0.0
+        },
+        {
+          "id": 3,
+          "scale": 0.0
+        },
+        {
+          "id": 4,
+          "scale": 0.0
+        }
+      ],
+      "adapter": "closed_without_images",
+      "adapter_model": "bielik15"
+    },
+    "closed_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "closed_with_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 0.0
+        },
+        {
+          "id": 1,
+          "scale": 0.0
+        },
+        {
+          "id": 2,
+          "scale": 1.0
+        },
+        {
+          "id": 3,
+          "scale": 0.0
+        },
+        {
+          "id": 4,
+          "scale": 0.0
+        }
+      ],
+      "adapter": "closed_with_images",
+      "adapter_model": "bielik15"
+    },
+    "open_without_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "open_without_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 0.0
+        },
+        {
+          "id": 1,
+          "scale": 1.0
+        },
+        {
+          "id": 2,
+          "scale": 0.0
+        },
+        {
+          "id": 3,
+          "scale": 0.0
+        },
+        {
+          "id": 4,
+          "scale": 0.0
+        }
+      ],
+      "adapter": "open_without_images",
+      "adapter_model": "bielik15"
+    },
+    "open_with_images": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "open_with_images"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 0.0
+        },
+        {
+          "id": 1,
+          "scale": 0.0
+        },
+        {
+          "id": 2,
+          "scale": 0.0
+        },
+        {
+          "id": 3,
+          "scale": 1.0
+        },
+        {
+          "id": 4,
+          "scale": 0.0
+        }
+      ],
+      "adapter": "open_with_images",
+      "adapter_model": "bielik15"
+    },
+    "essay": {
+      "model": "bielik15",
+      "base_model": "Bielik-1.5B-v3.0-Instruct",
+      "base_url": "http://127.0.0.1:8080/v1",
+      "own_model_endpoint": true,
+      "vision": false,
+      "mode": "bare",
+      "system_prompt": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+      "max_tokens": 500,
+      "essay_tokens": 1600,
+      "artifacts": [
+        "model",
+        "essay"
+      ],
+      "lora": [
+        {
+          "id": 0,
+          "scale": 0.0
+        },
+        {
+          "id": 1,
+          "scale": 0.0
+        },
+        {
+          "id": 2,
+          "scale": 0.0
+        },
+        {
+          "id": 3,
+          "scale": 0.0
+        },
+        {
+          "id": 4,
+          "scale": 1.0
+        }
+      ],
+      "adapter": "essay",
+      "adapter_model": "bielik15"
+    }
+  },
+  "status": "Frozen real-only boundary-clean138-row full-epoch candidate; evaluation pending, no threshold claim",
+  "auxiliary_artifacts": [
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/pol.traineddata",
+      "bytes": 4765518,
+      "sha256": "c4476cdbc0e33d898d32345122b7be1cbf85ace15f920f06c7714756e1ef79b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "data/small_track/official_mock_v1/ocr-offline-v1/ocr-assets/weights/eng.traineddata",
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "role": "ocr"
+    },
+    {
+      "filename": "data/small_track_real_training_all_papers_v2/router.json",
+      "bytes": 833206,
+      "sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
+      "role": "router"
+    }
+  ],
+  "training_manifest_sha256": "da25c2a0773f34cf5a7282de500304d4d6db4cabb0824d931051fcbfed5039ab",
+  "aggregate_weight_bytes": 1789957828,
+  "training_scope": "all_available_official_papers_no_holdouts",
+  "evaluation_status": "Awaiting matched all-paper training-set evaluation"
+}

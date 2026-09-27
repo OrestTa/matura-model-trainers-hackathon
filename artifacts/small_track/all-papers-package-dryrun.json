@@ -1,0 +1,15 @@
+{
+  "mode": "DRY_RUN_ONLY",
+  "items": 37,
+  "max_points": 60,
+  "image_checksums": "verified",
+  "missing_weights": [],
+  "all_weights_verified": true,
+  "aggregate_weight_bytes": 1789957828,
+  "evaluation_status": "Below35percent target; no passing claim",
+  "original_exam_sha256": "0d4559be6ffae26304b102d8cec14814849caec879fd53d8be0196f24116354c",
+  "classifier_before_ocr": true,
+  "six_models": "one classifier and five trained LoRA specialists sharing one base; OCR auxiliary",
+  "validation": "Fresh input directory; no GPU run; empty answers are explicitly dry-run only",
+  "weights_manifest_sha256": "7eb73010dcef3d2d7228f2f7fe4ad31ef5c7321f5151e7e8e3fdf3b4495d716d"
+}
