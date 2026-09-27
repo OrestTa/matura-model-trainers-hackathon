@@ -1,0 +1,10 @@
+RAG knowledge base /scratch/smoke_e2e/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
+vision: True
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+5 blank after pass 1; re-asking with thinking off
+38 answers (0 blank) -> /scratch/claude-b15/gemma-think-raw/answers.json; log /scratch/claude-b15/gemma-think-raw/answers.json.log.jsonl
+rc=0 wall 255s
