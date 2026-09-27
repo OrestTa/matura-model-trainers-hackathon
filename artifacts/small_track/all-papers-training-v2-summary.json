@@ -1,0 +1,79 @@
+{
+  "training_scope": "all_available_official_papers_no_holdouts",
+  "synthetic": false,
+  "rows": 225,
+  "files": {
+    "closed_without_images": {
+      "rows": 38,
+      "sha256": "8a27f5c41f9bda0fd5a2299e6142052be48143dfc01e1a766870b21be35c7ab7"
+    },
+    "closed_with_images": {
+      "rows": 11,
+      "sha256": "50b2ef420d3dee90526beaad4b408e888f8896fd321c1dae6453cd2949ac8fa8"
+    },
+    "open_without_images": {
+      "rows": 127,
+      "sha256": "341236e130b0ce700e7e53b3512440a78a81ab2ea4738737d273a95d5b1dca8e"
+    },
+    "open_with_images": {
+      "rows": 44,
+      "sha256": "6e9ae1bb4b6cc00ee3699c02a2c8934111c50f2c74f1d0ace2953f5c5213806e"
+    },
+    "essay": {
+      "rows": 5,
+      "sha256": "1d2dfa617cd2815468a4d697ca2cad1b3265d218fe80e5ad1ef0189064250efc"
+    }
+  },
+  "included_years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "rows_by_year": {
+    "2012": 5,
+    "2013": 1,
+    "2014": 7,
+    "2015": 13,
+    "2016": 17,
+    "2017": 18,
+    "2018": 13,
+    "2019": 16,
+    "2020": 19,
+    "2021": 20,
+    "2022": 16,
+    "2023": 37,
+    "2024": 9,
+    "2025": 19,
+    "2026": 15
+  },
+  "legacy_missing_or_unreviewed_years": [
+    2007,
+    2008,
+    2009,
+    2010,
+    2011,
+    2013
+  ],
+  "coverage_note": "All available approved rows, no year holdouts. Not all downloaded papers/tasks usable: legacy extraction and image OCR review gaps remain. 2023/2024 future scores are training-set performance. Existing clean-v3 image boundaries preserved. No synthesized targets or rubric essays.",
+  "router": {
+    "sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
+    "bytes": 833206,
+    "rows": 449,
+    "training_agreement": 0.9977728285077951
+  },
+  "manifest_sha256": "ef4bd556304c7a856622ca06dfa5cc3a410c5ac859452ef93a0e405774136c07",
+  "excluded_rows_count": 224,
+  "canonical_2023_nonessay_exposure": 36
+}
