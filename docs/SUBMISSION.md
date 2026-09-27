@@ -75,7 +75,9 @@ for all three tracks must be committed first, then one confirmation, one exam pa
 | Smallest model passing 35% | from the "Take over Codex tracks" thread | pending | pending | stocktake running |
 | Biggest improvement | from the "Take over Codex tracks" thread | pending (needs base answers from the same exam) | `answers.json` + `answers-base.json` | stocktake running |
 
-Before the freeze, each track needs: its model files on the GPU box and their size measured; one command that
+Before the freeze, each track needs: everything on main (harness, configs, commands, results); every shipped model or
+adapter on a private HF repo under `orestta/` with a model card (best score: orestta/matura-gemma4-12b-best-score, card
+re-uploaded from a78ac0a); its model files on the GPU box and their size measured; one command that
 turns the exam package into a valid answers.json (checked with `check_submission.py` on the mock package);
 its results for base and trained in the repo; and its section in this file.
 
