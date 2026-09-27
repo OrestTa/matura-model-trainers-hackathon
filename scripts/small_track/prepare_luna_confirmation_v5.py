@@ -25,6 +25,15 @@ def main():
     source=run.parent/'candidate.jsonl';candidate=rows(source)
     mpath=run/'manifest.json';m=json.loads(mpath.read_text());cfg=json.loads(cfgpath.read_text())
     handpath=run/'verified_lora_handshake.json';hand=json.loads(handpath.read_text())
+    reports_path=run.parent/'adapter-manifests.json'
+    assert sha(reports_path)==m['adapter_manifests_sha256']
+    reports={x['route']:x for x in json.loads(reports_path.read_text())}
+    assert set(reports)==set(ROUTES)
+    assert all(m[k]==v for k,v in cfg.items()), 'Frozen config differs from executed manifest'
+    assert sum(x['steps'] for x in reports.values())==225
+    infer=run.parent/'executed-source/infer.py'
+    if not infer.exists(): infer=run.parent/'infer.py'
+    assert sha(infer)==m['code_sha256']
     training=ROOT/'data/small_track_real_training_all_papers_v2/manifest.json'
     assert sha(training)==POLICY['training_manifest_sha256']==m['dataset_manifest_sha256']
     assert m['judge_policy_sha256']==policy_hash(), 'Policy must be bound before inference'
@@ -37,9 +46,9 @@ def main():
     assert expected==m['expected_adapters'] and loaded==m['loaded_adapters']
     assert len(expected)==len(loaded)==5 and {x['id'] for x in loaded}==set(range(5))
     for i,route in enumerate(ROUTES):
-        e=next(x for x in expected if x['id']==i);l=next(x for x in loaded if x['id']==i);art=cfg['artifacts'][route]
+        e=next(x for x in expected if x['id']==i);l=next(x for x in loaded if x['id']==i);art=reports[route]
         assert e['scale']==l['scale']==0 and e['path']==l['path'] and Path(e['path']).parent.name==route
-        assert e['sha256']==art['sha256'] and e['bytes']==art['bytes'] and art['server_lora_id']==i
+        assert e['sha256']==art['sha256'] and e['bytes']==art['bytes']
     answers={arm:rows(run/arm/'answers.jsonl') for arm in ['base','trained']}
     for arm,data in answers.items():
         assert set(data)==set(c) and len(data)==37
@@ -60,9 +69,10 @@ def main():
                      'max_tokens':1600 if row.get('points',0)>=10 else 500}
             digest=hashlib.sha256(json.dumps(payload,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
             assert digest==answers[arm][key]['request_sha256'], f'Request mismatch: {arm}/{key}'
-    bound=[source,mpath,cfgpath,handpath,training,run.parent/'runtime.txt']
+    bound=[source,mpath,cfgpath,handpath,training,reports_path,infer,run.parent/'runtime.txt']
     manifest={'protocol':PROTOCOL,'policy_sha256':policy_hash(),'measurement_kind':'training_set',
               'prior_grade_reuse':False,'final_score_allowed':True,'full_official_task_count':37,'full_official_max_points':60,
+              'base_aggregate_bytes':m['base_aggregate_bytes'],'trained_aggregate_bytes':m['trained_aggregate_bytes'],
               'training_manifest_sha256':sha(training),'training_exposure':POLICY['training_exposure'],
               'inference_gate':{'passed':True,'matched_requests_reconstructed':74,'five_adapter_identity_zero_scale_gate':True,
                                 'bound_files':[{'path':str(f),'sha256':sha(f)} for f in bound]},'runs':[]}

@@ -78,7 +78,9 @@ def decision(out,spec):
 
 def report(out,items,manifest):
     result={'protocol':PROTOCOL,'policy_sha256':policy_hash(),'measurement_kind':'training_set',
-            'training_exposure':POLICY['training_exposure'],'model_requested':'gpt-6-luna',
+            'training_exposure':POLICY['training_exposure'],
+            'base_aggregate_bytes':manifest.get('base_aggregate_bytes'),'trained_aggregate_bytes':manifest.get('trained_aggregate_bytes'),
+            'model_requested':'gpt-6-luna',
             'cost':'Own Codex plan; monetary cost unknown; no Forgehand requests',
             'confirmed_means':'Complete internally consistent rubric decisions under the frozen protocol; not infallibility or generalization',
             'runs':[], 'ania_reference':{'model':'Bielik1.5','earned':15,'max':55,'percent':100*15/55,
@@ -135,6 +137,7 @@ def main():
     plan={'protocol':PROTOCOL,'policy_sha256':policy_hash(),'input_manifest_sha256':sha(inp/'manifest.json'),
           'model_requested':'gpt-6-luna','provider':POLICY['provider'],'reads_prior_grades':False,
           'workers':4,'initial_calls':len(jobs),'clarification_limit_per_item':1,
+          'runner_sha256':sha(Path(__file__)),'validator_sha256':sha(Path(__file__).with_name('luna_confirmation_v5.py')),
           'created_before_calls':True,'cost':'Own Codex plan, unknown monetary cost'}
     freeze(out/'manifest.json',plan)
     sandbox=Path('/private/tmp/local-luna-confirmation-v5-readonly');sandbox.mkdir(exist_ok=True)
