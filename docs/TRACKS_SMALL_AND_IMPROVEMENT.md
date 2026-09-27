@@ -19,7 +19,9 @@ bare vs our harness.
 | Setup | plain request, thinking off (`--mode raw --model gemma4-12b`) | `--mode subtype --model gemma4-12b-exam`, essay plan + best of 3 | |
 | Held-out May 2023-26, Claude-graded, pictures viewed | **123/240** (33/29/33/28), g4r0 | **163/240** (38/44/39/42), stage-heldout | **+40 = +16.7 pp** |
 
-Source: results/judged/TABLE.md rows g4r0 and stage-heldout (same grader, same grading rules).
+Source: results/judged/TABLE.md rows g4r0 and stage-heldout (same grader, same grading rules). The older
+figure 126/240 (FINDINGS 20:15, EXAM_DAY_BEST_SCORE.md) is the first grading, before pictures were viewed; under it
+the thinking-on base was 169, not 163. Use 123 vs 163 (both corrected grading).
 Caveat to state honestly: the gain comes from the harness (turning on 2k-token thinking, per-type prompts, essay
 plan + best of 3), not from training. The rules allow "fine-tune, harness, or both".
 HF: no new weights; the model is the same file as the best-score entry (orestta/matura-gemma4-12b-best-score).
