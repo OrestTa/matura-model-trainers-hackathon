@@ -4,6 +4,13 @@ Owner: Claude thread "Take over Codex tracks" (Orest 08:33 CEST: Codex is out of
 tracks; Codex and the Grok bot do nothing further). Codex's own work: none found in this repo (no Codex commits);
 GPU box inventory requested, results/codex-inventory/ when it lands.
 
+Codex's result (screenshot from Orest, 08:35 CEST; files not in repo, project files or HF): Bielik-1.5B Q8_0
++ OCR/router 11/60 (1.709 GB) -> + five clean-v3 adapters 13/60 = 21.7% (1.789 GB). Below 35%, and the +2 is
+within grading noise ("0-3 points" by Codex's own note). Not used for either track.
+
+**Decision (08:50 CEST, Orest: take over, don't wait):** smallest = Bielik-4.5B FP8; improvement = Gemma 4 12B
+bare vs our harness.
+
 ## Biggest improvement (proposed: same Gemma 4 12B, bare vs our exam harness)
 
 | | Base (untouched) | Ours | Delta |
