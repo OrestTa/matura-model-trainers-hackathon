@@ -59,6 +59,7 @@ Graded with pictures viewed and the full CKE essay criteria (7e6fe48), the base 
 | S4m2 | r32, 0.15 epoch, no past papers | May 2023 25/60 | 41 | essay 2/15 (factual errors), picture misreads |
 | Gm3 | essay-weighted (essay_claude_synth 3x) | May 2023 20/60 | 41 | essay loops on one sentence |
 | A01 | 0.1 epoch | 4 papers 131/240 | 163 | essays 7/60 (three under 300 words); short items below base on every paper |
+| SD1 | self-distilled on real past papers only, thinking on | probny 36/60 | 37 (stage 43) | no gain on short items (29 vs 29–31); essay 7/15 (dd87719) |
 
 Every adapter broke the essay and none beat the base on short items, so the picture LoRA V1 and
 per-type routing (`LORA_ROUTED=1`, 7d705a3) stay unused.
