@@ -1,0 +1,159 @@
+{
+  "status": "FAILS_35_PERCENT_EVEN_AT_UNRESOLVED_UPPER_BOUND",
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q8_0",
+  "aggregate_bytes": 1708932059,
+  "judge": "Own ChatGPT Codex gpt-6-luna only",
+  "protocol": "local-luna-official-v4-imagegroups",
+  "fresh_judgments": true,
+  "prior_grade_reuse": false,
+  "inference_answers": 37,
+  "official_max_points": 60,
+  "primary_provisional_points": 10,
+  "primary_provisional_percent": 16.666666666666668,
+  "settled_lower_points": 9,
+  "unresolved_upper_points": 14,
+  "exact_points": null,
+  "five_categories": [
+    {
+      "category": "closed_without_images",
+      "max_points": 4,
+      "primary_provisional_points": 1,
+      "primary_provisional_percent": 25.0,
+      "settled_lower_points": 1,
+      "unresolved_upper_points": 1,
+      "exact_points": 1,
+      "uncertain_or_missing_ids": []
+    },
+    {
+      "category": "closed_with_images",
+      "max_points": 7,
+      "primary_provisional_points": 2,
+      "primary_provisional_percent": 28.571428571428573,
+      "settled_lower_points": 2,
+      "unresolved_upper_points": 4,
+      "exact_points": null,
+      "uncertain_or_missing_ids": [
+        "19"
+      ]
+    },
+    {
+      "category": "open_without_images",
+      "max_points": 11,
+      "primary_provisional_points": 3,
+      "primary_provisional_percent": 27.272727272727273,
+      "settled_lower_points": 3,
+      "unresolved_upper_points": 3,
+      "exact_points": 3,
+      "uncertain_or_missing_ids": []
+    },
+    {
+      "category": "open_with_images",
+      "max_points": 23,
+      "primary_provisional_points": 4,
+      "primary_provisional_percent": 17.391304347826086,
+      "settled_lower_points": 3,
+      "unresolved_upper_points": 6,
+      "exact_points": null,
+      "uncertain_or_missing_ids": [
+        "14.1",
+        "14.2",
+        "17"
+      ]
+    },
+    {
+      "category": "essay",
+      "max_points": 15,
+      "primary_provisional_points": 0,
+      "primary_provisional_percent": 0.0,
+      "settled_lower_points": 0,
+      "unresolved_upper_points": 0,
+      "exact_points": 0,
+      "uncertain_or_missing_ids": []
+    }
+  ],
+  "unresolved_ids": [
+    "14.1",
+    "14.2",
+    "17",
+    "19"
+  ],
+  "essay_repeat_points": [
+    0,
+    0,
+    0
+  ],
+  "first_essay_mark_retained": true,
+  "call_status_counts": {
+    "graded": 17,
+    "failed_no_retry": 3
+  },
+  "pipeline_boundary": "Fresh answer inference on a frozen previously computed OCR/router candidate; OCR and routing were not re-executed.",
+  "historical_reference": {
+    "run": "20260926-2115-bielik15-q8-full-epoch-offline/paired-baseline",
+    "primary_points": 16,
+    "settled_bounds": [
+      16,
+      19
+    ],
+    "max_points": 60,
+    "five_categories": [
+      {
+        "category": "closed_without_images",
+        "primary_points": 2,
+        "max_points": 4
+      },
+      {
+        "category": "closed_with_images",
+        "primary_points": 4,
+        "max_points": 7
+      },
+      {
+        "category": "open_without_images",
+        "primary_points": 5,
+        "max_points": 11
+      },
+      {
+        "category": "open_with_images",
+        "primary_points": 5,
+        "max_points": 23
+      },
+      {
+        "category": "essay",
+        "primary_points": 0,
+        "max_points": 15
+      }
+    ],
+    "caveat": "Same selected recipe, but server runtime changed from f805c57a2 to81bc6b8. This is a fresh development verification, not a controlled optimization or untouched holdout."
+  },
+  "historical_answer_identity": {
+    "identical": 5,
+    "total": 37,
+    "interpretation": "Changed outputs on the same request inputs demonstrate that this is not an exact historical replay; runtime differs."
+  },
+  "base_vs_optimized_delta": "Not measured: this fresh run verifies the selected base+OCR/router recipe; no new optimization arm. Historical score change cannot be attributed to model improvement.",
+  "ania_reference": "Ania Bielik1.5 reference15/55=27.27%,closed5/11,open9/29,essay1/15. Adapted inputs and55point subset differ; five-way reference unavailable; no comparable numeric delta.",
+  "cost": "Own Codex plan; monetary cost unknown. No Forgehand judging API.",
+  "evidence": [
+    {
+      "path": "results/small_track/bielik15-q8-final-fresh-luna.json",
+      "sha256": "559ab6dbee66dcb5a2a1fcca8a9d843aaac66641417a222751023702bc5da019"
+    },
+    {
+      "path": "results/small_track/20260927-bielik15-q8-final-verification/evaluation/answers.jsonl",
+      "sha256": "8fdd54d821600d171da17610922f7b81e9b34df8f78a951830493b0f8d5ba9b0"
+    },
+    {
+      "path": "results/small_track/20260927-bielik15-q8-final-verification/evaluation/manifest.json",
+      "sha256": "0fc32a72c3883a424840b129b4a4388246f7853301b7413295b23cfb9e2f6bb6"
+    },
+    {
+      "path": "results/small_track/20260927-bielik15-q8-final-verification/evaluation/luna_fresh_v4/packets/manifest.json",
+      "sha256": "cc9a6b32e519b68140b54d135c9e72c490d415d226629c4fb689549861bc3896"
+    },
+    {
+      "path": "results/small_track/20260927-bielik15-q8-final-verification/evaluation/luna_fresh_v4/grades/manifest.json",
+      "sha256": "11a6febdc40793f1da83f20053f068e00565752145293b53bacbe7f553977d4f"
+    }
+  ]
+}
