@@ -2,7 +2,7 @@
 
 The exact on-stage path for our best-score entry. Owner: thread "Win best matura score".
 Status: **FROZEN 27.09 03:10 CEST: base Gemma 4 12B QAT, no LoRA, key `gemma4-12b-exam`, `MODE=subtype`,
-`THINK_FALLBACK=1`. Every non-essay item gets the exact raw 2k-thinking request that scored 163/240; the essay gets
+`THINK_FALLBACK=1`. Open items get the exact raw 2k-thinking request that scored 163/240, closed items 5 samples with a 3-of-5 vote (Orest 22:33; same score as raw on held-out v5), and the essay gets
 "plan first, then best of 3 drafts" (`ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550`, 16k thinking).**
 Held-out essays (blind, 2 runs, results/judged/heldout-essay): 71/120 vs base 56, i.e. about +7.5/240, projecting
 ~170/240. The essay setup was chosen on the 12 practice essays first (4 blind batches, +9 to +13/150).
@@ -86,7 +86,7 @@ export GGML_CUDA_DISABLE_GRAPHS=1   # llama-server with CUDA graphs aborted mid-
 export ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550   # essay: 3 drafts, keep the best one of 300+ words
 ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-exam &        # 8 slots x 24k; waits until ready
 python scripts/run_exam.py <exam package dir> --model gemma4-12b-exam --mode subtype --concurrency 8 -o answers.json
-# configs/subtypes.yaml: closed/open items = the exact raw request; essay = plan prompt, 16k thinking, 2600 answer tokens.
+# configs/subtypes.yaml: open items = the exact raw request, closed = 5-sample vote; essay = plan prompt, 16k thinking, 2600 answer tokens.
 # The essay takes ~8 min (p50 458 s on an L40S); everything else finishes first.
 ```
 
