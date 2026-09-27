@@ -184,3 +184,38 @@ Cause 1 confirmed: the adapter cuts reasoning by 15–50% and empties or truncat
 GGUF (q4_0) change the output about equally (0.9–1.0 of words changed on both), so the GGUF conversion is not a
 cause. The HF LoRA also writes the misspelling "Strzygnięcie:", so the misspellings come from the adapter, not
 from q4_0.
+
+## SD1 result: the fixed recipe (27 Sep 2026, 05:40 CEST)
+
+The recipe:
+- 264 self-distilled rows from real CKE past papers: 101 built on the L40S plus 170 on Nebius, minus 7 that overlap the held-out papers. No Grok data.
+- Training: thinking on (`--think --vision`), 2 epochs, LR 5e-5, rank 16.
+- Adapter on HF: `orestta/matura-gemma4-12b-lora-SD1`.
+- Eval: raw mode, 2k thinking, THINK_FALLBACK, pictures on. Essays are written by the base (`LORA_NO_ESSAY=1`), with no length check (`ESSAY_MIN_WORDS=0`).
+- Graded by the Claude judge with pictures viewed and the full essay criteria.
+
+The training rows are not in the repo, because they quote CKE papers and keys, the same rule as `data/`. They are at:
+- the L40S box: `/scratch/work/sd1m/selfdistill.jsonl`
+- the project files: `/mnt/project-files/runs/sd1/` (the Nebius half, with its build logs)
+
+They can be rebuilt with `scripts/build_selfdistill.py`, using the id lists in `results/sd1_*.txt`.
+
+| Category (4 held-out papers) | Base | SD1 | Δ |
+|---|---|---|---|
+| Closed /37 | 27 | 24 | −3 |
+| Open /143 | 106 | 107 | +1 |
+| Essay /60 (written by the base in both) | 30 | 24 | −6 |
+| Text-only /79 | 66 | 65 | −1 |
+| Picture /101 | 67 | 66 | −1 |
+| **Total /240** | **163** | **155** | **−8** |
+
+Only the Total row is a sum: each non-essay item counts once as closed or open and once as text-only or picture.
+
+Per paper, SD1 vs base: 2023 36/41, 2024 45/42, 2025 33/39, 2026 41/41. On the January 2026 mock (dev): 36 vs 37.
+Grading commits: 232bda2, eb610f2, 89c8ac6, fc60fe3 (dev: dd87719).
+
+Conclusion:
+- The format fix removed the damage. SD1 no longer cuts the model's reasoning, and it ties the base on non-essay items (−2 points).
+- Training on about 260 past-paper items teaches no new knowledge, so SD2 (more papers) was not run.
+- The essay gap is not from the adapter, because the base wrote the essays in both runs. One 2025 essay came out at 298 words and scored 0 for being under the 300-word minimum. The exam setup needs a word-count floor above 300.
+- SD1 is not shipped.
