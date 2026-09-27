@@ -75,6 +75,11 @@ for all three tracks must be committed first, then one confirmation, one exam pa
 | Smallest model passing 35% | Bielik-4.5B FP8 + OCR | `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic`, 4.90 GB (+ tesseract pol) | `run_exam.py --model bielik-4.5b-fp8` | 40.0% on May 2023 only; **never run end to end**; smoke on mock pending |
 | Biggest improvement | same Gemma 4 12B, bare vs our harness | same file as best score, 7.15 GB | best-score `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b`, thinking off) | held-out 123 → 163/240 = +16.7 pp; base command smoke on mock pending |
 
+**Pending (08:45 CEST):** Orest asked for a Bielik-1.5B fine-tune (past papers only, scored on the Jan 2026 practice
+paper). If the trained 1.5B scores ≥ 21/60 (35%), one project "Bielik-1.5B" takes Smallest + Biggest improvement (base =
+bare Bielik-1.5B answers) and the Gemma improvement pair is not used. Otherwise Bielik-4.5B = smallest, Gemma = improvement.
+If the 1.5B is not scored by 10:00 CEST it is dropped. The freeze waits for this.
+
 Before the freeze, each track needs: everything on main (harness, configs, commands, results); every shipped model or
 adapter on a private HF repo under `orestta/` with a model card (best score: orestta/matura-gemma4-12b-best-score, card
 re-uploaded from a78ac0a); its model files on the GPU box and their size measured; one command that
