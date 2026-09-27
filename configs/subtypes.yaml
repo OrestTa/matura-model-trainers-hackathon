@@ -21,6 +21,9 @@ subtypes:
     # Blind essay grid on the 12 dev essays (results/judged/essay-grid/README.md, 85a5e51): the plan
     # prompt beat the raw essay by +5/150 in both grading batches; the 350-word length guard lost (-7 and -2).
     # With ESSAY_BEST_OF=3 in the env (3 essays, keep the best one over 300 words) it was +9/150.
+    # Stage setting: ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550 in the env. Confirmed on the
+    # held-out essays (results/judged/heldout-essay, 06f9aac, blind): 71/120 vs base 56, ahead in both runs;
+    # the same without the word settings 63.
     name: plan
     think_tokens: 16384
     max_tokens: 2600
