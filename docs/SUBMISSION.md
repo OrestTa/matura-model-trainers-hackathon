@@ -21,14 +21,12 @@ Form: https://warsawmodeltrainers.dev/submissions.html?exam=final (read 07:55 CE
 |---|---|
 | Team code | `TEAM_KEY` (Orest types it; never in chat or repo) |
 | Project repository link | `https://github.com/OrestTa/matura-model-trainers-hackathon` (must be public or shared with the jury first; it is **private** as of 07:55 CEST) |
-| Readiness checkbox | Tick only when every agent (incl. the Grok bot) has stopped pushing and main is final |
+| Readiness checkbox | Covers the whole team and every project, Codex's too. Tick only when every agent (incl. the Grok bot and Codex) has stopped pushing and all projects are final |
 | Project name (max 120) | `Gemma 4 12B QAT + matura exam harness (plan-first essays, 3-of-5 closed vote)` |
 | Model 1: name or link | `google/gemma-4-12B-it-qat-q4_0-gguf` |
 | Model 1: quantization | `Q4_0 QAT GGUF + mmproj vision projector, 7.15 GB on disk` |
-| Categories | Best exam score; Smallest model passing 35% (our only model is 7.15 GB); Biggest improvement only if the base run below is also done |
+| Categories | **Best exam score only** (Orest 08:00 CEST). Codex registers the other two categories as its own projects under the same team code |
 | Answers JSON | `answers.json` from the stage command below |
-| Most capable base model (improvement only) | Model 1 |
-| Base model answers JSON (improvement only) | `answers-base.json` from the base command below |
 
 No other model is used: no LoRA, no OCR model, no retrieval model. The size check in
 `serve_exam.sh` sums the files it serves and refuses anything over 8.8 GB.
@@ -48,14 +46,6 @@ python scripts/check_submission.py answers.json final/      # same rules as the 
 
 About 10 minutes on the L40S (essay ~8 min). If time is short: `ESSAY_BEST_OF=1`, or the previous
 freeze `--mode raw --model gemma4-12b-think --concurrency 16` (~4 min, same 163/240 on held-out).
-
-Base answers, only for "Biggest improvement" (the untouched model, exam prompt as given, 2k thinking):
-
-```bash
-# restart the server as gemma4-12b-think, then
-python scripts/run_exam.py final/ --model gemma4-12b-think --mode raw --concurrency 16 -o answers-base.json
-python scripts/check_submission.py answers-base.json final/
-```
 
 ## What we can honestly claim
 
