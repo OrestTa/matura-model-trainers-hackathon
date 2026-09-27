@@ -25,3 +25,16 @@ ours-guard 716 words, a loop of the same block (~150 unique words). Continuing a
 | bare | 2/7 | 7/38 | 0/15 | 5/18 | 4/27 | 9/60 |
 | base | 2/7 | 6/38 | 0/15 | 5/18 | 3/27 | 8/60 |
 | ours | 2/7 | 6/38 | 0/15 | 5/18 | 3/27 | 8/60 |
+
+## 09:35 CEST: Bielik-4.5B through our harness, and plain Gemma (thinking on), graded blind
+| arm | closed | open | essay | text only | with pictures | total |
+|---|---|---|---|---|---|---|
+| Bielik-1.5B bare (baseline) | 2/7 | 7/38 | 0/15 | 5/18 | 4/27 | 9/60 |
+| Bielik-4.5B + OCR, simple prompt | 2/7 | 11/38 | 0/15 | 9/18 | 4/27 | 13/60 |
+| Bielik-4.5B + OCR, our harness | 1/7 | 9/38 | 1/15 | 8/18 | 2/27 | 11/60 |
+| Bielik-4.5B + OCR, our harness, subtype | 2/7 | 10/38 | 0/15 | 8/18 | 4/27 | 12/60 |
+| Gemma 4 12B QAT plain (--mode raw, thinking on) | 2/7 | 23/38 | 7/15 | 11/18 | 14/27 | 32/60 |
+
+Our stage harness on the same paper: 43/60 (rehearsal, results/rehearsal/stage-probny) and 38/60 (final e2e).
+So Gemma plain 32 -> ours 38-43 (+10 to +18 pp) with thinking ON in the base. Bielik-4.5B stays below 35% (21/60)
+in every setup, so it cannot enter "smallest model"; the Gemma project does (7.15 GB) unless E4B passes.
