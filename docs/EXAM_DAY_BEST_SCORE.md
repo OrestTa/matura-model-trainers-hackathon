@@ -13,7 +13,7 @@ size check 7.15 GB of 8.8 GB OK; graded 43/60 vs 37 for every earlier probny run
 won the practice paper (43 vs 37), and won the blind side-by-side essay comparison (71 vs 56/120). It also guards the
 essay against the 300-word zero: three raw essays tonight came out at 276, 297 and 298 words (P2 pokaz, P1 probny,
 SD1-run 2025), and each scores 0 under the CKE rule, while the stage path drops drafts under 300 words and targets 550.
-The cost is time (~10 min per paper vs ~4 for raw). If the stage time budget is tight, fall back to raw (below).
+Blind side-by-side of the stage-run essays (70e8f2f): stage 40/60 vs frozen base 35, ahead on all 4 papers. The cost is time (~10 min per paper vs ~4 for raw). If the stage time budget is tight, fall back to raw (below).
 Previous freeze (26.09 22:30): `gemma4-12b-think`, `MODE=raw`.
 Every fine-tune we graded scored below the base (see "Fine-tunes tried"); full table in docs/FINAL_RESULTS.md.
 
