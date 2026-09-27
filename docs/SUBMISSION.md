@@ -72,8 +72,8 @@ for all three tracks must be committed first, then one confirmation, one exam pa
 | Track | Project | Model(s) | Answers | Status |
 |---|---|---|---|---|
 | Best exam score | Gemma 4 12B QAT + matura exam harness | `google/gemma-4-12B-it-qat-q4_0-gguf`, 7.15 GB | `answers.json` from the stage command above | ready (main 007fb17+, smoke b371e40 OK) |
-| Smallest model passing 35% | Bielik-4.5B FP8 + OCR | `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic`, 4.90 GB (+ tesseract pol) | `run_exam.py --model bielik-4.5b-fp8` | 40.0% on May 2023 only; **never run end to end**; smoke on mock pending |
-| Biggest improvement | same Gemma 4 12B, bare vs our harness | same file as best score, 7.15 GB | best-score `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b`, thinking off) | **re-picking** (Orest 09:21: base = thinking on, so Gemma gain ~0) |
+| Smallest model passing 35% | same Gemma project (unless Gemma E4B reaches 21/60 by ~09:50 CEST) | 7.15 GB | same `answers.json` | Bielik-4.5B 11–13/60 and Bielik-1.5B 5–9/60 on the Jan 2026 mock: both below 35%, dropped (cc1beca) |
+| Biggest improvement | same Gemma project | same file, 7.15 GB | `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b-exam`, thinking on, the fair base Orest chose 09:21) | Jan 2026 mock: base 32/60 vs harness 38–43/60; base run 322 s, 0 blank on the mock |
 
 **Pending (08:45 CEST):** Orest asked for a Bielik-1.5B fine-tune (past papers only, scored on the Jan 2026 practice
 paper). If the trained 1.5B scores ≥ 21/60 (35%), one project "Bielik-1.5B" takes Smallest + Biggest improvement (base =
@@ -88,20 +88,19 @@ its results for base and trained in the repo; and its section in this file.
 
 After the freeze (in this order, on the L40S, one model at a time):
 1. Confirm readiness with the team code and repo link; fetch the package straight onto the box from the 5-minute link.
-2. Run Best exam score (~10 min), check, upload as its own project (category Best exam score).
-3. Run the smallest-model track, check, upload (category Smallest model passing 35%).
-4. **Required for Biggest improvement: the base-model answers from the same exam.** ON HOLD (Orest 09:21 CEST: the base
-   must be Gemma with thinking on, the fairer comparison; that makes the Gemma gain ~0, 163 vs 163, so the entry is being
-   re-picked in "Take over Codex tracks", likely Bielik-4.5B bare vs our harness). If Gemma stays the entry, the base command is
-   `ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &` then
-   `python scripts/run_exam.py final/ --model gemma4-12b-think --mode raw --concurrency 16 -o answers-base.json` and
-   `python scripts/check_submission.py answers-base.json final/`; upload it as "Base model answers" in that project.
+2. Run the stage command (best score, ~10 min) → `answers.json`, then `check_submission.py`.
+3. **Required for Biggest improvement:** on the same warm server, the base run with thinking on:
+   `python scripts/run_exam.py final/ --model gemma4-12b-exam --mode raw --concurrency 16 -o answers-base.json`
+   (~5 min), then `python scripts/check_submission.py answers-base.json final/`.
+4. Upload ONE project "Gemma 4 12B QAT + matura exam harness" with categories Best exam score + Smallest model
+   passing 35% + Biggest improvement; answers = `answers.json`; base model = Model 1; base answers = `answers-base.json`.
+   (If Gemma E4B passes 21/60 before the freeze, it becomes a separate Smallest project instead.)
 Every upload is a separate project with its own receipt. Receipts go to results/final-exam/.
 
 ## Orest's steps, in order (08:40 CEST)
 
 1. ~~Make the repo public~~ done (08:19). ~~Update team on the site~~ done by Claude (08:27, Gemma 4 12B, 7.15 GB).
-2. Pick the Biggest improvement baseline (thinking off = +16.7 pp harness gain, thinking on = ~0, or skip).
+2. ~~Pick the improvement baseline~~ done: thinking on (Orest 09:21).
 3. Cancel all Nebius jobs in the Nebius console (no agent has a working token).
 4. Say "go". Then Claude confirms readiness with the team code, the GPU box fetches the package from the
    5-minute link and runs: best score, then the improvement base run, then smallest (Bielik-4.5B, only if it
