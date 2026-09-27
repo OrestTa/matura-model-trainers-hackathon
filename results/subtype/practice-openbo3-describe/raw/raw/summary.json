@@ -1,0 +1,64 @@
+{
+  "n": 73,
+  "scored": 38,
+  "errors": 0,
+  "earned": 17.0,
+  "max": 45.0,
+  "pct": 37.8,
+  "pct_text_only": 43.3,
+  "pct_all_rows": 14.2,
+  "decision_acc": 61.1,
+  "unscored": 35,
+  "routing_accuracy": 75.3,
+  "latency_p50_s": 279.132,
+  "wall_s": 0.0,
+  "by_category": {
+    "closed_choice": {
+      "n": 8,
+      "scored": 8,
+      "earned": 4.0,
+      "max": 8.0,
+      "pct": 50.0
+    },
+    "essay": {
+      "n": 2,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    },
+    "matching": {
+      "n": 3,
+      "scored": 3,
+      "earned": 0.0,
+      "max": 6.0,
+      "pct": 0.0
+    },
+    "short_open": {
+      "n": 7,
+      "scored": 3,
+      "earned": 1.0,
+      "max": 3.0,
+      "pct": 33.3
+    },
+    "source_analysis": {
+      "n": 50,
+      "scored": 21,
+      "earned": 11.0,
+      "max": 23.0,
+      "pct": 47.8
+    },
+    "true_false": {
+      "n": 3,
+      "scored": 3,
+      "earned": 1.0,
+      "max": 5.0,
+      "pct": 20.0
+    }
+  },
+  "warning": "no held-out paper in this set: every paper here is adapter training data",
+  "model": "gemma4-12b-think",
+  "mode": "raw/raw",
+  "papers": "dev",
+  "empty": 0
+}
