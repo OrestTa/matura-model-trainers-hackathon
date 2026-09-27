@@ -6,6 +6,8 @@ Status: **FROZEN 27.09 03:10 CEST: base Gemma 4 12B QAT, no LoRA, key `gemma4-12
 "plan first, then best of 3 drafts" (`ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550`, 16k thinking).**
 Held-out essays (blind, 2 runs, results/judged/heldout-essay): 71/120 vs base 56, i.e. about +7.5/240, projecting
 ~170/240. The essay setup was chosen on the 12 practice essays first (4 blind batches, +9 to +13/150).
+Dress rehearsal of this exact path (rehearsal.sh, 964c246, L40S, probny-2026-01 practice paper): 0/38 blank, 542 s,
+size check 7.15 GB of 8.8 GB OK; graded 43/60 vs 37 for every earlier probny run (essay 11 vs 6–8; 7e23140).
 Previous freeze (26.09 22:30): `gemma4-12b-think`, `MODE=raw`.
 Every fine-tune we graded scored below the base (see "Fine-tunes tried"); full table in docs/FINAL_RESULTS.md.
 
