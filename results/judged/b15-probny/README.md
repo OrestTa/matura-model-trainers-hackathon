@@ -38,3 +38,16 @@ ours-guard 716 words, a loop of the same block (~150 unique words). Continuing a
 Our stage harness on the same paper: 43/60 (rehearsal, results/rehearsal/stage-probny) and 38/60 (final e2e).
 So Gemma plain 32 -> ours 38-43 (+10 to +18 pp) with thinking ON in the base. Bielik-4.5B stays below 35% (21/60)
 in every setup, so it cannot enter "smallest model"; the Gemma project does (7.15 GB) unless E4B passes.
+
+## 09:50 CEST: Bielik-1.5B through our harness (no adapters), graded blind
+| arm | closed | open | essay | text only | with pictures | total |
+|---|---|---|---|---|---|---|
+| bare | 2/7 | 7/38 | 0/15 | 5/18 | 4/27 | 9/60 |
+| h-routed-ocr | 1/7 | 8/38 | 0/15 | 6/18 | 3/27 | 9/60 |
+| h-routed-noocr | 1/7 | 7/38 | 0/15 | 5/18 | 3/27 | 8/60 |
+| h-subtype-ocr | 1/7 | 5/38 | 0/15 | 2/18 | 4/27 | 6/60 |
+
+Essay in parts (results/b15/essay-parts, 995 words): 0/15 (bullet lists, two topics mixed, >5 serious errors).
+Essay with anti-repetition sampling (essay-dry): 243 words, under 300 = 0.
+**No Bielik-1.5B setup beats the bare model (9/60).** Best = 9/60 (routed + OCR), improvement 0.
+Decision proposed: Gemma 4 12B enters Biggest improvement (plain thinking-on 32/60 -> harness 38-43/60).
