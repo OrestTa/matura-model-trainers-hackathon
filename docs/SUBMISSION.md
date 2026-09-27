@@ -88,14 +88,13 @@ After the freeze (in this order, on the L40S, one model at a time):
 4. Run the improvement track and its base model, check both, upload with the base answers (category Biggest improvement).
 Every upload is a separate project with its own receipt. Receipts go to results/final-exam/.
 
-## Orest's steps, in order
+## Orest's steps, in order (08:40 CEST)
 
-1. ~~Make the repo public~~ done (public at 08:19 CEST).
-2. Push the tag on the final main commit: `git pull && git tag best-score-candidate && git push origin best-score-candidate`.
-3. Cancel all Nebius jobs in the Nebius console (our IAM token expired, so no agent can do it).
-4. ~~Update team base model~~ done by Claude 08:27 CEST (Gemma 4 12B, 7.15 GB, repo link).
-5. Make sure every agent (Claude threads, Codex, Grok bot) has stopped pushing, and Codex's two projects are final.
-6. Form: team code, repo link, tick readiness, "Get final exam questions", download the zip within 5 minutes,
-   and put it on the GPU box (post it in the project chat; the GPU box thread copies it over).
-7. GPU box runs the stage command above, then `check_submission.py`. Fill in project name, model row,
-   category "Best exam score", choose `answers.json`, and upload.
+1. ~~Make the repo public~~ done (08:19). ~~Update team on the site~~ done by Claude (08:27, Gemma 4 12B, 7.15 GB).
+2. Pick the Biggest improvement baseline (thinking off = +16.7 pp harness gain, thinking on = ~0, or skip).
+3. Cancel all Nebius jobs in the Nebius console (no agent has a working token).
+4. Say "go". Then Claude confirms readiness with the team code, the GPU box fetches the package from the
+   5-minute link and runs: best score, then the improvement base run, then smallest (Bielik-4.5B, only if it
+   produces a valid answers.json). Each answers file is checked with check_submission.py and uploaded as its own project.
+5. After the freeze: push the tag on that main commit, `git tag best-score-candidate && git push origin best-score-candidate`
+   (tag pushes are blocked from the cloud container).
