@@ -90,6 +90,11 @@ python scripts/run_exam.py <exam package dir> --model gemma4-12b-exam --mode sub
 # The essay takes ~8 min (p50 458 s on an L40S); everything else finishes first.
 ```
 
+**If the stage time budget is tight** (the essay alone takes ~8 min: 16k thinking × 3 drafts, p50 458 s on an L40S):
+1. `ESSAY_BEST_OF=1` (keep the plan profile and 350/550): one essay, about a third of the time; +5/150 over base on
+   practice essays (2 blind batches), not checked on held-out.
+2. `--mode raw --model gemma4-12b-think --concurrency 16`: the previous freeze (163/240), fastest.
+
 `ADAPTERS=/nonexistent` keeps any stray trained LoRA out. Check before uploading:
 
 ```bash
