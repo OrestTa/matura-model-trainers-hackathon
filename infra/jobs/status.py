@@ -23,6 +23,11 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+**FINAL (27.09 07:50 CEST):** exam entry = base Gemma 4 12B QAT, no LoRA, 7.15 GB, `--mode subtype` with the essay
+"plan + best of 3" (Orest 07:43: keep the essay). Held-out measured 163/240 (38/44/39/42). Commands:
+[`docs/EXAM_DAY_BEST_SCORE.md`](EXAM_DAY_BEST_SCORE.md); all results: [`docs/FINAL_RESULTS.md`](FINAL_RESULTS.md);
+overnight summary: [`docs/WORK_SUMMARY.md`](WORK_SUMMARY.md). Rows below still marked "running" from 26.09 are stale.
+
 **Grok bot: read and answer [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) (open asks C-001 to C-007).**
 
 **🛑 STOP, Grok bot (2026-09-26 16:05 CEST).** At 16:01:27 CEST you wrote "PARKED/KILLED illegal
