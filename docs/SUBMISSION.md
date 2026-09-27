@@ -25,7 +25,7 @@ The model and harness entered: **[docs/BEST_SCORE_CANDIDATE.md](BEST_SCORE_CANDI
 | Project repository link | `https://github.com/OrestTa/matura-model-trainers-hackathon` (must be public or shared with the jury first; it is **private** as of 07:55 CEST) |
 | Readiness checkbox | Covers the whole team and every project, Codex's too. Tick only when every agent (incl. the Grok bot and Codex) has stopped pushing and all projects are final |
 | Project name (max 120) | `Gemma 4 12B QAT + matura exam harness (plan-first essays, 3-of-5 closed vote)` |
-| Model 1: name or link | `google/gemma-4-12B-it-qat-q4_0-gguf` |
+| Model 1: name or link | `google/gemma-4-12B-it-qat-q4_0-gguf` (our identical copy: https://huggingface.co/orestta/matura-gemma4-12b-best-score, private) |
 | Model 1: quantization | `Q4_0 QAT GGUF + mmproj vision projector, 7.15 GB on disk` |
 | Categories | **Best exam score only** (Orest 08:00 CEST). Codex registers the other two categories as its own projects under the same team code |
 | Answers JSON | `answers.json` from the stage command below |
