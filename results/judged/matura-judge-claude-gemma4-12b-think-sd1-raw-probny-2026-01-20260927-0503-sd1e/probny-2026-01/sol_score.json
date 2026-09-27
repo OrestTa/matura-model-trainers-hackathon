@@ -1,0 +1,380 @@
+{
+ "answers": "results/gemma4/matura-infer-gemma4-12b-think-sd1-raw-probny-2026-01-20260927-0503-sd1e/probny-2026-01/answers.json",
+ "paper": "probny-2026-01",
+ "judge": "forgehand gpt-6-sol",
+ "judge_kind": "sol",
+ "total": 35.0,
+ "max": 60.0,
+ "pct": 58.3,
+ "failed": [],
+ "items": [
+  {
+   "id": "1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "2.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "2.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "3",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "4",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "5.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "5.2",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "2"
+  },
+  {
+   "id": "6",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "7.1",
+   "max_points": 2.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "0"
+  },
+  {
+   "id": "7.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "0"
+  },
+  {
+   "id": "8",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "9.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "9.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "10.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "10.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "10.3",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "0"
+  },
+  {
+   "id": "11",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "2"
+  },
+  {
+   "id": "12",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "2"
+  },
+  {
+   "id": "13",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "14.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "14.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "14.3",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "0"
+  },
+  {
+   "id": "15",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "16",
+   "max_points": 3.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "17",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "18.1",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "18.2",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "19",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "20",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "1"
+  },
+  {
+   "id": "21",
+   "max_points": 2.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "22",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "23",
+   "max_points": 2.0,
+   "sol_points": 2.0,
+   "points": 2.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "2"
+  },
+  {
+   "id": "24",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "25.1",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "25.2",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "25.3",
+   "max_points": 1.0,
+   "sol_points": 1.0,
+   "points": 1.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "1"
+  },
+  {
+   "id": "26",
+   "max_points": 1.0,
+   "sol_points": 0.0,
+   "points": 0.0,
+   "picture_item": true,
+   "image_checked": false,
+   "raw": "0"
+  },
+  {
+   "id": "27",
+   "max_points": 15.0,
+   "sol_points": 7.0,
+   "points": 7.0,
+   "picture_item": false,
+   "image_checked": null,
+   "raw": "7"
+  }
+ ],
+ "text_total": 19.0,
+ "text_max": 33.0,
+ "picture_items_not_image_checked": [
+  "1",
+  "2.1",
+  "3",
+  "5.1",
+  "5.2",
+  "6",
+  "8",
+  "9.1",
+  "9.2",
+  "11",
+  "12",
+  "13",
+  "15",
+  "16",
+  "17",
+  "18.1",
+  "18.2",
+  "19",
+  "20",
+  "22",
+  "24",
+  "26"
+ ]
+}
