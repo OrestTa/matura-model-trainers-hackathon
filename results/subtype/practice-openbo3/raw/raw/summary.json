@@ -1,24 +1,24 @@
 {
   "n": 73,
-  "scored": 47,
-  "errors": 64,
-  "earned": 2.0,
-  "max": 54.0,
-  "pct": 3.7,
-  "pct_text_only": 3.1,
-  "pct_all_rows": 1.7,
-  "decision_acc": 11.1,
-  "unscored": 26,
-  "routing_accuracy": 77.8,
-  "latency_p50_s": 175.369,
+  "scored": 36,
+  "errors": 0,
+  "earned": 18.83,
+  "max": 43.0,
+  "pct": 43.8,
+  "pct_text_only": 51.1,
+  "pct_all_rows": 15.7,
+  "decision_acc": 72.2,
+  "unscored": 37,
+  "routing_accuracy": 75.3,
+  "latency_p50_s": 234.979,
   "wall_s": 0.0,
   "by_category": {
     "closed_choice": {
       "n": 8,
       "scored": 8,
-      "earned": 1.0,
+      "earned": 6.0,
       "max": 8.0,
-      "pct": 12.5
+      "pct": 75.0
     },
     "essay": {
       "n": 2,
@@ -37,28 +37,28 @@
     "short_open": {
       "n": 7,
       "scored": 3,
-      "earned": 0.0,
+      "earned": 1.0,
       "max": 3.0,
-      "pct": 0.0
+      "pct": 33.3
     },
     "source_analysis": {
       "n": 50,
-      "scored": 30,
-      "earned": 1.0,
-      "max": 32.0,
-      "pct": 3.1
+      "scored": 19,
+      "earned": 10.833333333333332,
+      "max": 21.0,
+      "pct": 51.6
     },
     "true_false": {
       "n": 3,
       "scored": 3,
-      "earned": 0.0,
+      "earned": 1.0,
       "max": 5.0,
-      "pct": 0.0
+      "pct": 20.0
     }
   },
   "warning": "no held-out paper in this set: every paper here is adapter training data",
   "model": "gemma4-12b-think",
   "mode": "raw/raw",
   "papers": "dev",
-  "empty": 64
+  "empty": 0
 }
