@@ -1,0 +1,156 @@
+Loading weights:   0%|                                 | 0/515 [00:00<?, ?it/s]Loading weights:  26%|█████▍               | 133/515 [00:00<00:00, 1320.52it/s]Loading weights:  54%|███████████▍         | 279/515 [00:00<00:00, 1386.32it/s]Loading weights:  82%|█████████████████▏   | 421/515 [00:00<00:00, 1377.69it/s]Loading weights: 100%|█████████████████████| 515/515 [00:00<00:00, 1384.30it/s]
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+{"route": "closed_without_images", "step": 1, "loss": 2.6312127113342285}
+{"route": "closed_without_images", "step": 2, "loss": 1.1966904401779175}
+{"route": "closed_without_images", "step": 3, "loss": 2.387934446334839}
+{"route": "closed_without_images", "step": 4, "loss": 8.45456600189209}
+{"route": "closed_without_images", "step": 5, "loss": 1.300153374671936}
+{"route": "closed_without_images", "step": 6, "loss": 0.6933708190917969}
+{"route": "closed_without_images", "step": 7, "loss": 1.1073522567749023}
+{"route": "closed_without_images", "step": 8, "loss": 1.008466362953186}
+{"route": "closed_without_images", "step": 9, "loss": 5.295508861541748}
+{"route": "closed_without_images", "step": 10, "loss": 0.64497309923172}
+{"route": "closed_without_images", "step": 11, "loss": 0.7962925434112549}
+{"route": "closed_without_images", "step": 12, "loss": 3.76550030708313}
+{"route": "closed_without_images", "step": 13, "loss": 3.8539414405822754}
+{"route": "closed_without_images", "step": 14, "loss": 0.6421027779579163}
+{"route": "closed_without_images", "step": 15, "loss": 0.4741220474243164}
+{"route": "closed_without_images", "step": 16, "loss": 2.2951431274414062}
+{"route": "closed_without_images", "step": 17, "loss": 0.57310551404953}
+{"route": "closed_without_images", "step": 18, "loss": 0.3777921497821808}
+{"route": "closed_without_images", "step": 19, "loss": 0.75714111328125}
+{"route": "closed_without_images", "step": 20, "loss": 1.627402663230896}
+{"route": "closed_without_images", "step": 21, "loss": 0.47984054684638977}
+{"route": "closed_without_images", "step": 22, "loss": 1.433162808418274}
+{"route": "closed_without_images", "step": 23, "loss": 0.58370041847229}
+{"route": "closed_without_images", "step": 24, "loss": 1.809586524963379}
+{"route": "closed_without_images", "step": 25, "loss": 1.2910691499710083}
+{"route": "closed_without_images", "step": 26, "loss": 0.5301500558853149}
+{"route": "closed_without_images", "step": 27, "loss": 0.9593578577041626}
+{"route": "closed_without_images", "step": 28, "loss": 1.2694309949874878}
+Loading weights:   0%|                                 | 0/515 [00:00<?, ?it/s]Loading weights:  28%|█████▉               | 146/515 [00:00<00:00, 1458.52it/s]Loading weights:  57%|███████████▉         | 292/515 [00:00<00:00, 1408.16it/s]Loading weights:  84%|█████████████████▋   | 433/515 [00:00<00:00, 1390.54it/s]Loading weights: 100%|█████████████████████| 515/515 [00:00<00:00, 1399.71it/s]
+{"route": "closed_with_images", "step": 1, "loss": 2.0050926208496094}
+{"route": "closed_with_images", "step": 2, "loss": 2.4007694721221924}
+{"route": "closed_with_images", "step": 3, "loss": 1.2300121784210205}
+{"route": "closed_with_images", "step": 4, "loss": 1.1715494394302368}
+{"route": "closed_with_images", "step": 5, "loss": 2.1869730949401855}
+{"route": "closed_with_images", "step": 6, "loss": 1.1572624444961548}
+Loading weights:   0%|                                 | 0/515 [00:00<?, ?it/s]Loading weights:  27%|█████▌               | 137/515 [00:00<00:00, 1348.63it/s]Loading weights:  54%|███████████▍         | 279/515 [00:00<00:00, 1384.49it/s]Loading weights:  81%|█████████████████    | 419/515 [00:00<00:00, 1391.24it/s]Loading weights: 100%|█████████████████████| 515/515 [00:00<00:00, 1382.86it/s]
+{"route": "open_without_images", "step": 1, "loss": 2.2878191471099854}
+{"route": "open_without_images", "step": 2, "loss": 2.496988534927368}
+{"route": "open_without_images", "step": 3, "loss": 2.601640224456787}
+{"route": "open_without_images", "step": 4, "loss": 5.30570650100708}
+{"route": "open_without_images", "step": 5, "loss": 0.8935098648071289}
+{"route": "open_without_images", "step": 6, "loss": 3.659687042236328}
+{"route": "open_without_images", "step": 7, "loss": 0.736472487449646}
+{"route": "open_without_images", "step": 8, "loss": 1.9633070230484009}
+{"route": "open_without_images", "step": 9, "loss": 1.2999467849731445}
+{"route": "open_without_images", "step": 10, "loss": 2.144296646118164}
+{"route": "open_without_images", "step": 11, "loss": 1.9337832927703857}
+{"route": "open_without_images", "step": 12, "loss": 2.9258100986480713}
+{"route": "open_without_images", "step": 13, "loss": 1.220763087272644}
+{"route": "open_without_images", "step": 14, "loss": 3.640821695327759}
+{"route": "open_without_images", "step": 15, "loss": 1.8147774934768677}
+{"route": "open_without_images", "step": 16, "loss": 0.6883255243301392}
+{"route": "open_without_images", "step": 17, "loss": 1.7829488515853882}
+{"route": "open_without_images", "step": 18, "loss": 1.7216908931732178}
+{"route": "open_without_images", "step": 19, "loss": 0.6889839172363281}
+{"route": "open_without_images", "step": 20, "loss": 3.317774772644043}
+{"route": "open_without_images", "step": 21, "loss": 2.0370280742645264}
+{"route": "open_without_images", "step": 22, "loss": 2.4414291381835938}
+{"route": "open_without_images", "step": 23, "loss": 2.2491066455841064}
+{"route": "open_without_images", "step": 24, "loss": 1.1891109943389893}
+{"route": "open_without_images", "step": 25, "loss": 1.271178126335144}
+{"route": "open_without_images", "step": 26, "loss": 1.5421216487884521}
+{"route": "open_without_images", "step": 27, "loss": 2.6534509658813477}
+{"route": "open_without_images", "step": 28, "loss": 1.7081034183502197}
+{"route": "open_without_images", "step": 29, "loss": 1.373475432395935}
+{"route": "open_without_images", "step": 30, "loss": 1.910642147064209}
+{"route": "open_without_images", "step": 31, "loss": 2.4667460918426514}
+{"route": "open_without_images", "step": 32, "loss": 1.758715271949768}
+{"route": "open_without_images", "step": 33, "loss": 1.9492934942245483}
+{"route": "open_without_images", "step": 34, "loss": 1.5305724143981934}
+{"route": "open_without_images", "step": 35, "loss": 1.476853370666504}
+{"route": "open_without_images", "step": 36, "loss": 2.5838115215301514}
+{"route": "open_without_images", "step": 37, "loss": 2.077589750289917}
+{"route": "open_without_images", "step": 38, "loss": 1.3534296751022339}
+{"route": "open_without_images", "step": 39, "loss": 1.7981505393981934}
+{"route": "open_without_images", "step": 40, "loss": 1.5007858276367188}
+{"route": "open_without_images", "step": 41, "loss": 1.5805726051330566}
+{"route": "open_without_images", "step": 42, "loss": 2.098642349243164}
+{"route": "open_without_images", "step": 43, "loss": 1.868580937385559}
+{"route": "open_without_images", "step": 44, "loss": 1.3624006509780884}
+{"route": "open_without_images", "step": 45, "loss": 1.8640276193618774}
+{"route": "open_without_images", "step": 46, "loss": 2.1569433212280273}
+{"route": "open_without_images", "step": 47, "loss": 2.23130464553833}
+{"route": "open_without_images", "step": 48, "loss": 0.3956311345100403}
+{"route": "open_without_images", "step": 49, "loss": 0.8863443732261658}
+{"route": "open_without_images", "step": 50, "loss": 2.0001449584960938}
+{"route": "open_without_images", "step": 51, "loss": 1.4130144119262695}
+{"route": "open_without_images", "step": 52, "loss": 0.6869990229606628}
+{"route": "open_without_images", "step": 53, "loss": 2.081766366958618}
+{"route": "open_without_images", "step": 54, "loss": 1.6382055282592773}
+{"route": "open_without_images", "step": 55, "loss": 1.4436571598052979}
+{"route": "open_without_images", "step": 56, "loss": 1.3017889261245728}
+{"route": "open_without_images", "step": 57, "loss": 1.6776713132858276}
+{"route": "open_without_images", "step": 58, "loss": 1.965360403060913}
+{"route": "open_without_images", "step": 59, "loss": 1.9102323055267334}
+{"route": "open_without_images", "step": 60, "loss": 1.5989872217178345}
+{"route": "open_without_images", "step": 61, "loss": 2.039015293121338}
+{"route": "open_without_images", "step": 62, "loss": 1.5579668283462524}
+{"route": "open_without_images", "step": 63, "loss": 2.4966750144958496}
+{"route": "open_without_images", "step": 64, "loss": 1.4994169473648071}
+{"route": "open_without_images", "step": 65, "loss": 1.931939721107483}
+{"route": "open_without_images", "step": 66, "loss": 1.8589866161346436}
+{"route": "open_without_images", "step": 67, "loss": 1.9457205533981323}
+{"route": "open_without_images", "step": 68, "loss": 1.7068915367126465}
+{"route": "open_without_images", "step": 69, "loss": 1.7698601484298706}
+{"route": "open_without_images", "step": 70, "loss": 1.9288694858551025}
+{"route": "open_without_images", "step": 71, "loss": 1.6069707870483398}
+{"route": "open_without_images", "step": 72, "loss": 1.2796778678894043}
+{"route": "open_without_images", "step": 73, "loss": 1.726089358329773}
+{"route": "open_without_images", "step": 74, "loss": 1.6067135334014893}
+{"route": "open_without_images", "step": 75, "loss": 1.2680408954620361}
+{"route": "open_without_images", "step": 76, "loss": 2.4337589740753174}
+{"route": "open_without_images", "step": 77, "loss": 1.7137084007263184}
+{"route": "open_without_images", "step": 78, "loss": 1.7987953424453735}
+{"route": "open_without_images", "step": 79, "loss": 1.5531238317489624}
+{"route": "open_without_images", "step": 80, "loss": 1.7692183256149292}
+{"route": "open_without_images", "step": 81, "loss": 2.164177417755127}
+{"route": "open_without_images", "step": 82, "loss": 1.3180471658706665}
+{"route": "open_without_images", "step": 83, "loss": 1.0857348442077637}
+{"route": "open_without_images", "step": 84, "loss": 1.242553949356079}
+{"route": "open_without_images", "step": 85, "loss": 1.4282881021499634}
+{"route": "open_without_images", "step": 86, "loss": 1.3578444719314575}
+{"route": "open_without_images", "step": 87, "loss": 1.6155158281326294}
+{"route": "open_without_images", "step": 88, "loss": 1.6407665014266968}
+{"route": "open_without_images", "step": 89, "loss": 1.6551170349121094}
+Loading weights:   0%|                                 | 0/515 [00:00<?, ?it/s]Loading weights:  27%|█████▋               | 138/515 [00:00<00:00, 1379.23it/s]Loading weights:  55%|███████████▍         | 281/515 [00:00<00:00, 1399.77it/s]Loading weights:  82%|█████████████████▏   | 421/515 [00:00<00:00, 1365.45it/s]Loading weights: 100%|█████████████████████| 515/515 [00:00<00:00, 1395.06it/s]
+{"route": "open_with_images", "step": 1, "loss": 2.048398017883301}
+{"route": "open_with_images", "step": 2, "loss": 1.9592243432998657}
+{"route": "open_with_images", "step": 3, "loss": 2.1537885665893555}
+{"route": "open_with_images", "step": 4, "loss": 1.851166009902954}
+{"route": "open_with_images", "step": 5, "loss": 2.2158825397491455}
+{"route": "open_with_images", "step": 6, "loss": 2.4333443641662598}
+{"route": "open_with_images", "step": 7, "loss": 2.0773022174835205}
+{"route": "open_with_images", "step": 8, "loss": 1.5850765705108643}
+{"route": "open_with_images", "step": 9, "loss": 1.86148202419281}
+{"route": "open_with_images", "step": 10, "loss": 3.2783877849578857}
+{"route": "open_with_images", "step": 11, "loss": 2.4617459774017334}
+{"route": "open_with_images", "step": 12, "loss": 1.8538336753845215}
+{"route": "open_with_images", "step": 13, "loss": 2.047549247741699}
+{"route": "open_with_images", "step": 14, "loss": 2.3285634517669678}
+{"route": "open_with_images", "step": 15, "loss": 1.8692556619644165}
+{"route": "open_with_images", "step": 16, "loss": 1.1863237619400024}
+{"route": "open_with_images", "step": 17, "loss": 2.567385196685791}
+{"route": "open_with_images", "step": 18, "loss": 2.230356454849243}
+{"route": "open_with_images", "step": 19, "loss": 1.5813192129135132}
+{"route": "open_with_images", "step": 20, "loss": 1.1839779615402222}
+{"route": "open_with_images", "step": 21, "loss": 0.8681695461273193}
+Loading weights:   0%|                                 | 0/515 [00:00<?, ?it/s]Loading weights:  29%|██████               | 149/515 [00:00<00:00, 1477.12it/s]Loading weights:  58%|████████████         | 297/515 [00:00<00:00, 1398.06it/s]Loading weights:  85%|█████████████████▉   | 439/515 [00:00<00:00, 1384.36it/s]Loading weights: 100%|█████████████████████| 515/515 [00:00<00:00, 1408.25it/s]
+{"route": "essay", "step": 1, "loss": 1.9605660438537598}
+{"route": "essay", "step": 2, "loss": 2.1269619464874268}
+{"route": "essay", "step": 3, "loss": 2.2900781631469727}
+{"route": "essay", "step": 4, "loss": 2.3530526161193848}
+{"route": "essay", "step": 5, "loss": 2.2243528366088867}
+{"completed": "b15-v1", "routes": 5, "bytes": 80677760}

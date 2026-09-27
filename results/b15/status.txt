@@ -1,0 +1,38 @@
+06:50:57 START b15-v1
+06:52:46 END b15-v1 rc=0
+07:02:54 server up
+base: 38 answers, 0 blank [], wall 11s
+python3: can't open file '/scratch/final_e2e/scripts/check_submission.py': [Errno 2] No such file or directory
+ours: 38 answers, 0 blank [], wall 20s
+python3: can't open file '/scratch/final_e2e/scripts/check_submission.py': [Errno 2] No such file or directory
+cleanv3: 38 answers, 0 blank [], wall 23s
+python3: can't open file '/scratch/final_e2e/scripts/check_submission.py': [Errno 2] No such file or directory
+07:03:48 SCORING DONE
+check base: OK: 38 entries, 0 blank []; essay words {'27': 176}
+check ours: OK: 38 entries, 0 blank []; essay words {'27': 274}
+check cleanv3: OK: 38 entries, 0 blank []; essay words {'27': 243}
+Traceback (most recent call last):
+  File "/scratch/b15eval.py", line 37, in <module>
+    with cf.ThreadPoolExecutor(6) as p:res=list(p.map(one,items))
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/opt/conda/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/b15eval.py", line 26, in one
+    on=-1 if arm=='base' else BASE[arm]+ROUTES.index(r)
+                              ~~~~^^^^^
+KeyError: 'plain'
+check b45: 
+allpapers: 38 answers, 0 blank [], wall 90s
+check allpapers: OK: 38 entries, 0 blank []; essay words {'27': 681}
