@@ -5,12 +5,14 @@ subtypes:
   # Orest 22:33 CEST: no OCR (the model sees the images); retry blanks (THINK_FALLBACK=1); closed
   # questions get 5 samples with a majority vote (3 of 5 per key / statement, greedy answer on ties).
   # Everything else is the exact --mode raw request, so it matches the frozen baseline item for item.
+  # Frozen 27.09 03:10 CEST: closed questions back to the exact raw request. heldout-v5 (b490949) showed the
+  # 5-vote setup changes nothing on closed items (0 vs 0), and raw is what scored 163/240.
   closed_text:
-    name: v5
-    votes: 5
+    name: raw
+    raw: true
   closed_image:
-    name: v5
-    votes: 5
+    name: raw
+    raw: true
   open_text:
     name: raw
     raw: true

@@ -25,6 +25,7 @@ vs the deck's 46, so the judges agree; the base gap to the deck is the model (4-
 |---|---|---|---|---|---|---|---|---|---|
 | Base (g4vr) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | Sol 101 vs Claude 96 of 139 (text + essays) |
 | Shipped = base (no fine-tune beat it) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | |
+| **Shipped from 27.09 03:10: raw + essay "plan, best of 3"** | | | | | **~170 projected** | 67 | 66 | 30 + ~7.5 | held-out essays 71/120 vs base 56 over 2 runs (results/judged/heldout-essay) |
 | Harness `--mode subtype` (no LoRA) | 38 | 45 | 40 | pending | 123 on 3 papers (base 122) | | | 23/45 (3 papers) | |
 | A1 LoRA (1 epoch) | 24 | – | – | – | – | | | 0/15 (2023) | |
 | B4m2 LoRA | 23 | – | – | – | – | | | 0/15 (2023) | |
@@ -38,7 +39,9 @@ Source: `results/judged/TABLE.md`, `scripts/deck_compare.py`.
 
 **Outcome:** every LoRA fine-tuned on our synthetic + past-paper data scored below the base, mainly
 because it broke the essay (too short, looping or factually wrong) and never gained on short items.
-We ship the base model (7.16 GB) with thinking and the blank-answer fallback; see
+We ship the base model (7.16 GB) with thinking and the blank-answer fallback, plus (from 27.09 03:10) the essay
+setup "plan first, then best of 3 drafts", which beat the base essay on practice essays (+9 to +13/150 in 4 blind
+batches) and then on the 4 held-out essays (71 vs 56 of 120 over 2 runs); see
 docs/EXAM_DAY_BEST_SCORE.md for the frozen on-stage commands.
 
 **Harness: no clear gain.** The per-subtype harness (configs/subtypes.yaml, picks made on dev papers) is level
