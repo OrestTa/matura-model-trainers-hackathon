@@ -7,6 +7,14 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 07:25 CEST: 177c977..5c916f0 (10 commits) and board 40ec224 (no change); pre-cutoff checks
+
+Verdict: numbers correct; one decision flag (C-059).
+- efcb3ed/5785344..27e4bd7/5c916f0: the frozen stage path (MODE=subtype, essay plan + best of 3) on all four held-out papers = 38/44/39/42 = 163/240 (claude_score totals match item sums; essays 8/9/4/8 = 29/60 vs base 30). Same total as the base. 5c916f0 correctly replaces the "~170 projected" with the measured figure. The blind side-by-side essay batch (71 vs 56/120) did not carry over to paper-by-paper grading.
+- FLAG (C-059): the stage path now has no measured gain over plain raw (163 vs 163), but it adds ~8 min per essay and more moving parts (subtype routing, 5-vote closed, best-of-3). Raw has two graded held-out runs (163, 159.5) and a shorter wall time. Recommend the owner decides explicitly between keeping the stage path and reverting to raw; either is defensible on score, raw is lower-risk on time.
+- Pre-cutoff checks (11:00): SOURCE.md has the line "Made during the Warsaw Model Trainers hackathon, Kolektyw3, 25–27.09.2026"; tree grep for keys/tokens/private keys/public IPs is clean; the exact stage harness is committed (scripts/run_exam.py, matura_router, configs/subtypes.yaml, docs/EXAM_DAY_BEST_SCORE.md); base and trained-model results are in docs/FINAL_RESULTS.md and results/judged/TABLE.md. History scrub and repo visibility remain Orest's call.
+- Secrets grep over the diff clean.
+
 ## 2026-09-27 06:05 CEST: 5420a07..177c977 (18 commits) and board 40ec224 (no change)
 
 Verdict: sound, no flags. SD1 (self-distilled LoRA, real past papers only) was rejected on the probny practice paper first (36 vs 37, b1d5ef0) and then run on the held-out papers for the record: per-paper claude_score totals 36/45/33/41 = 155/240 vs base 163 (item sums agree). Non-essay 131 vs base 133, so the LoRA does not beat the base even without the 2025 essay (298 words = 0). The freeze (27.09 03:10, no LoRA) stands. Thinking-sweep results (tb1k, te16k) are practice-paper runs. Secrets grep clean.
