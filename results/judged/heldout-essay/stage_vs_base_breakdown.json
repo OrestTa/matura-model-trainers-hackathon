@@ -1,0 +1,18 @@
+{
+ "e00_A": "T2. A: cultural sat, political sat, socio-econ superficial = 7, no deduction; B: 3; generic, no concrete taxes/acts",
+ "e00_B": "T2 (~304 words). A: political sat, socio-econ sat, cultural superficial = 7, no deduction; B: 3; thin cultural para",
+ "e00_C": "T2. A: political sat, socio-econ sat, cultural sat = 9, -1 (1-2 errors); B: 3; 'powstanie Bastylii', FR triad applied to America",
+ "e00_D": "T2. A: political superficial (discusses goals not causes), socio-econ superficial, cultural sat = 5, no deduction; B: 2; ambivalent thesis, partly off-topic (differences in aims)",
+ "e01_A": "T1. A: political sat, socio-econ sat (Capitulare de villis), cultural rich = 10, no deduction; B: 3; no comparison with other renovatio attempts",
+ "e01_B": "T1. A: political sat (missi dominici), socio-econ sat, cultural sat = 9, -1; B: 3; 'marszałectwa', 'gospodarka folwarczna' anachronism",
+ "e01_C": "T1. A: political rich (translatio imperii, conquests, counts/margraves), socio-econ sat, cultural sat = 10, -1; B: 3; translatio from 'upadającego Cesarstwa Zachodniorzymskiego'",
+ "e01_D": "T3. A: military sat (1920), political superficial (Nov 1918 vague), diplomatic superficial (Versailles, collapse of empires; no KNP/Dmowski/Wilson) = 5, no deduction; B: 2; wavering stance",
+ "e02_A": "T1. A: military sat (Grunwald), ustrojowy superficial, socio-econ superficial = 5, -1; B: 3; Batory named as Jagiellon, Muscovy threat under Jagiello, no real comparison with other Jagiellons",
+ "e02_B": "T1. A: military sat, ustrojowy superficial, socio-econ superficial = 5, -1; B: 3; Batory as Jagiellon, Muscovy threat",
+ "e02_C": "T1. A: military/ustrojowy/socio-econ all superficial = 3, -1; B: 3; Batory as Jagiellon; very generic",
+ "e02_D": "T1. A: military sat, ustrojowy sat (Krewo 1385, privileges), socio-econ superficial = 7, -2 (3 errors); B: 2; lists Wladyslaw II Jagiello as a different later ruler, baptism dated 1387, 'przywilej koszycki 1413'",
+ "e03_A": "T1 (rejects thesis). A: political sat, socio-econ superficial, cultural superficial = 5, no deduction; B: 3; few concrete facts (no Jadwiga, terms of union)",
+ "e03_B": "T3 (rejects thesis). A: political sat (alliances, Munich, Ribbentrop-Molotov), military sat (7TP, P.11, Plan Zachod), socio-econ sat (Depression, COP) = 9, no deduction; B: 2; military para argues disproportion, in tension with stance",
+ "e03_C": "T3. A: political superficial (no concrete facts), military sat, socio-econ superficial = 5, no deduction; B: 2; conclusion 'niemal przesadzony' contradicts stance",
+ "e03_D": "T1 (accepts thesis). A: political sat (Jadwiga marriage, Grunwald), socio-econ superficial, cultural sat (1387 baptism, separate identity) = 7, -1; B: 3; 'przylaczenie sie do dynastii Jagiellonow', anachronistic grain trade"
+}
