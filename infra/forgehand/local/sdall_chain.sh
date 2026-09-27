@@ -4,7 +4,7 @@
 # probny-2022-12 / probny-2024-12. The May 2023-2026 scores are "trained on, not held-out".
 #   1 serve base, build targets for the 150 non-essay May 2023-2026 items   2 merge with the 264 SD1 rows
 #   3 train --think --vision (same as SD1)   4 GGUF + HF   5 evals (SDALL on all; base on the mocks it lacks)
-# Env: REPO (default /scratch/repo4), SRC, IMG_ROOT, SD1_ROWS, SAMPLES (default 2).
+# Env: REPO (default /scratch/repo4), SRC, IMG_ROOT, SD1_ROWS, SAMPLES (default 2), MAY (trained-on papers to eval).
 set -u
 L=/scratch/master_chain.log; log() { echo "$(date -u +%H:%M:%S) SDALL $*" >> $L; echo "$*"; }
 export HOME=/scratch/home HF_HOME=/scratch/hf
@@ -53,7 +53,7 @@ log "GGUF written $(du -h $D/adapter.gguf | cut -f1)"
 MOCKS=$(for P in probny-2022-12 probny-2024-12; do grep -q "\"paper\": *\"$P\"" "$SRC" && echo $P; done)
 mkdir -p /scratch/work/adapters-SDALL-serve/gemma4-12b-think && ln -sfn $D /scratch/work/adapters-SDALL-serve/gemma4-12b-think/all
 export EVAL=$SRC LLAMA_SERVER=$LS THINK_FALLBACK=1 GGML_CUDA_DISABLE_GRAPHS=1 LORA_NO_ESSAY=1 ESSAY_MIN_WORDS=0
-for P in probny-2026-01 $MOCKS 2023-05 2024-05 2025-05 2026-05; do
+for P in probny-2026-01 $MOCKS ${MAY:-2023-05 2024-05 2025-05 2026-05}; do
   id=matura-infer-gemma4-12b-think-sdall-raw-$P-$(date -u -d '+2 hours' +%Y%m%d-%H%M)-sdall
   log "START eval $P"
   env MODEL=gemma4-12b-think MODE=raw CONCURRENCY=16 ADAPTERS=/scratch/work/adapters-SDALL-serve/gemma4-12b-think PAPERS="$P" \
