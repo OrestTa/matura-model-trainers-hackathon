@@ -1,12 +1,13 @@
-# Matura model trainers: question router
+# Matura model trainers: submission candidate
 
-Our entry for the Warsaw Model Trainers hackathon: a small local model (≤ 8 GB)
-sitting the Polish history matura.
+<!-- FINAL-CANDIDATE-SUMMARY: keep matched verification results current. -->
+- **Winning model / selected candidate:** Bielik-1.5B-v3.0-Instruct **Q8_0**, with five **F16 LoRA adapters**, a learned question-type classifier and Polish/English OCR. Total unique deployed weights: **1,789,957,828 bytes (1.790 GB)**, including adapters, classifier and OCR. This is our selected Bielik candidate, **not a confirmed competition winner**.
+- **Expected performance:** the target is **at least 35% on the complete official history paper**. A defensible final estimate is pending fresh, matched offline inference and Codex Luna grading; we have not yet confirmed that this candidate reaches the target. Fresh verification uses the same pinned OCR runtime as the delivered package.
+- **Performance improvement:** **not yet confirmed for this final package**. We are comparing the **Q8_0 baseline + classifier/OCR (1.709 GB)** against the **Q8_0 + five F16 adapters + classifier/OCR (1.790 GB)** using identical inputs and grading. Final total, all five category scores and percentage-point change will replace this pending status when verified.
+- **What we trained on:** **225 approved real official examples**, with no year holdouts: 38 closed text, 11 closed image, 127 open text, 44 open image and 5 official essay exemplars. The available approved corpus spans **2012–2026**; it does not contain every task from every downloaded paper. The classifier uses **449 candidate-input examples with weak labels**. No synthetic answer targets or essay rubrics used as essays. The evaluated 2023 paper is represented in training, so its result is **training-set performance, not an unseen-paper estimate**. See [training provenance and coverage](docs/BIELIK_ALL_PAPERS_TRAINING_2026-09-27.md).
+- **What we changed:** trained five question-type LoRA specialists for one full pass, sharing a single base; learned routing to closed text, closed image, open text, open image or essay; local OCR only for the two image routes; pinned the offline inference/OCR runtimes and packaged weights with checksums and private recovery copies. Current answer keys and rubrics never enter inference prompts. OCR reads text; it does not provide general visual understanding of maps or pictures. See [submission and recovery instructions](docs/SUBMISSION_BIELIK_ALL_PAPERS.md).
 
-The harness classifies each exam question by type and sends it to a LoRA adapter
-fine-tuned for just that type. All adapters sit on **one shared base model**, so
-only the base counts toward the 8 GB limit, and switching adapters per question is
-cheap.
+All unique deployed model weights count toward the organizer's **8.8 GB aggregate limit**, including the shared base, every adapter, classifier and OCR weights. The remainder of this README describes the earlier general router; the selected package and linked submission instructions define this candidate.
 
 ## Live status dashboard
 
