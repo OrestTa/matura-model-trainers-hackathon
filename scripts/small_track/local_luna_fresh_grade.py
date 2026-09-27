@@ -81,7 +81,7 @@ def main():
    if invalid:record.update(error_type='ItemValidationError',invalid_ids=invalid)
   except Exception as error:record.update(status='failed_no_retry',error_type=type(error).__name__)
   state.write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n');print(j['label'],j['name'],record['status'],flush=True)
- 
+
  print(json.dumps({'protocol':plan['protocol'],'fresh_judgments':True,'jobs':len(jobs),'workers':4,'execute':args.execute}),flush=True)
  if args.execute:
   with concurrent.futures.ThreadPoolExecutor(max_workers=4)as pool:list(pool.map(job,jobs))
