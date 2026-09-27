@@ -19,7 +19,7 @@ available. **No fine-tune.** Every LoRA we trained scored below this base model,
 | `mmproj-gemma-4-12b-it-qat-q4_0.gguf` | 175,115,616 | `cb018338a7538a9814d994bfe54644c71eb7ed54e31eae2f721e45fd3c260da7` |
 | **Total** | **7,150,994,912 (7.15 GB)** | limit 8.0 GB base / 8.8 GB all models summed |
 
-## Harness (github.com/OrestTa/matura-model-trainers-hackathon, tag `best-score-candidate`)
+## Harness (github.com/OrestTa/matura-model-trainers-hackathon, commit `c87a484`)
 
 llama.cpp `llama-server` with thinking on. `scripts/run_exam.py --model gemma4-12b-exam --mode subtype`:
 - open questions: the exam prompt as given, 2k thinking tokens;

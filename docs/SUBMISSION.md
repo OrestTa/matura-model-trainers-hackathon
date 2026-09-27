@@ -3,7 +3,7 @@
 Form: https://warsawmodeltrainers.dev/submissions.html?exam=final (read 07:55 CEST, incl. its
 `submissions.mjs` and `submission-validation.mjs`). **Nothing has been submitted.**
 
-The model and harness entered: **[docs/BEST_SCORE_CANDIDATE.md](BEST_SCORE_CANDIDATE.md)** (tag `best-score-candidate`).
+The model and harness entered: **[docs/BEST_SCORE_CANDIDATE.md](BEST_SCORE_CANDIDATE.md)** (commit `c87a484`).
 
 ## How the form works
 

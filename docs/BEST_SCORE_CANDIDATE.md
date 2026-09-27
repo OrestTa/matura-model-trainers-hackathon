@@ -9,7 +9,7 @@ If the SDALL run beats it later, Orest decides whether to swap; until then this 
 | Upstream | `google/gemma-4-12B-it-qat-q4_0-gguf` @ `29d097773436b69ff9feafd636ab4cf873786537` (Apache-2.0) |
 | Our copy | https://huggingface.co/orestta/matura-gemma4-12b-best-score (private) |
 | Size | 7,150,994,912 bytes = **7.15 GB** (limit 8.0 GB base / 8.8 GB all models summed) |
-| Harness | this repo at tag `best-score-candidate`; `run_exam.py --model gemma4-12b-exam --mode subtype` |
+| Harness | this repo at commit `c87a484` (tag `best-score-candidate` to be pushed by Orest: `git tag best-score-candidate c87a484 && git push origin best-score-candidate`); `run_exam.py --model gemma4-12b-exam --mode subtype` |
 | Held-out May 2023–2026 | **163/240 (67.9%)**: 38 / 44 / 39 / 42 |
 | Practice paper Jan 2026 | **43/60** (plain base: 37) |
 

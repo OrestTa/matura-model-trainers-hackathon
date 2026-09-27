@@ -3,7 +3,7 @@
 Our entry for the Warsaw Model Trainers hackathon: a small local model (base weights ≤ 8.0 GB on disk, ≤ 8.8 GB with the fine-tuning)
 sitting the Polish history matura.
 
-**★ Best-performance candidate: [docs/BEST_SCORE_CANDIDATE.md](docs/BEST_SCORE_CANDIDATE.md)** (tag `best-score-candidate`).
+**★ Best-performance candidate: [docs/BEST_SCORE_CANDIDATE.md](docs/BEST_SCORE_CANDIDATE.md)** (commit `c87a484`).
 
 **Final submission (27.09.2026):** Gemma 4 12B QAT q4_0 GGUF + mmproj (7.15 GB), no fine-tune. None of
 our LoRA fine-tunes beat the base, so the sections below on per-type adapters describe what we tried,
