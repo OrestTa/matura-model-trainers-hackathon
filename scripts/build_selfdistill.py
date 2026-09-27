@@ -120,6 +120,8 @@ def main():
                    help="held-out eval set: items overlapping it are skipped ('' = no check)")
     p.add_argument("--dev-papers", nargs="*", default=["probny-2026-01"],
                    help="kept out of training for checkpoint selection")
+    p.add_argument("--include-held-out", action="store_true",
+                   help="also build the May 2023-2026 papers (the 'train on everything' overfit test; no overlap check)")
     p.add_argument("--no-vision", action="store_true", help="text-only server: skip picture items")
     p.add_argument("-o", "--out", required=True)
     p.add_argument("--samples", type=int, default=4)
@@ -136,12 +138,13 @@ def main():
     a = p.parse_args()
 
     # Past papers reuse sources: drop items whose question + sources share >10% of 8-word runs with a held-out item.
-    held = [json.loads(l) for l in open(a.held_out, encoding="utf-8")] if a.held_out else []
+    held = [json.loads(l) for l in open(a.held_out, encoding="utf-8")] if a.held_out and not a.include_held_out else []
+    skip_papers = set(a.dev_papers) | (set() if a.include_held_out else HELD_OUT)
     H = set().union(*(shingles(r["question"] + " " + r.get("context", "")) for r in held)) if held else set()
     rows = []
     for line in open(a.source, encoding="utf-8"):
         r = json.loads(line)
-        if r["paper"] in HELD_OUT or r["paper"] in a.dev_papers or r["category"] == "essay":
+        if r["paper"] in skip_papers or r["category"] == "essay":
             continue
         sh = shingles(r["question"] + " " + r.get("context", ""))
         if H and sh and len(sh & H) / len(sh) > 0.1:
