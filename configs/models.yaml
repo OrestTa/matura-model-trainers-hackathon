@@ -254,6 +254,25 @@ models:
     params_b: 4.6
     disk_gb: 4.90
     ocr: true
+  # Biggest-improvement entry (Orest 09:23 CEST): Bielik-1.5B Q8_0 GGUF on llama.cpp, 1.70 GB, same file as the bare
+  # baseline. bielik-1.5b-q8 = our harness with OCR of pictures; bielik-1.5b-q8-noocr = same without OCR.
+  bielik-1.5b-q8:
+    hf_id: second-state/Bielik-1.5B-v3.0-Instruct-GGUF
+    gguf_file: Bielik-1.5B-v3.0-Instruct-Q8_0.gguf
+    server: llamacpp
+    vision: false
+    ocr: true
+    params_b: 1.6
+    disk_gb: 1.70
+    gpu_gb: 4
+  bielik-1.5b-q8-noocr:
+    hf_id: second-state/Bielik-1.5B-v3.0-Instruct-GGUF
+    gguf_file: Bielik-1.5B-v3.0-Instruct-Q8_0.gguf
+    server: llamacpp
+    vision: false
+    params_b: 1.6
+    disk_gb: 1.70
+    gpu_gb: 4
   bielik-1.5b:
     deck_size_gb: {bf16: 3.19}
     ship_precision: bf16
