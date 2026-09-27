@@ -224,3 +224,27 @@ No fresh Nebius available-credit balance was verified. The installed CLI and
 current public billing API definitions expose cost calculators, pricing policies
 and consumption exports, but no supported balance read method was found. The
 stale earlier console figure is not treated as current spend authorization.
+
+
+## 2026-09-27 local time — provider policy changed to shared VM only
+
+The user explicitly instructed stopping Nebius and using only the existing
+shared Forgehand GPU VM going forward. The parent owns Nebius shutdown auditing;
+this worker has not issued Nebius stop/delete actions and does not claim they are
+complete. Canonical rules now supersede older Nebius/Modal launch instructions.
+
+The staged missing-only IQ2 resume is preserved in commit `981de88`:
+`infra/small_track/resume_qwen_iq2.sh` and its tested Python runner. It checks the
+exact 17-answer prefix SHA, frozen system/input/model hashes and an exclusive
+writer lock, generates only the remaining 20 IDs with one worker, and retains a
+900-second inner bound with a 930-second parent wrapper. Existing outputs and
+original executed source remain immutable; resume source/runtime changes are
+recorded separately. No current full-paper IQ2 score is available.
+
+Learning persistence: policy is in `.Codex/rules/00-workflow.md`; dated provider
+observations are here; model/data/config hashes, original outputs, runtime and
+network proofs are under the experiment result directories. The implemented
+resume and host-memory gates have tests/syntax checks. Remaining gaps are the
+20 unfinished IQ2 answers, pending matching full-paper evaluation, and parent
+verification of all Nebius shutdowns. Raw process arguments and credentials are
+excluded from saved diagnostic artifacts.

@@ -2,6 +2,19 @@
 
 ## Active smallest-model experiment (user instructions, 2026-09-26)
 
+- Latest provider instruction (2026-09-27 local time): stop all Nebius compute,
+  as coordinated by the parent orchestrator, and use ONLY the existing shared
+  Forgehand GPU VM for future compute. This supersedes every earlier Nebius,
+  Modal or other-provider launch authorization below. Do not allocate or restart
+  jobs on those providers. Preserve recoverable artifacts and record shutdown
+  verification separately; a policy update is not proof that jobs were stopped.
+  On the shared VM, preserve Claude's processes and artifacts, use isolated paths
+  and ports, and require host MemAvailable >=6 GiB as well as available GPU memory
+  before starting our work. Jobs remain explicitly bounded; missing-only resumes
+  preserve frozen inputs and previously saved answers. If the gates fail, do not
+  launch or weaken them. Provider monitoring has one owner to avoid duplicate
+  SSH probes. Do not interpret a running-provider state as proof of guest health.
+
 - Latest training-data instruction: stop synthetic fine-tuning. Collect the
   latest approximately 20 real history Matura main-session papers (target
   2007–2026) with official solution keys and original images, recording provenance
@@ -24,8 +37,9 @@
   bound our memory/time allocation, and never kill or modify Claude's workloads.
   This authorizes continuing the remaining image-specialist jobs under normal
   approval controls. Investigate Solari only if a configured provider is found.
-  Latest user instruction is to use the verified remainder of Nebius credit,
-  then the shared GPU VM, and continue until completion. This supersedes the
+  Historical instruction was to use the verified remainder of Nebius credit,
+  then the shared GPU VM; the GPU-VM-only instruction above now supersedes it.
+  Continue until completion; this supersedes the
   original delivery-time stopping rule. Preserve bounded jobs, no cash top-ups,
   and Claude's running workloads; do not stop merely because the old deadline passed.
 
