@@ -13,3 +13,7 @@ Fresh paired verification uses identical original2023 input, router/OCR, runtime
 Results live in `results/small_track/20260927-bielik15-all-papers-v2-pair/`. Own Codex Luna policyv5 is frozen before inference. Until its complete report is available, no passing score is claimed.
 
 Only our isolated Forgehand processes are used. Claude processes are preserved. Nebius and Modal are not used. Delivery cutoff is2026-09-27T06:40:39Z.
+
+## Deployment OCR correction
+
+Fresh package execution found20 image-context differences because cached OCR came from Tesseract5.3.0 while the shared VM runs4.1.1. The first paired run therefore does not establish the final package score. A second complete37-pair run uses freshly computed4.1.1 OCR and the identical remaining configuration, under `results/small_track/20260927-bielik15-all-papers-v2-fresh-pair/`. The package bundles the exact4.1.1 OCR binary and libraries. OpenMP is limited to one thread after the first CPU preflight timed out from excessive thread contention; no algorithm or weight change was made.
