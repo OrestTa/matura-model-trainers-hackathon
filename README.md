@@ -3,6 +3,12 @@
 Our entry for the Warsaw Model Trainers hackathon: a small local model (base weights ≤ 8.0 GB on disk, ≤ 8.8 GB with the fine-tuning)
 sitting the Polish history matura.
 
+**Final submission (27.09.2026):** Gemma 4 12B QAT q4_0 GGUF + mmproj (7.15 GB), no fine-tune. None of
+our LoRA fine-tunes beat the base, so the sections below on per-type adapters describe what we tried,
+not what we ship. Exact on-stage commands: [docs/EXAM_DAY_BEST_SCORE.md](docs/EXAM_DAY_BEST_SCORE.md);
+results for base and every fine-tune: [docs/FINAL_RESULTS.md](docs/FINAL_RESULTS.md); submission form
+fields: [docs/SUBMISSION.md](docs/SUBMISSION.md).
+
 The harness classifies each exam question by type and sends it to a LoRA adapter
 fine-tuned for just that type. All adapters sit on **one shared base model**, so
 the base must fit 8.0 GB and base plus adapters 8.8 GB, and switching adapters per
