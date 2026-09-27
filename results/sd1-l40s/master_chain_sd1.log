@@ -1,0 +1,18 @@
+20:25:20 SD1 smoke: kept 5 of 6
+21:07:07 SD1 L40S shard done (125/309 done, 115 kept (20 hinted)); stopping our build (pid 101573) for the Nebius shards
+21:07:07 SD1 BUILD_FAILED
+02:46:16 SD1 START train (264 rows, :8100 paused)
+03:03:19 SD1 train done wall 1023s: saved /scratch/work/adapters-SD1/gemma4-12b-think/selfdistill (loss 0.278, 264 examples)
+03:03:26 SD1 GGUF written 126M
+03:03:30 SD1 HF: orestta/matura-gemma4-12b-lora-SD1
+03:03:30 SD1 START eval probny-2026-01
+03:09:37 SD1 END eval probny-2026-01 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-probny-2026-01-20260927-0503-sd1e == 03:09:32 probny-2026-01 attempt 1: exit 0, 0 blank
+03:09:37 SD1 START eval 2023-05
+03:15:46 SD1 END eval 2023-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2023-05-20260927-0509-sd1e == 03:15:41 2023-05 attempt 1: exit 0, 0 blank
+03:15:46 SD1 START eval 2024-05
+03:22:01 SD1 END eval 2024-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2024-05-20260927-0515-sd1e == 03:21:56 2024-05 attempt 1: exit 0, 0 blank
+03:22:01 SD1 START eval 2025-05
+03:28:53 SD1 END eval 2025-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2025-05-20260927-0522-sd1e == 03:28:48 2025-05 attempt 1: exit 0, 0 blank
+03:28:53 SD1 START eval 2026-05
+03:34:24 SD1 END eval 2026-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2026-05-20260927-0528-sd1e == 03:34:19 2026-05 attempt 1: exit 0, 0 blank
+03:34:24 SD1 SD1_DONE
