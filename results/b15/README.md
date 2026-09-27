@@ -23,3 +23,5 @@ Only the essay item (27) re-run: 2400 tokens, then up to 3 "continue" turns unti
 | base | 237 → 466 |
 | ours | 1078 (one turn) |
 | allpapers | 206 → 473 |
+
+**Repetition check (sentences / unique sentences):** base 28/18, ours 106/16 (the essay loops on the same sentences), allpapers 30/19. The word counts clear 300, but a grader will likely mark the repeated text down; the "ours" essay is mostly one loop.
