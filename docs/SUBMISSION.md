@@ -73,7 +73,7 @@ for all three tracks must be committed first, then one confirmation, one exam pa
 |---|---|---|---|---|
 | Best exam score | Gemma 4 12B QAT + matura exam harness | `google/gemma-4-12B-it-qat-q4_0-gguf`, 7.15 GB | `answers.json` from the stage command above | ready (main 007fb17+, smoke b371e40 OK) |
 | Smallest model passing 35% | Bielik-4.5B FP8 + OCR | `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic`, 4.90 GB (+ tesseract pol) | `run_exam.py --model bielik-4.5b-fp8` | 40.0% on May 2023 only; **never run end to end**; smoke on mock pending |
-| Biggest improvement | same Gemma 4 12B, bare vs our harness | same file as best score, 7.15 GB | best-score `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b`, thinking off) | held-out 123 → 163/240 = +16.7 pp; base command smoke on mock pending |
+| Biggest improvement | same Gemma 4 12B, bare vs our harness | same file as best score, 7.15 GB | best-score `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b`, thinking off) | **re-picking** (Orest 09:21: base = thinking on, so Gemma gain ~0) |
 
 **Pending (08:45 CEST):** Orest asked for a Bielik-1.5B fine-tune (past papers only, scored on the Jan 2026 practice
 paper). If the trained 1.5B scores ≥ 21/60 (35%), one project "Bielik-1.5B" takes Smallest + Biggest improvement (base =
@@ -90,12 +90,12 @@ After the freeze (in this order, on the L40S, one model at a time):
 1. Confirm readiness with the team code and repo link; fetch the package straight onto the box from the 5-minute link.
 2. Run Best exam score (~10 min), check, upload as its own project (category Best exam score).
 3. Run the smallest-model track, check, upload (category Smallest model passing 35%).
-4. **Required for Biggest improvement: the base-model answers from the same exam.** Restart the server bare and run:
-   `ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b &` then
-   `python scripts/run_exam.py final/ --model gemma4-12b --mode raw --concurrency 16 -o answers-base.json` and
-   `python scripts/check_submission.py answers-base.json final/`. Upload `answers-base.json` as "Base model answers"
-   (most capable base model = Gemma 4 12B, the same model row) in the project that has the Biggest improvement category.
-   Expected base score from held-out: 123/240 = 51.3% (thinking off) vs our 163/240 = 67.9%.
+4. **Required for Biggest improvement: the base-model answers from the same exam.** ON HOLD (Orest 09:21 CEST: the base
+   must be Gemma with thinking on, the fairer comparison; that makes the Gemma gain ~0, 163 vs 163, so the entry is being
+   re-picked in "Take over Codex tracks", likely Bielik-4.5B bare vs our harness). If Gemma stays the entry, the base command is
+   `ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b-think &` then
+   `python scripts/run_exam.py final/ --model gemma4-12b-think --mode raw --concurrency 16 -o answers-base.json` and
+   `python scripts/check_submission.py answers-base.json final/`; upload it as "Base model answers" in that project.
 Every upload is a separate project with its own receipt. Receipts go to results/final-exam/.
 
 ## Orest's steps, in order (08:40 CEST)
