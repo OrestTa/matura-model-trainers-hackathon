@@ -90,7 +90,12 @@ After the freeze (in this order, on the L40S, one model at a time):
 1. Confirm readiness with the team code and repo link; fetch the package straight onto the box from the 5-minute link.
 2. Run Best exam score (~10 min), check, upload as its own project (category Best exam score).
 3. Run the smallest-model track, check, upload (category Smallest model passing 35%).
-4. Run the improvement track and its base model, check both, upload with the base answers (category Biggest improvement).
+4. **Required for Biggest improvement: the base-model answers from the same exam.** Restart the server bare and run:
+   `ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b &` then
+   `python scripts/run_exam.py final/ --model gemma4-12b --mode raw --concurrency 16 -o answers-base.json` and
+   `python scripts/check_submission.py answers-base.json final/`. Upload `answers-base.json` as "Base model answers"
+   (most capable base model = Gemma 4 12B, the same model row) in the project that has the Biggest improvement category.
+   Expected base score from held-out: 123/240 = 51.3% (thinking off) vs our 163/240 = 67.9%.
 Every upload is a separate project with its own receipt. Receipts go to results/final-exam/.
 
 ## Orest's steps, in order (08:40 CEST)
