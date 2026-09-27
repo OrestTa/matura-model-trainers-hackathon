@@ -32,7 +32,7 @@ vs the deck's 46, so the judges agree; the base gap to the deck is the model (4-
 | Hm2 LoRA | 28 | 30 | – | – | – | | | 0/15 (2023) | |
 | Gm3 LoRA (essay-weighted) | 20 | 36 | – | – | – | | | 0/15 (2023) | |
 | S4m2 LoRA | 25 | 31 | – | – | – | | | 2/15 (2023) | |
-| SD1 LoRA (self-distilled, real past papers only) | 36 | 45 | 33 | – | 114/180 on 2023–25 (base 122); probny 36 vs 37 | | | 2025 essay 298 words = 0 | dd87719, 232bda2, eb610f2, 89c8ac6 |
+| SD1 LoRA (self-distilled, real past papers only) | 36 | 45 | 33 | 41 | **155** (base 163); probny 36 vs 37 | 66 | 65 | 24 (2025 essay 298 words = 0) | dd87719, 232bda2, eb610f2, 89c8ac6 |
 | A01 LoRA (0.1 epoch) | 28 | 34 | 34 | 35 | **131** (base 163) | | | 7/60 | |
 
 Ship bar: a fine-tune ships only at base + 3 (166/240; 86/120 on May 2023+2024) or better at the same setting.
