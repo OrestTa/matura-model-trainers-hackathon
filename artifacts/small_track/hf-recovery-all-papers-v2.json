@@ -1,0 +1,154 @@
+{
+  "repo": "orestta/matura-small-track-recovery",
+  "private": true,
+  "commit": "c32dbe77349739a8d3612629c67c57f5c1deab9e",
+  "files": [
+    {
+      "local": "manifests.json",
+      "remote": "models/bielik15/all-papers-v2/manifests.json",
+      "bytes": 34975,
+      "sha256": "908fd39991abb1f5f1de9fbb7cab465a4a71a13f059302fdae6d4cb600fb8f0c",
+      "verified": true
+    },
+    {
+      "local": "closed_without_images/adapter-f16.gguf",
+      "remote": "models/bielik15/all-papers-v2/closed_without_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "e2eb4aa68c692ea148bec6e707dbce0ea38718d35952d97fcaf856a13babbf30",
+      "verified": true
+    },
+    {
+      "local": "closed_without_images/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/closed_without_images/manifest.json",
+      "bytes": 6258,
+      "sha256": "94a81d9fccbb59cddc02009f30a3def8957e716e20ca22e799fcabcfefd5e418",
+      "verified": true
+    },
+    {
+      "local": "open_with_images/adapter-f16.gguf",
+      "remote": "models/bielik15/all-papers-v2/open_with_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "486b28cec7e10b9625c0de540671e0db597ef7326e2263580b3dc339da029b25",
+      "verified": true
+    },
+    {
+      "local": "open_with_images/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/open_with_images/manifest.json",
+      "bytes": 6467,
+      "sha256": "47ffd3478b796cb60c9ac1dbee2e44d2c3a6a5cc874b3eb448e2920f853aeea1",
+      "verified": true
+    },
+    {
+      "local": "open_without_images/adapter-f16.gguf",
+      "remote": "models/bielik15/all-papers-v2/open_without_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "f133d58173bfd0254b64e8999de88276e48eaac0fd753fbf8678c6bf9630005d",
+      "verified": true
+    },
+    {
+      "local": "open_without_images/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/open_without_images/manifest.json",
+      "bytes": 10099,
+      "sha256": "cef3aa650cbebacbffaf9ab243c7e1f9ffb64cd29e1ac81ed0970e0638ddae3f",
+      "verified": true
+    },
+    {
+      "local": "closed_with_images/adapter-f16.gguf",
+      "remote": "models/bielik15/all-papers-v2/closed_with_images/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "09c72ea07150264c90fc0cdec58dd89cd7c202d06fb8fd5bde3e26e7f9335856",
+      "verified": true
+    },
+    {
+      "local": "closed_with_images/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/closed_with_images/manifest.json",
+      "bytes": 5065,
+      "sha256": "ae1dd19c34b7d5b5ffa8a62b70f41d3ba1f90da13689aa923fd444d7c51ba340",
+      "verified": true
+    },
+    {
+      "local": "essay/adapter-f16.gguf",
+      "remote": "models/bielik15/all-papers-v2/essay/adapter-f16.gguf",
+      "bytes": 16135584,
+      "sha256": "4f5fde93fba60534c606229c65ca004f910a1e735b717d646d9d6f336c205bf1",
+      "verified": true
+    },
+    {
+      "local": "essay/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/essay/manifest.json",
+      "bytes": 4884,
+      "sha256": "02c41d5dcf4e4ee364fe50abd57fc88653c3a9d49f6b16709db5968947a533ca",
+      "verified": true
+    },
+    {
+      "local": "essay/adapter/adapter_model.safetensors",
+      "remote": "models/bielik15/all-papers-v2/essay/adapter/adapter_model.safetensors",
+      "bytes": 32268584,
+      "sha256": "ac45b5807dc795dddcd493a82808e201f49332e6cdf8e4e782ba31614267b50d",
+      "verified": true
+    },
+    {
+      "local": "essay/adapter/adapter_config.json",
+      "remote": "models/bielik15/all-papers-v2/essay/adapter/adapter_config.json",
+      "bytes": 1141,
+      "sha256": "5f10beb63618d9dad772200117e0c64c81befded1741d4b554f297a0c8bfe1cb",
+      "verified": true
+    },
+    {
+      "local": "closed_with_images/adapter/adapter_model.safetensors",
+      "remote": "models/bielik15/all-papers-v2/closed_with_images/adapter/adapter_model.safetensors",
+      "bytes": 32268584,
+      "sha256": "b991eb908d91d43358d04ab6df068c93fd632cec6d11ccb660d6b067cb408ba2",
+      "verified": true
+    },
+    {
+      "local": "closed_with_images/adapter/adapter_config.json",
+      "remote": "models/bielik15/all-papers-v2/closed_with_images/adapter/adapter_config.json",
+      "bytes": 1141,
+      "sha256": "5f10beb63618d9dad772200117e0c64c81befded1741d4b554f297a0c8bfe1cb",
+      "verified": true
+    },
+    {
+      "local": "open_without_images/adapter/adapter_model.safetensors",
+      "remote": "models/bielik15/all-papers-v2/open_without_images/adapter/adapter_model.safetensors",
+      "bytes": 32268584,
+      "sha256": "0dd55d0de2910ca327a6f42fdc6ca970160e6de083a1ba8c5dd742183dedefef",
+      "verified": true
+    },
+    {
+      "local": "open_without_images/adapter/adapter_config.json",
+      "remote": "models/bielik15/all-papers-v2/open_without_images/adapter/adapter_config.json",
+      "bytes": 1141,
+      "sha256": "5f10beb63618d9dad772200117e0c64c81befded1741d4b554f297a0c8bfe1cb",
+      "verified": true
+    },
+    {
+      "local": "open_with_images/adapter/adapter_model.safetensors",
+      "remote": "models/bielik15/all-papers-v2/open_with_images/adapter/adapter_model.safetensors",
+      "bytes": 32268584,
+      "sha256": "196a3b481e7a948cdd318112a17ad509aa589b5a1c63d00a657c2e994385832d",
+      "verified": true
+    },
+    {
+      "local": "open_with_images/adapter/adapter_config.json",
+      "remote": "models/bielik15/all-papers-v2/open_with_images/adapter/adapter_config.json",
+      "bytes": 1141,
+      "sha256": "5f10beb63618d9dad772200117e0c64c81befded1741d4b554f297a0c8bfe1cb",
+      "verified": true
+    },
+    {
+      "local": "closed_without_images/adapter/adapter_model.safetensors",
+      "remote": "models/bielik15/all-papers-v2/closed_without_images/adapter/adapter_model.safetensors",
+      "bytes": 32268584,
+      "sha256": "ebdb1f66680eb3bd3217552a07cc9632ace1d76fe30c288455713778bcb42b4e",
+      "verified": true
+    },
+    {
+      "local": "closed_without_images/adapter/adapter_config.json",
+      "remote": "models/bielik15/all-papers-v2/closed_without_images/adapter/adapter_config.json",
+      "bytes": 1141,
+      "sha256": "5f10beb63618d9dad772200117e0c64c81befded1741d4b554f297a0c8bfe1cb",
+      "verified": true
+    }
+  ]
+}
