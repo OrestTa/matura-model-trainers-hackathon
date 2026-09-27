@@ -1,51 +1,66 @@
-# Smallest model and Biggest improvement: state before the freeze (27.09 08:45 CEST)
+# Final entry for all three categories (27.09 10:30 CEST)
 
-Owner: Claude thread "Take over Codex tracks" (Orest 08:33 CEST: Codex is out of usage, Claude runs all three
-tracks; Codex and the Grok bot do nothing further). Codex's own work: none found in this repo (no Codex commits);
-GPU box inventory requested, results/codex-inventory/ when it lands.
+**Decision (Orest, 10:26 CEST, "Best of both"):** one project, Gemma 4 12B QAT (7.15 GB, no fine-tune), enters
+**Best exam score**, **Smallest model passing 35%** and **Biggest improvement**. Every Bielik candidate is dropped.
+The models we tried below were all graded blind by Claude on the January 2026 mock (probny-2026-01, 60 points,
+official CKE key, pictures viewed, essay under 300 words = 0).
 
-Codex's result (screenshot from Orest, 08:35 CEST; files not in repo, project files or HF): Bielik-1.5B Q8_0
-+ OCR/router 11/60 (1.709 GB) -> + five clean-v3 adapters 13/60 = 21.7% (1.789 GB). Below 35%, and the +2 is
-within grading noise ("0-3 points" by Codex's own note). Not used for either track.
-
-**Decision (08:50 CEST, Orest: take over, don't wait):** smallest = Bielik-4.5B FP8; improvement = Gemma 4 12B
-bare vs our harness.
-
-## Biggest improvement (proposed: same Gemma 4 12B, bare vs our exam harness)
-
-| | Base (untouched) | Ours | Delta |
+| Category | Entry | Size | Evidence |
 |---|---|---|---|
-| Model file | `google/gemma-4-12B-it-qat-q4_0-gguf` + mmproj, 7.16 GB | same file, no LoRA | size 0 |
-| Setup | plain request, thinking off (`--mode raw --model gemma4-12b`) | `--mode subtype --model gemma4-12b-exam`, essay plan + best of 3 | |
-| Held-out May 2023-26, Claude-graded, pictures viewed | **123/240** (33/29/33/28), g4r0 | **163/240** (38/44/39/42), stage-heldout | **+40 = +16.7 pp** |
+| Best exam score | Gemma 4 12B QAT, our stage harness (`--mode subtype`, essay plan + best of 3) | 7.15 GB | 163/240 held-out, 38–43/60 mock |
+| Smallest model ≥35% | same project | 7.15 GB | no smaller model reached 21/60 (table below) |
+| Biggest improvement | same project; base = same file, plain exam prompt, thinking on | 7.15 GB | mock 32/60 → 38–43/60 = **+10 to +18 pp** |
 
-Source: results/judged/TABLE.md rows g4r0 and stage-heldout (same grader, same grading rules). The older
-figure 126/240 (FINDINGS 20:15, EXAM_DAY_BEST_SCORE.md) is the first grading, before pictures were viewed; under it
-the thinking-on base was 169, not 163. Use 123 vs 163 (both corrected grading).
-Caveat to state honestly: the gain comes from the harness (turning on 2k-token thinking, per-type prompts, essay
-plan + best of 3), not from training. The rules allow "fine-tune, harness, or both".
-HF: no new weights; the model is the same file as the best-score entry (orestta/matura-gemma4-12b-best-score).
+Base run for the improvement category: `python scripts/run_exam.py final/ --model gemma4-12b-exam --mode raw
+--concurrency 16 -o answers-base.json` (same server as the best-score run; 322 s on the mock, 0 blank).
+Details and form fields: [SUBMISSION.md](SUBMISSION.md).
 
-Stage (after the best-score run, same server restarted with the base key):
-```bash
-ADAPTERS=/nonexistent bash scripts/serve_exam.sh gemma4-12b &
-python scripts/run_exam.py final/ --model gemma4-12b --mode raw --concurrency 16 -o answers-base.json
-python scripts/check_submission.py answers-base.json final/
-```
-The trained answers are the best-score track's answers.json (same run, no second pass).
+## Biggest improvement: Gemma 4 12B, plain vs our harness (mock, five categories)
 
-Missing before the freeze: one smoke of the base command on the mock package (check_submission OK).
+| Category | Plain Gemma, thinking on (base) | Ours: rehearsal | Δ | Ours: final e2e | Δ |
+|---|---|---|---|---|---|
+| Closed /7 | 2 | 3 | +1 | 3 | +1 |
+| Open /38 | 23 | 29 | +6 | 29 | +6 |
+| Essay /15 | 7 | 11 | +4 | 6 | −1 |
+| Text only /18 | 11 | 13 | +2 | 13 | +2 |
+| With pictures /27 | 14 | 19 | +5 | 19 | +5 |
+| **Total /60** | **32 (53.3%)** | **43 (71.7%)** | **+18.3 pp** | **38 (63.3%)** | **+10.0 pp** |
 
-## Smallest model passing 35% (current entry: Bielik-4.5B FP8)
+Sources: results/judged/b15-probny/gemma-raw (base, cc1beca), results/judged/matura-judge-claude-stage-rehearsal-probny,
+results/judged/matura-judge-claude-final-e2e-probny. The two harness runs are the same setup; the gap is the essay
+(run-to-run noise). Why thinking on is the base: it is the model's default and the fairer comparison (Orest). With
+thinking off the base is lower (held-out 123/240 vs 163), so the gain would look bigger than it is.
+On the four held-out papers the harness equals the thinking-on base (163 vs 163); the mock gain comes from open
+questions and pictures, which held-out does not confirm. State this honestly if asked.
 
-| Item | State |
-|---|---|
-| Model | `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic` (public HF, unchanged), key `bielik-4.5b-fp8` |
-| Size on disk | 4.90 GB (to re-measure on the box) |
-| Score | 24/60 = 40.0% on May 2023 (Claude-graded, pictures as Tesseract OCR text); Sol 48.3%, Grok 46.7% |
-| Harness | `serve_exam.sh bielik-4.5b-fp8` + `run_exam.py --model bielik-4.5b-fp8` (OCR on) |
-| Tested end to end | **no**: the exact command has never run on the box |
-| Needs on the box before offline | vLLM that loads FP8, `tesseract-ocr tesseract-ocr-pol`, the weights downloaded |
-| Smaller candidates | Bielik-1.5B FP8 18.3% (Sol), Qwen3-4B Q3_K_M 22% / 19.4% with OCR: all below 35% |
+## Dropped candidates (mock, five categories)
 
-Missing before the freeze: download + size check, one smoke on the mock package, check_submission OK.
+| Model / setup | Size | Closed /7 | Open /38 | Essay /15 | Text only /18 | Pictures /27 | Total /60 | Why dropped |
+|---|---|---|---|---|---|---|---|---|
+| Bielik-1.5B Q8_0 bare | 1.70 GB | 2 | 7 | 0 | 5 | 4 | 9 | below 35% |
+| Bielik-1.5B + our harness + OCR | 1.71 GB | 1 | 8 | 0 | 6 | 3 | 9 | no gain over bare |
+| Bielik-1.5B + our harness, no OCR | 1.70 GB | 1 | 7 | 0 | 5 | 3 | 8 | worse than bare |
+| Bielik-1.5B + our harness, per-type (subtype) | 1.71 GB | 1 | 5 | 0 | 2 | 4 | 6 | worse than bare |
+| Bielik-1.5B + OCR/router, no adapters | 1.71 GB | 2 | 6 | 0 | 5 | 3 | 8 | worse than bare |
+| Bielik-1.5B + our b15-v1 adapters | 1.79 GB | 2 | 6 | 0 | 5 | 3 | 8 | training gives no gain |
+| Bielik-1.5B + Codex clean-v3 adapters | 1.79 GB | | | 0 | | | 6 | training gives no gain |
+| Bielik-1.5B + Codex all-papers adapters (trained on this mock) | 1.79 GB | | | 0 | | | 5 | trained on the test; still worse |
+| Bielik-4.5B Q8_0 + OCR, simple prompt | 5.06 GB | 2 | 11 | 0 | 9 | 4 | 13 | below 35% (21/60) |
+| Bielik-4.5B + OCR, our harness | 5.06 GB | 1 | 9 | 1 | 8 | 2 | 11 | below 35% |
+| Bielik-4.5B + OCR, our harness, subtype | 5.06 GB | 2 | 10 | 0 | 8 | 4 | 12 | below 35% |
+| Gemma 4 E4B (Q4 5.21 GB, Q2 4.21 GB) | 4.2–5.2 GB | | | | | | not run | dropped at 09:40 CEST to keep the GPU for the final runs |
+
+Empty cells: the per-category split was not computed for those arms; totals are from their claude_score.json.
+Sources: results/judged/b15-probny/README.md and `<arm>/claude_score.json` (9bc74e5); answers in results/b15/.
+
+**Why Bielik-1.5B fails:** the model lacks the history knowledge. Its essay on the Vasa dynasty names Stanisław August
+Poniatowski as a Vasa king and dates the end of serfdom to 1724, and it writes bullet lists instead of prose. The
+essay scored 0/15 in every version: length guard (468 and 716 words, but printed twice or looping), anti-repetition
+sampling (243 words), writing it in parts (995 words, two topics mixed, >5 serious errors). No harness, OCR, voting
+or adapter setup beat the bare 9/60, so its best improvement is 0.
+
+**Why Bielik-4.5B fails:** best 13/60 = 21.7%, below the 35% bar (21/60) in every setup. An earlier 40% on
+May 2023 (FP8, OCR text) was not reproduced on the mock with the same grading.
+
+**Codex's result** (screenshot, 08:35 CEST): Bielik-1.5B + OCR/router 11/60 → + clean-v3 adapters 13/60. Under our
+grading the same arms scored 8 and 6.

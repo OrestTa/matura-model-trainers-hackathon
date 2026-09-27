@@ -5,6 +5,25 @@ Setting for every run below: thinking on at 2k (`gemma4-12b-think`), raw exam pr
 to the model (fine-tune evals also with `THINK_FALLBACK=1`). Primary grade: Claude against the CKE klucz. Second opinion: Sol.
 Held-out papers only (May 2023–2026), never used in training.
 
+
+## Final entry for all three categories (27.09 10:30 CEST)
+
+One Gemma 4 12B project (7.15 GB, no fine-tune) enters Best exam score, Smallest model passing 35% and Biggest
+improvement (Orest, 10:26 CEST). Jan 2026 mock, Claude-graded blind:
+
+| Category | Plain Gemma, thinking on (base) | Ours: rehearsal | Ours: final e2e |
+|---|---|---|---|
+| Closed /7 | 2 | 3 (+1) | 3 (+1) |
+| Open /38 | 23 | 29 (+6) | 29 (+6) |
+| Essay /15 | 7 | 11 (+4) | 6 (−1) |
+| Text only /18 | 11 | 13 (+2) | 13 (+2) |
+| With pictures /27 | 14 | 19 (+5) | 19 (+5) |
+| **Total /60** | **32** | **43 (+18.3 pp)** | **38 (+10.0 pp)** |
+
+Held-out May 2023–2026: harness 163/240 = thinking-on base 163 (thinking-off base 123). Dropped: Bielik-1.5B (best
+9/60, no setup beat bare), Bielik-4.5B (best 13/60, below 35%), Gemma 4 E4B (not run). Full tables and reasons:
+[TRACKS_SMALL_AND_IMPROVEMENT.md](TRACKS_SMALL_AND_IMPROVEMENT.md).
+
 ## May 2023, the deck's five categories
 
 | Category | Deck (bf16 24 GB) | Deck's answers, our judge | Base (ours, 7.16 GB) | Shipped: stage path (27.09) |

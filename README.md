@@ -1,6 +1,11 @@
 # Matura model trainers: question router
 
-## Our final entry (Best exam score), in short
+## Our final entry (all three categories), in short
+
+- **Categories:** one project, the same Gemma 4 12B file, enters **Best exam score**, **Smallest model passing 35%**
+  (7.15 GB; no smaller model we tried reached 35%) and **Biggest improvement** (base = the same file with the plain
+  exam prompt and thinking on: 32/60 on the Jan 2026 mock vs 38–43/60 with our harness, +10 to +18 pp). Bielik-1.5B
+  (best 9/60) and Bielik-4.5B (best 13/60) were dropped. Tables: [docs/TRACKS_SMALL_AND_IMPROVEMENT.md](docs/TRACKS_SMALL_AND_IMPROVEMENT.md).
 
 - **Winning model:** Gemma 4 12B QAT, `google/gemma-4-12B-it-qat-q4_0-gguf` (q4_0 GGUF + mmproj vision
   projector), **7.15 GB**, **no fine-tune**. Harness: this repo at `007fb17` or later. Exact copy of the files:
