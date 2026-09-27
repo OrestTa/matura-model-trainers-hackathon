@@ -114,6 +114,35 @@ models:
     parallel: 8
     ctx_per_slot: 24576
     extra_body: {chat_template_kwargs: {enable_thinking: true}}
+  # Smallest-model candidate (27.09 takeover): Gemma 4 E4B QAT, reads pictures itself, same exam settings
+  # as gemma4-12b-exam. 4.22 GB model + 0.99 GB mmproj = 5.21 GB.
+  gemma4-e4b-exam:
+    hf_id: unsloth/gemma-4-E4B-it-qat-GGUF
+    gguf_file: gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf
+    mmproj_file: mmproj-F16.gguf
+    vision: true
+    server: llamacpp
+    params_b: 8.0
+    disk_gb: 5.21
+    gpu_gb: 20
+    think_tokens: 2000
+    parallel: 8
+    ctx_per_slot: 24576
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
+  # Same, 2-bit QAT: 3.22 + 0.99 = 4.21 GB (smaller than Bielik-4.5B Q8_0 5.06 GB).
+  gemma4-e4b-q2-exam:
+    hf_id: unsloth/gemma-4-E4B-it-qat-GGUF
+    gguf_file: gemma-4-E4B-it-qat-UD-Q2_K_XL.gguf
+    mmproj_file: mmproj-F16.gguf
+    vision: true
+    server: llamacpp
+    params_b: 8.0
+    disk_gb: 4.21
+    gpu_gb: 19
+    think_tokens: 2000
+    parallel: 8
+    ctx_per_slot: 24576
+    extra_body: {chat_template_kwargs: {enable_thinking: true}}
   # The organisers' deck budgets: up to 8,192 thinking tokens per answer, 16,384 for the essay
   # (46/60 on May 2023, no empty answers). 8 slots of 24k tokens.
   gemma4-12b-think8k:
