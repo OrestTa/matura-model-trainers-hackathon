@@ -60,3 +60,13 @@ Across batches 2–4, base is always last; bo3plan and ragplan are +9 to +13 ove
 | ragbo3plan | 72 | 19 |
 
 ragbo3plan vs bo3plan: 5 topics won, 5 lost, 2 tied. +3/150 is within batch noise, so it does not clearly beat bo3plan.
+
+## Batch 6: essay-bo5plan (E9: plan + best of 5) against base and bo3plan (3 graders, blind)
+
+| Arm | Batch 6 /150 | Formula 2023 only /30 | Topics won / lost / tied vs bo3plan |
+|---|---|---|---|
+| base | 61 | 15 | |
+| bo3plan (shipped) | 69 | 17 | - |
+| bo5plan | 71 | 18 | 3 / 2 / 7 |
+
+bo5plan is +2/150 over bo3plan, which is within batch noise (5–10 between batches). It also generates 5 essays instead of 3. Keep bo3plan.
