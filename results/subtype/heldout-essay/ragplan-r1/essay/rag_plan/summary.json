@@ -1,0 +1,28 @@
+{
+  "n": 4,
+  "scored": 0,
+  "errors": 0,
+  "earned": 0.0,
+  "max": 0.0,
+  "pct": null,
+  "pct_text_only": null,
+  "pct_all_rows": 0.0,
+  "decision_acc": null,
+  "unscored": 4,
+  "routing_accuracy": 100.0,
+  "latency_p50_s": 94.243,
+  "wall_s": 0.0,
+  "by_category": {
+    "essay": {
+      "n": 4,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    }
+  },
+  "model": "gemma4-12b-think",
+  "mode": "essay/rag_plan",
+  "papers": "heldout",
+  "empty": 0
+}
