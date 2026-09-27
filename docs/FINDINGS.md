@@ -3,6 +3,11 @@
 Shared log for every bot and person on this repo. Newest first, dated, one short entry per finding.
 Pull before you add, commit straight to main.
 
+## 2026-09-27 08:12 CEST · SD1 result; SDALL stopped for the submission deadline
+
+- SD1 was the fixed recipe: thinking on, only real CKE past papers, essays written by the base. On the 4 held-out papers it scored 155/240 against the base's 163/240. On non-essay items it ties the base (−2). Details in `docs/LORA_ROOT_CAUSE.md`. It is not shipped.
+- SDALL was the overfit test Orest asked for at 07:58 CEST: the SD1 recipe with the May 2023–2026 papers added to training. It was stopped at 08:12 CEST, during the build of its training answers, because Orest set the final-submission deadline at 08:40 CEST. **No SDALL adapter or score exists.** Its recipe is in `infra/forgehand/local/sdall_chain.sh` (`--include-held-out`, `results/sdall_heldout_ids.txt`). The logs are in `results/sdall-l40s/` if the GPU box committed them.
+
 ## 2026-09-26 22:50 CEST · Modal: what broke, and the credit is gone
 
 - **Modal's free credit is used up** ($30 of $30 this month, $0.47 billed); the workspace is disabled and refuses new
