@@ -9,9 +9,9 @@ If the SDALL run beats it later, Orest decides whether to swap; until then this 
 | Upstream | `google/gemma-4-12B-it-qat-q4_0-gguf` @ `29d097773436b69ff9feafd636ab4cf873786537` (Apache-2.0) |
 | Our copy | https://huggingface.co/orestta/matura-gemma4-12b-best-score (private; uploaded 27.09 08:11 CEST, sha256 on HF match the table below) |
 | Size | 7,150,994,912 bytes = **7.15 GB** (limit 8.0 GB base / 8.8 GB all models summed) |
-| Harness | this repo at commit `c87a484` (tag `best-score-candidate` to be pushed by Orest: `git tag best-score-candidate c87a484 && git push origin best-score-candidate`); `run_exam.py --model gemma4-12b-exam --mode subtype` |
+| Harness | this repo at commit `007fb17` or later main (adds, after c87a484: the essay's printed plan is stripped from the answer, and the essay settings are defaults in configs/subtypes.yaml; tag `best-score-candidate` to be pushed by Orest on the final commit); `run_exam.py --model gemma4-12b-exam --mode subtype` |
 | Held-out May 2023–2026 | **163/240 (67.9%)**: 38 / 44 / 39 / 42 |
-| Practice paper Jan 2026 | **43/60** (plain base: 37) |
+| Practice paper Jan 2026 | **43/60** dress rehearsal (964c246), **38/60** final end-to-end run on fresh main 38725cd (5b9f270); plain base 37. The 5-point gap between the two runs of the same setup is run-to-run noise (essay 11 vs 9) |
 
 | File | sha256 |
 |---|---|

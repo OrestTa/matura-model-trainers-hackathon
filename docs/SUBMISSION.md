@@ -3,7 +3,7 @@
 Form: https://warsawmodeltrainers.dev/submissions.html?exam=final (read 07:55 CEST, incl. its
 `submissions.mjs` and `submission-validation.mjs`). **Nothing has been submitted.**
 
-The model and harness entered: **[docs/BEST_SCORE_CANDIDATE.md](BEST_SCORE_CANDIDATE.md)** (commit `c87a484`).
+The model and harness entered: **[docs/BEST_SCORE_CANDIDATE.md](BEST_SCORE_CANDIDATE.md)** (harness: main at `007fb17` or later).
 
 ## How the form works
 
@@ -66,7 +66,7 @@ base (best: SD1 155/240), so none is shipped. So the expected improvement over t
 ## Orest's steps, in order
 
 1. Make the repo public (GitHub > Settings > Danger zone > Change visibility), or give the jury read access.
-2. Push the tag: `git tag best-score-candidate c87a484 && git push origin best-score-candidate`.
+2. Push the tag on the final main commit: `git pull && git tag best-score-candidate && git push origin best-score-candidate`.
 3. Cancel all Nebius jobs in the Nebius console (our IAM token expired, so no agent can do it).
 4. On warsawmodeltrainers.dev "Update team", change the base model from Qwen/Qwen2.5-3B-Instruct to
    `google/gemma-4-12B-it-qat-q4_0-gguf`.
