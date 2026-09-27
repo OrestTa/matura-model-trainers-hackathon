@@ -78,6 +78,7 @@ def decision(out,spec):
 
 def report(out,items,manifest):
     result={'protocol':PROTOCOL,'policy_sha256':policy_hash(),'measurement_kind':'training_set',
+            'candidate_model':'Bielik-1.5B-v3.0-Instruct','quantization':'Q8_0',
             'training_exposure':POLICY['training_exposure'],
             'base_aggregate_bytes':manifest.get('base_aggregate_bytes'),'trained_aggregate_bytes':manifest.get('trained_aggregate_bytes'),
             'model_requested':'gpt-6-luna',
@@ -103,7 +104,7 @@ def report(out,items,manifest):
         result['runs'].append({'label':arm['label'],'max_points':60,'confirmed':resolved,
              'confirmed_points':lower if resolved else None,'confirmed_percent':100*lower/60 if resolved else None,
              'provisional_points':sum(v['provisional_points'] or 0 for v in verdicts),
-             'lower':lower,'upper':upper,'resolved_items':sum(v['resolved'] for v in verdicts),
+             'lower':lower,'upper':upper,'lower_percent':100*lower/60,'upper_percent':100*upper/60,'resolved_items':sum(v['resolved'] for v in verdicts),
              'threshold_at_least35':('confirmed_pass' if lower>=21 else 'confirmed_fail') if resolved else ('bound_proves_pass_not_exact' if lower>=21 else 'bound_proves_fail_not_exact' if upper<21 else 'unresolved'),
              'categories':categories,'items':verdicts})
     if len(result['runs'])==2:
@@ -111,11 +112,11 @@ def report(out,items,manifest):
         result['paired_delta_points']=trained['confirmed_points']-base['confirmed_points'] if base['confirmed'] and trained['confirmed'] else None
         result['paired_delta_bounds']=[trained['lower']-base['upper'],trained['upper']-base['lower']]
     write(out/'report.json',result)
-    lines=['# Fresh matched Luna v5 evaluation','', 'Training-set measurement: all36 canonical nonessay tasks were exposed in training. Five other official essay exemplars were used. No claim of held-out generalization.','', '| Arm | Exact points | Bounds /60 | Resolved items |','|---|---:|---:|---:|']
-    for run in result['runs']:lines.append(f"| {run['label']} | {run['confirmed_points']} | {run['lower']}–{run['upper']} | {run['resolved_items']}/37 |")
-    lines+=['','| Arm/category | Exact | Bounds | Maximum |','|---|---:|---:|---:|']
+    lines=['# Fresh matched Luna v5 evaluation','', 'Training-set measurement: all36 canonical nonessay tasks were exposed in training. Five other official essay exemplars were used. No claim of held-out generalization.','', '| Arm | Exact points | Bounds /60 | Bounds % | Resolved items |','|---|---:|---:|---:|---:|']
+    for run in result['runs']:lines.append(f"| {run['label']} | {run['confirmed_points']} | {run['lower']}–{run['upper']} | {run['lower_percent']:.2f}–{run['upper_percent']:.2f}% | {run['resolved_items']}/37 |")
+    lines+=['','| Arm/category | Exact | Bounds | Maximum | Bounds % |','|---|---:|---:|---:|---:|']
     for run in result['runs']:
-        for name,c in run['categories'].items():lines.append(f"| {run['label']} / {name} | {c['confirmed_points']} | {c['lower']}–{c['upper']} | {c['max_points']} |")
+        for name,c in run['categories'].items():lines.append(f"| {run['label']} / {name} | {c['confirmed_points']} | {c['lower']}–{c['upper']} | {c['max_points']} | {c['lower_percent']:.2f}–{c['upper_percent']:.2f}% |")
     lines+=['',f"Matched exact delta: {result.get('paired_delta_points')} points; bounds {result.get('paired_delta_bounds')}.",'','Ania reference: Bielik1.5 15/55 (27.27%), closed5/11, open9/29, essay1/15. Five-way split unavailable; different adapted inputs/denominator, so no comparable delta.','', 'Confirmed means complete rubric decisions under this protocol, not proof of judge infallibility. Unresolved marks remain unresolved after the single predeclared clarification.']
     (out/'report.md').write_text('\n'.join(lines)+'\n')
     return result
