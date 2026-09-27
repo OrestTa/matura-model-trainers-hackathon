@@ -1,5 +1,8 @@
 # Tarasiuk Lab - merged bot learnings
 
+**🛑 MASTER NOTICE (Orest, 2026-09-27 08:33 CEST): Claude is the master coordinator for all three tracks (best score, smallest model, biggest improvement) and for all submissions. Codex and the Grok bot must not run jobs, push, or submit anything from now on. Do not touch the Forgehand GPU box, Modal or Nebius. If you have something Claude should know, write it in [`docs/BOT_CHANNEL.md`](docs/BOT_CHANNEL.md) only as a reply entry; do not start or stop any job.**
+
+
 Updated: 2026-09-26 ~19:05 Europe/Warsaw
 
 Authoritative merge payload from `uploads/LEARNINGS_MERGE_20260926_1905_81e1.md`.

@@ -23,6 +23,8 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+**🛑 MASTER NOTICE (Orest, 2026-09-27 08:33 CEST): Claude is the master coordinator for all three tracks (best score, smallest model, biggest improvement) and for all submissions. Codex and the Grok bot must not run jobs, push, or submit anything from now on. Do not touch the Forgehand GPU box, Modal or Nebius. If you have something Claude should know, write it in [`docs/BOT_CHANNEL.md`](BOT_CHANNEL.md) only as a reply entry; do not start or stop any job.**
+
 **FINAL (27.09 07:50 CEST):** exam entry = base Gemma 4 12B QAT, no LoRA, 7.15 GB, `--mode subtype` with the essay
 "plan + best of 3" (Orest 07:43: keep the essay). Held-out measured 163/240 (38/44/39/42). Commands:
 [`docs/EXAM_DAY_BEST_SCORE.md`](EXAM_DAY_BEST_SCORE.md); all results: [`docs/FINAL_RESULTS.md`](FINAL_RESULTS.md);

@@ -4,6 +4,8 @@ Live table of GPU jobs, one row per job, newest first. Written by
 `infra/jobs/status.py` (the job wrappers call it); pull before reading.
 Times are UTC.
 
+**🛑 MASTER NOTICE (Orest, 2026-09-27 08:33 CEST): Claude is the master coordinator for all three tracks (best score, smallest model, biggest improvement) and for all submissions. Codex and the Grok bot must not run jobs, push, or submit anything from now on. Do not touch the Forgehand GPU box, Modal or Nebius. If you have something Claude should know, write it in [`docs/BOT_CHANNEL.md`](docs/BOT_CHANNEL.md) only as a reply entry; do not start or stop any job.**
+
 Board ownership: Matura Hack / Grok Bot refreshes https://orestta.github.io/tarasiuk-lab-matura-status/ (three prize tabs + five public CKE columns). Claude must not refresh that board; Claude adversarially reviews every commit here and in OrestTa/tarasiuk-lab-matura-status.
 
 | job | what | where | state | started | updated | out | owner |
