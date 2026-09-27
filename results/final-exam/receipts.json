@@ -1,0 +1,48 @@
+{
+ "readiness_confirmed_at": "2026-09-27T08:32:16Z",
+ "receipts": [
+  {
+   "id": "c8ce68a7-c99d-45cf-bd61-f8b8089478ce",
+   "models": [
+    {
+     "name": "google/gemma-4-12B-it-qat-q4_0-gguf",
+     "quantization": "Q4_0 QAT GGUF + mmproj vision projector, 7.15 GB on disk"
+    }
+   ],
+   "status": "awaiting_grading",
+   "exam_id": "history-synthetic-c-v4",
+   "categories": [
+    "best-score",
+    "smallest"
+   ],
+   "blank_count": 0,
+   "answer_count": 37,
+   "submitted_at": "2026-09-27T08:49:08.396154+00:00",
+   "registered_at": "2026-09-27T08:49:08.400762+00:00",
+   "project_entry_id": "c9c8ca84-2321-4e71-8294-45d43e12894d",
+   "improvement_entered": false,
+   "baseline_submission_id": null
+  },
+  {
+   "id": "ea11a552-36b9-488a-8d8d-dda215886265",
+   "models": [
+    {
+     "name": "google/gemma-4-12B-it-qat-q4_0-gguf",
+     "quantization": "Q4_0 QAT GGUF + mmproj vision projector, 7.15 GB on disk"
+    }
+   ],
+   "status": "awaiting_grading",
+   "exam_id": "history-synthetic-c-v4",
+   "categories": [
+    "improvement"
+   ],
+   "blank_count": 0,
+   "answer_count": 37,
+   "submitted_at": "2026-09-27T08:49:25.979909+00:00",
+   "registered_at": "2026-09-27T08:49:25.982625+00:00",
+   "project_entry_id": "8581b663-9afb-49b9-a407-50f63b618f77",
+   "improvement_entered": true,
+   "baseline_submission_id": "af792de2-20ee-4301-8309-ef8cc8aa9f1c"
+  }
+ ]
+}
