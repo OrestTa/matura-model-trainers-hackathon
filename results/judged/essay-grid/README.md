@@ -49,3 +49,14 @@ ragplan beats base on 8 of 12 topics, ties 1 and loses 3. On both formula-2023 p
 | bo3plan_noguard (E6) | 65 | 16 | 7 / 1 |
 
 Across batches 2–4, base is always last; bo3plan and ragplan are +9 to +13 over base; dropping the length target costs about 5.
+
+## Batch 5: essay-ragbo3plan (E8: fact sheets + Wikipedia + plan + best of 3) against base, bo3plan, ragplan (4 graders, blind)
+
+| Arm | Batch 5 /150 | Formula 2023 only /30 |
+|---|---|---|
+| base | 63 | 13 |
+| bo3plan | 69 | 17 |
+| ragplan | 70 | 17 |
+| ragbo3plan | 72 | 19 |
+
+ragbo3plan vs bo3plan: 5 topics won, 5 lost, 2 tied. +3/150 is within batch noise, so it does not clearly beat bo3plan.
