@@ -14,3 +14,12 @@ Picture items get tesseract `pol` OCR text first (except `bare`). One LoRA per r
 
 Essays under 300 words score 0 under the CKE rule. Not graded yet. Training data is not committed.
 scripts/: train_b15.py = Codex's train_bielik_real_native.py with only the reserved-year guard (now our 5 held-out papers) and the GPU cap changed.
+
+## Essay length guard (answers-guard.json, 09:09 CEST)
+Only the essay item (27) re-run: 2400 tokens, then up to 3 "continue" turns until ≥350 words (scripts/b15guard.py). All other answers unchanged. check_submission OK for all three.
+
+| arm | essay words by round |
+|---|---|
+| base | 237 → 466 |
+| ours | 1078 (one turn) |
+| allpapers | 206 → 473 |
