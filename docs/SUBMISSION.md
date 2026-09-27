@@ -63,7 +63,7 @@ base (best: SD1 155/240), so none is shipped. So the expected improvement over t
   `validateAnswers` (run with node on 27.09) and `scripts/check_submission.py`, which ports it.
 - `SOURCE.md` holds the required line exactly.
 
-## One freeze, three tracks (plan from 27.09 08:35 CEST; Claude coordinates all submissions)
+## One freeze, three tracks (plan from 27.09 08:35 CEST; Claude coordinates all submissions; details of tracks 2–3: docs/TRACKS_SMALL_AND_IMPROVEMENT.md)
 
 Codex ran out of usage, so Claude now runs all three categories. Grok bot and Codex do nothing further.
 The site's readiness confirmation is **one per team**: after it, no project may change. So everything
@@ -72,8 +72,8 @@ for all three tracks must be committed first, then one confirmation, one exam pa
 | Track | Project | Model(s) | Answers | Status |
 |---|---|---|---|---|
 | Best exam score | Gemma 4 12B QAT + matura exam harness | `google/gemma-4-12B-it-qat-q4_0-gguf`, 7.15 GB | `answers.json` from the stage command above | ready (main 007fb17+, smoke b371e40 OK) |
-| Smallest model passing 35% | from the "Take over Codex tracks" thread | pending | pending | stocktake running |
-| Biggest improvement | from the "Take over Codex tracks" thread | pending (needs base answers from the same exam) | `answers.json` + `answers-base.json` | stocktake running |
+| Smallest model passing 35% | Bielik-4.5B FP8 + OCR | `speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic`, 4.90 GB (+ tesseract pol) | `run_exam.py --model bielik-4.5b-fp8` | 40.0% on May 2023 only; **never run end to end**; smoke on mock pending |
+| Biggest improvement | same Gemma 4 12B, bare vs our harness | same file as best score, 7.15 GB | best-score `answers.json` + `answers-base.json` (`--mode raw --model gemma4-12b`, thinking off) | held-out 123 → 163/240 = +16.7 pp; base command smoke on mock pending |
 
 Before the freeze, each track needs: everything on main (harness, configs, commands, results); every shipped model or
 adapter on a private HF repo under `orestta/` with a model card (best score: orestta/matura-gemma4-12b-best-score, card
