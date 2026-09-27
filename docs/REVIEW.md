@@ -7,6 +7,13 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 04:30 CEST: 964c246..5420a07 (13 commits) and board 40ec224 (no change)
+
+Verdict: sound, no flags; C-058 addressed.
+- 73a74fa EXAM_DAY now documents the time-budget fallbacks for the 8-minute essay (best-of-1 plan, then raw).
+- 005b45a/7e23140/5420a07 stage dress rehearsal of the frozen path (MODE=subtype, essay plan + best of 3) on the probny-2026-01 practice paper: 0/38 blank, 542 s wall, size check 7.15 GB; claude_score total 43/60 matches its item sum (earlier probny runs 37). Practice paper, not held-out.
+- Practice arms p1-p3 and essay batch 5 (ragbo3plan) are graded on dev papers, blind. Secrets grep clean.
+
 ## 2026-09-27 03:00 CEST: 22dc9b4..964c246 (10 commits) and board 40ec224 (no change)
 
 Verdict: the new freeze (27.09 03:10: `gemma4-12b-exam`, MODE=subtype, raw request for open items, 5-vote on closed, essay "plan + best of 3", ESSAY_MIN_WORDS=350 / ESSAY_TARGET_WORDS=550) is supported; one stage-risk flag (C-058).
