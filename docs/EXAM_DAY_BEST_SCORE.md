@@ -4,8 +4,9 @@ The exact on-stage path for our best-score entry. Owner: thread "Win best matura
 Status: **FROZEN 27.09 03:10 CEST: base Gemma 4 12B QAT, no LoRA, key `gemma4-12b-exam`, `MODE=subtype`,
 `THINK_FALLBACK=1`. Open items get the exact raw 2k-thinking request that scored 163/240, closed items 5 samples with a 3-of-5 vote (Orest 22:33; same score as raw on held-out v5), and the essay gets
 "plan first, then best of 3 drafts" (`ESSAY_BEST_OF=3 ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550`, 16k thinking).**
-Held-out essays (blind, 2 runs, results/judged/heldout-essay): 71/120 vs base 56, i.e. about +7.5/240, projecting
-~170/240. The essay setup was chosen on the 12 practice essays first (4 blind batches, +9 to +13/150).
+Held-out essays (blind side-by-side, 2 runs, results/judged/heldout-essay): 71/120 vs base 56. **Measured on the full
+stage run over the four held-out papers: 163/240 (38/44/39/42), the same total as the base** (essay 29/60 vs 30 when graded
+paper by paper). The essay setup was chosen on the 12 practice essays first (4 blind batches, +9 to +13/150).
 Dress rehearsal of this exact path (rehearsal.sh, 964c246, L40S, probny-2026-01 practice paper): 0/38 blank, 542 s,
 size check 7.15 GB of 8.8 GB OK; graded 43/60 vs 37 for every earlier probny run (essay 11 vs 6–8; 7e23140).
 Previous freeze (26.09 22:30): `gemma4-12b-think`, `MODE=raw`.

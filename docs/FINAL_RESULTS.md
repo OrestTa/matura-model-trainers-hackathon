@@ -25,7 +25,7 @@ vs the deck's 46, so the judges agree; the base gap to the deck is the model (4-
 |---|---|---|---|---|---|---|---|---|---|
 | Base (g4vr) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | Sol 101 vs Claude 96 of 139 (text + essays) |
 | Shipped = base (no fine-tune beat it) | 41 | 42 | 39 | 41 | **163** | 67 | 66 | 30 | |
-| **Shipped from 27.09 03:10: raw + essay "plan, best of 3"** | | | | | **~170 projected** | 67 | 66 | 30 + ~7.5 | held-out essays 71/120 vs base 56 over 2 runs (results/judged/heldout-essay) |
+| **Shipped from 27.09 03:10: stage path (essay plan + best of 3), measured** | 38 | 44 | 39 | 42 | **163** | 66 | 68 | 29 | full stage run, graded paper by paper (results/judged/matura-judge-claude-stage-heldout); the blind side-by-side essay batch gave 71 vs 56/120, the paper-by-paper grade shows no gain |
 | Harness `--mode subtype` (no LoRA) | 38 | 45 | 40 | pending | 123 on 3 papers (base 122) | | | 23/45 (3 papers) | |
 | A1 LoRA (1 epoch) | 24 | – | – | – | – | | | 0/15 (2023) | |
 | B4m2 LoRA | 23 | – | – | – | – | | | 0/15 (2023) | |
