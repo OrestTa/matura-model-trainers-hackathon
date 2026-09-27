@@ -14,3 +14,14 @@ Answers: results/b15/<arm>/answers.json (GPU box, infer.py prompt, temp 0, 500/1
 
 Conclusion: no Bielik-1.5B setup is near 35% (21/60) and training gives no gain over the bare model. Dropped.
 Bielik-4.5B with this simple prompt is also below 35% here; rerun with our harness + essay guard pending.
+
+## Essay length guard (results/b15/{base,ours}/answers-guard.json), graded blind 09:30 CEST
+Both 0/15: base-guard 468 words but the essay is printed twice (~234 unique words, bullet list, factual errors);
+ours-guard 716 words, a loop of the same block (~150 unique words). Continuing a 1.5B essay does not make it pass.
+
+## Five categories (python results/judged/b15-probny/breakdown.py bare base ours)
+| arm | closed | open | essay | text only | with pictures | total |
+|---|---|---|---|---|---|---|
+| bare | 2/7 | 7/38 | 0/15 | 5/18 | 4/27 | 9/60 |
+| base | 2/7 | 6/38 | 0/15 | 5/18 | 3/27 | 8/60 |
+| ours | 2/7 | 6/38 | 0/15 | 5/18 | 3/27 | 8/60 |
