@@ -210,6 +210,16 @@ models:
   # Smallest-model entry for now (category 3): speakleash's own FP8 pack, 4.90 GB on disk, Claude-graded
   # 24/60 = 40.0% on May 2023 with the pictures' OCR text (results/claude-graded/official_mock/). Text model,
   # so run_exam.py --model bielik-4.5b-fp8 turns on OCR of the pictures (tesseract pol on the exam box).
+  # Smallest-model entry on llama.cpp (27.09 takeover): the same Bielik-4.5B, Q8_0 GGUF, 5.06 GB, OCR of pictures.
+  bielik-4.5b-q8:
+    hf_id: speakleash/Bielik-4.5B-v3.0-Instruct-GGUF
+    gguf_file: Bielik-4.5B-v3.0-Instruct.Q8_0.gguf
+    server: llamacpp
+    vision: false
+    ocr: true
+    params_b: 4.6
+    disk_gb: 5.06
+    gpu_gb: 7
   bielik-4.5b-fp8:
     hf_id: speakleash/Bielik-4.5B-v3.0-Instruct-FP8-Dynamic
     params_b: 4.6
