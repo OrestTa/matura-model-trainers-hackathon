@@ -55,6 +55,7 @@ May 2023 in the deck's categories (stage run vs Ania's deck, Gemma 4 12B bf16):
 | thinking above 2k (4k, 8k, 16k, 24k) | no gain; long budgets run out and leave blanks |
 | essay length guard (continue under 350 words, no plan) | −7 and −2 of 150 on practice essays |
 | RAG (offline Wikipedia 25,216 passages + 121 era fact sheets) for essays | +10 on held-out essays, less than plan + best of 3; together with best of 3, +3 over best of 3 (noise) |
+| essays, best of 5 instead of 3 | 71 vs 69 of 150 on practice essays (noise; 3 wins, 2 losses, 7 ties); keep best of 3 |
 | open questions, best of 3 | within ±2 of raw on 49 paired practice items |
 | open questions, describe the picture first | within ±2 of raw |
 | routed prompts on open picture items | +6 on a partial held-out sweep, not repeated on the full run; dropped for raw |
