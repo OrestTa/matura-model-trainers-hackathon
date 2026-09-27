@@ -1,0 +1,7 @@
+/scratch/hf/hub/models--google--gemma-4-12B-it-qat-q4_0-gguf/snapshots/29d097773436b69ff9feafd636ab4cf873786537/gemma-4-12b-it-qat-q4_0.gguf: 6.98 GB of weights, limit 8.0 GB -> OK
+SUBMISSION TOTAL (base 6.98 GB + adapters + 1 extra file(s)): 7.15 GB, limit 8.8 GB -> OK
+WARNING: no RAG knowledge base at 'data/kb/passages.jsonl' (scripts/build_kb.py or the plwiki index; set rag.path)
+adapters: none (base model only)
+llama.cpp LoRA: none
+ready: python scripts/run_exam.py <package dir> --model gemma4-12b-exam -o answers.json (in another shell)
+RAG knowledge base /scratch/smoke_e2e/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
