@@ -1,15 +1,28 @@
 # Matura model trainers: question router
 
+## Our final entry (Best exam score), in short
+
+- **Winning model:** Gemma 4 12B QAT, `google/gemma-4-12B-it-qat-q4_0-gguf` (q4_0 GGUF + mmproj vision
+  projector), **7.15 GB**, **no fine-tune**. Harness: this repo at `007fb17` or later. Exact copy of the files:
+  https://huggingface.co/orestta/matura-gemma4-12b-best-score (private; the same files as the Google repo above). Details: [docs/BEST_SCORE_CANDIDATE.md](docs/BEST_SCORE_CANDIDATE.md).
+- **Expected performance:** about 163/240 (**67.9%**) on the four held-out papers May 2023–2026, and 38–43/60
+  on the Jan 2026 practice paper (two runs of the same setup). Graded by Claude against the official CKE key, with pictures viewed.
+- **Improvement over the plain base model:** the held-out total is the **same** (163 vs 163). The essays are better when graded side by
+  side (40 vs 35 of 60, and 71 vs 56 of 120), and essays can no longer score 0 for being under 300 words.
+  On the Jan 2026 practice paper the dress rehearsal scored 43/60 vs 37 for the plain base.
+- **What we trained on:** the shipped model is not fine-tuned. Our fine-tunes (LoRA) used real CKE past papers and
+  their official keys (formuła 2015 and 2023, May 2023–2026 always excluded). The best one, SD1 (264 rows), scored
+  155/240, below the base, so none is shipped. Earlier synthetic data was dropped.
+- **What we changed vs the base model:** closed questions take a 3-of-5 vote. Essays write a plan first
+  (16k thinking tokens), then 3 drafts of 350–550 words, keep the best and remove the printed plan. A blank answer
+  is asked once more with thinking off. Open questions get the exam prompt unchanged.
+- All scores, including every rejected fine-tune: [docs/FINAL_RESULTS.md](docs/FINAL_RESULTS.md). On-stage commands:
+  [docs/EXAM_DAY_BEST_SCORE.md](docs/EXAM_DAY_BEST_SCORE.md). Form fields: [docs/SUBMISSION.md](docs/SUBMISSION.md).
+
+The rest of this README describes the per-type LoRA router we built and tried; it is not what we ship.
+
 Our entry for the Warsaw Model Trainers hackathon: a small local model (base weights ≤ 8.0 GB on disk, ≤ 8.8 GB with the fine-tuning)
 sitting the Polish history matura.
-
-**★ Best-performance candidate: [docs/BEST_SCORE_CANDIDATE.md](docs/BEST_SCORE_CANDIDATE.md)** (harness: main at `007fb17` or later).
-
-**Final submission (27.09.2026):** Gemma 4 12B QAT q4_0 GGUF + mmproj (7.15 GB), no fine-tune. None of
-our LoRA fine-tunes beat the base, so the sections below on per-type adapters describe what we tried,
-not what we ship. Exact on-stage commands: [docs/EXAM_DAY_BEST_SCORE.md](docs/EXAM_DAY_BEST_SCORE.md);
-results for base and every fine-tune: [docs/FINAL_RESULTS.md](docs/FINAL_RESULTS.md); submission form
-fields: [docs/SUBMISSION.md](docs/SUBMISSION.md).
 
 The harness classifies each exam question by type and sends it to a LoRA adapter
 fine-tuned for just that type. All adapters sit on **one shared base model**, so
