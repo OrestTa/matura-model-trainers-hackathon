@@ -258,3 +258,44 @@ Its accompanying `run.py` completed a37-item structural dry run with original
 image checksums and strict empty-answer export. This backup includes weights and
 portable Python code; host-specific CUDA/llama/Tesseract binaries remain runtime
 prerequisites, and the dry run is not measured exam accuracy.
+
+## 2026-09-27 — latest recovery inventory
+
+- Completed IQ2 answers and provenance: Mac
+  `results/small_track/20260927-qwen35-4b-iq2xxs-offline/` and VM
+  `/workspace/codex-small-track/qwen35-iq2/`. All37 answers are nonempty, with
+  zero API errors. Final SHA256:
+  `a89e748b67929c72e49454952a87fb37a4fb173bb9bd29a7a94c0ddea9e9fd8f`.
+  Exact official JSON, original/resumed source, runtime and network proofs are
+  preserved. This detailed result directory is not fully tracked in Git or
+  verified in private object storage; preserve both current copies.
+- IQ2 model and F16 projector: `/scratch/codex-qwen35-iq2/weights/`, totaling
+  2,192,640,864bytes. They are independently reproducible from pinned public
+  `unsloth/Qwen3.5-4B-GGUF` revision
+  `e87f176479d0855a907a41277aca2f8ee7a09523`, with hashes in
+  `infra/small_track/configs/qwen35-4b-iq2xxs-original-vision.json`.
+  Scratch is not a durable backup; no additional private IQ2 copy is yet verified.
+- Real clean-v3 adapters, classifier, OCR and BielikQ4: verified private HF
+  commits and complete Mac package are documented above. Model uploads exclude
+  exam PDFs, official keys, training JSONL and optimizer states.
+- Cap and clean-v3 paired outputs: Mac result directories
+  `20260926-2141-bielik15-q8-cap-only-forgehand` and
+  `20260926-2205-bielik15-q8-clean-v3-paired`, plus their owned VM directories.
+  Raw output/image archives are not guaranteed to be present in Git.
+- Policy, implementation, validation and lessons: canonical rules, dated compute
+  notes, recovery docs, versioned configs, builders and tests. Resume commit
+  `981de88`, VM-only policy `6cdf662`, completed IQ2 note `c19455c`.
+  Raw datasets remain separate artifacts: provenance hashes do not store bytes.
+
+Parent-reported Nebius shutdown audit: eu-north1 active Jobs filter returned no
+jobs; the previous eight Cancelling jobs became Cancelled. Endpoints and Devlabs
+were zero; all nine regions had no running VM, Kubernetes or container resources.
+The80GB disk is retained for recovery. No new Nebius/Modal jobs are permitted.
+This paragraph records the parent's audit, not a second independent API check.
+
+Outstanding: full IQ2 own-Luna grading is handed off but no pass is yet claimed;
+Bielik remains below the requested threshold. Raw exam/result archives and IQ2
+weights lack a verified additional private backup. Practical lessons are saved,
+but not every raw artifact is in Git or remote backup. The attempted branch push
+was blocked by automatic review citing a stale monitor restriction; no push was
+retried or bypassed, and parent completion is pending.
