@@ -1,0 +1,29 @@
+{
+  "n": 12,
+  "scored": 0,
+  "errors": 0,
+  "earned": 0.0,
+  "max": 0.0,
+  "pct": null,
+  "pct_text_only": null,
+  "pct_all_rows": 0.0,
+  "decision_acc": null,
+  "unscored": 12,
+  "routing_accuracy": 100.0,
+  "latency_p50_s": 792.451,
+  "wall_s": 0.0,
+  "by_category": {
+    "essay": {
+      "n": 12,
+      "scored": 0,
+      "earned": 0.0,
+      "max": 0.0,
+      "pct": null
+    }
+  },
+  "warning": "no held-out paper in this set: every paper here is adapter training data",
+  "model": "gemma4-12b-think8k",
+  "mode": "essay/rag_plan",
+  "papers": "dev",
+  "empty": 0
+}
