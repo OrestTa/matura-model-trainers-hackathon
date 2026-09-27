@@ -26,8 +26,11 @@ arm() { local key=$1 subs=$2 extra=$3; local s=$(date +%s); log "START sweep $ke
 arm tb4k $NONESSAY ""
 arm tb8k $NONESSAY ""
 arm te8k essay --all-essays
+bash /scratch/p_arms_inline.sh
+while [ ! -f /scratch/rehearsal_done ]; do sleep 30; done  # stage rehearsal first (harness 02:59 CEST)
 arm te16k essay --all-essays
 arm tb1k $NONESSAY ""
+touch /scratch/sd1_go; while [ ! -f /scratch/sd1_done ]; do sleep 60; done  # SD1 train+eval before te24k/tb16k (03:40 CEST)
 arm te24k essay --all-essays
 arm tb16k $NONESSAY ""
 touch /scratch/sweep_done; log "sweep done (SD1 training may start)"

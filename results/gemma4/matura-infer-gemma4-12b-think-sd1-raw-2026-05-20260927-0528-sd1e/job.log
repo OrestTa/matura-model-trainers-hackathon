@@ -1,0 +1,18 @@
+== 03:28:53 setting up
+== 03:29:08 1 GPUs, eval set /scratch/repo4/data/eval/matura_all.jsonl
+== 03:29:08 downloading gemma4-12b-think while online
+/scratch/work/venv-py312/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+/scratch/hf/hub/models--google--gemma-4-12B-it-qat-q4_0-gguf/snapshots/29d097773436b69ff9feafd636ab4cf873786537/gemma-4-12b-it-qat-q4_0.gguf
+/scratch/hf/hub/models--google--gemma-4-12B-it-qat-q4_0-gguf/snapshots/29d097773436b69ff9feafd636ab4cf873786537/mmproj-gemma-4-12b-it-qat-q4_0.gguf
+== 03:29:14 serving gemma4-12b-think offline (serve_exam.sh)
+/scratch/work/packages/2026-05: 39 items, 60 points, 32 images
+vision: True
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+retrying once with thinking off (THINK_FALLBACK=1)
+empty answer: max_tokens=4000 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+retrying once with thinking off (THINK_FALLBACK=1)
+39 answers (0 blank) -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2026-05-20260927-0528-sd1e/2026-05/try1.json; log /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2026-05-20260927-0528-sd1e/2026-05/try1.json.log.jsonl
+== 03:34:19 2026-05 attempt 1: exit 0, 0 blank
+2026-05	39	295
+== 03:34:19 done (exit 0); results in /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2026-05-20260927-0528-sd1e

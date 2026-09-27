@@ -1,0 +1,10 @@
+items per subtype: {'essay': 12}
+12 answers to make (12 items, papers=dev, shard 0/1)
+empty answer: max_tokens=18984 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+retrying once with thinking off (THINK_FALLBACK=1)
+empty answer: max_tokens=18984 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+retrying once with thinking off (THINK_FALLBACK=1)
+empty answer: max_tokens=18984 went to reasoning (finish_reason=length); turn thinking off (chat_template_kwargs.enable_thinking) or set think_tokens
+retrying once with thinking off (THINK_FALLBACK=1)
+12/12 answers, 2068s
+essay/rag_plan: 12 answers, 0 errors, 0 empty, auto-scored 0

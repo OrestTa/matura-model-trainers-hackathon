@@ -1,0 +1,135 @@
+18:12:32 START matura-infer-gemma4-12b-routed-heldout-20260926-2012-g4t1
+18:17:25 END matura-infer-gemma4-12b-routed-heldout-20260926-2012-g4t1 rc=0
+18:17:33 v2 took over after g4t1
+18:17:40 START matura-infer-gemma4-12b-think8k-raw-heldout-20260926-2017-g4k8
+18:27:04 v2 took over after g4t1
+18:27:11 START matura-infer-gemma4-12b-think8k-raw-heldout-20260926-2027-g4k8
+18:49:35 v4 took over: g4k8 stopped after 2023+2024 (22:15 hard stop)
+18:49:42 START gemma-lora-A01
+18:58:54 v4 restarted (trl chunked_nll crash fixed)
+18:59:01 START gemma-lora-A01
+19:01:19 v4 restarted (trl chunked_nll crash fixed)
+19:01:26 START gemma-lora-A01
+19:08:53 A01: train.sh hung in bare wait (tee process substitution); converting by hand
+-rw-r--r--. 1 root root 131183008 Sep 26 19:09 /scratch/work/adapters/gemma4-12b/all/adapter.gguf
+19:09:03 GGUF LoRA A01 rc=0
+19:09:03 END gemma-lora-A01
+19:09:13 v5 took over after A01 (0.1 ep = 19 steps x 7.4 s; a full epoch fits)
+19:09:20 START gemma-lora-A1
+19:33:40 END gemma-lora-A1 gguf_ok=1
+19:33:54 START matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2109-g4f1
+19:34:13 END matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2109-g4f1 rc=1
+19:34:16 HF: orestta/matura-gemma4-12b-lora-A1
+19:34:27 START matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2109-g4f2
+19:34:47 END matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2109-g4f2 rc=1
+19:34:54 CHAIN_V5_DONE
+19:41:27 v6: paused g4f1 for V1
+19:41:27 START V1
+19:41:28 V1 data: 135 rows
+-rw-r--r--. 1 root root 131183008 Sep 26 19:46 /scratch/work/adapters-V1/gemma4-12b/all/adapter.gguf
+19:46:13 V1 GGUF written
+19:46:16 HF: orestta/matura-gemma4-12b-lora-V1
+19:46:16 END V1 rc=0
+19:46:30 START matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2146-g4f1
+19:46:50 END matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2146-g4f1 rc=1
+19:47:04 START matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2146-g4f2
+19:47:24 END matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2146-g4f2 rc=1
+19:47:31 CHAIN_V6_DONE
+19:48:34 START matura-infer-gemma4-12b-think-fb-loraA1-raw-heldout-20260926-2148-g4f1
+20:01:54 v8: stopped A1 g4f1 2024 (A1 is out); A01 fallback evals
+20:01:55 fetched S1d
+20:01:56 fetched S3d
+20:01:56 fetched F4
+20:01:57 fetched G2
+20:02:01 START matura-infer-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0125
+20:11:05 END matura-infer-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0125 rc=0
+20:11:19 START matura-infer-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0124
+20:12:28 END matura-infer-gemma4-12b-think-fb-loraA01-raw-heldout-20260926-2201-a0124 rc=143
+20:12:35 skip A01 2023-05 (done on Nebius)
+20:12:42 START matura-infer-gemma4-12b-think-fb-loraS1d-raw-heldout-20260926-2201-lS1d
+20:12:57 v8 stopped: Nebius-recipe LoRAs dropped (coordinator); card free for the fine-tune diagnosis
+20:14:06 START probe-A1
+20:15:48 probe think rc=1
+20:15:55 probe convert rc=1
+20:15:58 END probe-A1
+20:16:29 START probe-A1
+20:20:00 probe think rc=0
+20:20:30 START practice-l40s
+20:20:30 END practice-l40s rc=2
+20:22:14 probe convert rc=0
+20:22:17 END probe-A1
+20:22:18 reaper stopped (it would kill SD1's :8090 server)
+20:22:18 START practice-l40s
+20:25:17 START practice-l40s v2 (--all-essays)
+20:25:20 SD1 smoke: kept 5 of 6
+6 items x 2 samples (papers: ['pokaz-2022-03'])
+kept 5 of 6 (1 from a hinted try) -> /scratch/work/sd/smoke.jsonl
+20:47:10 practice-l40s v2 stopped at 57/166 for heldout-v5 (partial kept)
+20:47:35 V9 server :8100 up
+20:55:40 V9 smoke-v5 rc=0 blanks=0 of 10
+20:55:40 V9 START heldout-v5
+21:07:07 SD1 L40S shard done (125/309 done, 115 kept (20 hinted)); stopping our build (pid 101573) for the Nebius shards
+21:07:07 SD1 BUILD_FAILED
+21:37:30 V9 essay server :8101 up
+21:40:07 V9 END heldout-v5 rc=0 wall 2667s
+21:40:07 V9 START sweep tb4k
+21:57:09 V9 END sweep tb4k rc=0 wall 1022s
+21:57:09 V9 START sweep tb8k
+21:59:08 V9 END essay-grid rc=0 wall 1298s
+22:08:45 V9 END essay-len rc=0 wall 577s
+22:21:11 V9 END sweep tb8k rc=0 wall 1442s
+22:21:11 V9 START sweep te8k
+23:00:31 V9 END sweep te8k rc=0 wall 2360s
+23:09:47 V9 END essay-bo3 rc=0 wall 3662s
+23:12:39 V9 END essay-ragplan rc=0 wall 172s
+23:19:33 V9 END practice-openbo3 rc=0 wall 1142s
+23:22:55 V9 END practice-describe rc=143 wall 202s
+23:27:47 V9 watchdog: :8100 restarted (load-mode none)
+23:33:09 V9 END practice-describe rerun rc=0 wall 318s
+23:33:32 V9 watchdog: :8100 restarted (load-mode none)
+23:36:40 V9 END practice-openbo3-describe rc=0 wall 191s
+23:36:58 V9 watchdog: :8100 restarted (load-mode none)
+23:37:39 V9 END essay-bo3plan rc=0 wall 1500s
+23:41:11 V9 END heldout-essay H1 base rc=0 wall 212s
+23:43:03 V9 END practice-openbo3 rerun-c4 rc=143 wall 368s
+23:43:09 V9 END practice-describe rerun2 rc=0 wall 6s
+23:43:26 V9 watchdog: :8100 restarted (load-mode none, cache-ram 0)
+00:26:39 V9 END heldout-essay H2 bo3plan rc=0 wall 2728s
+00:31:37 V9 END practice-openbo3-describe rerun2 rc=0 wall 2893s
+00:48:24 V9 END heldout-essay H2 bo3plan-guard rc=0 wall 1305s
+00:51:56 V9 END heldout-essay H3 ragplan rc=0 wall 212s
+01:26:32 V9 END essay-ragbo3plan rc=0 wall 2076s
+01:26:48 V9 stopped :8101 essay server for the rehearsal (E7 deferred)
+01:54:09 V9 END practice-openbo3 rerun2-c4 rc=0 wall 4952s
+02:06:53 V9 END practice-describe rerun3 rc=0 wall 764s
+02:07:18 V9 START rehearsal stage-probny
+02:17:04 V9 END rehearsal stage-probny rc=0 wall 586s
+02:17:23 V9 START sweep te16k
+02:40:20 V9 END sweep te16k rc=0 wall 1377s
+02:40:20 V9 START sweep tb1k
+02:45:53 V9 END sweep tb1k rc=0 wall 333s
+02:46:16 SD1 START train (264 rows, :8100 paused)
+03:03:19 SD1 train done wall 1023s: saved /scratch/work/adapters-SD1/gemma4-12b-think/selfdistill (loss 0.278, 264 examples)
+03:03:26 SD1 GGUF written 126M
+03:03:30 SD1 HF: orestta/matura-gemma4-12b-lora-SD1
+03:03:30 SD1 START eval probny-2026-01
+03:09:37 SD1 END eval probny-2026-01 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-probny-2026-01-20260927-0503-sd1e == 03:09:32 probny-2026-01 attempt 1: exit 0, 0 blank
+03:09:37 SD1 START eval 2023-05
+03:15:46 SD1 END eval 2023-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2023-05-20260927-0509-sd1e == 03:15:41 2023-05 attempt 1: exit 0, 0 blank
+03:15:46 SD1 START eval 2024-05
+03:22:01 SD1 END eval 2024-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2024-05-20260927-0515-sd1e == 03:21:56 2024-05 attempt 1: exit 0, 0 blank
+03:22:01 SD1 START eval 2025-05
+03:28:53 SD1 END eval 2025-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2025-05-20260927-0522-sd1e == 03:28:48 2025-05 attempt 1: exit 0, 0 blank
+03:28:53 SD1 START eval 2026-05
+03:34:24 SD1 END eval 2026-05 rc=0 -> /scratch/out/matura-infer-gemma4-12b-think-sd1-raw-2026-05-20260927-0528-sd1e == 03:34:19 2026-05 attempt 1: exit 0, 0 blank
+03:34:24 SD1 SD1_DONE
+03:34:29 V9 watchdog: :8100 restarted (load-mode none, cache-ram 0)
+03:34:53 V9 START sweep te24k
+04:07:40 V9 END sweep te24k rc=0 wall 1967s
+04:07:40 V9 START sweep tb16k
+04:28:15 V9 END sweep tb16k rc=0 wall 1235s
+04:28:15 V9 sweep done (SD1 training may start)
+04:28:15 V9 DONE
+04:38:32 V9 START rehearsal stage-heldout
+05:17:17 V9 END rehearsal stage-heldout rc=0 wall 2325s
+05:41:16 V9 END essay-bo5plan rc=0 wall 1434s

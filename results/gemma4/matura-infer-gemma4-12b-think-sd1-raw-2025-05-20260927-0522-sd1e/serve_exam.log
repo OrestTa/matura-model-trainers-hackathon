@@ -1,0 +1,13 @@
+/scratch/work/venv-py312/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+/scratch/work/venv-py312/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+/scratch/hf/hub/models--google--gemma-4-12B-it-qat-q4_0-gguf/snapshots/29d097773436b69ff9feafd636ab4cf873786537/gemma-4-12b-it-qat-q4_0.gguf: 6.98 GB of weights, limit 8.0 GB -> OK
+with adapters in /scratch/work/adapters-SD1-serve/gemma4-12b-think: 6.98 GB, fine-tuned limit 8.8 GB -> OK
+SUBMISSION TOTAL (base 6.98 GB + adapters + 1 extra file(s)): 7.15 GB, limit 8.8 GB -> OK
+RAG: data/kb/passages.jsonl
+adapters: --enable-lora --max-loras 1 --max-lora-rank 64 --lora-modules all=/scratch/work/adapters-SD1-serve/gemma4-12b-think/all
+llama.cpp LoRA: --lora /scratch/work/adapters-SD1/gemma4-12b-think/selfdistill/adapter.gguf
+/scratch/work/venv-py312/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+ready: python scripts/run_exam.py <package dir> --model gemma4-12b-think -o answers.json (in another shell)

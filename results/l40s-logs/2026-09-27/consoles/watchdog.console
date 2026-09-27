@@ -1,0 +1,1 @@
+/scratch/watchdog3.sh: line 12: 200108 Killed                  GGML_CUDA_DISABLE_GRAPHS=1 nohup /scratch/work/llama.cpp/build/bin/llama-server -m $M --mmproj $P --port 8100 -ngl 999 --parallel 8 -c 262144 --jinja -fa on --no-webui --load-mode none --cache-ram 0 >> /scratch/out/v9-server.log 2>&1
