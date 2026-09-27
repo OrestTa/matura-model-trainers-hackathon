@@ -270,3 +270,39 @@ Claude GPU process was untouched. No new jobs remain allocated by this resume.
 Own-Luna full-paper grading was handed off; a score or threshold pass is not yet
 established. Earlier partial-run warnings remain historical rather than current
 coverage. Nebius shutdown verification remains the parent orchestrator's task.
+
+## 2026-09-27 05:54 UTC — strongest eligible Bielik final verification
+
+Selected the recorded Q8_0 zero-adapter case: historical own-Luna lower bound
+16/60, unresolved upper19/60; stronger than the comparable trained variants.
+Old router hash f2a63e... was audited: all source hashes match; 253 training rows
+from2017–2022/2025,2026 weak-label validation, no evaluated2023/2024 rows. Refitting
+candidate-only features reproduces every effective classifier weight exactly.
+No historical Astra mark was used to select this run.
+
+Fresh output is `results/small_track/20260927-bielik15-q8-final-verification/`:
+**37/37 nonempty, zero API errors**, exact organizer JSON exported, all37 request
+hashes match the selected historical base payloads. Model footprint is
+**1,708,932,059bytes**, Bielik1.5 Q8_0 plus old router and measured OCR, no adapters.
+The run replays the frozen hash-bound OCR/router candidate; it does not rerun OCR.
+Current binary81bc6b8 differs from historicalf805c57a2 and is explicitly recorded.
+This is fresh verification of the selected recipe, not a new held-out selection.
+Fresh own-Luna grading is pending; no new score or35%pass is claimed.
+
+SSH reset before authentication. The supported `fh session jupyter` handoff
+worked, so an authenticated Jupyter Contents upload and a newly created private
+terminal launched the same bounded script. Only our temporary terminal was
+removed; pre-existing terminals were untouched. Fresh available RAM was27GiB
+and GPU memory45,460MiB. Supervisor243355 used900s inference/930s outer bounds;
+all37 finished by05:53:49 and GPU process inventory was empty. Network-denied
+model inference remained separate from this administrative transport.
+
+Reproducible source/config: `forgehand_bielik_final.py`, `launch_bielik_final.sh`,
+`configs/bielik15-q8-final-verification.json` under `infra/small_track/`.
+`forgehand_jupyter_exec.py` records the supported fallback without embedded
+credentials: it obtains an ephemeral handoff in memory, creates only its own
+terminal, and deletes only that terminal. It requires local requests/websocket
+packages and the already authenticated Forgehand CLI. Never print the handoff
+URL or archive raw process arguments. Existing frozen bundle can be restored to
+`/scratch/codex-bielik-final-verification`; execute only after the launcher's
+host/GPU gates pass. No Nebius or Modal compute is authorized.

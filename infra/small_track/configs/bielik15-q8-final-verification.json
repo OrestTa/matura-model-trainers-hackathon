@@ -1,0 +1,49 @@
+{
+  "candidate_sha256": "636b9897885c0ec2d2e4d6cd6c955da63b0a4157b803cb3a2583f32f4ed09fa6",
+  "system": "Rozwiąż zadanie maturalne z historii. Odpowiedz po polsku, konkretnie i zgodnie z poleceniem. Jeśli polecenie wymaga rozstrzygnięcia i uzasadnienia, podaj oba. Dla wypracowania napisz pełną argumentację. Nie opisuj procesu myślenia.",
+  "model": "Bielik-1.5B-v3.0-Instruct",
+  "quantization": "Q8_0",
+  "model_sha256": "90c3ff5f451864151793476df8ad8364b8b23e2e6cd20de7a007eeeba10a8a3e",
+  "model_bytes": 1699568096,
+  "aggregate_deployed_bytes": 1708932059,
+  "classifier_sha256": "f2a63e81376f1da0a7324323b997c972151a4f7e1af002c108b7a8fd53f66312",
+  "classifier_bytes": 485357,
+  "ocr_bytes": 8878606,
+  "seed": 42,
+  "temperature": 0,
+  "short_tokens": 500,
+  "essay_tokens": 1600,
+  "concurrency": 4,
+  "trained_adapters": 0,
+  "images_encoded_by_model": false,
+  "ocr_only_image_routes": true,
+  "selection": "Strongest eligible recorded Bielik1.5 full-paper lower bound16/60; originalQ8zero-adapter recipe frozen; no tuning",
+  "historical_run": "20260926-2115-bielik15-q8-full-epoch-offline",
+  "historical_runtime_commit": "f805c57a2",
+  "current_runtime_commit": "81bc6b8",
+  "runtime_change_disclosed": true,
+  "protocol": "Fresh verification, not exact binary reproduction or heldout model selection",
+  "router_audit": {
+    "source_hashes_match": true,
+    "effective_refit_weights_match": true,
+    "train_rows": 253,
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2025
+    ],
+    "validation_year": 2026,
+    "excluded_years": [
+      2015,
+      2016,
+      2023,
+      2024
+    ],
+    "label_source": "weak candidate-only rule labels, not answer quality"
+  },
+  "runtime_binary_sha256": "efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf"
+}
