@@ -1,0 +1,7 @@
+RAG knowledge base /scratch/h15/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
+subtypes: {'closed_text': 'v5', 'closed_image': 'v5', 'open_text': 'raw', 'open_image': 'raw', 'essay': 'plan'}
+essay settings: {'ESSAY_BEST_OF': '3', 'ESSAY_MIN_WORDS': '350', 'ESSAY_TARGET_WORDS': '550'}
+vision: False
+essay body 258 words < ESSAY_MIN_WORDS=350: asking for a longer one
+38 answers (0 blank) -> /scratch/claude-b15/h-subtype-ocr/answers.json; log /scratch/claude-b15/h-subtype-ocr/answers.json.log.jsonl
+rc=0 wall 153s

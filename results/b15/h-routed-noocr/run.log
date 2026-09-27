@@ -1,0 +1,6 @@
+RAG knowledge base /scratch/h15/data/kb/passages.jsonl not built yet (scripts/build_kb.py); skipping it
+vision: False
+essay body 219 words < ESSAY_MIN_WORDS=350: asking for a longer one
+essay body 219 words < ESSAY_MIN_WORDS=350: asking for a longer one
+38 answers (0 blank) -> /scratch/claude-b15/h-routed-noocr/answers.json; log /scratch/claude-b15/h-routed-noocr/answers.json.log.jsonl
+rc=0 wall 100s

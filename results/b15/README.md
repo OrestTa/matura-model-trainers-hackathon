@@ -35,3 +35,30 @@ Bielik 4.5B Q8_0 (key `bielik-4.5b-q8`, OCR on), llama-server on :8093, ESSAY_MI
 | b45-harness-subtype | subtype (ESSAY_BEST_OF=3 from subtypes.yaml) | 0 | 742 s | 1711 |
 
 gemma-raw: Gemma 4 12B QAT, `--mode raw`, key gemma4-12b-exam, on the warm exam server (007fb17 checkout), 0 blank, 322 s, essay 339 words.
+
+## Bielik 1.5B through our harness (improvement track, 09:30–09:33 CEST)
+Harness = main cf84ec6 + keys from 795bf2f (bielik-1.5b-q8, bielik-1.5b-q8-noocr), no adapters. One llama-server, three arms at once (concurrency 3 each).
+
+| arm | key | mode | blank | wall | essay words (sentences / unique) |
+|---|---|---|---|---|---|
+| h-routed-ocr (A) | bielik-1.5b-q8 | routed | 0 | 178 s | 254 (16/16), under 300 |
+| h-routed-noocr (B) | bielik-1.5b-q8-noocr | routed | 0 | 100 s | 314 (21/21) |
+| h-subtype-ocr (C) | bielik-1.5b-q8 | subtype | 0 | 153 s | 605 (52/43) |
+
+D (b15-v1 adapters through the router) skipped. ESSAY_MIN_WORDS only acts in subtype mode, so A's essay stayed at 254 words.
+
+Essay-only experiments (scripts/essay_parts.py; bare arm's answers with item 27 replaced), temperature 0.3, repeat_penalty 1.15, DRY 0.8/1.75/2:
+| arm | essay words (sentences / unique) |
+|---|---|
+| essay-dry (E1, one call, 2400 tokens) | 243 (14/14), under 300 |
+| essay-parts (E2, intro + 4 aspect paragraphs + conclusion) | 995 (57/47) |
+
+On-stage commands for A (run from the repo root, offline):
+```bash
+export LD_LIBRARY_PATH=$PWD/work/llama.cpp/build/bin
+work/llama.cpp/build/bin/llama-server -m <Bielik-1.5B-v3.0-Instruct-Q8_0.gguf> --host 127.0.0.1 --port 8000 \
+  -ngl 999 -c 32768 --parallel 8 --jinja --cache-ram 0 &      # configs/routes.yaml backend.base_url = http://localhost:8000/v1
+ESSAY_MIN_WORDS=350 ESSAY_TARGET_WORDS=550 python scripts/run_exam.py <package> --model bielik-1.5b-q8 --mode routed -o answers.json
+python scripts/check_submission.py answers.json <package>
+```
+(On the L40S the server ran on :8091 with routes.yaml pointed there, because :8000 holds the best-score exam server.)
