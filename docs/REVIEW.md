@@ -7,6 +7,10 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 06:05 CEST: 5420a07..177c977 (18 commits) and board 40ec224 (no change)
+
+Verdict: sound, no flags. SD1 (self-distilled LoRA, real past papers only) was rejected on the probny practice paper first (36 vs 37, b1d5ef0) and then run on the held-out papers for the record: per-paper claude_score totals 36/45/33/41 = 155/240 vs base 163 (item sums agree). Non-essay 131 vs base 133, so the LoRA does not beat the base even without the 2025 essay (298 words = 0). The freeze (27.09 03:10, no LoRA) stands. Thinking-sweep results (tb1k, te16k) are practice-paper runs. Secrets grep clean.
+
 ## 2026-09-27 04:30 CEST: 964c246..5420a07 (13 commits) and board 40ec224 (no change)
 
 Verdict: sound, no flags; C-058 addressed.
