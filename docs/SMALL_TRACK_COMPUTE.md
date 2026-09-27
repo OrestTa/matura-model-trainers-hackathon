@@ -248,3 +248,25 @@ resume and host-memory gates have tests/syntax checks. Remaining gaps are the
 20 unfinished IQ2 answers, pending matching full-paper evaluation, and parent
 verification of all Nebius shutdowns. Raw process arguments and credentials are
 excluded from saved diagnostic artifacts.
+
+### 2026-09-27 05:30:46 UTC — IQ2 missing-only resume completed
+
+The fresh shared-VM check found 20.4 GiB available host RAM and 30,888 MiB free
+GPU memory, so the staged resume passed both gates under normal approval. It
+preserved the exact 17-answer prefix and generated only the remaining 20 IDs.
+All **37/37 answers are nonempty with zero recorded API errors**. The total
+Qwen3.5-4B UD-IQ2_XXS plus F16 projector weight footprint is **2,192,640,864 bytes**.
+No OCR, trained router or extra answering model is deployed in this candidate.
+
+Results, exact official-format export, original and resumed source, runtime,
+network proof and completion statistics are local at
+`results/small_track/20260927-qwen35-4b-iq2xxs-offline/`. Final answer SHA256 is
+`a89e748b67929c72e49454952a87fb37a4fb173bb9bd29a7a94c0ddea9e9fd8f`.
+The first 17 answers used two workers; the remaining 20 used one. This runtime
+change is recorded, so no pure concurrency-controlled comparison is claimed.
+
+Our supervisor and server were verified exited at 05:30:46 UTC. The pre-existing
+Claude GPU process was untouched. No new jobs remain allocated by this resume.
+Own-Luna full-paper grading was handed off; a score or threshold pass is not yet
+established. Earlier partial-run warnings remain historical rather than current
+coverage. Nebius shutdown verification remains the parent orchestrator's task.
