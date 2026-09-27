@@ -62,3 +62,16 @@ base (best: SD1 155/240), so none is shipped. So the expected improvement over t
   in the template's order. Its output on the real mock package passes the site's own
   `validateAnswers` (run with node on 27.09) and `scripts/check_submission.py`, which ports it.
 - `SOURCE.md` holds the required line exactly.
+
+## Orest's steps, in order
+
+1. Make the repo public (GitHub > Settings > Danger zone > Change visibility), or give the jury read access.
+2. Push the tag: `git tag best-score-candidate c87a484 && git push origin best-score-candidate`.
+3. Cancel all Nebius jobs in the Nebius console (our IAM token expired, so no agent can do it).
+4. On warsawmodeltrainers.dev "Update team", change the base model from Qwen/Qwen2.5-3B-Instruct to
+   `google/gemma-4-12B-it-qat-q4_0-gguf`.
+5. Make sure every agent (Claude threads, Codex, Grok bot) has stopped pushing, and Codex's two projects are final.
+6. Form: team code, repo link, tick readiness, "Get final exam questions", download the zip within 5 minutes,
+   and put it on the GPU box (post it in the project chat; the GPU box thread copies it over).
+7. GPU box runs the stage command above, then `check_submission.py`. Fill in project name, model row,
+   category "Best exam score", choose `answers.json`, and upload.
