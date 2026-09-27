@@ -300,11 +300,22 @@
       "filename": "data/small_track_real_training_all_papers_v2/router.json",
       "bytes": 833206,
       "sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
-      "role": "router"
+      "role": "router",
+      "recovery": {
+        "repo": "orestta/matura-small-track-recovery",
+        "revision": "b5930e75d925bd884b635641f701d55dee051dc7",
+        "filename": "models/bielik15/all-papers-v2/router.json",
+        "private": true
+      }
     }
   ],
   "training_manifest_sha256": "da25c2a0773f34cf5a7282de500304d4d6db4cabb0824d931051fcbfed5039ab",
   "aggregate_weight_bytes": 1789957828,
   "training_scope": "all_available_official_papers_no_holdouts",
-  "evaluation_status": "Awaiting matched all-paper training-set evaluation"
+  "evaluation_status": "Awaiting matched all-paper training-set evaluation",
+  "ocr_runtime": {
+    "version": "tesseract 4.1.1",
+    "binary_sha256": "1b3c3861f528d4f59477a9d1c7a0c9cdc9d511f70c3b035ca172a8b6be9c3e6c",
+    "threads": 1
+  }
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Standalone Bielik package dry-run/export or explicit offline inference."""
-import argparse,hashlib,json,subprocess,sys,time,urllib.request
+import argparse,hashlib,json,subprocess,sys,time,urllib.request,shutil
 from pathlib import Path
 import harness,train_router,infer,ocr
 from official_format import validate_exam,export_answers
@@ -64,6 +64,9 @@ def main():
  a.server=a.server.resolve()
  image_rows=[r for r in rows if r['subtype'] in {'closed_with_images','open_with_images'}]
  if image_rows:
+  if config.get("ocr_runtime"):
+   executable=shutil.which("tesseract")
+   if not executable or digest(Path(executable))!=config["ocr_runtime"]["binary_sha256"]:raise ValueError("Pinned Tesseract runtime required; OCR versions change candidate inputs")
   raw=a.output/'image-only-candidates.jsonl';derived=a.output/'ocr-image-candidates.jsonl';raw.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in image_rows));ocr.enrich(raw,derived,a.output/'ocr-assets',a.exam.parent,ROOT/'weights/ocr');changed={r['id']:r for r in map(json.loads,derived.read_text().splitlines())};rows=[changed.get(r['id'],r) for r in rows]
  route_keys=sorted(config['routes'],key=lambda k:next(x['id'] for x in config['routes'][k]['lora'] if x['scale']==1.0));cmd=[sys.executable,str(ROOT/'offline_server.py'),str(a.output/'server-network-proof.json'),str(a.server),'-m',str(ROOT/config['artifacts']['model']['filename']),'-ngl','99','-c','8192','-np','1','-t','1','-b','128','-ub','64','--jinja','--reasoning-budget','0','--host','127.0.0.1','--port','18935']
  cmd+=adapter_args(config,ROOT)

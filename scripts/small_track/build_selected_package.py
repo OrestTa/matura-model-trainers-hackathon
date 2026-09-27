@@ -27,8 +27,14 @@ def main():
   shutil.copytree(a.runtime,a.output/'runtime')
  (a.output/'run.sh').write_text('''#!/bin/sh
 set -eu
+export OMP_THREAD_LIMIT=1
+export OMP_NUM_THREADS=1
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+export PATH="$ROOT/runtime/bin:$PATH"
 export LD_LIBRARY_PATH="$ROOT/runtime/lib:${LD_LIBRARY_PATH:-}"
+for CUDA_LIB in "${CUDA_HOME:-/usr/local/cuda}/lib64" /workspace/work/cuda/lib; do
+  if [ -d "$CUDA_LIB" ]; then export LD_LIBRARY_PATH="$CUDA_LIB:$LD_LIBRARY_PATH"; fi
+done
 exec python3 "$ROOT/run.py" --server "$ROOT/runtime/bin/llama-server" "$@"
 ''');(a.output/'run.sh').chmod(0o755)
  (a.output/'check-runtime.sh').write_text('#!/bin/sh\nset -eu\nROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\nexport LD_LIBRARY_PATH="$ROOT/runtime/lib:${LD_LIBRARY_PATH:-}"\ncommand -v python3 >/dev/null\ncommand -v tesseract >/dev/null\ncommand -v nvidia-smi >/dev/null\npython3 -c "import ctypes; ctypes.CDLL(\'libseccomp.so.2\')"\ntest -x "$ROOT/runtime/bin/llama-server"\n"$ROOT/runtime/bin/llama-server" --version\ntesseract --version\nprintf \'%s\\n\' \'Runtime prerequisites present; this does not grade the model.\'\n');(a.output/'check-runtime.sh').chmod(0o755)
@@ -36,7 +42,7 @@ exec python3 "$ROOT/run.py" --server "$ROOT/runtime/bin/llama-server" "$@"
 
 Pass a NEW organizer exam JSON path and its adjacent original images. No fixed exam, key, rubric, previous answers or judge is included. One shared Bielik1.5B Q8_0 base plus five F16 specialist adapters, a learned classifier and Polish/English Tesseract weights. See weights-manifest.json for exact aggregate bytes and hashes. All weights must fit8.8GB.
 
-Linux x86_64 CUDA host: Python3.11+, NVIDIA driver, libseccomp.so.2, Tesseract5 executable are runtime prerequisites. No pip packages are needed. runtime/bin/llama-server plus runtime/lib must be installed from the verified runtime archive before inference. There are no downloads in run.sh or run.py. Check all runtime-manifest hashes before use. The host needs6GiB freeRAM and6GiB freeGPU memory. Port18935 must be free.
+Linux x86_64 CUDA host: Python3.11+, NVIDIA driver, CUDA12 runtime (libcudart.so.12, libcublas.so.12, libcublasLt.so.12), libseccomp.so.2, pinned Tesseract4.1.1 executable are runtime prerequisites. No pip packages are needed. runtime/bin/llama-server plus runtime/lib must be installed from the verified runtime archive before inference. There are no downloads in run.sh or run.py. Check all runtime-manifest hashes before use. The host needs6GiB freeRAM and6GiB freeGPU memory. Port18935 must be free.
 
 Dry run validates weights, organizer schema, exact IDs, original image checksums and route plan; it emits explicitly EMPTY dry-run answers:
 

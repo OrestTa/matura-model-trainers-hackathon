@@ -1,0 +1,77 @@
+{
+  "repo": "orestta/matura-small-track-recovery",
+  "private": true,
+  "commit": "b5930e75d925bd884b635641f701d55dee051dc7",
+  "files": [
+    {
+      "local": "data/small_track_real_training_all_papers_v2/router.json",
+      "remote": "models/bielik15/all-papers-v2/router.json",
+      "bytes": 833206,
+      "sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
+      "verified": true
+    },
+    {
+      "local": "infra/small_track/configs/bielik15-q8-all-papers-v2.json",
+      "remote": "models/bielik15/all-papers-v2/config.json",
+      "bytes": 9587,
+      "sha256": "b7eeb260b6847aee8a1b8082e8dc0b70ea1cd62f30e2d971d0a907c9a38684de",
+      "verified": true
+    },
+    {
+      "local": "docs/BIELIK_ALL_PAPERS_TRAINING_2026-09-27.md",
+      "remote": "models/bielik15/all-papers-v2/TRAINING.md",
+      "bytes": 1776,
+      "sha256": "274bfe5225d08a64d6cf39fe6053901b3a3e3d65b299bc7d3b55f253990c684f",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/manifest.json",
+      "remote": "models/bielik15/all-papers-v2/training/manifest.json",
+      "bytes": 50769,
+      "sha256": "ef4bd556304c7a856622ca06dfa5cc3a410c5ac859452ef93a0e405774136c07",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/router.json",
+      "remote": "models/bielik15/all-papers-v2/training/router.json",
+      "bytes": 833206,
+      "sha256": "999a52cd9345c5befca83bc9115a677e7f89c6e635303ec9dc3038b621322dd2",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/closed_without_images/train.jsonl",
+      "remote": "models/bielik15/all-papers-v2/training/closed_without_images/train.jsonl",
+      "bytes": 98124,
+      "sha256": "8a27f5c41f9bda0fd5a2299e6142052be48143dfc01e1a766870b21be35c7ab7",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/open_with_images/train.jsonl",
+      "remote": "models/bielik15/all-papers-v2/training/open_with_images/train.jsonl",
+      "bytes": 156982,
+      "sha256": "6e9ae1bb4b6cc00ee3699c02a2c8934111c50f2c74f1d0ace2953f5c5213806e",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/open_without_images/train.jsonl",
+      "remote": "models/bielik15/all-papers-v2/training/open_without_images/train.jsonl",
+      "bytes": 341366,
+      "sha256": "341236e130b0ce700e7e53b3512440a78a81ab2ea4738737d273a95d5b1dca8e",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/closed_with_images/train.jsonl",
+      "remote": "models/bielik15/all-papers-v2/training/closed_with_images/train.jsonl",
+      "bytes": 43405,
+      "sha256": "50b2ef420d3dee90526beaad4b408e888f8896fd321c1dae6453cd2949ac8fa8",
+      "verified": true
+    },
+    {
+      "local": "data/small_track_real_training_all_papers_v2/essay/train.jsonl",
+      "remote": "models/bielik15/all-papers-v2/training/essay/train.jsonl",
+      "bytes": 43835,
+      "sha256": "1d2dfa617cd2815468a4d697ca2cad1b3265d218fe80e5ad1ef0189064250efc",
+      "verified": true
+    }
+  ]
+}

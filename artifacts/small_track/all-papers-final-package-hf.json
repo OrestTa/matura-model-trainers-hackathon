@@ -1,0 +1,351 @@
+{
+  "repo": "orestta/matura-small-track-recovery",
+  "private": true,
+  "commit": "66a2c87a85d4b3d6cca2f18f079243d42c2928bc",
+  "files": [
+    {
+      "path": "submissions/bielik15-all-papers-v2/restore-weights.py",
+      "bytes": 735,
+      "sha256": "6724faf8c8c7c357fa496542dd7fbff020744849b74eb8b963bcb6e59c09f554",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/run.py",
+      "bytes": 8677,
+      "sha256": "b0e0731ac7a5ff78207e3c4bb84b3c190074982b4c6a218addbcbf350b5240b6",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/harness.py",
+      "bytes": 11643,
+      "sha256": "379eb401b39c50a6a93fb54345bf277157a42076d2ab602f85066563eea22acc",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/classifier.py",
+      "bytes": 990,
+      "sha256": "12fc3dddace147391fb173f1de7e53d4496b73cf03c1e2a78be33d9a8f111972",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/config.json",
+      "bytes": 9331,
+      "sha256": "89e20d5f8ef580b9f14d5462da07269b0092bf8322455000243c9ec8ce393393",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/check-runtime.sh",
+      "bytes": 731,
+      "sha256": "0b3ecd7c089251776f72f63b84af4816b96122f1b1d307c65952b172837a0686",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/weights-manifest.json",
+      "bytes": 3867,
+      "sha256": "a8462f9c32b0d639b734f2abc06c373cb096f1547bf64168240eb3f4ee3b363e",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/run.sh",
+      "bytes": 470,
+      "sha256": "959ca94cd3536b1b2e2f894d5dd25d3c86a32fcdef9857a51b7378091c378a16",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/README.md",
+      "bytes": 1780,
+      "sha256": "722176387059809a8644b4612fa29ef61421412075f372252448afe121a17def",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/ocr.py",
+      "bytes": 6316,
+      "sha256": "bef8384741ccd2e9b818b8b4038d69092230827bba66b389daaf0db8992adcc9",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/train_router.py",
+      "bytes": 5335,
+      "sha256": "f98b82efed283b7057ec3e22cc78fac1ddde15baab7764e60a3527bb968a9cd7",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/official_format.py",
+      "bytes": 2662,
+      "sha256": "70fb9f1d029b3ed5d8ff04a107d7f9d1f9a3ffaeaea432ea3e0859d1cb13d972",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/offline_server.py",
+      "bytes": 1419,
+      "sha256": "b694e1a1f0105172f5ace9e16815b1beb51c4375ec97dfadfd06fa16f1624cd3",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime-code-manifest.json",
+      "bytes": 5160,
+      "sha256": "8c5681ba031b271e9841d7a124af41fb4fe60c8d7179da317e5572d6661889e7",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/voting.py",
+      "bytes": 3647,
+      "sha256": "4519b32b73d4032a1c480fd44b88ee733b2fbdb40c3f6de4d9127ca107eb0059",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/infer.py",
+      "bytes": 7611,
+      "sha256": "b1eca10ed8540e093901be7a7ec5bda09afaeb0c8d538b30c9396e56b944ecdf",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/SUBMISSION.md",
+      "bytes": 2884,
+      "sha256": "98fa95e1e41adef82b0476cece74cca81d1581e535b2dd46b881b11893870675",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/tesseract-ldd.txt",
+      "bytes": 2099,
+      "sha256": "dcfd72e2c87998e024e402f77220e4b087db2c5f07c40a6256b1b37fe8e366f6",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/runtime-manifest.json",
+      "bytes": 5034,
+      "sha256": "c9f42905fae0935d955b5d135051a2407a04350c34c45b26628bc99b4fc33366",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/ldd.txt",
+      "bytes": 1663,
+      "sha256": "116af260dc811c084f74cfe79282c00c39805aedd7fe3836b3cba9288a26945a",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/bin/tesseract",
+      "bytes": 35128,
+      "sha256": "1b3c3861f528d4f59477a9d1c7a0c9cdc9d511f70c3b035ca172a8b6be9c3e6c",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/bin/llama-server",
+      "bytes": 17864,
+      "sha256": "efe78478baa1c4f3e44cbd7b9ebb0f468894b5797f88a56b583c4b5f4fd3cadf",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libggml.so.0",
+      "bytes": 55432,
+      "sha256": "fe09130617a4e892174cce03182c769516e613fae43f134f7fb5323abb4f51e4",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libmtmd.so.0",
+      "bytes": 1887520,
+      "sha256": "f5bc2c0ba014ae66bf7165ce0e196fcdeb449e75b58a1c28cd8d01d23117d650",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libgif.so.7",
+      "bytes": 38904,
+      "sha256": "83fafae119d1839a0bb16441808ec559938aa3d8c4c35d191a3c2879ebd5a844",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libnettle.so.8",
+      "bytes": 281000,
+      "sha256": "2d3bda6cfa2d477cd91b8178843d19e081b911a124f04b4be06b6e32c9fabc73",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libllama.so.0",
+      "bytes": 4648632,
+      "sha256": "a7fe3c79eeabfe7f863e50392cfa798782e6727011234d74ac42d37d2bce0d01",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libstdc++.so.6",
+      "bytes": 2260296,
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libllama-common.so.0",
+      "bytes": 6169552,
+      "sha256": "0a68d6e6d6b69d25a26bbb5ad7939647f42068c536c91764bab9c1c33a13abbf",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libarchive.so.13",
+      "bytes": 821344,
+      "sha256": "b668621ff255cc106907516dc58c6454b32323328fe6014614f4719d9c3a6bb6",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libpng16.so.16",
+      "bytes": 235592,
+      "sha256": "210ba03c7855715a223465d36767a6a5588fe58f7192997e5f14777e4e045cde",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/liblzma.so.5",
+      "bytes": 170456,
+      "sha256": "493cb401ab4aa3bba611ca464d12996afb3b327940d29476f535f999e167439b",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libicudata.so.70",
+      "bytes": 29476472,
+      "sha256": "c1404396288e178c8db2f30203cb8150e4d2c14cacee9a2883e0092f45399cc8",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libz.so.1",
+      "bytes": 108936,
+      "sha256": "64c206f0146cc58bbddc4f22054436f4ff278f5a554aa3ce6921ddf7e9133370",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libllama-server-impl.so",
+      "bytes": 7062832,
+      "sha256": "0656509984bd22b4fa128ac79123b2bb3b9b8f6b0848e75df2319c2e4d2c3c6f",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libdeflate.so.0",
+      "bytes": 141344,
+      "sha256": "dce39e00c986632f7d83199f2e5f2b89d7e11c8f311c6e9f204595f899785fa6",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libjbig.so.0",
+      "bytes": 66568,
+      "sha256": "32ed19ff3065742c392e018840ed59a0b2a17817adf94ba409708f16d8cf234b",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libgcc_s.so.1",
+      "bytes": 125488,
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libxml2.so.2",
+      "bytes": 1967384,
+      "sha256": "1db824dff2a302a15540b31595d8507ed7a45ac8783d7325953c653acb88112c",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libbz2.so.1.0",
+      "bytes": 74848,
+      "sha256": "54d16979912ab62282350dd2dc5dceb5b73b13e27bb02792087aff752d16f6e9",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libopenjp2.so.7",
+      "bytes": 354800,
+      "sha256": "9d0cbdee4fa3f44d4eb90cc304f3d34067baec1daad431af4b5f39b529f8bb83",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libzstd.so.1",
+      "bytes": 841808,
+      "sha256": "5df4f4df42d76270bb6981fabc7c1fdccd8ad28a23d84d67f73203fb3f537667",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/liblz4.so.1",
+      "bytes": 125152,
+      "sha256": "65f47a3dc2cec5f938379b7b625f0621657bf1254551895d22462c6a204cbad8",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libggml-cuda.so.0",
+      "bytes": 61254952,
+      "sha256": "4cba33cd7a29db9d2f7a41445fc2ca86f96b839107529ba7ecf0230842932192",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libggml-cpu.so.0",
+      "bytes": 1403592,
+      "sha256": "25cd7f29ada9e29364cc55435458e44bd61ba0fa697ab0305aef2207b709a062",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libwebp.so.7",
+      "bytes": 432688,
+      "sha256": "2cff2529eb932c3b81ef6a344b99a5412c893d3f672a7d28f986a8d08c8b2ccb",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libgomp.so.1",
+      "bytes": 298776,
+      "sha256": "d46f9225c1883039e8a6853e6d96ca1af11d034ce186a090952e4a7c8a7c2fdc",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libtiff.so.5",
+      "bytes": 555176,
+      "sha256": "005ba73d8ce3ebec60a985df14d00fc7d57719f3000f142ef80efb2c7011bb1d",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libjpeg.so.8",
+      "bytes": 522960,
+      "sha256": "2cfbcf67051b3efd1bf634af7d0b65a47dda98ff61ba793a87415ed554731344",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libwebpmux.so.3",
+      "bytes": 47440,
+      "sha256": "28f3105333cf1a45fa80629665667dbdfcac5cb9a51694a2ce33dea858a3e5fa",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/liblept.so.5",
+      "bytes": 2796272,
+      "sha256": "134ef6aec02c34d6d5afb58755e255b9076b598f48742db04ead43f874691a29",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libacl.so.1",
+      "bytes": 34888,
+      "sha256": "b35d4bbf00844a585e02502b8a1db17b740a0127e2fb9a4428a83eaa0f23be65",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libggml-base.so.0",
+      "bytes": 920080,
+      "sha256": "cf186b96aeaa4fae40b736112e8170b4727ebf97a447de13e271c99cbd038598",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libtesseract.so.4",
+      "bytes": 3168976,
+      "sha256": "538915d532d35501cecd75fa04cf8aeb3e33681e052f676b8e62b541d7025277",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/runtime/lib/libicuuc.so.70",
+      "bytes": 2062664,
+      "sha256": "4683f3623dc47a92e862dc3c8770caff81c9f4c7e116bb672fc439737b06d88a",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/weights/ocr/eng.traineddata",
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "verified": true
+    },
+    {
+      "path": "submissions/bielik15-all-papers-v2/weights/ocr/pol.traineddata",
+      "bytes": 4765518,
+      "sha256": "c4476cdbc0e33d898d32345122b7be1cbf85ace15f920f06c7714756e1ef79b2",
+      "verified": true
+    }
+  ],
+  "weights_recovered_via": "weights-manifest.json pinned per-file commits",
+  "status": "runtime/harness/OCR recovery verified; final scoring separate"
+}
