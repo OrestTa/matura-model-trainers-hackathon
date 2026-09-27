@@ -19,12 +19,12 @@ available. **No fine-tune.** Every LoRA we trained scored below this base model,
 | `mmproj-gemma-4-12b-it-qat-q4_0.gguf` | 175,115,616 | `cb018338a7538a9814d994bfe54644c71eb7ed54e31eae2f721e45fd3c260da7` |
 | **Total** | **7,150,994,912 (7.15 GB)** | limit 8.0 GB base / 8.8 GB all models summed |
 
-## Harness (github.com/OrestTa/matura-model-trainers-hackathon, commit `c87a484`)
+## Harness (github.com/OrestTa/matura-model-trainers-hackathon, main at `007fb17` or later)
 
 llama.cpp `llama-server` with thinking on. `scripts/run_exam.py --model gemma4-12b-exam --mode subtype`:
 - open questions: the exam prompt as given, 2k thinking tokens;
 - closed questions: 5 samples, 3-of-5 vote;
-- essay: plan first, then 3 drafts with 16k thinking, keeping the best of the drafts that reach 300 words (target 350–550 words);
+- essay: plan first, then 3 drafts with 16k thinking, keeping the best of the drafts that reach 300 words (target 350–550 words); the printed plan is removed from the answer; these essay settings are defaults in configs/subtypes.yaml;
 - a blank answer is asked once more with thinking off (`THINK_FALLBACK=1`).
 
 ## Scores (Claude graded against the CKE key, pictures viewed)
@@ -32,7 +32,9 @@ llama.cpp `llama-server` with thinking on. `scripts/run_exam.py --model gemma4-1
 | Paper | Score |
 |---|---|
 | Held-out May 2023 / 2024 / 2025 / 2026 | 38 / 44 / 39 / 42 = **163/240 (67.9%)**, same as the plain base model |
-| Practice paper Jan 2026 (probny) | **43/60** (plain base model: 37) |
+| Practice paper Jan 2026 (probny) | **43/60** dress rehearsal, **38/60** final end-to-end run of the same setup (plain base model: 37) |
+
+On held-out totals the harness equals the plain base model (163 vs 163). Its essays win when graded side by side (40 vs 35 of 60) and cannot fall under the 300-word minimum.
 
 ## Run
 
