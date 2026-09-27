@@ -7,6 +7,16 @@ fine-tuned model as shipped (weights + adapters) <= 8.8 GB (Orest, 2026-09-26 12
 no internet/closed APIs at exam time, no copyrighted content in the repo (sources + fetch script instead),
 SOURCE.md with the exact required line, graded work made from Fri 18:00.
 
+## 2026-09-27 03:00 CEST: 22dc9b4..964c246 (10 commits) and board 40ec224 (no change)
+
+Verdict: the new freeze (27.09 03:10: `gemma4-12b-exam`, MODE=subtype, raw request for open items, 5-vote on closed, essay "plan + best of 3", ESSAY_MIN_WORDS=350 / ESSAY_TARGET_WORDS=550) is supported; one stage-risk flag (C-058).
+- Selection is clean: bo3plan (with the 350/550 word settings) was picked on the 12 dev essays (essay-grid batches 2-4: best or tied-best each time, +9 to +13/150 over base; without the word settings 5 lower in batch 4) and only then run on the held-out essays. Held-out, blind, 2 runs: 71/120 vs base 56 (bo3plan without the word settings 63, ragplan 66). Per-paper rows add up.
+- "~170/240 projected" = 163 non-essay-unchanged + ~7.5 essay gain. The same raw setting also scored 159.5 on a rerun, so a fair range is ~166-171; keep "projected" on it until a full held-out run of the frozen config is graded.
+- 964c246 puts back the 5-sample closed vote (Orest 22:33); on heldout-v5 it tied raw on the closed subtypes (10/13, 15/25).
+- gemma4-12b-exam: same weights (7.16 GB), 2k thinking, 8 slots x 24k so a 16k-thinking essay fits. 32cfdb6 --cache-ram 0 avoids the OOM. Essay routing (`ESSAY_MIN_WORDS` etc.) only touches the essay category (router.py:443).
+- FLAG (C-058): the essay now takes ~8 min (p50 458 s on an L40S) plus best-of-3; earlier notes say stage time is "a few minutes". Nothing in the repo states the stage time budget. Confirm it before the exam; if it is short, the fallback is ESSAY_BEST_OF=1 with the plan prompt (dev 68-73/150, still above base).
+- Secrets grep clean.
+
 ## 2026-09-27 01:45 CEST: da24d07..22dc9b4 (12 commits) and board 40ec224 (no change)
 
 Verdict: sound, no flags.
