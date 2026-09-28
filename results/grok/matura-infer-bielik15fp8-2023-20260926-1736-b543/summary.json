@@ -1,0 +1,13 @@
+{
+  "job_id": "matura-infer-bielik15fp8-2023-20260926-1736-b543",
+  "exam": "history-2023-mock-v1",
+  "model": "speakleash/Bielik-1.5B-v3.0-Instruct-FP8-Dynamic",
+  "n": 37,
+  "nonempty": 37,
+  "leak": 0,
+  "md5": "14a4343e26badbb27043d354c2bac52f",
+  "md5_orig_remote": "14a4343e26badbb27043d354c2bac52f",
+  "bytes": 15868,
+  "source": "hackathon/runs/matura-infer-bielik15fp8-2023-20260926-1736-b543/answers.json",
+  "judges": "Claude+Sol only \u20261902-4c6c (no Grok per Orest HARD)"
+}
