@@ -1,45 +1,74 @@
 {
-  "updated": "2026-09-26T18:46:46+02:00",
+  "updated": "2026-09-28 09:10 CEST · Matura Hack repo-insights pull; trainers tip e728590; board was stale at 40ec224 (2026-09-26)",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
     "matura_hack_grok": {
-      "role": "Matura Hack (Grok Bot)",
+      "role": "Matura Hack (board owner)",
       "highlights": [
-        "Official mock (history-2023-mock-v1, 60 pts) is the standing gauge; CKE headline-auto is proxy-only.",
-        "Official mock triple judge on speakleash Bielik-4.5 FP8 (~4.898 GB): Claude 24/60 = 40.0%, Grok 28/60 = 46.7%, Sol 29/60 = 48.3%.",
-        "Five-category splits are published for Grok and Sol only on the same Bielik answers: Grok TO 63.6 / IO 47.8 / TC 75.0 / IC 42.9 / essay 26.7; Sol TO 63.6 / IO 43.5 / TC 75.0 / IC 42.9 / essay 40.0.",
-        "Gemma 4 12B QAT GGUF + mmproj, raw vision-on: Claude master 41/60 = 68.3% on the May 2023 CKE paper at 7.16 GB measured pack, under the 8.0/8.8 caps; not yet the standing history-2023-mock-v1 gauge and awaiting Grok/Sol dual-judge.",
-        "Parallel Grok cloud grades on the same packs: AWQ 20/60 = 33.3% (harness OCR+essay_regen); E2E Qwen2.5-3B 15/60 = 25.0%.",
-        "CKE headline-auto 37.6% for bare 7B AWQ is unverified auto-scored (70 pts) — not a graded official mock.",
-        "Measured packs: AWQ ~5.58 GB; speakleash Bielik-4.5 FP8 ~4.898 GB; Bielik-11B-v2 NF4 ship.json ~6.66 GB — all inside 8.0/8.8 caps.",
-        "Bielik-11B bf16 remains banned on every track under the 8.0/8.8 pack caps; Bielik-11B-v2 NF4 stays live for Best Progress only.",
-        "No secrets, keys, or private IPs in this public refresh.",
-        "Matura Best Progress: Bielik-11B-v2 NF4 routed harness 26.9% vs raw 25.5% (+1.4 pp)."
+        "Public board refresh owned by Matura Hack (Claude = commit audit only). This pull syncs post-freeze final entry from trainers main e728590.",
+        "Final Sunday entry (Orest 27.09 10:26): one Gemma 4 12B QAT project (7.15 GB, no fine-tune) for Best exam score + Mały ale wariat + Best progress.",
+        "Final exam package history-synthetic-c-v4 submitted 27.09 ~10:49 CEST: best-score+smallest receipt c8ce68a7; improvement receipt ea11a552 with baseline af792de2; both awaiting_grading, 37/37 nonempty after ub=8192 rerun.",
+        "Honest held-out (May 2023–2026, Claude vs CKE): thinking-on base = stage harness = 163/240 (67.9%). Mock Jan 2026: base 32/60 → harness 38–43/60; do not claim held-out Δ>0.",
+        "Grok judging stays skipped (usage). Prefer Claude + Sol on answers.json; Sol full held-out stage pass still incomplete."
       ]
     },
     "claude": {
-      "role": "Claude Opus on trunk",
+      "role": "Claude (trainers commits / final-exam runner)",
       "highlights": [
-        "Commit audit: relabel 37.6% as headline-auto; prefer Claude-graded official-mock rows in tracks.json.",
-        "C-013: mark official_mock_awq7b as harness (ocr_fallback + essay_regen), not untouched base.",
-        "Progress base must stay pretrained Bielik-11B-v2 NF4 (~6.7 GB), the declared organisers base for Best Progress only; do not swap to Instruct-AWQ v3.",
-        "New Claude official-mock sub-2B probes: Qwen2.5-0.5B scored 3/60 = 5.0% and Qwen2.5-1.5B scored 4/60 = 6.7%; supports C-027 no-sub-2B sweep.",
-        "Claude grades on request via BOT_CHANNEL JUDGE: protocol; Claude must not issue VM/GPU jobs."
+        "Locked README/SUBMISSION/FINAL_RESULTS: Gemma harness-only entry; Bielik-1.5/4.5 and E4B dropped (mock <35% or not run).",
+        "Ran final exam on L40S: first pass mass blanks (context); rerun with -ub 8192 produced valid answers.json + answers-base.json (base essay 298 words).",
+        "Commit audit role only for the public Pages board — do not treat Claude board claims after 19:33 CEST 26.09 as authoritative once this sync lands."
       ]
     },
     "history_ext_multi_year": {
       "role": "History Ext multi-year",
       "highlights": [
-        "May 2024/2025/2026 packs converted locally (exam.json+images); pack-aware harness --pack-dir smoke-tested; official mock remains only gauge; packs not published (CKE copyright)."
+        "Held-out gauge = four May 2023–2026 papers (240 pts). Jan 2026 official mock is rehearsal only. Final exam id history-synthetic-c-v4 (organisers grade)."
       ]
     }
   },
   "stages": [
     {
+      "id": "heldout-gemma4-12b-think-base",
+      "sort": 1,
+      "name": "Held-out May 2023–2026 Gemma 4 12B thinking-on base (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 67.9,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 50.0,
+      "note": "163/240 Claude-graded with pictures (2023:41, 2024:42, 2025:39, 2026:41). Picture 67/101, text 66/79, essay 30/60. Size 7.15–7.16 GB under 8.0 GB base cap; no FT. Source docs/FINAL_RESULTS.md + results/judged TABLE.",
+      "source": "docs/FINAL_RESULTS.md#four-held-out-papers"
+    },
+    {
+      "id": "heldout-gemma4-12b-stage",
+      "sort": 2,
+      "name": "Held-out May 2023–2026 Gemma stage harness (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "base_stage_id": "heldout-gemma4-12b-think-base",
+      "overall_pct": 67.9,
+      "delta_vs_base_pct": 0.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 48.3,
+      "note": "Same 163/240 as thinking-on base (2023:38, 2024:44, 2025:39, 2026:42). Essay paper-by-paper 29/60 vs base 30; blind side-by-side essays +5/60. Honest progress claim on held-out is ~0 pp.",
+      "source": "results/judged/matura-judge-claude-stage-heldout/"
+    },
+    {
       "id": "mock-gemma4-12b-qat-may2023-claude",
       "sort": 4,
-      "name": "May 2023 CKE Gemma 4 12B QAT (Claude)",
+      "name": "May 2023 CKE Gemma 4 12B QAT raw vision (Claude)",
       "model": "Gemma 4 12B QAT GGUF + mmproj",
       "stage": "base",
       "status": "COMPLETED",
@@ -50,16 +79,71 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Claude master 41/60 = 68.3% on paper 2023-05 (May 2023 CKE), coarse only: closed 8/11, open 24/34, essay 9/15. Five CKE text/vision category % unknown, so five cats stay null. Measured pack 7.16 GB on disk (6.98 GGUF + 0.18 mmproj), legal under the 8.0/8.8 quantized pack rules. This is May 2023 paper, not the standing gauge history-2023-mock-v1 unless/until that mock is also graded for Gemma. 6/37 answers were empty from a thinking-on bug fixed in trainers 6359957. Grok/Sol dual-judge not yet run on this answer set.",
+      "note": "Earlier raw vision 41/60 = 68.3% (closed 8/11, open 24/34, essay 9/15). 6/37 empties from thinking bug later fixed. Stage-path regrade of May 2023 is 38/60 — prefer held-out total for Sunday expectation.",
       "source": "results/judged/matura-judge-claude-gemma4-12b-vision-raw-2023-20260926-1617-g4vr/claude_score.json"
     },
     {
-      "id": "mock-bielik45-fp8-claude",
-      "sort": 5,
-      "name": "Official mock Bielik-4.5B FP8 (Claude)",
-      "model": "Bielik-4.5B FP8",
+      "id": "probny-gemma4-base-think",
+      "sort": 8,
+      "name": "Jan 2026 mock Gemma thinking-on base (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 53.3,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 46.7,
+      "note": "32/60 on probny-2026-01: closed 2/7, open 23/38, essay 7/15; text-only 11/18, pictures 14/27. Fair improvement baseline (Orest 27.09 09:21).",
+      "source": "results/judged/b15-probny/gemma-raw"
+    },
+    {
+      "id": "probny-gemma4-harness-rehearsal",
+      "sort": 9,
+      "name": "Jan 2026 mock Gemma stage harness rehearsal (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
       "stage": "harness",
       "status": "COMPLETED",
+      "honest_bare": false,
+      "base_stage_id": "probny-gemma4-base-think",
+      "overall_pct": 71.7,
+      "delta_vs_base_pct": 18.3,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 73.3,
+      "note": "43/60 rehearsal: closed 3/7, open 29/38, essay 11/15; text 13/18, pictures 19/27. Same setup as final e2e; essay is the noisy term.",
+      "source": "results/judged/matura-judge-claude-stage-rehearsal-probny"
+    },
+    {
+      "id": "probny-gemma4-harness-finale2e",
+      "sort": 10,
+      "name": "Jan 2026 mock Gemma stage harness final e2e (Claude)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "base_stage_id": "probny-gemma4-base-think",
+      "overall_pct": 63.3,
+      "delta_vs_base_pct": 10.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": 40.0,
+      "note": "38/60 final e2e: closed 3/7, open 29/38, essay 6/15; text 13/18, pictures 19/27. +10 pp vs base on mock; held-out still ties base.",
+      "source": "results/judged/matura-judge-claude-final-e2e-probny"
+    },
+    {
+      "id": "mock-bielik45-fp8-claude",
+      "sort": 15,
+      "name": "Official mock / May 2023 Bielik-4.5B FP8 (Claude) — DROPPED",
+      "model": "Bielik-4.5B FP8",
+      "stage": "harness",
+      "status": "CANCELLED",
       "honest_bare": false,
       "overall_pct": 40.0,
       "text_open": null,
@@ -67,30 +151,13 @@
       "image_open": null,
       "image_closed": null,
       "essay": null,
-      "note": "Claude-graded 24/60 vs CKE key on harness answer-sheet / structured-layout answers; speakleash Bielik-4.5 FP8 ~4.898 GB on disk. Category split unknown, so five cats stay null. Current best verified official-mock score under caps.",
-      "source": "results/tracks.json#g-official-mock-bielik45-fp8-claude"
-    },
-    {
-      "id": "mock-bielik45-fp8-grok",
-      "sort": 6,
-      "name": "Official mock Bielik-4.5B FP8 (Grok)",
-      "model": "Bielik-4.5B FP8",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "base_stage_id": "mock-bielik45-fp8-claude",
-      "overall_pct": 46.7,
-      "text_open": 63.6,
-      "text_closed": 75.0,
-      "image_open": 47.8,
-      "image_closed": 42.9,
-      "essay": 26.7,
-      "note": "Parallel Grok cloud judge on the same speakleash Bielik-4.5 FP8 answers; higher than Claude 40.0% — treat as secondary until judges reconcile.",
-      "source": "results/judged/official_mock_bielik45_fp8/"
+      "note": "Earlier May 2023 Claude 24/60=40% with OCR (4.90 GB). On Jan 2026 mock best 13/60 (<35%) so dropped from Mały/Sunday entry (cc1beca, TRACKS_SMALL_AND_IMPROVEMENT.md).",
+      "source": "docs/TRACKS_SMALL_AND_IMPROVEMENT.md"
     },
     {
       "id": "mock-bielik45-fp8-sol",
-      "sort": 7,
-      "name": "Official mock Bielik-4.5B FP8 (Sol)",
+      "sort": 16,
+      "name": "Official mock Bielik-4.5B FP8 (Sol) — reference only",
       "model": "Bielik-4.5B FP8",
       "stage": "harness",
       "status": "COMPLETED",
@@ -101,428 +168,196 @@
       "image_open": 43.5,
       "image_closed": 42.9,
       "essay": 40.0,
-      "note": "Parallel Sol judge on the same answers; highest of the three judges so far, but still secondary to the Claude-verified reference until judges reconcile. Source job matura-judge-sol-bielik45fp8-2023-20260926-1726-0f08.",
+      "note": "Sol on earlier FP8 answers; model not shipped. Reference only.",
       "source": "results/judged/matura-judge-sol-bielik45fp8-2023-20260926-1726-0f08/"
     },
     {
-      "id": "mock-awq7b-claude",
-      "sort": 15,
-      "name": "Official mock 7B AWQ (Claude)",
-      "model": "Qwen2.5 7B AWQ",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "overall_pct": 18.3,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Claude-graded 11/60. Answers used OCR fallback + essay_regen (not untouched base).",
-      "source": "results/tracks.json#g-official-mock-awq7b-claude"
-    },
-    {
-      "id": "mock-awq7b-grok",
-      "sort": 16,
-      "name": "Official mock 7B AWQ (Grok)",
-      "model": "Qwen2.5 7B AWQ",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "base_stage_id": "mock-awq7b-claude",
-      "overall_pct": 33.3,
-      "text_open": 54.5,
-      "text_closed": 25.0,
-      "image_open": 26.1,
-      "image_closed": 28.6,
-      "essay": 33.3,
-      "note": "Parallel Grok cloud judge 20/60 on same harness answers; receipt 06f2b35d… still awaiting official LLM grading.",
-      "source": "results/judged/official_mock_awq7b/"
-    },
-    {
-      "id": "mock-qwen05b-claude",
-      "sort": 19,
-      "name": "Official mock Qwen2.5-0.5B (Claude)",
-      "model": "Qwen2.5 0.5B",
+      "id": "mock-bielik15-best",
+      "sort": 17,
+      "name": "Jan 2026 mock Bielik-1.5B best arm (Claude) — DROPPED",
+      "model": "Bielik-1.5B Q8_0",
       "stage": "base",
-      "status": "COMPLETED",
+      "status": "CANCELLED",
       "honest_bare": true,
-      "overall_pct": 5.0,
+      "overall_pct": 15.0,
       "text_open": null,
       "text_closed": null,
       "image_open": null,
       "image_closed": null,
-      "essay": null,
-      "note": "Claude master 3/60 = 5.0% on history-2023-mock-v1. Coarse only (closed 3/11, open 0/34, essay 0/15) — five CKE text/vision category % not computed. Sub-2B fail for Mały ale wariat (≥35%). No Grok dual-judge yet. Source job matura-judge-claude-qwen25-05b-2023-20260926-1449-68f6.",
-      "source": "results/judged/matura-judge-claude-qwen25-05b-2023-20260926-1449-68f6/claude_score.json"
+      "essay": 0.0,
+      "note": "Best 9/60 bare (~1.70 GB); harness/adapters never beat bare; essay 0/15 every arm. Below 35% bar.",
+      "source": "docs/TRACKS_SMALL_AND_IMPROVEMENT.md"
     },
     {
-      "id": "mock-qwen15b-claude",
-      "sort": 19.5,
-      "name": "Official mock Qwen2.5-1.5B (Claude)",
-      "model": "Qwen2.5 1.5B",
-      "stage": "base",
-      "status": "COMPLETED",
-      "honest_bare": true,
-      "overall_pct": 6.7,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Claude master 4/60 = 6.7% on history-2023-mock-v1. Coarse only (closed 2/11, open 2/34, essay 0/15) — five CKE category % gap. Sub-2B fail; supports C-027 no-sub-2B sweep. No Grok dual-judge yet. Source job matura-judge-claude-qwen25-15b-2023-20260926-1639-2b53.",
-      "source": "results/judged/matura-judge-claude-qwen25-15b-2023-20260926-1639-2b53/claude_score.json"
-    },
-    {
-      "id": "mock-e2e-3b-grok",
-      "sort": 20,
-      "name": "E2E 2023 mock Qwen2.5-3B (Grok)",
-      "model": "Qwen2.5 3B",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "honest_bare": false,
-      "overall_pct": 25.0,
-      "text_open": 27.3,
-      "text_closed": 50.0,
-      "image_open": 21.7,
-      "image_closed": 42.9,
-      "essay": 13.3,
-      "note": "Harness run with OCR fallback for image items; judges separate: Grok 25.0% (15/60) · Claude 18.3% (11/60) · Sol 21.7%. Five cats on Grok row.",
-      "source": "results/judged/e2e_oneyear_2023_qwen25-3b/"
-    },
-    {
-      "id": "cke-3b-base",
-      "sort": 30,
-      "name": "3B CKE headline-auto",
-      "model": "Qwen2.5 3B",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "honest_bare": false,
-      "overall_pct": 26.7,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Harness/router proxy only (70 auto-scored CKE pts). Not untouched plain prompt or official-mock proof.",
-      "source": "notes/TRACK01_BEST_SCORE.md"
-    },
-    {
-      "id": "cke-3b-history-v2",
-      "sort": 40,
-      "name": "3B history-v2 CKE headline-auto",
-      "model": "Qwen2.5 3B",
-      "stage": "history-v2",
-      "status": "COMPLETED",
-      "base_stage_id": "cke-3b-base",
-      "overall_pct": 28.3,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Proxy-only +1.6 vs 3B auto base.",
-      "source": "notes/TRACK01_BEST_SCORE.md"
-    },
-    {
-      "id": "cke-3b-modal",
-      "sort": 50,
-      "name": "3B modal-v3 CKE headline-auto",
-      "model": "Qwen2.5 3B",
-      "stage": "modal-v3",
-      "status": "COMPLETED",
-      "base_stage_id": "cke-3b-base",
-      "overall_pct": 17.1,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Proxy-only regression vs 3B auto base.",
-      "source": "notes/TRACK01_BEST_SCORE.md"
-    },
-    {
-      "id": "cke-7b-awq-base",
-      "sort": 60,
-      "name": "7B AWQ CKE headline-auto",
-      "model": "Qwen2.5 7B AWQ",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "honest_bare": false,
-      "overall_pct": 37.6,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "UNVERIFIED harness/router auto-scored 70-pt subset only. Official mock Claude grade is 18.3%. Do not treat as official-mock proof.",
-      "source": "results/tracks.json#g-7b-awq"
-    },
-    {
-      "id": "cke-7b-awq-fh-offline",
-      "sort": 70,
-      "name": "7B AWQ + fh LoRA CKE headline-auto",
-      "model": "Qwen2.5 7B AWQ",
-      "stage": "fh-offline",
-      "status": "COMPLETED",
-      "base_stage_id": "cke-7b-awq-base",
-      "overall_pct": 29.8,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Proxy-only; regresses vs AWQ auto base; demoted.",
-      "source": "notes/TRACK01_BEST_SCORE.md"
-    },
-    {
-      "id": "progress-nf4-raw",
-      "sort": 20,
-      "name": "Bielik-11B-v2 NF4 bare raw",
+      "id": "mock-progress-nf4-raw-claude",
+      "sort": 18,
+      "name": "Bielik-11B-v2 NF4 raw contaminated (Claude) — superseded",
       "model": "Bielik-11B-v2 NF4",
       "stage": "base",
-      "status": "COMPLETED",
-      "honest_bare": true,
-      "overall_pct": 25.5,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Raw plain-prompt base; harness cats, not five CKE; 6.66 GB disk. UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
+      "status": "CANCELLED",
+      "honest_bare": false,
+      "overall_pct": 20.0,
+      "essay": 0.0,
+      "note": "Earlier Progress base stated as Bielik-11B NF4; Sunday entry switched to Gemma same-file harness improvement (Orest 10:26). This 12/60 run stays diagnostic/contaminated only.",
+      "source": "results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json"
     },
     {
-      "id": "progress-nf4-routed",
-      "sort": 21,
-      "name": "Bielik-11B-v2 NF4 routed harness",
-      "model": "Bielik-11B-v2 NF4",
-      "stage": "harness",
-      "status": "COMPLETED",
-      "base_stage_id": "progress-nf4-raw",
-      "overall_pct": 26.9,
-      "text_open": null,
-      "text_closed": null,
-      "image_open": null,
-      "image_closed": null,
-      "essay": null,
-      "note": "Same pack routed harness; Δ +1.4 pp vs raw. UNVERIFIED until results/progress/summary.json and ship.json land in the hackathon repo."
+      "id": "final-exam-submitted",
+      "sort": 0,
+      "name": "Final exam history-synthetic-c-v4 submissions",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "submitted",
+      "status": "RUNNING",
+      "honest_bare": false,
+      "overall_pct": null,
+      "note": "Receipts awaiting_grading: best-score+smallest c8ce68a7; improvement ea11a552 (baseline af792de2). 37 answers, 0 blank after ub=8192. Base essay 298 words (under 300 risk). No organiser score yet.",
+      "source": "results/final-exam/receipts.json"
     }
   ],
   "prize_tracks": [
     {
       "id": "best-matura-score",
-      "title": "Matura Best Score",
+      "title": "Best matura score",
       "goal": "Highest honest Sunday exam score under the 8.0 GB base / 8.8 GB after-FT caps.",
-      "status": "RUNNING",
-      "summary": "Gemma 4 12B QAT GGUF + mmproj now leads Claude-graded 60-pt results with 68.3% on the May 2023 CKE paper at 7.16 GB, but the standing Sunday gauge remains history-2023-mock-v1, where speakleash Bielik-4.5 FP8 is still the best verified pack at Claude 40.0% with parallel Grok/Sol reads of 46.7% / 48.3% on the same answers. Prior 37.6% AWQ figure is headline-auto only and demoted.",
+      "status": "COMPLETED",
+      "summary": "Submitted Gemma 4 12B QAT + stage harness (7.15 GB, no FT) on history-synthetic-c-v4 (receipt c8ce68a7, awaiting_grading). Expected held-out ~163/240 = 67.9% (ties thinking-on base). May 2023 raw vision 68.3% was an earlier run with 6 empties; stage May 2023 = 38/60.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "mock-qwen05b-claude",
-            "mock-qwen15b-claude"
+            "heldout-gemma4-12b-think-base",
+            "probny-gemma4-base-think",
+            "mock-gemma4-12b-qat-may2023-claude"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
-            "mock-gemma4-12b-qat-may2023-claude",
-            "mock-bielik45-fp8-claude",
-            "mock-bielik45-fp8-grok",
-            "mock-bielik45-fp8-sol",
-            "mock-awq7b-claude",
-            "mock-awq7b-grok",
-            "mock-e2e-3b-grok",
-            "cke-3b-base",
-            "cke-3b-history-v2",
-            "cke-7b-awq-base"
+            "heldout-gemma4-12b-stage",
+            "probny-gemma4-harness-rehearsal",
+            "probny-gemma4-harness-finale2e",
+            "final-exam-submitted"
           ]
         },
         {
           "title": "Best post-training / improvement stages",
-          "stage_ids": [
-            "cke-3b-modal",
-            "cke-7b-awq-fh-offline"
-          ]
+          "stage_ids": []
         }
       ]
     },
     {
       "id": "best-progress",
-      "title": "Matura Best Progress",
+      "title": "Best progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
-      "status": "RUNNING",
-      "summary": "Same-HF-base pair locked: Bielik-11B-v2 NF4 raw 25.5% → routed harness 26.9% (Δ +1.4 pp). Declared organisers base stays this NF4 pack for Best Progress only; progress-dapt next. Gauge is matura_all holdout (not yet history-2023-mock-v1). Proxy 3B CKE +1.6 still secondary.",
+      "status": "COMPLETED",
+      "summary": "Submitted same Gemma file: harness answers vs thinking-on raw baseline (receipt ea11a552 / baseline af792de2). Mock shows +10 to +18 pp (32→38–43/60); held-out harness ties base at 163/240 (honest Δ≈0). Bielik-11B NF4 Progress path superseded for the freeze.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "progress-nf4-raw"
+            "heldout-gemma4-12b-think-base",
+            "probny-gemma4-base-think",
+            "mock-progress-nf4-raw-claude"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
-            "progress-nf4-routed",
-            "cke-3b-base",
-            "cke-3b-history-v2"
+            "heldout-gemma4-12b-stage",
+            "probny-gemma4-harness-finale2e",
+            "probny-gemma4-harness-rehearsal"
           ]
         },
         {
           "title": "Best post-training / improvement stages",
           "stage_ids": [
-            "progress-nf4-routed",
-            "cke-3b-modal"
+            "final-exam-submitted"
           ]
         }
       ]
     },
     {
       "id": "maly-ale-wariat",
-      "title": "Matura Mały ale wariat",
+      "title": "Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
-      "status": "RUNNING",
-      "summary": "speakleash Bielik-4.5 FP8 (~4.898 GB) remains the Mały floor and primary contender on the standing gauge: 40.0% Claude on history-2023-mock-v1, with parallel Grok/Sol judges at 46.7% / 48.3% on the same answers. Gemma 4 12B QAT GGUF + mmproj reached 68.3% Claude on the May 2023 paper at 7.16 GB, well above 35% and under the cap, but it is larger than the Bielik floor and does not take the Mały lead. E2E 3B is 25.0% Grok. New Claude official-mock sub-2B probes failed: Qwen2.5-0.5B at 5.0% and Qwen2.5-1.5B at 6.7%, supporting C-027 (no more GPU on sub-2B; 3/2-bit 4B first).",
+      "status": "COMPLETED",
+      "summary": "Submitted same 7.15 GB Gemma project (with best-score, receipt c8ce68a7). No smaller pack cleared 35% on Jan mock: Bielik-1.5B best 9/60, Bielik-4.5B best 13/60, E4B not run. Size metric = on-disk quantized pack (single pack).",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
-            "mock-qwen05b-claude",
-            "mock-qwen15b-claude"
+            "mock-bielik15-best",
+            "mock-bielik45-fp8-claude",
+            "probny-gemma4-base-think"
           ]
         },
         {
           "title": "Interim results",
           "stage_ids": [
-            "mock-gemma4-12b-qat-may2023-claude",
-            "mock-bielik45-fp8-claude",
-            "mock-bielik45-fp8-grok",
-            "mock-bielik45-fp8-sol",
-            "mock-awq7b-claude",
-            "mock-e2e-3b-grok",
-            "cke-3b-base"
+            "heldout-gemma4-12b-think-base",
+            "heldout-gemma4-12b-stage",
+            "final-exam-submitted"
           ]
         },
         {
           "title": "Best post-training / improvement stages",
-          "stage_ids": [
-            "cke-3b-history-v2",
-            "cke-3b-modal"
-          ]
+          "stage_ids": []
         }
       ]
     }
   ],
   "jobs": [
     {
-      "id": "mock-bielik45-fp8",
-      "name": "Official mock Bielik-4.5B FP8",
+      "id": "final-exam-best-smallest",
+      "name": "Final exam best-score + smallest (Gemma 7.15 GB)",
       "state": "COMPLETED",
-      "detail": "Claude 40.0% / Grok 46.7% / Sol 48.3%; speakleash Bielik-4.5 FP8 ~4.898 GB; Mały primary + Best Score contender"
+      "detail": "Submitted 27.09; receipt c8ce68a7; awaiting_grading; 37/37 nonempty"
     },
     {
-      "id": "mock-awq7b",
-      "name": "Official mock 7B AWQ harness",
+      "id": "final-exam-improvement",
+      "name": "Final exam improvement (Gemma harness vs think-on base)",
       "state": "COMPLETED",
-      "detail": "Claude 18.3% / Grok 33.3%; receipt awaiting_grading"
+      "detail": "Submitted 27.09; receipt ea11a552; baseline af792de2; base essay 298 words"
     },
     {
-      "id": "mock-qwen05b-claude",
-      "name": "Official mock Qwen2.5-0.5B (Claude)",
+      "id": "heldout-gemma-163",
+      "name": "Held-out Gemma base=harness 163/240",
       "state": "COMPLETED",
-      "detail": "Claude 3/60 = 5.0%; coarse only; no Grok dual-judge yet"
-    },
-    {
-      "id": "mock-qwen15b-claude",
-      "name": "Official mock Qwen2.5-1.5B (Claude)",
-      "state": "COMPLETED",
-      "detail": "Claude 4/60 = 6.7%; coarse only; no Grok dual-judge yet"
-    },
-    {
-      "id": "e2e-oneyear-2023-3b",
-      "name": "E2E 2023 mock Qwen2.5-3B",
-      "state": "COMPLETED",
-      "detail": "Grok 25.0% / Claude 18.3% / Sol 21.7%"
-    },
-    {
-      "id": "cke-7b-awq-base",
-      "name": "CKE 7B AWQ headline-auto",
-      "state": "COMPLETED",
-      "detail": "37.6% auto-only / 38.9% text-only; NOT official-mock proof"
-    },
-    {
-      "id": "cke-7b-awq-fh-offline",
-      "name": "CKE 7B AWQ + fh LoRA headline-auto",
-      "state": "COMPLETED",
-      "detail": "29.8% auto-only; demoted"
-    },
-    {
-      "id": "progress-base-raw",
-      "name": "Progress base Bielik-11B-v2 NF4",
-      "state": "DONE",
-      "detail": "DONE: raw 25.5% / routed 26.9% (+1.4 pp)"
-    },
-    {
-      "id": "gemma4-vision",
-      "name": "Gemma-4-12B vision baselines",
-      "state": "COMPLETED",
-      "detail": "Claude 68.3% on May 2023 CKE paper; 7.16 GB measured pack; 6/37 answers empty from the fixed thinking-on bug; Grok/Sol not yet run on this answer set"
+      "detail": "67.9% Claude; honest Δ≈0 on held-out; mock +10–18 pp"
     },
     {
       "id": "size-cap",
       "name": "Size cap hard 8.0/8.8",
       "state": "ACTIVE",
-      "detail": "Quantized on-disk pack size is the rule; bf16-only oversize stays illegal, while Bielik-11B-v2 NF4 remains legal for Best Progress."
+      "detail": "Shipped pack 7.15 GB (q4_0 + mmproj) under 8.0; no FT so 8.8 unused; serve_exam.sh sums served files"
     },
     {
-      "id": "qwen-7b-bf16",
-      "name": "Qwen 7B bf16 comparator",
-      "state": "BLOCKED",
-      "detail": "37.1% auto; research-only over Sunday cap"
+      "id": "bielik-maly-drop",
+      "name": "Bielik Mały candidates",
+      "state": "CANCELLED",
+      "detail": "1.5B ≤9/60 and 4.5B ≤13/60 on Jan mock; dropped at freeze"
+    },
+    {
+      "id": "dapt-progress",
+      "name": "DAPT Bielik-11B-v2 NF4 (old progress path)",
+      "state": "CANCELLED",
+      "detail": "Superseded by Gemma same-file harness improvement for Sunday freeze"
     }
   ],
   "mcq": {
-    "1.5b_base": {
-      "pct": 53.3,
-      "n": "48/90",
-      "note": "dev-only MCQ set, not the headline metric"
-    },
-    "3b_base": {
-      "pct": 56.7,
-      "n": "51/90",
-      "note": "dev-only MCQ set, not matura proof"
-    },
-    "3b_history_v2": {
-      "pct": 75.6,
-      "n": "68/90",
-      "note": "contaminated - trained on the same MCQ set"
-    },
-    "3b_modal_v3": {
-      "pct": 94.4,
-      "n": "85/90",
-      "note": "contaminated - not headline evidence"
-    },
-    "7b_base": {
-      "pct": 76.7,
-      "n": "69/90",
-      "note": "dev-only MCQ set, not matura proof"
-    },
-    "7b_fh": {
-      "pct": 100.0,
-      "n": "90/90",
-      "note": "contaminated - same 90-MCQ train set"
-    },
-    "7b_fh_v2": {
-      "pct": 98.9,
-      "n": "89/90",
-      "note": "contaminated - same 90-MCQ train set"
+    "note": {
+      "pct": null,
+      "n": "",
+      "note": "Legacy 90-item MCQ rows omitted from headline; see trainers docs if needed"
     }
   },
   "constraints": {
     "max_base_disk_gb": 8.0,
     "max_after_ft_gb": 8.8,
-    "exam": "fully offline Sunday",
-    "gauge": "official mock history-2023-mock-v1 (60 pts); CKE headline-auto is proxy-only",
-    "registration_base": "registered 3B today; declare Sunday base only after Orest picks (Bielik-4.5 FP8 is strongest verified mock so far)",
-    "matura_all": "512 items / 789 pts"
+    "exam": "fully offline Sunday; final package history-synthetic-c-v4 submitted 27.09",
+    "gauge": "Claude-graded held-out May 2023–2026 (/240); Jan 2026 mock rehearsal only; CKE headline-auto is proxy only",
+    "registration_base": "Sunday freeze: Gemma 4 12B QAT 7.15 GB for all three categories (Orest 27.09 10:26); improvement base = same file, raw, thinking on",
+    "matura_all": "512 items / 789 pts (legacy proxy)"
   },
   "links": {
     "repo": "https://github.com/OrestTa/matura-model-trainers-hackathon",
@@ -531,19 +366,22 @@
     "public_board": "https://orestta.github.io/tarasiuk-lab-matura-status/"
   },
   "parallel": {
-    "gpu": "current Forgehand L40S shared session",
+    "gpu": "Forgehand L40S (final exam ran here; prefer L40S + box, never Mac.orka)",
     "mps": true,
-    "scheduler": "scripts/gpu_admit.py + docs/STATUS.md"
+    "scheduler": "scripts/serve_exam.sh + scripts/run_exam.py"
   },
   "audit": {
     "size_cap_conflicts": [
-      "Any stale cancel-all-11B wording must apply only to queued Bielik-11B bf16 DAPT/train/shootout rows; keep those cancel_requested and do not re-admit bf16 bases.",
-      "Bielik-11B-v2 NF4 ~6.66 GB is legal under the pack caps and stays the declared Best Progress base; Instruct-AWQ v3 must not be filed as that progress base."
+      "Shipped Gemma q4_0+mmproj 7.15 GB is legal under ≤8.0 GB base; no FT shipped.",
+      "README says entry sizes are summed; Mały standing rule is largest single pack — for this one-pack entry both agree.",
+      "Do not revive Bielik-11B bf16 or other >8.0 GB bases for Sunday claims."
     ],
     "score_conflicts": [
-      "Judge totals disagree on identical official-mock answers (AWQ: Grok 33.3 vs Claude 18.3; Bielik: Claude 40.0 vs Grok 46.7 vs Sol 48.3).",
-      "Board shows all published judges; Claude rows stay the verified reference where category splits are unknown or unreconciled. Grok remains primary for E2E 3B until Claude secondary lands.",
-      "Gemma 4 12B QAT 68.3% is a May 2023 paper result, not yet dual-judged and not comparable to the standing history-2023-mock-v1 gauge until Gemma is graded on that mock."
+      "Held-out harness Δ≈0 (163=163) while Jan mock shows +10–18 pp — never headline mock Δ as held-out progress.",
+      "May 2023 raw 41/60 (68.3%) vs stage 38/60 — different runs; prefer /240 held-out for expectation.",
+      "Bielik-4.5 May 2023 40% not reproduced on Jan mock (≤13/60); correctly dropped for Mały.",
+      "Final exam base essay 298 words (<300) risks 0 essay points on the improvement baseline.",
+      "Board tip 40ec224 still claimed Claude board ownership and Bielik Progress/Mały leaders — this sync replaces that."
     ]
   }
 }
