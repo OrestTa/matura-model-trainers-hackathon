@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-28T09:10:00+02:00",
+  "updated": "2026-09-30T18:10:00+02:00",
   "stages": [
     {
       "id": "heldout-gemma4-12b-think-base",
@@ -172,6 +172,76 @@
       "essay": 0.0,
       "note": "Earlier Progress base stated as Bielik-11B NF4; Sunday entry switched to Gemma same-file harness improvement (Orest 10:26). This 12/60 run stays diagnostic/contaminated only.",
       "source": "results/judged/matura-judge-claude-bielik11b-v2-nf4-raw-2023-20260926-1728-p2a1/claude_score.json"
+    },
+    {
+      "id": "final-exam-submitted",
+      "sort": 0,
+      "name": "Final exam history-synthetic-c-v4 submissions",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "submitted",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "overall_pct": 88.33,
+      "note": "Organiser provisional AI grade (warsawmodeltrainers.dev final board, fetched 2026-09-30): best-score+smallest solution 53/60=88.33%; improvement solution 53/60=88.33% vs baseline 50/60=83.33% (+3 pts / +5.0 pp). Five CKE cats not published on LB. Pack 7.15 GB under 8.0. Repo receipts.json still awaiting_grading.",
+      "source": "mh_public_final_results (Tarasiuk Lab) + results/final-exam/receipts.json",
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null
+    },
+    {
+      "id": "final-exam-best-smallest-org",
+      "sort": 0.1,
+      "name": "Final history-synthetic-c-v4 best-score+smallest (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "submitted",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "overall_pct": 88.33,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "53/60 provisional. Receipt c8ce68a7. Categories best-score + smallest. Size 7.15 GB.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
+    },
+    {
+      "id": "final-exam-improvement-base-org",
+      "sort": 0.2,
+      "name": "Final history-synthetic-c-v4 improvement baseline thinking-on (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 83.33,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "50/60 provisional baseline (af792de2). Same file, thinking on, raw.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
+    },
+    {
+      "id": "final-exam-improvement-sol-org",
+      "sort": 0.3,
+      "name": "Final history-synthetic-c-v4 improvement harness (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "base_stage_id": "final-exam-improvement-base-org",
+      "overall_pct": 88.33,
+      "delta_vs_base_pct": 5.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "53/60 provisional solution (ea11a552). Honest final Δ = +3 pts / +5.0 pp vs own baseline.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
     }
   ]
 }

@@ -1,30 +1,29 @@
 {
-  "updated": "2026-09-28 09:10 CEST · Matura Hack repo-insights pull; trainers tip e728590; board was stale at 40ec224 (2026-09-26)",
+  "updated": "2026-09-30 18:10 CEST · Matura Hack: organiser provisional final grades live on warsawmodeltrainers.dev (repo receipts.json still awaiting_grading)",
   "team": "Tarasiuk Lab",
   "hackathon": "Warsaw Model Trainers — Polish history matura",
   "tracks": {
     "matura_hack_grok": {
       "role": "Matura Hack (board owner)",
       "highlights": [
-        "Public board refresh owned by Matura Hack (Claude = commit audit only). This pull syncs post-freeze final entry from trainers main e728590.",
-        "Final Sunday entry (Orest 27.09 10:26): one Gemma 4 12B QAT project (7.15 GB, no fine-tune) for Best exam score + Mały ale wariat + Best progress.",
-        "Final exam package history-synthetic-c-v4 submitted 27.09 ~10:49 CEST: best-score+smallest receipt c8ce68a7; improvement receipt ea11a552 with baseline af792de2; both awaiting_grading, 37/37 nonempty after ub=8192 rerun.",
-        "Honest held-out (May 2023–2026, Claude vs CKE): thinking-on base = stage harness = 163/240 (67.9%). Mock Jan 2026: base 32/60 → harness 38–43/60; do not claim held-out Δ>0.",
-        "Grok judging stays skipped (usage). Prefer Claude + Sol on answers.json; Sol full held-out stage pass still incomplete."
+        "Public board owned by Matura Hack. Organiser provisional AI grades for history-synthetic-c-v4 are now on the public final board.",
+        "Tarasiuk Lab final: best-score+smallest solution 53/60 (88.33%); improvement solution 53/60 vs baseline 50/60 (+3 pts / +5.0 pp). Same Gemma 4 12B QAT pack 7.15 GB, no FT.",
+        "Receipts still say awaiting_grading in trainers results/final-exam/receipts.json (c8ce68a7 / ea11a552); public LB is the grade source until organisers close review.",
+        "Held-out Claude gauge remains 163/240 (67.9%) with honest harness Δ≈0 — do not mix /240 held-out with /60 final paper.",
+        "Five CKE category columns still unpublished on the organiser LB (overall only). Grok judging stays skipped."
       ]
     },
     "claude": {
       "role": "Claude (trainers commits / final-exam runner)",
       "highlights": [
-        "Locked README/SUBMISSION/FINAL_RESULTS: Gemma harness-only entry; Bielik-1.5/4.5 and E4B dropped (mock <35% or not run).",
-        "Ran final exam on L40S: first pass mass blanks (context); rerun with -ub 8192 produced valid answers.json + answers-base.json (base essay 298 words).",
-        "Commit audit role only for the public Pages board — do not treat Claude board claims after 19:33 CEST 26.09 as authoritative once this sync lands."
+        "Commit audit only for Pages. Final exam runner on L40S; board numbers now come from organiser provisional grades, not Claude re-judge of the synthetic final.",
+        "Do not treat Claude board claims as authoritative for Sunday finals once this sync lands."
       ]
     },
     "history_ext_multi_year": {
       "role": "History Ext multi-year",
       "highlights": [
-        "Held-out gauge = four May 2023–2026 papers (240 pts). Jan 2026 official mock is rehearsal only. Final exam id history-synthetic-c-v4 (organisers grade)."
+        "Held-out gauge = May 2023–2026 /240. Final package history-synthetic-c-v4 now has provisional organiser scores on the public LB."
       ]
     }
   },
@@ -207,11 +206,69 @@
       "name": "Final exam history-synthetic-c-v4 submissions",
       "model": "Gemma 4 12B QAT GGUF + mmproj",
       "stage": "submitted",
-      "status": "RUNNING",
+      "status": "COMPLETED",
       "honest_bare": false,
-      "overall_pct": null,
-      "note": "Receipts awaiting_grading: best-score+smallest c8ce68a7; improvement ea11a552 (baseline af792de2). 37 answers, 0 blank after ub=8192. Base essay 298 words (under 300 risk). No organiser score yet.",
-      "source": "results/final-exam/receipts.json"
+      "overall_pct": 88.33,
+      "note": "Organiser provisional AI grade (warsawmodeltrainers.dev final board, fetched 2026-09-30): best-score+smallest solution 53/60=88.33%; improvement solution 53/60=88.33% vs baseline 50/60=83.33% (+3 pts / +5.0 pp). Five CKE cats not published on LB. Pack 7.15 GB under 8.0. Repo receipts.json still awaiting_grading.",
+      "source": "mh_public_final_results (Tarasiuk Lab) + results/final-exam/receipts.json",
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null
+    },
+    {
+      "id": "final-exam-best-smallest-org",
+      "sort": 0.1,
+      "name": "Final history-synthetic-c-v4 best-score+smallest (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "submitted",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "overall_pct": 88.33,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "53/60 provisional. Receipt c8ce68a7. Categories best-score + smallest. Size 7.15 GB.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
+    },
+    {
+      "id": "final-exam-improvement-base-org",
+      "sort": 0.2,
+      "name": "Final history-synthetic-c-v4 improvement baseline thinking-on (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "base",
+      "status": "COMPLETED",
+      "honest_bare": true,
+      "overall_pct": 83.33,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "50/60 provisional baseline (af792de2). Same file, thinking on, raw.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
+    },
+    {
+      "id": "final-exam-improvement-sol-org",
+      "sort": 0.3,
+      "name": "Final history-synthetic-c-v4 improvement harness (organiser provisional)",
+      "model": "Gemma 4 12B QAT GGUF + mmproj",
+      "stage": "harness",
+      "status": "COMPLETED",
+      "honest_bare": false,
+      "base_stage_id": "final-exam-improvement-base-org",
+      "overall_pct": 88.33,
+      "delta_vs_base_pct": 5.0,
+      "text_open": null,
+      "text_closed": null,
+      "image_open": null,
+      "image_closed": null,
+      "essay": null,
+      "note": "53/60 provisional solution (ea11a552). Honest final Δ = +3 pts / +5.0 pp vs own baseline.",
+      "source": "warsawmodeltrainers.dev mh_public_final_results"
     }
   ],
   "prize_tracks": [
@@ -220,7 +277,7 @@
       "title": "Best matura score",
       "goal": "Highest honest Sunday exam score under the 8.0 GB base / 8.8 GB after-FT caps.",
       "status": "COMPLETED",
-      "summary": "Submitted Gemma 4 12B QAT + stage harness (7.15 GB, no FT) on history-synthetic-c-v4 (receipt c8ce68a7, awaiting_grading). Expected held-out ~163/240 = 67.9% (ties thinking-on base). May 2023 raw vision 68.3% was an earlier run with 6 empties; stage May 2023 = 38/60.",
+      "summary": "Organiser provisional: Gemma 4 12B QAT harness 53/60 (88.33%) on history-synthetic-c-v4 (receipt c8ce68a7). 7.15 GB, no FT. Public LB peers (same day): Nuori 55, MakeNoMistakes 54, several Gemma packs 52–53. Held-out expectation was 163/240 — different paper; do not equate.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
@@ -233,6 +290,7 @@
         {
           "title": "Interim results",
           "stage_ids": [
+            "final-exam-best-smallest-org",
             "heldout-gemma4-12b-stage",
             "probny-gemma4-harness-rehearsal",
             "probny-gemma4-harness-finale2e",
@@ -250,11 +308,12 @@
       "title": "Best progress",
       "goal": "Largest tuned minus honest bare-base improvement on the Sunday exam.",
       "status": "COMPLETED",
-      "summary": "Submitted same Gemma file: harness answers vs thinking-on raw baseline (receipt ea11a552 / baseline af792de2). Mock shows +10 to +18 pp (32→38–43/60); held-out harness ties base at 163/240 (honest Δ≈0). Bielik-11B NF4 Progress path superseded for the freeze.",
+      "summary": "Organiser provisional improvement: harness 53/60 vs thinking-on baseline 50/60 (+3 pts / +5.0 pp) on the final paper (ea11a552 / af792de2). Held-out harness still ties base at 163/240 (Δ≈0) — never headline mock/+held-out as this Δ.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
           "stage_ids": [
+            "final-exam-improvement-base-org",
             "heldout-gemma4-12b-think-base",
             "probny-gemma4-base-think",
             "mock-progress-nf4-raw-claude"
@@ -271,6 +330,7 @@
         {
           "title": "Best post-training / improvement stages",
           "stage_ids": [
+            "final-exam-improvement-sol-org",
             "final-exam-submitted"
           ]
         }
@@ -281,7 +341,7 @@
       "title": "Mały ale wariat",
       "goal": "Smallest model that still reaches at least 35% on the honest Sunday exam.",
       "status": "COMPLETED",
-      "summary": "Submitted same 7.15 GB Gemma project (with best-score, receipt c8ce68a7). No smaller pack cleared 35% on Jan mock: Bielik-1.5B best 9/60, Bielik-4.5B best 13/60, E4B not run. Size metric = on-disk quantized pack (single pack).",
+      "summary": "Organiser provisional: same 7.15 GB Gemma project scored 53/60 (88.33%) on best-score+smallest (c8ce68a7), clearing 35%. Size = single on-disk quantized pack. Smaller ≥35% packs exist on the LB (e.g. Ward Qwen3.5-4B 46/60) — Mały ranks by size among qualifiers, not raw score.",
       "sections": [
         {
           "title": "Baselines (honest bare)",
@@ -294,6 +354,7 @@
         {
           "title": "Interim results",
           "stage_ids": [
+            "final-exam-best-smallest-org",
             "heldout-gemma4-12b-think-base",
             "heldout-gemma4-12b-stage",
             "final-exam-submitted"
@@ -311,13 +372,13 @@
       "id": "final-exam-best-smallest",
       "name": "Final exam best-score + smallest (Gemma 7.15 GB)",
       "state": "COMPLETED",
-      "detail": "Submitted 27.09; receipt c8ce68a7; awaiting_grading; 37/37 nonempty"
+      "detail": "Organiser provisional 53/60 (88.33%); receipt c8ce68a7; five CKE cats unpublished"
     },
     {
       "id": "final-exam-improvement",
       "name": "Final exam improvement (Gemma harness vs think-on base)",
       "state": "COMPLETED",
-      "detail": "Submitted 27.09; receipt ea11a552; baseline af792de2; base essay 298 words"
+      "detail": "Organiser provisional solution 53/60 vs baseline 50/60 (+5.0 pp); ea11a552 / af792de2"
     },
     {
       "id": "heldout-gemma-163",
@@ -342,6 +403,12 @@
       "name": "DAPT Bielik-11B-v2 NF4 (old progress path)",
       "state": "CANCELLED",
       "detail": "Superseded by Gemma same-file harness improvement for Sunday freeze"
+    },
+    {
+      "id": "organiser-grades",
+      "name": "Organiser provisional final grades",
+      "state": "COMPLETED",
+      "detail": "Public LB live 2026-09-30; repo receipts.json still awaiting_grading; scores provisional until organiser review"
     }
   ],
   "mcq": {
@@ -354,7 +421,7 @@
   "constraints": {
     "max_base_disk_gb": 8.0,
     "max_after_ft_gb": 8.8,
-    "exam": "fully offline Sunday; final package history-synthetic-c-v4 submitted 27.09",
+    "exam": "fully offline Sunday; history-synthetic-c-v4 organiser provisional grades live on public LB",
     "gauge": "Claude-graded held-out May 2023–2026 (/240); Jan 2026 mock rehearsal only; CKE headline-auto is proxy only",
     "registration_base": "Sunday freeze: Gemma 4 12B QAT 7.15 GB for all three categories (Orest 27.09 10:26); improvement base = same file, raw, thinking on",
     "matura_all": "512 items / 789 pts (legacy proxy)"
@@ -372,16 +439,17 @@
   },
   "audit": {
     "size_cap_conflicts": [
-      "Shipped Gemma q4_0+mmproj 7.15 GB is legal under ≤8.0 GB base; no FT shipped.",
-      "README says entry sizes are summed; Mały standing rule is largest single pack — for this one-pack entry both agree.",
-      "Do not revive Bielik-11B bf16 or other >8.0 GB bases for Sunday claims."
+      "Shipped Gemma q4_0+mmproj 7.15 GB legal under ≤8.0 GB base; no FT shipped.",
+      "README summed-size vs Mały largest-single-pack agree for this one-pack entry.",
+      "Do not revive Bielik-11B bf16 or other >8.0 GB bases for our Sunday claims; peer Bielik-11B entries on LB are not our pack."
     ],
     "score_conflicts": [
-      "Held-out harness Δ≈0 (163=163) while Jan mock shows +10–18 pp — never headline mock Δ as held-out progress.",
-      "May 2023 raw 41/60 (68.3%) vs stage 38/60 — different runs; prefer /240 held-out for expectation.",
-      "Bielik-4.5 May 2023 40% not reproduced on Jan mock (≤13/60); correctly dropped for Mały.",
-      "Final exam base essay 298 words (<300) risks 0 essay points on the improvement baseline.",
-      "Board tip 40ec224 still claimed Claude board ownership and Bielik Progress/Mały leaders — this sync replaces that."
+      "Organiser final 53/60 (88.33%) vs held-out Claude 163/240 (67.9%) — different papers; never headline as one gauge.",
+      "Held-out harness Δ≈0 while final improvement Δ=+5.0 pp and Jan mock showed +10–18 pp — report each denominator explicitly.",
+      "Repo receipts.json still awaiting_grading while mh_public_final_results already shows Tarasiuk Lab scores — board follows public LB.",
+      "Five CKE category columns still null for final — organiser LB publishes overall only.",
+      "Mały: 7.15 GB clears 35% at 53/60, but smaller qualifying packs on LB beat us on size metric.",
+      "Final baseline essay 298-word risk was on our local base run; organiser baseline scored 50/60 (essay outcome unknown publicly)."
     ]
   }
 }
